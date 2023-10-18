@@ -6,9 +6,9 @@ public partial class App : Application
 	{
 		InitializeComponent();
 
-		MainPage = new WelcomePage();
-		//MainPage = new LoginPage();
-		//MainPage = new SignUpPage();
-	}
+       
+        MainPage = new WelcomePage();
+        
+    }
 }
 

@@ -50,9 +50,43 @@
 		<!-- Raw Assets (also remove the "Resources\Raw" prefix) -->
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
+	<ItemGroup>
+	  <None Remove="Resources\Images\magnifyingglass.png" />
+	  <None Remove="Resources\Images\tacos.png" />
+	</ItemGroup>
 
 	<ItemGroup>
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Compile Update="Profile.xaml.cs">
+	    <DependentUpon>Profile.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="Feed.xaml.cs">
+	    <DependentUpon>Feed.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="AccountSettings.xaml.cs">
+	    <DependentUpon>AccountSettings.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="UserSettings.xaml.cs">
+	    <DependentUpon>UserSettings.xaml</DependentUpon>
+	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <MauiXaml Update="Profile.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="Feed.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="AccountSettings.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="UserSettings.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	</ItemGroup>
 
 </Project>
