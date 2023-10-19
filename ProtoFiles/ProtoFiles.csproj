@@ -51,7 +51,14 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Resources\Images\icon.jpg" />
 	  <None Remove="Resources\Images\magnifyingglass.png" />
+	  <None Remove="Resources\Images\plus.png" />
+	  <None Remove="Resources\Images\recipe1.jpg" />
+	  <None Remove="Resources\Images\recipe2.jpg" />
+	  <None Remove="Resources\Images\recipe3.jpg" />
+	  <None Remove="Resources\Images\recipe4.jpg" />
+	  <None Remove="Resources\Images\recipe5.jpg" />
 	  <None Remove="Resources\Images\tacos.png" />
 	</ItemGroup>
 
@@ -60,6 +67,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <Compile Update="Cookbook.xaml.cs">
+	    <DependentUpon>Cookbook.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="Profile.xaml.cs">
 	    <DependentUpon>Profile.xaml</DependentUpon>
 	  </Compile>
@@ -75,6 +85,9 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <MauiXaml Update="Cookbook.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Profile.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
@@ -82,6 +95,12 @@
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="AccountSettings.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="RecipeDetailedView.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="RecipePopUpView.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="UserSettings.xaml">

@@ -1,5 +1,12 @@
-﻿obj\Debug\net7.0-android\resizetizer\r\drawable\magnifyingglass.png
+﻿obj\Debug\net7.0-android\resizetizer\r\drawable\icon.jpg
+obj\Debug\net7.0-android\resizetizer\r\drawable\magnifyingglass.png
+obj\Debug\net7.0-android\resizetizer\r\drawable\plus.png
 obj\Debug\net7.0-android\resizetizer\r\drawable\profile.png
+obj\Debug\net7.0-android\resizetizer\r\drawable\recipe1.jpg
+obj\Debug\net7.0-android\resizetizer\r\drawable\recipe2.jpg
+obj\Debug\net7.0-android\resizetizer\r\drawable\recipe3.jpg
+obj\Debug\net7.0-android\resizetizer\r\drawable\recipe4.jpg
+obj\Debug\net7.0-android\resizetizer\r\drawable\recipe5.jpg
 obj\Debug\net7.0-android\resizetizer\r\drawable\tacos.png
 obj\Debug\net7.0-android\resizetizer\r\drawable-hdpi\dotnet_bot.png
 obj\Debug\net7.0-android\resizetizer\r\drawable-hdpi\splash.png
