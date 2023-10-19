@@ -1,0 +1,105 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:local="clr-namespace:FlavorFlaveProto"
+             x:Class="FlavorFlaveProto.AddRecipeIngredientsPage"
+             Title="Recipes">
+    
+    <!-- Define mock data in a ResourceDictionary -->
+    <!--<ContentPage.Resources>
+        <ResourceDictionary>
+            <x:Array x:Key="arrIngredients" x:Name="mockIngredients" Type="{x:Type x:String}">
+                <x:String>1 lb of ground beef</x:String>
+                <x:String>2 tbsp of butter</x:String>
+            </x:Array>
+            <x:String x:Key="cheese">(Ch)eese</x:String>
+            <x:String x:Key="chocolate">(Ch)ocolate</x:String>
+            --><!-- Add more suggestions as needed --><!--
+        </ResourceDictionary>
+    </ContentPage.Resources> -->
+    <ContentPage.Content>
+
+        <!-- Main Stack Layout -->
+        <StackLayout Margin="10">
+            <StackLayout Orientation="Horizontal" Spacing="10">
+                <Label Text="Ingredients (2 of 3)" 
+                       VerticalOptions="CenterAndExpand" 
+                       HorizontalOptions="StartAndExpand" />
+                <Button WidthRequest="40" HeightRequest="40" 
+                        CornerRadius="20" 
+                        Text="?" 
+                        VerticalOptions="CenterAndExpand" 
+                        HorizontalOptions="End"/>
+            </StackLayout>
+            
+            <!-- Main content -->
+            <StackLayout Margin="10,10,10,0" Spacing="10">
+                     
+                <!-- Border Separation -->
+                <BoxView HeightRequest="1" BackgroundColor="Gray" HorizontalOptions="FillAndExpand" />
+
+                <!-- (Input and Suggestions) -->
+                <StackLayout HorizontalOptions="StartAndExpand">
+                    <Entry Placeholder="Enter ingredient"/>
+                    <!-- Not shown: OnTextChanged() -->
+                    <ListView IsVisible="False">
+                        <ListView.ItemsSource>
+                            <x:Array Type="{x:Type x:String}">
+                                <x:String>(Ch)eese</x:String>
+                                <x:String>(Ch)ocolate</x:String>
+                            </x:Array>
+                        </ListView.ItemsSource>
+                        <ListView.ItemTemplate>
+                            <DataTemplate>
+                                <TextCell Text="{Binding .}" />
+                            </DataTemplate>
+                        </ListView.ItemTemplate>
+                    </ListView>
+                </StackLayout>
+
+                <!-- Orange Box -->
+                <Grid HorizontalOptions="FillAndExpand" HeightRequest="100">
+                    <!-- Using the newer Grid syntax to define rows and columns -->
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="*"/>
+                        <RowDefinition Height="*"/>
+                    </Grid.RowDefinitions>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*"/>
+                        <ColumnDefinition Width="2*"/>
+                    </Grid.ColumnDefinitions>
+
+                    <!-- Orange Box (Ingredients List) -->
+                    <ScrollView>
+                        <StackLayout>
+                            <!-- In modern XAML, it's better to use CollectionView for lists. However, for the mockup's sake, I'm using StackLayout. -->
+                            <StackLayout Orientation="Horizontal" Padding="5">
+                                <Label Text="1 lb of Ground beef" HorizontalOptions="StartAndExpand" />
+                                <Button ImageSource="delete_icon.png" BackgroundColor="Transparent" HorizontalOptions="End" />
+                            </StackLayout>
+                            <StackLayout Orientation="Horizontal" Padding="5">
+                                <Label Text="2 tbsp of Butter" HorizontalOptions="StartAndExpand" />
+                                <Button ImageSource="delete_icon.png" BackgroundColor="Transparent" HorizontalOptions="End" />
+                            </StackLayout>
+                        </StackLayout>
+                    </ScrollView>
+
+
+                    <!-- No separate column for "Ingredient", so it's placed in Row 0 -->
+                    <Label Text="Ingredient" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"/>
+
+                    <Entry Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                    <Entry Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
+                </Grid>
+            </StackLayout>
+            <Button BackgroundColor="Transparent" Text="+" FontSize="Large" HorizontalOptions="End" VerticalOptions="Center"/>
+            <!-- Bottom navigation buttons -->
+            <StackLayout Orientation="Horizontal">
+                <Button Text="BACK" HorizontalOptions="StartAndExpand"/>
+                <Button Text="NEXT" HorizontalOptions="EndAndExpand"/>
+            </StackLayout>
+        </StackLayout>
+    </ContentPage.Content>
+
+</ContentPage>
