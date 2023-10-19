@@ -94,7 +94,7 @@
                     <Entry Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                 </Grid>
             </StackLayout>
-            <Button BackgroundColor="Transparent" Text="+" FontSize="Large" HorizontalOptions="End" VerticalOptions="Center"/>
+            <Button BackgroundColor="Blue" Text="+" FontSize="Large" HorizontalOptions="End" VerticalOptions="Center"/>
             <!-- Bottom navigation buttons -->
             <StackLayout Orientation="Horizontal">
                 <Button Text="BACK" HorizontalOptions="StartAndExpand"/>
