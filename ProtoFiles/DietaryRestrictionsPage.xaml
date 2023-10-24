@@ -46,7 +46,7 @@
                         <Label Text="Dislike Texture" FontAttributes="Bold" />
                         <Label Text="Cauliflower, Squash, Liver" />
                     </StackLayout>
-          
+
             <!-- Bottom navigation buttons -->
             <StackLayout Orientation="Horizontal">
                 <Button Text="BACK" HorizontalOptions="StartAndExpand"/>
