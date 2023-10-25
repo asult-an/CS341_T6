@@ -8,9 +8,9 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-[assembly: global::Android.Runtime.ResourceDesignerAttribute("ProtoFiles.Resource", IsApplication=true)]
+[assembly: global::Android.Runtime.ResourceDesignerAttribute("CookNook.Resource", IsApplication=true)]
 
-namespace ProtoFiles
+namespace CookNook
 {
 	
 	
@@ -25,63 +25,63 @@ namespace ProtoFiles
 		
 		public static void UpdateIdValues()
 		{
-			global::Microsoft.Maui.Controls.Compatibility.Resource.Attribute.actionBarSize = global::ProtoFiles.Resource.Attribute.actionBarSize;
-			global::Microsoft.Maui.Controls.Compatibility.Resource.Attribute.collectionViewStyle = global::ProtoFiles.Resource.Attribute.collectionViewStyle;
-			global::Microsoft.Maui.Controls.Compatibility.Resource.Attribute.scrollViewStyle = global::ProtoFiles.Resource.Attribute.scrollViewStyle;
-			global::Microsoft.Maui.Controls.Compatibility.Resource.Drawable.abc_ic_clear_material = global::ProtoFiles.Resource.Drawable.abc_ic_clear_material;
-			global::Microsoft.Maui.Controls.Compatibility.Resource.Drawable.abc_ic_search_api_material = global::ProtoFiles.Resource.Drawable.abc_ic_search_api_material;
-			global::Microsoft.Maui.Controls.Compatibility.Resource.Style.collectionViewTheme = global::ProtoFiles.Resource.Style.collectionViewTheme;
-			global::Microsoft.Maui.Controls.Compatibility.Resource.Style.scrollViewTheme = global::ProtoFiles.Resource.Style.scrollViewTheme;
-			global::Microsoft.Maui.Controls.Resource.Animation.enterfromleft = global::ProtoFiles.Resource.Animation.enterfromleft;
-			global::Microsoft.Maui.Controls.Resource.Animation.enterfromright = global::ProtoFiles.Resource.Animation.enterfromright;
-			global::Microsoft.Maui.Controls.Resource.Animation.exittoleft = global::ProtoFiles.Resource.Animation.exittoleft;
-			global::Microsoft.Maui.Controls.Resource.Animation.exittoright = global::ProtoFiles.Resource.Animation.exittoright;
-			global::Microsoft.Maui.Controls.Resource.Attribute.actionBarSize = global::ProtoFiles.Resource.Attribute.actionBarSize;
-			global::Microsoft.Maui.Controls.Resource.Attribute.appBarLayoutStyle = global::ProtoFiles.Resource.Attribute.appBarLayoutStyle;
-			global::Microsoft.Maui.Controls.Resource.Attribute.bottomNavigationViewStyle = global::ProtoFiles.Resource.Attribute.bottomNavigationViewStyle;
-			global::Microsoft.Maui.Controls.Resource.Attribute.toolbarStyle = global::ProtoFiles.Resource.Attribute.toolbarStyle;
-			global::Microsoft.Maui.Controls.Resource.Drawable.abc_ic_clear_material = global::ProtoFiles.Resource.Drawable.abc_ic_clear_material;
-			global::Microsoft.Maui.Controls.Resource.Drawable.abc_ic_menu_overflow_material = global::ProtoFiles.Resource.Drawable.abc_ic_menu_overflow_material;
-			global::Microsoft.Maui.Controls.Resource.Drawable.abc_ic_search_api_material = global::ProtoFiles.Resource.Drawable.abc_ic_search_api_material;
-			global::Microsoft.Maui.Controls.Resource.Id.navigationlayout_bottomtabs = global::ProtoFiles.Resource.Id.navigationlayout_bottomtabs;
-			global::Microsoft.Maui.Controls.Resource.Id.navigationlayout_content = global::ProtoFiles.Resource.Id.navigationlayout_content;
-			global::Microsoft.Maui.Controls.Resource.Id.navigationlayout_toptabs = global::ProtoFiles.Resource.Id.navigationlayout_toptabs;
-			global::Microsoft.Maui.Controls.Resource.Id.shellcontent_appbar = global::ProtoFiles.Resource.Id.shellcontent_appbar;
-			global::Microsoft.Maui.Controls.Resource.Id.flyoutcontent_appbar = global::ProtoFiles.Resource.Id.flyoutcontent_appbar;
-			global::Microsoft.Maui.Controls.Resource.Layout.fragment_backstack = global::ProtoFiles.Resource.Layout.fragment_backstack;
-			global::Microsoft.Maui.Controls.Resource.Layout.flyoutcontent = global::ProtoFiles.Resource.Layout.flyoutcontent;
-			global::Microsoft.Maui.Controls.Resource.Layout.shellcontent = global::ProtoFiles.Resource.Layout.shellcontent;
-			global::Microsoft.Maui.Controls.Resource.Dimension.design_bottom_navigation_height = global::ProtoFiles.Resource.Dimension.design_bottom_navigation_height;
-			global::Microsoft.Maui.Controls.Resource.Style.ThemeOverlay_AppCompat_Light = global::ProtoFiles.Resource.Style.ThemeOverlay_AppCompat_Light;
-			global::Microsoft.Maui.Controls.Resource.Styleable.Toolbar = global::ProtoFiles.Resource.Styleable.Toolbar;
-			global::Microsoft.Maui.Controls.Resource.Styleable.Toolbar_titleTextColor = global::ProtoFiles.Resource.Styleable.Toolbar_titleTextColor;
-			global::Microsoft.Maui.Controls.Resource.String.nav_app_bar_navigate_up_description = global::ProtoFiles.Resource.String.nav_app_bar_navigate_up_description;
-			global::Microsoft.Maui.Controls.Resource.String.nav_app_bar_open_drawer_description = global::ProtoFiles.Resource.String.nav_app_bar_open_drawer_description;
-			global::Microsoft.Maui.Controls.Resource.String.overflow_tab_title = global::ProtoFiles.Resource.String.overflow_tab_title;
-			global::Microsoft.Maui.Resource.Attribute.actionBarSize = global::ProtoFiles.Resource.Attribute.actionBarSize;
-			global::Microsoft.Maui.Resource.Attribute.colorSwitchThumbNormal = global::ProtoFiles.Resource.Attribute.colorSwitchThumbNormal;
-			global::Microsoft.Maui.Resource.Attribute.maui_splash = global::ProtoFiles.Resource.Attribute.maui_splash;
-			global::Microsoft.Maui.Resource.Attribute.scrollViewStyle = global::ProtoFiles.Resource.Attribute.scrollViewStyle;
-			global::Microsoft.Maui.Resource.Animation.nav_default_enter_anim = global::ProtoFiles.Resource.Animation.nav_default_enter_anim;
-			global::Microsoft.Maui.Resource.Animation.nav_default_exit_anim = global::ProtoFiles.Resource.Animation.nav_default_exit_anim;
-			global::Microsoft.Maui.Resource.Animation.nav_default_pop_enter_anim = global::ProtoFiles.Resource.Animation.nav_default_pop_enter_anim;
-			global::Microsoft.Maui.Resource.Animation.nav_default_pop_exit_anim = global::ProtoFiles.Resource.Animation.nav_default_pop_exit_anim;
-			global::Microsoft.Maui.Resource.Drawable.abc_ic_clear_material = global::ProtoFiles.Resource.Drawable.abc_ic_clear_material;
-			global::Microsoft.Maui.Resource.Id.navigation_layout = global::ProtoFiles.Resource.Id.navigation_layout;
-			global::Microsoft.Maui.Resource.Id.navigationlayout_appbar = global::ProtoFiles.Resource.Id.navigationlayout_appbar;
-			global::Microsoft.Maui.Resource.Id.navigationlayout_bottomtabs = global::ProtoFiles.Resource.Id.navigationlayout_bottomtabs;
-			global::Microsoft.Maui.Resource.Id.navigationlayout_content = global::ProtoFiles.Resource.Id.navigationlayout_content;
-			global::Microsoft.Maui.Resource.Id.navigationlayout_toptabs = global::ProtoFiles.Resource.Id.navigationlayout_toptabs;
-			global::Microsoft.Maui.Resource.Id.nav_host = global::ProtoFiles.Resource.Id.nav_host;
-			global::Microsoft.Maui.Resource.Id.nav_host_fragment_container = global::ProtoFiles.Resource.Id.nav_host_fragment_container;
-			global::Microsoft.Maui.Resource.Id.search_button = global::ProtoFiles.Resource.Id.search_button;
-			global::Microsoft.Maui.Resource.Id.search_close_btn = global::ProtoFiles.Resource.Id.search_close_btn;
-			global::Microsoft.Maui.Resource.Layout.drawer_layout = global::ProtoFiles.Resource.Layout.drawer_layout;
-			global::Microsoft.Maui.Resource.Layout.navigationlayout = global::ProtoFiles.Resource.Layout.navigationlayout;
-			global::Microsoft.Maui.Resource.Layout.fragment_backstack = global::ProtoFiles.Resource.Layout.fragment_backstack;
-			global::Microsoft.Maui.Resource.Style.Maui_MainTheme_NoActionBar = global::ProtoFiles.Resource.Style.Maui_MainTheme_NoActionBar;
-			global::Microsoft.Maui.Resource.Style.ThemeOverlay_AppCompat_Light = global::ProtoFiles.Resource.Style.ThemeOverlay_AppCompat_Light;
-			global::Microsoft.Maui.Resource.Style.scrollViewTheme = global::ProtoFiles.Resource.Style.scrollViewTheme;
+			global::Microsoft.Maui.Controls.Compatibility.Resource.Attribute.actionBarSize = global::CookNook.Resource.Attribute.actionBarSize;
+			global::Microsoft.Maui.Controls.Compatibility.Resource.Attribute.collectionViewStyle = global::CookNook.Resource.Attribute.collectionViewStyle;
+			global::Microsoft.Maui.Controls.Compatibility.Resource.Attribute.scrollViewStyle = global::CookNook.Resource.Attribute.scrollViewStyle;
+			global::Microsoft.Maui.Controls.Compatibility.Resource.Drawable.abc_ic_clear_material = global::CookNook.Resource.Drawable.abc_ic_clear_material;
+			global::Microsoft.Maui.Controls.Compatibility.Resource.Drawable.abc_ic_search_api_material = global::CookNook.Resource.Drawable.abc_ic_search_api_material;
+			global::Microsoft.Maui.Controls.Compatibility.Resource.Style.collectionViewTheme = global::CookNook.Resource.Style.collectionViewTheme;
+			global::Microsoft.Maui.Controls.Compatibility.Resource.Style.scrollViewTheme = global::CookNook.Resource.Style.scrollViewTheme;
+			global::Microsoft.Maui.Controls.Resource.Animation.enterfromleft = global::CookNook.Resource.Animation.enterfromleft;
+			global::Microsoft.Maui.Controls.Resource.Animation.enterfromright = global::CookNook.Resource.Animation.enterfromright;
+			global::Microsoft.Maui.Controls.Resource.Animation.exittoleft = global::CookNook.Resource.Animation.exittoleft;
+			global::Microsoft.Maui.Controls.Resource.Animation.exittoright = global::CookNook.Resource.Animation.exittoright;
+			global::Microsoft.Maui.Controls.Resource.Attribute.actionBarSize = global::CookNook.Resource.Attribute.actionBarSize;
+			global::Microsoft.Maui.Controls.Resource.Attribute.appBarLayoutStyle = global::CookNook.Resource.Attribute.appBarLayoutStyle;
+			global::Microsoft.Maui.Controls.Resource.Attribute.bottomNavigationViewStyle = global::CookNook.Resource.Attribute.bottomNavigationViewStyle;
+			global::Microsoft.Maui.Controls.Resource.Attribute.toolbarStyle = global::CookNook.Resource.Attribute.toolbarStyle;
+			global::Microsoft.Maui.Controls.Resource.Drawable.abc_ic_clear_material = global::CookNook.Resource.Drawable.abc_ic_clear_material;
+			global::Microsoft.Maui.Controls.Resource.Drawable.abc_ic_menu_overflow_material = global::CookNook.Resource.Drawable.abc_ic_menu_overflow_material;
+			global::Microsoft.Maui.Controls.Resource.Drawable.abc_ic_search_api_material = global::CookNook.Resource.Drawable.abc_ic_search_api_material;
+			global::Microsoft.Maui.Controls.Resource.Id.navigationlayout_bottomtabs = global::CookNook.Resource.Id.navigationlayout_bottomtabs;
+			global::Microsoft.Maui.Controls.Resource.Id.navigationlayout_content = global::CookNook.Resource.Id.navigationlayout_content;
+			global::Microsoft.Maui.Controls.Resource.Id.navigationlayout_toptabs = global::CookNook.Resource.Id.navigationlayout_toptabs;
+			global::Microsoft.Maui.Controls.Resource.Id.shellcontent_appbar = global::CookNook.Resource.Id.shellcontent_appbar;
+			global::Microsoft.Maui.Controls.Resource.Id.flyoutcontent_appbar = global::CookNook.Resource.Id.flyoutcontent_appbar;
+			global::Microsoft.Maui.Controls.Resource.Layout.fragment_backstack = global::CookNook.Resource.Layout.fragment_backstack;
+			global::Microsoft.Maui.Controls.Resource.Layout.flyoutcontent = global::CookNook.Resource.Layout.flyoutcontent;
+			global::Microsoft.Maui.Controls.Resource.Layout.shellcontent = global::CookNook.Resource.Layout.shellcontent;
+			global::Microsoft.Maui.Controls.Resource.Dimension.design_bottom_navigation_height = global::CookNook.Resource.Dimension.design_bottom_navigation_height;
+			global::Microsoft.Maui.Controls.Resource.Style.ThemeOverlay_AppCompat_Light = global::CookNook.Resource.Style.ThemeOverlay_AppCompat_Light;
+			global::Microsoft.Maui.Controls.Resource.Styleable.Toolbar = global::CookNook.Resource.Styleable.Toolbar;
+			global::Microsoft.Maui.Controls.Resource.Styleable.Toolbar_titleTextColor = global::CookNook.Resource.Styleable.Toolbar_titleTextColor;
+			global::Microsoft.Maui.Controls.Resource.String.nav_app_bar_navigate_up_description = global::CookNook.Resource.String.nav_app_bar_navigate_up_description;
+			global::Microsoft.Maui.Controls.Resource.String.nav_app_bar_open_drawer_description = global::CookNook.Resource.String.nav_app_bar_open_drawer_description;
+			global::Microsoft.Maui.Controls.Resource.String.overflow_tab_title = global::CookNook.Resource.String.overflow_tab_title;
+			global::Microsoft.Maui.Resource.Attribute.actionBarSize = global::CookNook.Resource.Attribute.actionBarSize;
+			global::Microsoft.Maui.Resource.Attribute.colorSwitchThumbNormal = global::CookNook.Resource.Attribute.colorSwitchThumbNormal;
+			global::Microsoft.Maui.Resource.Attribute.maui_splash = global::CookNook.Resource.Attribute.maui_splash;
+			global::Microsoft.Maui.Resource.Attribute.scrollViewStyle = global::CookNook.Resource.Attribute.scrollViewStyle;
+			global::Microsoft.Maui.Resource.Animation.nav_default_enter_anim = global::CookNook.Resource.Animation.nav_default_enter_anim;
+			global::Microsoft.Maui.Resource.Animation.nav_default_exit_anim = global::CookNook.Resource.Animation.nav_default_exit_anim;
+			global::Microsoft.Maui.Resource.Animation.nav_default_pop_enter_anim = global::CookNook.Resource.Animation.nav_default_pop_enter_anim;
+			global::Microsoft.Maui.Resource.Animation.nav_default_pop_exit_anim = global::CookNook.Resource.Animation.nav_default_pop_exit_anim;
+			global::Microsoft.Maui.Resource.Drawable.abc_ic_clear_material = global::CookNook.Resource.Drawable.abc_ic_clear_material;
+			global::Microsoft.Maui.Resource.Id.navigation_layout = global::CookNook.Resource.Id.navigation_layout;
+			global::Microsoft.Maui.Resource.Id.navigationlayout_appbar = global::CookNook.Resource.Id.navigationlayout_appbar;
+			global::Microsoft.Maui.Resource.Id.navigationlayout_bottomtabs = global::CookNook.Resource.Id.navigationlayout_bottomtabs;
+			global::Microsoft.Maui.Resource.Id.navigationlayout_content = global::CookNook.Resource.Id.navigationlayout_content;
+			global::Microsoft.Maui.Resource.Id.navigationlayout_toptabs = global::CookNook.Resource.Id.navigationlayout_toptabs;
+			global::Microsoft.Maui.Resource.Id.nav_host = global::CookNook.Resource.Id.nav_host;
+			global::Microsoft.Maui.Resource.Id.nav_host_fragment_container = global::CookNook.Resource.Id.nav_host_fragment_container;
+			global::Microsoft.Maui.Resource.Id.search_button = global::CookNook.Resource.Id.search_button;
+			global::Microsoft.Maui.Resource.Id.search_close_btn = global::CookNook.Resource.Id.search_close_btn;
+			global::Microsoft.Maui.Resource.Layout.drawer_layout = global::CookNook.Resource.Layout.drawer_layout;
+			global::Microsoft.Maui.Resource.Layout.navigationlayout = global::CookNook.Resource.Layout.navigationlayout;
+			global::Microsoft.Maui.Resource.Layout.fragment_backstack = global::CookNook.Resource.Layout.fragment_backstack;
+			global::Microsoft.Maui.Resource.Style.Maui_MainTheme_NoActionBar = global::CookNook.Resource.Style.Maui_MainTheme_NoActionBar;
+			global::Microsoft.Maui.Resource.Style.ThemeOverlay_AppCompat_Light = global::CookNook.Resource.Style.ThemeOverlay_AppCompat_Light;
+			global::Microsoft.Maui.Resource.Style.scrollViewTheme = global::CookNook.Resource.Style.scrollViewTheme;
 		}
 		
 		public partial class Animation
