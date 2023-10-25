@@ -7,15 +7,15 @@
     <Grid RowDefinitions="*, *, Auto, Auto, *, Auto">
 
         <StackLayout Grid.Row="2" Padding="10">
-            <Button Text="Login"></Button>
+            <Button Text="Login" Clicked="LoginClicked"></Button>
         </StackLayout>
         
         <StackLayout Grid.Row="3" Padding="10">
-            <Button Text="Sign Up"></Button>
+            <Button Text="Sign Up" Clicked="SignUpClicked"></Button>
         </StackLayout>
 
         <StackLayout Grid.Row="5" Padding="10">
-            <Button Text="Skip"></Button>
+            <Button Text="Skip" Clicked="SkipClicked"></Button>
         </StackLayout>
 
     </Grid>
