@@ -1,1 +1,0 @@
-C:\Users\Isaac Schneider\Downloads\CS341_T6\ProtoFiles\CookNook.csproj;x64
