@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\Isaac Schneider\\Downloads\\CS341_T6\\ProtoFiles\\CookNook.csproj": {}
+    "C:\\Users\\qlaxx\\OneDrive\\Documents\\CS341\\Project\\CS341_T6\\ProtoFiles\\CookNook.csproj": {}
   },
   "projects": {
-    "C:\\Users\\Isaac Schneider\\Downloads\\CS341_T6\\ProtoFiles\\CookNook.csproj": {
+    "C:\\Users\\qlaxx\\OneDrive\\Documents\\CS341\\Project\\CS341_T6\\ProtoFiles\\CookNook.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\Isaac Schneider\\Downloads\\CS341_T6\\ProtoFiles\\CookNook.csproj",
+        "projectUniqueName": "C:\\Users\\qlaxx\\OneDrive\\Documents\\CS341\\Project\\CS341_T6\\ProtoFiles\\CookNook.csproj",
         "projectName": "CookNook",
-        "projectPath": "C:\\Users\\Isaac Schneider\\Downloads\\CS341_T6\\ProtoFiles\\CookNook.csproj",
-        "packagesPath": "C:\\Users\\Isaac Schneider\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\Isaac Schneider\\Downloads\\CS341_T6\\ProtoFiles\\obj\\",
+        "projectPath": "C:\\Users\\qlaxx\\OneDrive\\Documents\\CS341\\Project\\CS341_T6\\ProtoFiles\\CookNook.csproj",
+        "packagesPath": "C:\\Users\\qlaxx\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\qlaxx\\OneDrive\\Documents\\CS341\\Project\\CS341_T6\\ProtoFiles\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\Isaac Schneider\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\qlaxx\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -89,6 +89,10 @@
               "target": "Package",
               "version": "[7.0.92, )",
               "autoReferenced": true
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.6, )"
             },
             "Xamarin.Android.Glide": {
               "target": "Package",
@@ -174,7 +178,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         },
         "net7.0-ios16.1": {
           "targetAlias": "net7.0-ios",
@@ -207,6 +211,10 @@
               "target": "Package",
               "version": "[7.0.92, )",
               "autoReferenced": true
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.6, )"
             }
           },
           "imports": [
@@ -237,7 +245,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         },
         "net7.0-maccatalyst16.1": {
           "targetAlias": "net7.0-maccatalyst",
@@ -270,6 +278,10 @@
               "target": "Package",
               "version": "[7.0.92, )",
               "autoReferenced": true
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.6, )"
             }
           },
           "imports": [
@@ -301,7 +313,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         },
         "net7.0-windows10.0.19041": {
           "targetAlias": "net7.0-windows10.0.19041.0",
@@ -344,6 +356,10 @@
               "target": "Package",
               "version": "[1.2.221209.1, )",
               "autoReferenced": true
+            },
+            "Npgsql": {
+              "target": "Package",
+              "version": "[7.0.6, )"
             }
           },
           "imports": [
@@ -360,11 +376,11 @@
           "downloadDependencies": [
             {
               "name": "Microsoft.AspNetCore.App.Runtime.win-x64",
-              "version": "[7.0.11, 7.0.11]"
+              "version": "[7.0.10, 7.0.10]"
             },
             {
               "name": "Microsoft.NETCore.App.Runtime.win-x64",
-              "version": "[7.0.11, 7.0.11]"
+              "version": "[7.0.10, 7.0.10]"
             },
             {
               "name": "Microsoft.Windows.SDK.NET.Ref",
@@ -372,7 +388,7 @@
             },
             {
               "name": "Microsoft.WindowsDesktop.App.Runtime.win-x64",
-              "version": "[7.0.11, 7.0.11]"
+              "version": "[7.0.10, 7.0.10]"
             }
           ],
           "frameworkReferences": {
@@ -392,7 +408,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.401\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\7.0.400\\RuntimeIdentifierGraph.json"
         }
       },
       "runtimes": {
