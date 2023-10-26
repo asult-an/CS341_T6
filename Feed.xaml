@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="ProtoFiles.Feed"
+             Title="Feed">
+    <VerticalStackLayout
+        
+        Spacing="25"
+        Padding="5,0"
+        VerticalOptions="Start">
+        <HorizontalStackLayout HeightRequest="100" VerticalOptions="Start" Padding="0">
+            
+            <!--<Grid ColumnDefinitions="*,auto,auto,auto,*" Padding="30,0">-->
+            <ImageButton Padding="15" Source="magnifyingglass.png" BackgroundColor="Transparent"  Aspect="AspectFit" WidthRequest="90"></ImageButton>
+
+            <ImageButton Padding="15" Source="profile.png" BackgroundColor="Transparent"  Aspect="AspectFit" WidthRequest="500"></ImageButton>
+            <!--</Grid>-->
+        </HorizontalStackLayout>
+
+        <HorizontalStackLayout HeightRequest="100" VerticalOptions="Start" Padding="0">
+
+            <!--<Grid ColumnDefinitions="*,auto,auto,auto,*" Padding="30,0">-->
+            <Label Text="Filter" VerticalOptions="Center" Margin="10,10,10,10" FontSize="20"/>
+            <Button Text="dinner" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
+            <Button Text="beef" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
+            <Button Text="mexican" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
+            <!--</Grid>-->
+        </HorizontalStackLayout>
+        
+
+        <ScrollView Margin="20" BackgroundColor="Transparent" Orientation="Vertical">
+            <StackLayout Orientation="Vertical" >
+                <HorizontalStackLayout HeightRequest="50" VerticalOptions="Start" Margin="0,0,0,10">
+                    <ImageButton Padding="0" Source="profile.png" BackgroundColor="Transparent"  Aspect="AspectFit" WidthRequest="90"></ImageButton>
+                    <Label Text="asultan" VerticalOptions="Center" Margin="10,10,10,10" FontSize="20"/>
+                </HorizontalStackLayout>
+                <Label Text="Best Birria Tacos" FontSize="20"></Label>
+                <ImageButton Source="tacos.png" BackgroundColor="Beige" Aspect="AspectFill"></ImageButton>
+                <ImageButton Source="tacos.png" BackgroundColor="Beige" Aspect="AspectFill"></ImageButton>
+            </StackLayout>
+
+        </ScrollView>
+        
+        <!--<Grid
+            RowDefinitions="5*,*,*,*,*,*"
+            Padding="30,0">
+            <Button Padding="60" ImageSource="profile.png" BackgroundColor="Transparent" ></Button>
+            <StackLayout Grid.Row="1">
+                <Label Text="Email: sultaa03@uwosh.edu" Margin="10,10,10,0"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="2">
+                <Label Text="Username: asultan" Margin="10,15,10,10"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="3">
+                <Label Text="Change Password:" Margin="10,5,10,0"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="4">
+                <Entry Placeholder="New Password" Margin="10,0,10,10"/>
+            </StackLayout>
+            <StackLayout Grid.Row="5">
+                <Entry Placeholder="Re-enter Password" Margin="10,0,10,10"/>
+            </StackLayout>
+        </Grid>-->
+        
+    </VerticalStackLayout>
+</ContentPage>
