@@ -13,21 +13,21 @@ namespace CookNook.Model
         private string name;
         private string description;
         private int author;
-        private ObservableCollection<string> ingredients;
-        private ObservableCollection<string> ingredientsQty;
+        private string ingredients;
+        private string ingredientsQty;
         private int cookTime;
         private string course;
         private int rating;
         private int servings;
         private string image;
-        private ObservableCollection<string> tags;
-        private ObservableCollection<string> followers;
+        private string tags;
+        private string followers;
         public Recipe() { }
 
         public Recipe(int inId, string inName, string inDescription, int inAuthor, 
-            ObservableCollection<string> inIngredients, ObservableCollection<string> inIngredientsQty, 
+            string inIngredients, string inIngredientsQty, 
             int inCooktime, string inCourse, int inRating, int inServings, string inImage, 
-            ObservableCollection<string> inTags, ObservableCollection<string> inFollowers) 
+            string inTags, string inFollowers) 
         { 
             id = inId;
             name = inName;
@@ -54,15 +54,15 @@ namespace CookNook.Model
             set { description = value; }
         }
         public int Author { get { return author; } set { author = value; } }
-        public ObservableCollection<string> Ingredients { get { return ingredients; } set { ingredients = value; } }
-        public ObservableCollection<string> IngredientsQty { get { return ingredientsQty; } set { ingredientsQty = value; } }
+        public string Ingredients { get { return ingredients; } set { ingredients = value; } }
+        public string IngredientsQty { get { return ingredientsQty; } set { ingredientsQty = value; } }
         public int CookTime { get { return cookTime; } set { cookTime = value; } }
         public string Course { get { return course; } set { course = value; } }
         public int Rating { get { return rating; } set { rating = value; } }
         public int Servings { get { return servings; } set { servings = value; } }
         public string Image { get { return image; } set { image = value; } }
-        public ObservableCollection<string> Tags { get { return tags; } set { tags = value; } }
-        public ObservableCollection <string> Followers {  get { return followers; } set {  followers = value; } }
+        public string Tags { get { return tags; } set { tags = value; } }
+        public string Followers {  get { return followers; } set {  followers = value; } }
 
         public string IngredientsToString()
         {
