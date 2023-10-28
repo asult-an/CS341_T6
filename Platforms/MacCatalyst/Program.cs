@@ -1,7 +1,7 @@
 ﻿using ObjCRuntime;
 using UIKit;
 
-namespace ProtoFiles;
+namespace CookNook;
 
 public class Program
 {

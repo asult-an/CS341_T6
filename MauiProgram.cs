@@ -1,6 +1,6 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace ProtoFiles;
+namespace CookNook;
 
 public static class MauiProgram
 {

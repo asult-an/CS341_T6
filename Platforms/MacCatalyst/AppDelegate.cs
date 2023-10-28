@@ -1,6 +1,6 @@
 ﻿using Foundation;
 
-namespace ProtoFiles;
+namespace CookNook;
 
 [Register("AppDelegate")]
 public class AppDelegate : MauiUIApplicationDelegate
