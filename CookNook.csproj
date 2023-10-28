@@ -11,10 +11,10 @@
 		<ImplicitUsings>enable</ImplicitUsings>
 
 		<!-- Display name -->
-		<ApplicationTitle>ProtoFiles</ApplicationTitle>
+		<ApplicationTitle>CookNook</ApplicationTitle>
 
 		<!-- App Identifier -->
-		<ApplicationId>com.companyname.protofiles</ApplicationId>
+		<ApplicationId>com.companyname.CookNook</ApplicationId>
 		<ApplicationIdGuid>4c409b28-9a0f-4a37-9b59-177c8186a4cf</ApplicationIdGuid>
 
 		<!-- Versions -->

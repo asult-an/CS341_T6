@@ -74,5 +74,5 @@ bld/
 *.svclog
 *.scc
 
-/ProtoFiles.zip
-/ProtoFiles/ProtoFiles.csproj.user
+/CookNook.zip
+/CookNook/CookNook.csproj.user
