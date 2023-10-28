@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
-    internal class Recipe
+    public class Recipe
     {
         private int id;
         private string name;

@@ -1,7 +1,7 @@
 ﻿using CookNook.Model;
 using System.Collections.ObjectModel;
 
-namespace ProtoFiles;
+namespace CookNook;
 
 public partial class WelcomePage : ContentPage
 {

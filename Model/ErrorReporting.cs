@@ -8,6 +8,7 @@ public enum RecipeAdditionError
     InvalidImage,
     InvalidServings,
     InvalidName,
+    InvalidDescription,
     InvalidCookTime,
     DuplicateId,
     DBAdditionError,
