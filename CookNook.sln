@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.7.34024.191
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookNook", "ProtoFiles\CookNook.csproj", "{8B54DC46-D305-4219-BFE2-E1536656EB3E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CookNook", "CookNook.csproj", "{8B54DC46-D305-4219-BFE2-E1536656EB3E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
