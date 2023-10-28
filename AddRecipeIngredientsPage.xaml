@@ -2,8 +2,8 @@
 
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:FlavorFlaveProto"
-             x:Class="FlavorFlaveProto.AddRecipeIngredientsPage"
+             xmlns:local="clr-namespace:CookNook"
+             x:Class="CookNook.AddRecipeIngredientsPage"
              Title="Recipes">
     
     <!-- Define mock data in a ResourceDictionary -->

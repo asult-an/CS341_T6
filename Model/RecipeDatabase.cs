@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
-    internal class Database : IDatabase
+    internal class RecipeDatabase : IRecipeDatabase
     {
 
         private ObservableCollection<Recipe> recipes = new ObservableCollection<Recipe>();

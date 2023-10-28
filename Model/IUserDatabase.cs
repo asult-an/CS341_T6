@@ -7,13 +7,8 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
-    internal interface IDatabase
+    internal interface IUserDatabase
     {
-        public List<Recipe> SelectAllRecipes();
-        public Recipe SelectRecipe();
-        public RecipeAdditionError InsertRecipe(Recipe inRecipe);
-        public RecipeDeletionError DeleteRecipe(Recipe inRecipe);
-        public RecipeEditError EditRecipe(Recipe inRecipe);
 
         public User SelectUser();
         public UserAdditionError InsertUser(User inUser);
