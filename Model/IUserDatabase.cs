@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
-    internal interface IUserDatabase
+    public interface IUserDatabase
     {
 
         public User SelectUser();
