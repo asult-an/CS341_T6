@@ -1,7 +1,7 @@
 ﻿using Android.App;
 using Android.Runtime;
 
-namespace ProtoFiles;
+namespace CookNook;
 
 [Application]
 public class MainApplication : MauiApplication

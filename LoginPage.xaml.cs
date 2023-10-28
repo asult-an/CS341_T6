@@ -1,4 +1,4 @@
-﻿namespace ProtoFiles;
+﻿namespace CookNook;
 
 public partial class LoginPage : ContentPage
 {
