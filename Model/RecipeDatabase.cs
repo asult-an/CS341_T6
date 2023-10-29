@@ -12,19 +12,29 @@ namespace CookNook.Model
 {
     internal class RecipeDatabase : IRecipeDatabase
     {
-
+        //private recipe database fields
+        //list of recipe IDs that a user has created
         private List<int> authorListIDs = new List<int>();
+        //list of recipe IDs that a user has saved
         private List<int> cookbookIDs = new List<int>();
+        //list of recipes that a user has created
         private ObservableCollection<Recipe> authorList;
+        //list of recipes that a user has saved
         private ObservableCollection<Recipe> cookbook;
+        //database connection string, username, password, port number
         private string connString = GetConnectionString();
         static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
         static string dbUsername = "adeel";
         static int PORT_NUMBER = 26257;
-        //create public property to access airport list
+        //create public properties to access AuthorList and Cookbook
         public ObservableCollection<Recipe> AuthorList { get { return authorList; } set { authorList = value; } }
         public ObservableCollection<Recipe> Cookbook { get { return cookbook; } set { cookbook = value; } }
 
+        /// <summary>
+        /// Deletes recipe from authorlistIDs, updates authorlist and database
+        /// </summary>
+        /// <param name="recipeID"></param>
+        /// <returns></returns>
         public RecipeDeletionError DeleteFromAuthorList(int recipeID)
         {
             authorListIDs.Remove(recipeID);
@@ -33,7 +43,11 @@ namespace CookNook.Model
             return RecipeDeletionError.NoError;
           
         }
-
+        /// <summary>
+        /// Deletes recipe from cookbookIDs, updates cookbook and database
+        /// </summary>
+        /// <param name="recipeID"></param>
+        /// <returns>RecipeDeletionError : the result of the recipe modification</returns>
         public RecipeDeletionError DeleteFromCookbook(int recipeID)
         {
             cookbookIDs.Remove(recipeID);
@@ -41,7 +55,11 @@ namespace CookNook.Model
             return RecipeDeletionError.NoError;
 
         }
-
+        /// <summary>
+        /// Adds recipe to authorlistIDs, updates authorlist and database
+        /// </summary>
+        /// <param name="recipeID"></param>
+        /// <returns>RecipeDeletionError : the result of the recipe modification</returns>
         public RecipeAdditionError AddToAuthorList(int recipeID)
         {
             authorListIDs.Add(recipeID);
@@ -49,7 +67,11 @@ namespace CookNook.Model
             return RecipeAdditionError.NoError;
 
         }
-
+        /// <summary>
+        /// Adds recipe to cookbookIDs, updates cookbook and database
+        /// </summary>
+        /// <param name="recipeID"></param>
+        /// <returns></returns>
         public RecipeAdditionError AddToCookbook(int recipeID)
         {
             cookbookIDs.Add(recipeID);
@@ -57,7 +79,11 @@ namespace CookNook.Model
             return RecipeAdditionError.NoError;
 
         }
-
+        /// <summary>
+        /// Edits the fields of a given recipe, updates database, cookbook, and authorlist
+        /// </summary>
+        /// <param name="inRecipe"></param>
+        /// <returns>RecipeEditError : the result of the recipe modificaiton</returns>
         public RecipeEditError EditRecipe(Recipe inRecipe)
         {
             try
@@ -101,7 +127,11 @@ namespace CookNook.Model
             }
             return RecipeEditError.NoError;
         }
-
+        /// <summary>
+        /// Adds a new recipe to the database and the user's authorlist
+        /// </summary>
+        /// <param name="inRecipe"></param>
+        /// <returns>RecipeAdditionError : the result of the recipe addition</returns>
         public RecipeAdditionError InsertRecipe(Recipe inRecipe)
         {
             
@@ -136,7 +166,11 @@ namespace CookNook.Model
             AddToAuthorList(inRecipe.ID);
             return RecipeAdditionError.NoError;
         }
-
+        /// <summary>
+        /// Generates an ObservableCollection of recipes from a list of recipe IDs
+        /// </summary>
+        /// <param name="recipeList"></param>
+        /// <returns>ObservableCollection<Recipe> an ObservableCollection of recipes matching the given IDs</returns>
         public ObservableCollection<Recipe> SelectAllRecipes(List<int> recipeList)
         {
             ObservableCollection<Recipe> outRecipes = new ObservableCollection<Recipe>();
@@ -172,7 +206,11 @@ namespace CookNook.Model
             return outRecipes;
     
         }
-
+        /// <summary>
+        /// Queries the database for a recipe given a recipe ID
+        /// </summary>
+        /// <param name="inID"></param>
+        /// <returns>Recipe : the recipe matching the given ID</returns>
         public Recipe SelectRecipe(int inID)
         {
             Recipe recipe = new Recipe();
@@ -204,7 +242,11 @@ namespace CookNook.Model
             return recipe;
             
         }
-
+        /// <summary>
+        /// Queries the database for recipes given a course value
+        /// </summary>
+        /// <param name="course"></param>
+        /// <returns>ObservableCollection<Recipe> an ObservableCollection of recipes matching the given attribute</returns>
         public ObservableCollection<Recipe> SelectRecipeByCourse(string course)
         {
             List<int> recipeIDs = new List<int>();
@@ -223,7 +265,12 @@ namespace CookNook.Model
             }
             return SelectAllRecipes(recipeIDs);
         }
-
+        
+        /// <summary>
+        /// Queries the database for recipes given a cooktime value
+        /// </summary>
+        /// <param name="cooktime"></param>
+        /// <returns>ObservableCollection<Recipe> an ObservableCollection of recipes matching the given attribute</returns>
         public ObservableCollection<Recipe> SelectRecipeByCooktime(int cooktime)
         {
             List<int> recipeIDs = new List<int>();
@@ -242,7 +289,12 @@ namespace CookNook.Model
             }
             return SelectAllRecipes(recipeIDs);
         }
-        
+
+        /// <summary>
+        /// Deletes a recipe from the database 
+        /// </summary>
+        /// <param name="inID"></param>
+        /// <returns>RecipeDeletionError : the result of the deletion</returns>
         public RecipeDeletionError DeleteRecipe(int inID)
         {
             using var conn = new NpgsqlConnection(connString);
@@ -257,6 +309,8 @@ namespace CookNook.Model
             int result = cmd.ExecuteNonQuery();
             if (result == 1)
             {
+                DeleteFromAuthorList(inID);
+                DeleteFromCookbook(inID);
                 return RecipeDeletionError.NoError;
             }
             else
@@ -264,6 +318,12 @@ namespace CookNook.Model
                 return RecipeDeletionError.DBDeletionError;
             }
         }
+
+        /// <summary>
+        /// Creates an ObservableCollection<string> given a comma separated string list
+        /// </summary>
+        /// <param name="rawList"></param>
+        /// <returns>ObservableCollection<string></returns>
         private ObservableCollection<string> CreateStringCollection(string rawList)
         {
             List<string> list = rawList.Split(", ").ToList<String>();
@@ -271,12 +331,10 @@ namespace CookNook.Model
 
         }
 
-        private List<int> CreateUserList(string rawList)
-        {
-            return rawList.Split(", ").Select(int.Parse).ToList<int>();
-
-        }
-
+        /// <summary>
+        /// Generates the database connection string
+        /// </summary>
+        /// <returns>string: the database connection string</returns>
         public static String GetConnectionString()
         {
             //initialize the string builder

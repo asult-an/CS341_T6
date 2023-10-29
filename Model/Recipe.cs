@@ -9,21 +9,28 @@ namespace CookNook.Model
 {
     public class Recipe
     {
+        //create private fields to store recipe data
+        //unique recipe ID/PK in database
         private int id;
+        //recipe name, description, author
         private string name;
         private string description;
         private string author;
-        private ObservableCollection<String> ingredients;
-        private ObservableCollection<String> ingredientsQty;
+        //observable collections of ingredients and quanitities
+        private ObservableCollection<string> ingredients;
+        private ObservableCollection<string> ingredientsQty;
+        //recipe cook time, course, rating, and image reference
         private int cookTime;
         private string course;
         private int rating;
         private int servings;
         private string image;
-        private ObservableCollection<String> tags;
+        //observable collections of tags and users following the recipe
+        private ObservableCollection<string> tags;
         private ObservableCollection<string> followers;
         public Recipe() { }
 
+        //constructor to initialize recipe with all fields
         public Recipe(int inId, string inName, string inDescription, string inAuthor,
             ObservableCollection<String> inIngredients, ObservableCollection<String> inIngredientsQty, 
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
@@ -43,7 +50,7 @@ namespace CookNook.Model
             tags = inTags;
             followers = inFollowers;
         }
-
+        //public properties to access recipe fields
         public int ID { get { return id; } set { id = value; } }
         public string Name { 
             get { return name; } 
@@ -63,7 +70,7 @@ namespace CookNook.Model
         public string Image { get { return image; } set { image = value; } }
         public ObservableCollection<String> Tags { get { return tags; } set { tags = value; } }
         public ObservableCollection<string> Followers {  get { return followers; } set {  followers = value; } }
-
+        //to string methods for recipe fields
         public string IngredientsToString()
         {
             return Ingredients.ToString();

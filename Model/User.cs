@@ -9,16 +9,23 @@ namespace CookNook.Model
 {
     public class User
     {
+        //private fields for the User class:
+        //username, email, and password fields: username will be the unique identifier for users
         private string username;
         private string email;
         private string password;
+        //string ObservableCollections of app preferences and dietary preferences
         private ObservableCollection<string> appPreferences;
         private ObservableCollection<string> dietaryPreferences;
+        //reference string to the user's profile picture
         private string profilePicture;
+        //Recipe ObservableCollection of the recipes a user has created
         private ObservableCollection<Recipe> authorList;
+        //a list of users the user follows
         private List<string> followers;
+        //a list of users that follows the user
         private List<string> following;
-
+        //a list of recipes the user has saved
         private ObservableCollection<Recipe> cookBook;
 
         public string Username { get { return username; } set {  username = value; } }
