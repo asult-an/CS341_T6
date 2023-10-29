@@ -6,20 +6,25 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using BCrypt.Net;
 
 namespace CookNook.Model
 {
-    internal class UserDatabase : IUserDatabase
+    public class UserDatabase : IUserDatabase
     {
-
-        private ObservableCollection<Recipe> recipes = new ObservableCollection<Recipe>();
+        private ObservableCollection<User> users = new ObservableCollection<User>();
         private string connString = GetConnectionString();
         static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
         static string dbUsername = "adeel";
         static int PORT_NUMBER = 26257;
         //create public property to access airport list
-        public ObservableCollection<Recipe> Recipes { get { return recipes; } }
+
+        public ObservableCollection<User> User{ get { return users; } }
               
+        public UserDatabase() {
+            connString = GetConnectionString();
+        }
+
 
         public static String GetConnectionString()
         {
@@ -38,7 +43,29 @@ namespace CookNook.Model
             return connStringBuilder.ConnectionString;
         }
 
-        public User SelectUser()
+
+        public List<User> GetAllUsers()
+        {
+            try
+            {
+                using var conn = new NpgsqlConnection(connString);
+                conn.Open();
+
+                using var cmd = new NpgsqlCommand("SELECT username, email, password, app_prefs, diet_prefs, profile_pic, author_list, follow_list FROM users");
+            }
+        }
+
+       
+        public UserSelectionError GetByEmail(string email)
+        {
+            // check if the email is present in the users
+
+            // [T] 
+
+            // [F] return UserSelectionError.NoUserWithEmail;
+        }
+
+        public UserSelectionError GetUserById(Guid i)
         {
             throw new NotImplementedException();
         }
