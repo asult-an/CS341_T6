@@ -17,7 +17,7 @@ namespace CookNook.Model
 
 
         public ObservableCollection<Recipe> SelectAllRecipes(List<int> recipeList);
-        public Recipe SelectRecipeByID(int recipeID);
+        public Recipe SelectRecipe(int recipeID);
         public ObservableCollection<Recipe> SelectRecipeByCourse(string course);
         public ObservableCollection<Recipe> SelectRecipeByCooktime(int cooktime);
 

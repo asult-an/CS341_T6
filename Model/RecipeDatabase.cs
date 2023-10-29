@@ -13,8 +13,8 @@ namespace CookNook.Model
     internal class RecipeDatabase : IRecipeDatabase
     {
 
-        private List<int> authorListIDs;
-        private List<int> cookbookIDs;
+        private List<int> authorListIDs = new List<int>();
+        private List<int> cookbookIDs = new List<int>();
         private ObservableCollection<Recipe> authorList;
         private ObservableCollection<Recipe> cookbook;
         private string connString = GetConnectionString();
@@ -157,23 +157,23 @@ namespace CookNook.Model
                 recipe.ID = reader.GetInt32(0);
                 recipe.Name = reader.GetString(1);
                 recipe.Description = reader.GetString(2);
-                recipe.Author = reader.GetInt32(3);
-                recipe.Ingredients = reader.GetString(4);
-                recipe.IngredientsQty = reader.GetString(5);
+                recipe.Author = reader.GetString(3);
+                recipe.Ingredients = CreateStringCollection(reader.GetString(4));
+                recipe.IngredientsQty = CreateStringCollection(reader.GetString(5));
                 recipe.CookTime = reader.GetInt32(6);
                 recipe.Course = reader.GetString(7);
                 recipe.Rating = reader.GetInt32(8);
                 recipe.Servings = reader.GetInt32(9);
                 recipe.Image = reader.GetString(10);
-                recipe.Tags = reader.GetString(11);
-                recipe.Followers = reader.GetString(12);
+                recipe.Tags = CreateStringCollection(reader.GetString(11));
+                recipe.Followers = CreateStringCollection(reader.GetString(12));
                 outRecipes.Add(recipe);
             }
             return outRecipes;
     
         }
 
-        public Recipe SelectRecipeByID(int inID)
+        public Recipe SelectRecipe(int inID)
         {
             Recipe recipe = new Recipe();
             using var conn = new NpgsqlConnection(connString);
@@ -190,16 +190,16 @@ namespace CookNook.Model
             recipe.ID = reader.GetInt32(0);
             recipe.Name = reader.GetString(1);
             recipe.Description = reader.GetString(2);
-            recipe.Author = reader.GetInt32(3);
-            recipe.Ingredients = reader.GetString(4);
-            recipe.IngredientsQty = reader.GetString(5);
+            recipe.Author = reader.GetString(3);
+            recipe.Ingredients = CreateStringCollection(reader.GetString(4));
+            recipe.IngredientsQty = CreateStringCollection(reader.GetString(5));
             recipe.CookTime = reader.GetInt32(6);
             recipe.Course = reader.GetString(7);
             recipe.Rating = reader.GetInt32(8);
             recipe.Servings = reader.GetInt32(9);
             recipe.Image = reader.GetString(10);
-            recipe.Tags = reader.GetString(11);
-            recipe.Followers = reader.GetString(12);
+            recipe.Tags = CreateStringCollection(reader.GetString(11));
+            recipe.Followers = CreateStringCollection(reader.GetString(12));
 
             return recipe;
             
@@ -242,16 +242,7 @@ namespace CookNook.Model
             }
             return SelectAllRecipes(recipeIDs);
         }
-        /* Sort by tag (same for ingredients):
-         * taglist is List<int>
-         * 
-         * retreive tag list + id for all recipes: map(int id:string tagList)
-         * parse tag list ---> map(int id:List tagList)
-         * search for desired tag in each list, add to output list: .Add(int id)
-         * SelectAllRecipes(List<int> ids)
-         * 
-         * 
-         */
+        
         public RecipeDeletionError DeleteRecipe(int inID)
         {
             using var conn = new NpgsqlConnection(connString);
@@ -273,24 +264,18 @@ namespace CookNook.Model
                 return RecipeDeletionError.DBDeletionError;
             }
         }
-
-        // I added this method to get all the ID's of the recipes in the database
-        // so I can make a list of recipe ID's to pass to SelectAllRecipes() Method
-        
-        public List<int> GetAllRecipeIds()
+        private ObservableCollection<string> CreateStringCollection(string rawList)
         {
-            List<int> recipeIds = new List<int>();
-            using var conn = new NpgsqlConnection(connString);
-            conn.Open();
-            var cmd = new NpgsqlCommand("SELECT recipe_id FROM recipes", conn);
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                recipeIds.Add(reader.GetInt32(0));
-            }
-            return recipeIds;
+            List<string> list = rawList.Split(", ").ToList<String>();
+            return new ObservableCollection<string>(list);
+
         }
 
+        private List<int> CreateUserList(string rawList)
+        {
+            return rawList.Split(", ").Select(int.Parse).ToList<int>();
+
+        }
 
         public static String GetConnectionString()
         {
