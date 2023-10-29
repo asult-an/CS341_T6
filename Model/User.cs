@@ -16,7 +16,9 @@ namespace CookNook.Model
         private ObservableCollection<string> dietaryPreferences;
         private string profilePicture;
         private ObservableCollection<Recipe> authorList;
-        private ObservableCollection<User> followList;
+        private List<string> followers;
+        private List<string> following;
+
         private ObservableCollection<Recipe> cookBook;
 
         public string Username { get { return username; } set {  username = value; } }
@@ -26,7 +28,8 @@ namespace CookNook.Model
         public ObservableCollection <string> DietaryPreferences { get { return dietaryPreferences; } set {  dietaryPreferences = value; } }
         public string ProfilePicture { get {  return profilePicture; } set {  profilePicture = value; } }
         public ObservableCollection<Recipe > AuthorList { get { return authorList; } set { authorList = value; } }
-        public ObservableCollection<User> FollowList { get { return followList; } set {  followList = value; } }
+        public List<string> Followers { get { return followers; } set {  followers = value; } }
+        public List<string> Following { get { return following; } set { following = value; } }
         public ObservableCollection<Recipe> CookBook { get {  return cookBook; } set {  cookBook = value; } }
 
     }

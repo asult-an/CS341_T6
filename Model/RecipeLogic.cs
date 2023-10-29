@@ -17,7 +17,7 @@ namespace CookNook.Model
         }
 
        // this method may be redundant
-       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthor,
+       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, string inAuthor,
             ObservableCollection<string> inIngredients, ObservableCollection<string> inIngredientsQty,
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
             ObservableCollection<string> inTags, ObservableCollection<string> inFollowers)
@@ -77,7 +77,7 @@ namespace CookNook.Model
         {
             try
             {
-                return recipeDatabase.DeleteRecipe(recipe);
+                return recipeDatabase.DeleteRecipe(recipe.ID);
             }
             catch (Exception ex)
             {
@@ -90,7 +90,7 @@ namespace CookNook.Model
             try
             {
                 // will have to pass id once database method is implemented
-                return recipeDatabase.SelectRecipe();
+                return recipeDatabase.SelectRecipe(id);
             }
             catch
             {
