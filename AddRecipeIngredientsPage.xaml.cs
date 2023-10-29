@@ -25,7 +25,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
         //Ingredients = (this.FindByName("Ingredients") as Entry).Text;
 
         var newRecipe = new Recipe(
-            0,
+            1,
             PreviousPageData.RecipeName,
             "Description",
             0,
@@ -48,6 +48,10 @@ public partial class AddRecipeIngredientsPage : ContentPage
         {
             await Navigation.PushAsync(new DietaryRestrictionsPage());
             await DisplayAlert("Success", "Recipe added successfully!", "OK");
+        }
+        else if (result == RecipeAdditionError.DBAdditionError)
+        {
+            await DisplayAlert("Error", "LogicError", "OK");
         }
         else
         {

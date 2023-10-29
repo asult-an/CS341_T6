@@ -37,8 +37,7 @@ namespace CookNook.Model
                 inIngredientsQty, inCooktime, inCourse, inRating, inServings, inImage, inTags, inFollowers);
 
            
-            AddRecipe(newRecipe);
-            return RecipeAdditionError.NoError;
+            return AddRecipe(newRecipe);
         }
 
 
@@ -49,11 +48,13 @@ namespace CookNook.Model
 
             try
             {
-                return recipeDatabase.InsertRecipe(recipe);
+                recipeDatabase.InsertRecipe(recipe);
+                return RecipeAdditionError.NoError;
             }
             catch (Exception ex)
             {
-                // returning a generic error.
+                // This is where adding a recipe is failing, its catching some exception 
+                // in the database, and I'm not sure what the issue is.
                 return RecipeAdditionError.DBAdditionError;
             }
         }
@@ -65,7 +66,8 @@ namespace CookNook.Model
 
             try
             {
-                return recipeDatabase.EditRecipe(recipe);
+                recipeDatabase.EditRecipe(recipe);
+                return RecipeEditError.NoError;
             }
             catch (Exception ex)
             { 
@@ -77,7 +79,8 @@ namespace CookNook.Model
         {
             try
             {
-                return recipeDatabase.DeleteRecipe(recipe.ID);
+                recipeDatabase.DeleteRecipe(recipe.ID);
+                return RecipeDeletionError.NoError;
             }
             catch (Exception ex)
             {
@@ -95,6 +98,20 @@ namespace CookNook.Model
             catch
             {
                 return null;
+            }
+        }
+
+        public ObservableCollection<Recipe> SelectAllRecipes() 
+        {
+            try
+            {
+                List<int> allRecipeIds = recipeDatabase.GetAllRecipeIds();
+                return recipeDatabase.SelectAllRecipes(allRecipeIds);
+            } 
+            catch (Exception ex)
+            {
+                //return a empty list if an exception for now
+                return new ObservableCollection<Recipe>();
             }
         }
     }

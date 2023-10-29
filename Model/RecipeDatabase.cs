@@ -274,6 +274,23 @@ namespace CookNook.Model
             }
         }
 
+        // I added this method to get all the ID's of the recipes in the database
+        // so I can make a list of recipe ID's to pass to SelectAllRecipes() Method
+        
+        public List<int> GetAllRecipeIds()
+        {
+            List<int> recipeIds = new List<int>();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand("SELECT recipe_id FROM recipes", conn);
+            using NpgsqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                recipeIds.Add(reader.GetInt32(0));
+            }
+            return recipeIds;
+        }
+
 
         public static String GetConnectionString()
         {

@@ -21,6 +21,7 @@
 
             <!--<Grid ColumnDefinitions="*,auto,auto,auto,*" Padding="30,0">-->
             <Label Text="Filter" VerticalOptions="Center" Margin="10,10,10,10" FontSize="20"/>
+            <Button x:Name="btnShowAllRecipes" Text="Show All Recipes" Clicked="ShowAllRecipesClicked"/>
             <Button Text="dinner" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
             <Button Text="beef" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
             <Button Text="mexican" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>

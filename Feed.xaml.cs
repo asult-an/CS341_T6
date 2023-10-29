@@ -1,9 +1,25 @@
+using CookNook.Model;
+
 namespace CookNook;
 
 public partial class Feed : ContentPage
 {
-	public Feed()
+    private RecipeLogic recipeLogic;
+    public Feed()
 	{
 		InitializeComponent();
+		recipeLogic = new RecipeLogic();
 	}
+
+    private async void ShowAllRecipesClicked(object sender, EventArgs e)
+    {
+        var allRecipes = recipeLogic.SelectAllRecipes();
+
+        // As of now, just getting names of recipes into string
+        var recipesText = string.Join(", ", allRecipes.Select(r => r.Name));
+
+        // then diplaying the string
+        await DisplayAlert("All Recipes", recipesText, "OK");
+    }
+
 }
