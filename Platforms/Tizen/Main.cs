@@ -2,7 +2,7 @@
 using Microsoft.Maui;
 using Microsoft.Maui.Hosting;
 
-namespace ProtoFiles;
+namespace CookNook;
 
 class Program : MauiApplication
 {
