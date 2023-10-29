@@ -98,7 +98,7 @@
             <!-- Bottom navigation buttons -->
             <StackLayout Orientation="Horizontal">
                 <Button Text="BACK" HorizontalOptions="StartAndExpand"/>
-                <Button Text="NEXT" HorizontalOptions="EndAndExpand"/>
+                <Button Text="NEXT" Clicked="NextClicked" HorizontalOptions="EndAndExpand"/>
             </StackLayout>
         </StackLayout>
     </ContentPage.Content>

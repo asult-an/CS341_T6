@@ -33,7 +33,7 @@ public partial class WelcomePage : ContentPage
     public async void SkipClicked(object sender, EventArgs e)
     {
         //TestDB.InsertRecipe(TestRecipe);// TEST DATABASE INSERTS
-        await Navigation.PushAsync(new Feed());
+        await Navigation.PushAsync(new TabView());
 
     }
 

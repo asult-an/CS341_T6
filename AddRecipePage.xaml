@@ -25,14 +25,12 @@
 
             <!-- Recipe Name -->
             <StackLayout Padding="10" Margin="0,10,0,0">
-                <Label Text="Name" />
-                <Entry Placeholder="Enter recipe name..." />
+                 <Entry x:Name="Name" Placeholder="Enter recipe name..." />
             </StackLayout>
 
             <!-- Time Picker -->
             <StackLayout Padding="10" Margin="0,10,0,0">
-                <Label Text="Time to make" />
-                <Entry Placeholder="Tap to set..." />
+                 <Entry x:Name="TimeToMake" Placeholder="Enter cook time" />
             </StackLayout>
 
             <!-- Instructions -->
@@ -65,7 +63,7 @@
                 <Button Grid.Column="0" Text="BACK" HorizontalOptions="Center" />
 
                 <!-- Next Button -->
-                <Button Grid.Column="1" Text="NEXT" HorizontalOptions="Center" />
+                <Button Grid.Column="1" Text="NEXT" Clicked="NextClicked" HorizontalOptions="Center" />
             </Grid>
 
         </StackLayout>
