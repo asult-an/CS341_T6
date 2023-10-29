@@ -54,3 +54,11 @@ public enum UserEditError
     DBEditError,
     NoError
 }
+
+public enum UserSelectionError
+{
+    InvalidEmailAddress,
+    InvalidPassword,
+    InvalidUsername,
+    NoUserWithEmail
+}
