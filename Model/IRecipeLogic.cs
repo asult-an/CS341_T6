@@ -7,7 +7,7 @@ namespace CookNook.Model
         RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, string inAuthor,
             ObservableCollection<string> inIngredients, ObservableCollection<string> inIngredientsQty,
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
-            String inTags, String inFollowers);
+            ObservableCollection<string> inTags, ObservableCollection<string> inFollowers);
 
         RecipeAdditionError AddRecipe(Recipe recipe);
 

@@ -28,16 +28,16 @@ public partial class AddRecipeIngredientsPage : ContentPage
             1,
             PreviousPageData.RecipeName,
             "Description",
-            0,
-            "Ingredients",
-            "Quantity",
+            "SYSTEM",
+            new System.Collections.ObjectModel.ObservableCollection<string>(),
+            new System.Collections.ObjectModel.ObservableCollection<string>(),
             int.Parse(PreviousPageData.RecipeTimeToMake),
             "Course",
             0,
             0,
             "Image",
-            "Tags",
-            "Followers"
+            new System.Collections.ObjectModel.ObservableCollection<string>(),
+            new System.Collections.ObjectModel.ObservableCollection<string>()
         );
 
         // Add recipe to the database using RecipeLogic

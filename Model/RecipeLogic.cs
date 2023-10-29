@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -20,7 +21,7 @@ namespace CookNook.Model
        public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, string inAuthor,
             ObservableCollection<string> inIngredients, ObservableCollection<string> inIngredientsQty,
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
-            String inTags, String inFollowers)
+            ObservableCollection<string> inTags, ObservableCollection<string> inFollowers)
         {
             if (string.IsNullOrEmpty(inName))
                 return RecipeAdditionError.InvalidName;
@@ -79,12 +80,10 @@ namespace CookNook.Model
         {
             try
             {
-<<<<<<< HEAD
+
                 recipeDatabase.DeleteRecipe(recipe.ID);
                 return RecipeDeletionError.NoError;
-=======
-                return recipeDatabase.DeleteRecipe(recipe.ID);
->>>>>>> feature/UserDatabase
+
             }
             catch (Exception ex)
             {
@@ -96,13 +95,8 @@ namespace CookNook.Model
         {
             try
             {
-<<<<<<< HEAD
-               
-                return recipeDatabase.SelectRecipeByID(id);
-=======
-                // will have to pass id once database method is implemented
                 return recipeDatabase.SelectRecipe(id);
->>>>>>> feature/UserDatabase
+
             }
             catch
             {
@@ -116,11 +110,18 @@ namespace CookNook.Model
             {
                 List<int> allRecipeIds = recipeDatabase.GetAllRecipeIds();
                 return recipeDatabase.SelectAllRecipes(allRecipeIds);
-            } 
+            }
             catch (Exception ex)
             {
-                //return a empty list if an exception for now
-                return new ObservableCollection<Recipe>();
+                Debug.WriteLine(ex.Message);
+                ObservableCollection<String> ingredients = new ObservableCollection<String>();
+                ObservableCollection<String> ingredientsQty = new ObservableCollection<String>();
+                ObservableCollection<String> tags = new ObservableCollection<String>();
+                ObservableCollection<string> followers = new();
+                Recipe failRecipe = new Recipe(56, "The First Recipe!", "This is the first recipe inserted into the CookNook database!", "SYSTEM", ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
+                ObservableCollection<Recipe> testList = new ObservableCollection<Recipe>();
+                testList.Add(failRecipe);
+                return testList;
             }
         }
     }

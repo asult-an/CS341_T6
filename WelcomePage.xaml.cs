@@ -17,7 +17,7 @@ public partial class WelcomePage : ContentPage
 	public WelcomePage()
 	{
 		InitializeComponent();
-        TestDB.InsertRecipe(TestRecipe);
+        //TestDB.InsertRecipe(TestRecipe);
 	}
 
 	public async void LoginClicked(object sender, EventArgs e)

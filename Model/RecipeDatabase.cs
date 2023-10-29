@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Numerics;
+using System.Diagnostics;
 
 namespace CookNook.Model
 {
@@ -149,6 +150,8 @@ namespace CookNook.Model
             NpgsqlDataReader reader;
             foreach (int recipeID in recipeList)
             {
+                cmd.Parameters.Clear();
+                Debug.Write(recipeID);
                 Recipe recipe = new Recipe();
                 cmd.CommandText = "SELECT * FROM recipes WHERE recipe_id = @Recipe_ID";
                 cmd.Parameters.AddWithValue("Recipe_ID", recipeID);
@@ -167,6 +170,7 @@ namespace CookNook.Model
                 recipe.Image = reader.GetString(10);
                 recipe.Tags = CreateStringCollection(reader.GetString(11));
                 recipe.Followers = CreateStringCollection(reader.GetString(12));
+                reader.Close();
                 outRecipes.Add(recipe);
             }
             return outRecipes;
@@ -275,6 +279,24 @@ namespace CookNook.Model
         {
             return rawList.Split(", ").Select(int.Parse).ToList<int>();
 
+        }
+
+        // I added this method to get all the ID's of the recipes in the database
+        // so I can make a list of recipe ID's to pass to SelectAllRecipes() Method
+
+        public List<int> GetAllRecipeIds()
+        {
+            List<int> recipeIds = new List<int>();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand("SELECT recipe_id FROM recipes", conn);
+            using NpgsqlDataReader reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                recipeIds.Add(reader.GetInt32(0));
+            }
+            reader.Close();
+            return recipeIds;
         }
 
         public static String GetConnectionString()
