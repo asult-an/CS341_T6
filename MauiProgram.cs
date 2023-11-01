@@ -1,6 +1,5 @@
 ﻿using CookNook.Model;
 using Microsoft.Extensions.Logging;
-using CookNook.Services;
 namespace CookNook;
 
 public static class MauiProgram
@@ -38,7 +37,7 @@ public static class MauiProgram
 		
 		// Hacky, but this gets it to compile for now.
 		// TODO: troubleshoot later, true DI needed
-		builder.Services.AddSingleton<UserService>();
+		builder.Services.AddSingleton<UserLogic>();
 		return builder;
 	}
 }

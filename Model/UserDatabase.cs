@@ -43,26 +43,102 @@ namespace CookNook.Model
             return connStringBuilder.ConnectionString;
         }
 
+        /// <summary>
+        /// Queries the database for users that are followed by another user's Id
+        /// </summary>
+        /// <param name="userId">The User who is doing the following</param>
+        /// <param name="followingId">The user being followed</param>
+        /// <returns></returns>
+        private List<User> GetFollowedUsers(int userId, int followingId)
+        {           
+            // query the FollowingRecipe table for <userId, followingId>
+
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="recipeId"></param>
+        /// <returns></returns>
+        public UserSelectionError IsFollowingRecipeById(int userId, int recipeId)
+        {
+            // [SQL] check if an entry in FollowingUsers exists for <userId, recipeId>
+
+            
+            // if found, return RecipeSelectionError.RecipeAlreadyFollowed
+
+            // else return NoError
+            return UserSelectionError.NoError;
+
+        }
 
         public List<User> GetAllUsers()
         {
+            users.Clear();
             try
             {
+                //connect to db 
                 using var conn = new NpgsqlConnection(connString);
                 conn.Open();
 
-                using var cmd = new NpgsqlCommand("SELECT username, email, password, app_prefs, diet_prefs, profile_pic, author_list, follow_list FROM users");
+                // write our query
+                using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users",
+                    conn);
+                using var reader = cmd.ExecuteReader();
+                
+                // might not want to user a while loop here
+
+                // Q: 
+
+                while(reader.Read())
+                {
+                    //unpack object
+                    // debug as strings for now
+                    string username = reader.GetString(0);
+                    string email = reader.GetString(1);
+                    string password = reader.GetString(2);
+                    // our preferences must be cast to a collection
+                    
+                    string profile_pic = reader.GetString(3);
+
+
+                    User newUser = new User
+                    {
+                        
+
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+
             }
         }
 
        
-        public UserSelectionError GetByEmail(string email)
+        public UserSelectionError GetUserByEmail(string email)
         {
             // check if the email is present in the users
+            User added = null;
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
 
+            // write our query to find a user by email
+            using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users" +
+                "WHERE email = @email", conn);
+
+            cmd.Parameters.AddWithValue("email", email);
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
             // [T] 
+                
+            }
 
-            // [F] return UserSelectionError.NoUserWithEmail;
+            // [F]
+            return UserSelectionError.NoUserWithEmail;
         }
 
         public UserSelectionError GetUserById(int userId)
@@ -77,7 +153,17 @@ namespace CookNook.Model
 
         public UserEditError EditUser(User inUser)
         {
-            throw new NotImplementedException();
+            try
+            {
+                using var conn = new NpgsqlConnection(connString);
+                conn.Open();
+
+                // write our query
+                using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users",
+                    conn);
+                using var reader = cmd.ExecuteReader();
+
+            }
         }
 
         public UserDeletionError DeleteUser(User inUser)

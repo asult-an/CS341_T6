@@ -21,7 +21,7 @@ namespace CookNook.Model
         /// <param name="email"></param>
         /// <returns>Error if mismatched credentials, or if no user
         /// with the credentials could be found</returns>
-        public UserSelectionError GetByEmail(string email);
+        public UserSelectionError GetUserByEmail(string email);
 
         /// <summary>
         /// Fetch a particular user by their userId
