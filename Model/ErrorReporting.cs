@@ -15,6 +15,13 @@ public enum RecipeAdditionError
     NoError
 }
 
+public enum RecipeSelectionError
+{
+    InvalidRecipeId,
+    RecipeAlreadyFollowed,
+    NoError
+}
+
 public enum RecipeDeletionError
 {
     RecipeNotFound,
@@ -60,5 +67,6 @@ public enum UserSelectionError
     InvalidEmailAddress,
     InvalidPassword,
     InvalidUsername,
-    NoUserWithEmail
+    NoUserWithEmail,
+    NoError
 }
