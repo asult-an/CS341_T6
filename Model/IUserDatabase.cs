@@ -28,8 +28,18 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="id">the id of the User, not their Username</param>
         /// <returns></returns>
-        public UserSelectionError GetUserById(Guid id);
+        public UserSelectionError GetUserById(int id);
 
+
+
+        /// <summary>
+        /// Queries the junction table from user-recipe to see if a certain
+        /// recipe is being followed by a particular user
+        /// </summary>
+        /// <param name="userId">Id of the user to look for</param>
+        /// <param name="recipeId">Id of the recipe we're checking</param>
+        /// <returns>NoError if successful, else an error</returns>
+        public UserSelectionError IsFollowingRecipeById(int userId, int recipeId);
 
         /// <summary>
         /// Adds a user to the database if they aren't already present

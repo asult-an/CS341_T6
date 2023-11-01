@@ -65,7 +65,7 @@ namespace CookNook.Model
             // [F] return UserSelectionError.NoUserWithEmail;
         }
 
-        public UserSelectionError GetUserById(Guid i)
+        public UserSelectionError GetUserById(int userId)
         {
             throw new NotImplementedException();
         }
