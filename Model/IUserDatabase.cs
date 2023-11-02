@@ -10,11 +10,6 @@ namespace CookNook.Model
 {
     public interface IUserDatabase
     {
-        /// <summary>
-        /// Grabs all users from the database, seldom used.
-        /// </summary>
-        /// <returns>Collection of Users in a List.</returns>
-        List<User> GetAllUsers();
 
         /// <summary>
         /// allows grabbing a subset of users by their ids, useful in 
@@ -22,7 +17,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userIds"></param>
         /// <returns></returns>
-        List<User> GetUsersById(List<string> userIds);
+        List<User> GetUsersById(List<int> userIds);
 
         /// <summary>
         /// Fetch a particular user by their email address.
@@ -72,15 +67,35 @@ namespace CookNook.Model
         /// <returns></returns>
         UserSelectionError GetFollowers(int userId);
 
+
+        /// <summary>
+        /// Attempts to add a row into user_following_user table
+        /// </summary>
+        /// <param name="userId">userId of the follower </param>
+        /// <param name="followerId">userId of the followed user</param>
+        /// <returns>Noerror on success, else AlreadyFollowingUser</returns>
+        UserSelectionError FollowUser(int userId, int followerId);
+
+
+        /// <summary>
+        /// Attempts to remove a row into user_following_user table
+        /// </summary>
+        /// <param name="userId">userId of the follower </param>
+        /// <param name="followerId">userId of the followed user</param>
+        /// <returns>NoError on success, else NoUserWithId</returns>
+        UserSelectionError UnfollowUser(int userId, int followerId);
+
+
     
         /// <summary>
         /// To modify user settings, a call to the user_settings table is made
         /// where we update all followed_user_id by the follower_user_id
         /// </summary>
-        /// <param name="userId"></param>
-        /// <param name="appPrefs"></param>
+        /// <param name="userId">the id of the user we're polling</param>
+        /// <param name="appPrefs">json collection of the settings</param>
         /// <returns></returns>
         UserEditError UpdateUserInfo(string userId, List<string> appPrefs);
+
 
         /// <summary>
         /// Removes a user from the database, if they exist.

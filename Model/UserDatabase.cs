@@ -8,17 +8,15 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
-    public class UserDatabase 
+    public class UserDatabase : IUserDatabase
     {
-        private List<string> followersList = new List<string>();
-        private List<string> followingList = new List<string>();
 
         private string connString = GetConnectionString();
         static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
         static string dbUsername = "adeel";
         static int PORT_NUMBER = 26257;
 
-        private IRecipeLogic recipeDB = new RecipeDatabase();
+        private IRecipeLogic recipeDB = new RecipeLogic();
 
         public UserDatabase(IRecipeLogic recipeLogic)
         {
@@ -43,61 +41,167 @@ namespace CookNook.Model
             return connStringBuilder.ConnectionString;
         }
 
-        public ObservableCollection<User> Follow(string userID)
+
+        public UserSelectionError UnfollowUser(int userId, int followedUserId)
         {
-            List<User> followedUsers = new List<User>();
+            // if a row exists in user_following_user table where both userId and followingId match the
+            // supplied parameters, remove it.
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-            var cmd = new NpgsqlCommand("SELECT username, email, password, profile_picture, app_preferences, dietary_preferences FROM users WHERE user_id IN (SELECT following_id FROM FollowingRecipe WHERE user_id = @userId AND following_id = @followingId)", conn);
-            cmd.Parameters.AddWithValue("userId", userId);
-            cmd.Parameters.AddWithValue("followingId", followingId);
-            var reader = cmd.ExecuteReader();
+
+            // add a row into user_following_table 
+            var cmdChk = new NpgsqlCommand(@"SELECT COUNT(*) 
+                                                    FROM user_following_user 
+                                                    WHERE follower_user_id = @userId AND followed_user_id = @followedUserId", conn);
+            cmdChk.Parameters.AddWithValue("followed_user_id", followedUserId);
+            cmdChk.Parameters.AddWithValue("follower_user_id", userId);
+
+            // if the count was 0, they weren't being followed
+            int count = Convert.ToInt16(cmdChk.ExecuteScalar());
+
+            if (count == 0)
+            {
+                //Console.WriteLine("Tried to unfollow someone who isn't followed");
+                Console.WriteLine("Not following user");
+                return UserSelectionError.UserAlreadyUnfollowed;
+            }
+
+            // otherwise perform the add now that we've checked
+            var cmd = new NpgsqlCommand(@"DELETE FROM
+                                                 user_following_user 
+                                                 WHERE (follower_user_id = @userId, followed_user_id = @followedUserId)", conn);
+            int rowsAffected = cmd.ExecuteNonQuery();
+
+            if (rowsAffected > 0)
+            {
+                Console.WriteLine($"User with id {userId} has followed {followedUserId}");
+                return UserSelectionError.NoError;
+            }
+
+            Console.WriteLine($"Failed to sub id {userId} to user {followedUserId}");
+            return UserSelectionError.NoUserWithId;
+
+
+
+        }
+
+
+        /// <summary>
+        /// Issues a select and insert statement dependent on the result of the first query
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="followedUserId"></param>
+        /// <returns></returns>
+        public UserSelectionError FollowUser(int userId, int followedUserId)
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+
+            // add a row into user_following_table 
+            var cmdChk = new NpgsqlCommand(@"SELECT COUNT(*) 
+                                                    FROM user_following_user 
+                                                    WHERE follower_user_id = @userId AND followed_user_id = @followedUserId", conn);
+            cmdChk.Parameters.AddWithValue("followed_user_id", followedUserId);
+            cmdChk.Parameters.AddWithValue("follower_user_id", userId);
+
+            // if the count was 0, they weren't being followed
+            int count = Convert.ToInt16(cmdChk.ExecuteScalar());
+
+            if (count > 0)
+            {
+                //Console.WriteLine("Tried to unfollow someone who isn't followed");
+                Console.WriteLine("Already following user");
+                return UserSelectionError.UserAlreadyFollowed;
+            }
+
+            // otherwise perform the add now that we've checked
+            var cmd = new NpgsqlCommand(@"INSERT INTO user_following_user (follower_user_id, followed_user_id) VALUES (@userId, @followedUserId)", conn);
+            int rowsAffected = cmd.ExecuteNonQuery();
+
+            if (rowsAffected > 0)
+            {
+                Console.WriteLine($"User with id {userId} has followed {followedUserId}");
+                return UserSelectionError.NoError;
+            }
+
+            Console.WriteLine($"Failed to sub id {userId} to user {followedUserId}");
+            return UserSelectionError.NoUserWithId;
+
+        }
+
+        /// <summary>
+        /// Resolved a list of follower Ids to a 
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="followers"></param>
+        /// <returns></returns>
+        public List<User> LoadFollowers(int userId)
+        {
+            List<string> followers = new List<string>();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+
+            // build a list of user ids from the user_following_users table
+            var cmd = new NpgsqlCommand(@"SELECT COUNT(*) 
+                                                    FROM user_following_user 
+                                                    WHERE follower_user_id = @userId", conn);
+            cmd.Parameters.AddWithValue("follower_user_id", userId);
+
+
+            using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                followedUsers.Add(new User
+                followers.Add(reader.GetString(0)); // Assuming the followed_user_id is of type string
+            }
+
+            return GetUsersById(followers);
+        }
+    
+
+        /// <summary>
+        /// Selects a user by their userId
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public User GetUserById(int userID)
+        {
+            User user = null;
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+
+            var cmd = new NpgsqlCommand(@"SELECT u.username, u.email, u.password, u.profile_pic,
+                                        ARRAY_TO_STRING(user_settings.settings, ',') AS settings,
+                                        ARRAY_TO_STRING(dp.preferences, ',') AS dietary_preferences
+                                  FROM users AS u
+                                  LEFT JOIN user_settings ON u.id = user_settings.user_id
+                                  LEFT JOIN dietary_preferences AS dp ON u.id = dp.user_id
+                                  WHERE u.id = @userId", conn);
+            cmd.Parameters.AddWithValue("userId", userID);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                user = new User
                 {
                     Username = reader.GetString(0),
                     Email = reader.GetString(1),
                     Password = reader.GetString(2),
                     ProfilePicture = reader.GetString(3),
-                    AppPreferences = new ObservableCollection<string>(reader.GetString(4).Split(',')),
-                    DietaryPreferences = new ObservableCollection<string>(reader.GetString(5).Split(',')),
-                    AuthorList = new ObservableCollection<Recipe>(),
-                    FollowList = new ObservableCollection<User>(),
-                    CookBook = new ObservableCollection<Recipe>()
-                });
+                    AppPreferences = new List<string>(reader.GetString(4).Split(',')),
+                    DietaryPreferences = new List<string>(reader.GetString(5).Split(','))
+                };
             }
-            followingList.Add(userID);
-            return SelectAllUsers(followingList);
-        }
 
-        public ObservableCollection<User> Unfollow(string userID)
-        {
-            if (followingList.Contains(userID))
-            {
-                followingList.Add(userID);
-                return SelectAllUsers(followingList);
-
-            }
-            Console.WriteLine("Tried to unfollow someone who isn't followed");
-            return null;
-
-        }
-
-        public ObservableCollection<User> LoadFollowers(List<string> followers)
-        {
-            return SelectAllUsers(followers);
-        }
-
-        public User SelectUser(int userID)
-        {
-            throw new NotImplementedException();
+            return user;
         }
 
         public UserAdditionError InsertUser(User inUser)
         {
-            return UserAdditionError.NoError;
+            throw new NotImplementedException();
+
         }
+
+
         /// <summary>
         /// Updates a users info in the User table
         /// </summary>
@@ -148,7 +252,7 @@ namespace CookNook.Model
                     }
                 }
 
-                // clear & update following list
+                // clear and update following list
                 using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
                 {
                     cmd.Parameters.AddWithValue("UserId", user.Id);
@@ -164,22 +268,30 @@ namespace CookNook.Model
                         cmd.ExecuteNonQuery();
                     }
                 }
-                // authored recipes and Cookbook updates are excluded here as they get handled elsewhere
 
                 // commit the transaction
                 transaction.Commit();
+                return UserEditError.NoError;
             }
             catch
             {
                 // Rollback any changes if an error occurs
                 transaction.Rollback();
-                return UserEditError.
+                return UserEditError.UserNotFound;
+
             }
         }
 
-        public List<User> SelectAllUsers(List<string> userIDs)
+        public List<int> GetFollowers(int userId)
         {
-            ObservableCollection<User> outUsers = new ObservableCollection<User>();
+
+        }
+    
+    
+
+        public List<User> GetUsersById(List<string> userIds)
+        {
+            List<User> outUsers = new List<User>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
@@ -188,7 +300,8 @@ namespace CookNook.Model
             //connect the database to the command
             cmd.Connection = conn;
             NpgsqlDataReader reader;
-            foreach (string userID in userIDs)
+
+            foreach (string userID in userIds)
             {
                 User user = new User();
                 // append the ranges from junction tables by using ARRAY_AGG as we do down here
@@ -214,16 +327,45 @@ namespace CookNook.Model
                     user.Username = reader.GetString(0);
                     user.Email = reader.GetString(1);
                     user.Password = reader.GetString(2);
-                    user.AppPreferences = CreateStringCollection(reader.GetString(3));
-                    user.DietaryPreferences = CreateStringCollection(reader.GetString(4));
-                    user.ProfilePicture = reader.GetString(5);
-                    user.AuthorList = RecipeDB.SelectAllRecipes(CreateIntList(reader.GetString(6)));
-                    user.Followers = CreateStringList(reader.GetString(7));
-                    user.Following = CreateStringList(reader.GetString(8));
+                    user.ProfilePicture = reader.GetString(3);
+
+                    user.AppPreferences = new List<string>(reader.GetString(4).Split(','));
+                    user.DietaryPreferences = new List<string>(reader.GetString(4).Split(','));
+                    
+                    // the integer columns get handled differently since they get parsed
+                    user.AuthorList= new List<int>(Array.ConvertAll(reader.GetString(7).Split(','), int.Parse));
+                    user.Following = new List<int>(Array.ConvertAll(reader.GetString(7).Split(','), int.Parse));
                     outUsers.Add(user);
                 }
             }
             return outUsers;
+        }
+
+
+        public UserEditError UpdateUserInfo(int userId, string appPrefs)
+        {
+
+        }
+
+        public UserDeletionError DeleteUser(int userId)
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            //initialize a new SQL command
+
+            //connect the database to the command
+
+            using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @userId", conn))
+            {
+                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.ExecuteNonQuery();
+
+                int rowsAffected = cmd.ExecuteNonQuery();
+
+                if (rowsAffected == 0)
+                    return UserDeletionError.UserNotFound;
+                return UserDeletionError.NoError;
+            }
         }
     }
 }
