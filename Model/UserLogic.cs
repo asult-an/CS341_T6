@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 //namespace CookNook.Services
 namespace CookNook.Model
 {
-    internal class UserLogic : IUserDatabase
+    internal class UserLogic : IUserLogic
     {
         // place for the injected database instance to load into
         private readonly IUserDatabase userDatabase;
@@ -72,20 +72,16 @@ namespace CookNook.Model
             return userDatabase.GetAllUsers();
         }
 
-        User IUserDatabase.GetUserByEmail(string email)
+        public User GetUserByEmail(string email)
         {
             return userDatabase.GetUserByEmail(email);
         }
 
-        User IUserDatabase.GetUserById(int id)
+        public User GetUserById(int id)
         {
             return userDatabase.GetUserById(id);
         }
 
-        public UserSelectionError IsFollowingRecipeById(int userId, int recipeId)
-        {
-            return userDatabase.IsFollowingRecipeById(userId, recipeId);
-        }
 
         public UserAdditionError InsertUser(User inUser)
         {
@@ -94,13 +90,13 @@ namespace CookNook.Model
 
         public UserEditError EditUser(User inUser)
         {
-
             return userDatabase.EditUser(inUser);
+
         }
 
         public UserDeletionError DeleteUser(User inUser)
         {
-
+            return userDatabase.DeleteUser(inUser);
         }
     }
 }
