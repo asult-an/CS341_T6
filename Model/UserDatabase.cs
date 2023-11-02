@@ -26,7 +26,7 @@ namespace CookNook.Model
         }
 
 
-        public static String GetConnectionString()
+        public static string GetConnectionString()
         {
             //initialize the string builder
             var connStringBuilder = new NpgsqlConnectionStringBuilder();
@@ -45,10 +45,27 @@ namespace CookNook.Model
 
         public ObservableCollection<User> Follow(string userID)
         {
-            if (followingList.Contains(userID))
+            List<User> followedUsers = new List<User>();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand("SELECT username, email, password, profile_picture, app_preferences, dietary_preferences FROM users WHERE user_id IN (SELECT following_id FROM FollowingRecipe WHERE user_id = @userId AND following_id = @followingId)", conn);
+            cmd.Parameters.AddWithValue("userId", userId);
+            cmd.Parameters.AddWithValue("followingId", followingId);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
             {
-                Console.WriteLine("Tried to follow someone who is already followed");
-                return null;
+                followedUsers.Add(new User
+                {
+                    Username = reader.GetString(0),
+                    Email = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    ProfilePicture = reader.GetString(3),
+                    AppPreferences = new ObservableCollection<string>(reader.GetString(4).Split(',')),
+                    DietaryPreferences = new ObservableCollection<string>(reader.GetString(5).Split(',')),
+                    AuthorList = new ObservableCollection<Recipe>(),
+                    FollowList = new ObservableCollection<User>(),
+                    CookBook = new ObservableCollection<Recipe>()
+                });
             }
             followingList.Add(userID);
             return SelectAllUsers(followingList);

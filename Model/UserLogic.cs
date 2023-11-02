@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 //namespace CookNook.Services
 namespace CookNook.Model
 {
-    internal class UserLogic
+    public class UserLogic
     {
         // place for the injected datbase instance to load into
         private readonly IUserDatabase userDatabase;
@@ -88,9 +88,19 @@ namespace CookNook.Model
             return userDatabase.InsertUser(inUser);
         }
 
-        public UserEditError EditUser(User inUser)
+        public UserEditError UpdateUserInfo(int id, string username, string password, string imgPath)
         {
-            return userDatabase.EditUser(inUser);
+            return userDatabase.UpdateUserInfo(id, username, password, imgPath);
+
+        }
+
+        public UserEditError UpdateFollowedUser(string followedId, string followerId)
+        {
+
+        }
+
+        public UserSelectionError GetFollowedUsers(int userId)
+        {
 
         }
 

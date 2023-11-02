@@ -54,9 +54,6 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="Model\UserDatabase.cs" />
-	</ItemGroup>
-	<ItemGroup>
 	  <None Remove="Resources\Images\icon.jpg" />
 	  <None Remove="Resources\Images\magnifyingglass.png" />
 	  <None Remove="Resources\Images\plus.png" />
