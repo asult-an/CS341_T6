@@ -10,7 +10,7 @@ namespace CookNook.Model
 {
     internal class UserLogic : IUserDatabase
     {
-        // place for the injected datbase instance to load into
+        // place for the injected database instance to load into
         private readonly IUserDatabase userDatabase;
 
         // since users can interact with recipies, inject RecipeLogic
@@ -72,26 +72,30 @@ namespace CookNook.Model
             return userDatabase.GetAllUsers();
         }
 
-        public UserSelectionError GetUserByEmail(string email)
+        User IUserDatabase.GetUserByEmail(string email)
         {
             return userDatabase.GetUserByEmail(email);
         }
 
-        public UserSelectionError GetUserById(int id)
+        User IUserDatabase.GetUserById(int id)
         {
-
             return userDatabase.GetUserById(id);
+        }
+
+        public UserSelectionError IsFollowingRecipeById(int userId, int recipeId)
+        {
+            return userDatabase.IsFollowingRecipeById(userId, recipeId);
         }
 
         public UserAdditionError InsertUser(User inUser)
         {
-            
+            return userDatabase.InsertUser(inUser);
         }
 
         public UserEditError EditUser(User inUser)
         {
 
-
+            return userDatabase.EditUser(inUser);
         }
 
         public UserDeletionError DeleteUser(User inUser)

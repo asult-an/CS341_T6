@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using BCrypt.Net;
+using Java.Nio.FileNio.Attributes;
 
 namespace CookNook.Model
 {
@@ -50,9 +51,30 @@ namespace CookNook.Model
         /// <param name="followingId">The user being followed</param>
         /// <returns></returns>
         private List<User> GetFollowedUsers(int userId, int followingId)
-        {           
-            // query the FollowingRecipe table for <userId, followingId>
-
+        {
+            List<User> followedUsers = new List<User>();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand("SELECT username, email, password, profile_picture, app_preferences, dietary_preferences FROM users WHERE user_id IN (SELECT following_id FROM FollowingRecipe WHERE user_id = @userId AND following_id = @followingId)", conn);
+            cmd.Parameters.AddWithValue("userId", userId);
+            cmd.Parameters.AddWithValue("followingId", followingId);
+            var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                followedUsers.Add(new User
+                {
+                    Username = reader.GetString(0),
+                    Email = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    ProfilePicture = reader.GetString(3),
+                    AppPreferences = new ObservableCollection<string>(reader.GetString(4).Split(',')),
+                    DietaryPreferences = new ObservableCollection<string>(reader.GetString(5).Split(',')),
+                    AuthorList = new ObservableCollection<Recipe>(),
+                    FollowList = new ObservableCollection<User>(),
+                    CookBook = new ObservableCollection<Recipe>()
+                });
+            }
+            return followedUsers;
         }
 
         /// <summary>
@@ -63,112 +85,188 @@ namespace CookNook.Model
         /// <returns></returns>
         public UserSelectionError IsFollowingRecipeById(int userId, int recipeId)
         {
-            // [SQL] check if an entry in FollowingUsers exists for <userId, recipeId>
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
 
-            
-            // if found, return RecipeSelectionError.RecipeAlreadyFollowed
+            using var cmd = new NpgsqlCommand("SELECT COUNT(*) FROM UserRecipeFollows WHERE user_id = @userId AND recipe_id = @recipeId", conn);
+            cmd.Parameters.AddWithValue("userId", userId);
+            cmd.Parameters.AddWithValue("recipeId", recipeId);
 
-            // else return NoError
-            return UserSelectionError.NoError;
+            int count = (int)cmd.ExecuteScalar();
 
+            if (count > 0)
+                return UserSelectionError.RecipeAlreadyFollowed;
+            else
+                return UserSelectionError.NoError;
         }
 
         public List<User> GetAllUsers()
         {
             users.Clear();
-            try
-            {
-                //connect to db 
-                using var conn = new NpgsqlConnection(connString);
-                conn.Open();
-
-                // write our query
-                using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users",
-                    conn);
-                using var reader = cmd.ExecuteReader();
-                
-                // might not want to user a while loop here
-
-                // Q: 
-
-                while(reader.Read())
-                {
-                    //unpack object
-                    // debug as strings for now
-                    string username = reader.GetString(0);
-                    string email = reader.GetString(1);
-                    string password = reader.GetString(2);
-                    // our preferences must be cast to a collection
-                    
-                    string profile_pic = reader.GetString(3);
-
-
-                    User newUser = new User
-                    {
-                        
-
-                    }
-                }
-            }
-            catch (Exception ex)
-            {
-                throw ex;
-
-            }
-        }
-
-       
-        public UserSelectionError GetUserByEmail(string email)
-        {
-            // check if the email is present in the users
-            User added = null;
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_picture, app_preferences, dietary_preferences FROM users", conn);
+            using var reader = cmd.ExecuteReader();
+            while (reader.Read())
+            {
+                users.Add(new User
+                {
+                    Username = reader.GetString(0),
+                    Email = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    ProfilePicture = reader.GetString(3),
+                    AppPreferences = new ObservableCollection<string>(reader.GetString(4).Split(',')),
+                    DietaryPreferences = new ObservableCollection<string>(reader.GetString(5).Split(',')),
+                    AuthorList = new ObservableCollection<Recipe>(),
+                    FollowList = new ObservableCollection<User>(),
+                    CookBook = new ObservableCollection<Recipe>()
+                });
+            }
+            return users.ToList();
+        }
 
-            // write our query to find a user by email
-            using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users" +
-                "WHERE email = @email", conn);
 
+        public User GetUserByEmail(string email)
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_picture, app_preferences, dietary_preferences FROM users WHERE email = @email", conn);
             cmd.Parameters.AddWithValue("email", email);
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-            // [T] 
-                
+                return new User
+                {
+                    Username = reader.GetString(0),
+                    Email = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    ProfilePicture = reader.GetString(3),
+                    AppPreferences = new ObservableCollection<string>(reader.GetString(4).Split(',')),
+                    DietaryPreferences = new ObservableCollection<string>(reader.GetString(5).Split(',')),
+                    AuthorList = new ObservableCollection<Recipe>(),
+                    FollowList = new ObservableCollection<User>(),
+                    CookBook = new ObservableCollection<Recipe>()
+                };
             }
-
-            // [F]
-            return UserSelectionError.NoUserWithEmail;
+            return null; //we can switch this to throw a specific exception
         }
 
-        public UserSelectionError GetUserById(int userId)
+        public User GetUserById(int id)
         {
-            throw new NotImplementedException();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+
+            using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_picture, app_preferences, dietary_preferences FROM users WHERE user_id = @id", conn);
+            cmd.Parameters.AddWithValue("id", id);
+
+            using var reader = cmd.ExecuteReader();
+            if (reader.Read())
+            {
+                return new User
+                {
+                    Username = reader.GetString(0),
+                    Email = reader.GetString(1),
+                    Password = reader.GetString(2),
+                    ProfilePicture = reader.GetString(3),
+                    AppPreferences = new ObservableCollection<string>(reader.GetString(4).Split(',')),
+                    DietaryPreferences = new ObservableCollection<string>(reader.GetString(5).Split(',')),
+                    AuthorList = new ObservableCollection<Recipe>(),
+                    FollowList = new ObservableCollection<User>(),
+                    CookBook = new ObservableCollection<Recipe>()
+                };
+            }
+            return null; // or throw a specific exception if you prefer
         }
+
 
         public UserAdditionError InsertUser(User inUser)
         {
-            throw new NotImplementedException();
+
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            //initialize a new SQL command
+            var cmd = new NpgsqlCommand();
+            //connect the database to the command
+            cmd.Connection = conn;
+            NpgsqlDataReader reader;
+            try
+            {
+                cmd.CommandText = "INSERT INTO users (username, email, password, app_preferences, " +
+                    "dietary_preferences, profile_picture, author_list, follow_list, cook_book) " +
+                    "VALUES (@Username, @Email, @Password, @AppPreferences, @DietaryPreferences, " +
+                    "ProfilePicture, AuthorList, FollowList, CookBook)";
+                cmd.Parameters.AddWithValue("Username", inUser.Username);
+                cmd.Parameters.AddWithValue("Email", inUser.Email);
+                cmd.Parameters.AddWithValue("Password", inUser.Password);
+                cmd.Parameters.AddWithValue("AppPreferences", inUser.AppPreferences);
+                cmd.Parameters.AddWithValue("DietaryPreferences", inUser.DietaryPreferences);
+                cmd.Parameters.AddWithValue("ProfilePicture", inUser.ProfilePicture);
+                cmd.Parameters.AddWithValue("AuthorList", inUser.AuthorList);
+                cmd.Parameters.AddWithValue("FollowList", inUser.FollowList);
+                cmd.Parameters.AddWithValue("CookBook", inUser.CookBook);
+                cmd.ExecuteNonQuery();
+                return UserAdditionError.NoError;
+            }
+            catch (Exception ex)
+            {
+                return UserAdditionError.DBAdditionError;
+            }
+
         }
 
         public UserEditError EditUser(User inUser)
         {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            //initialize a new SQL command
+            var cmd = new NpgsqlCommand();
+            //connect the database to the command
+            cmd.Connection = conn;
+            NpgsqlDataReader reader;
             try
             {
-                using var conn = new NpgsqlConnection(connString);
-                conn.Open();
-
-                // write our query
-                using var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users",
-                    conn);
-                using var reader = cmd.ExecuteReader();
-
+                cmd.CommandText = "UPDATE users SET email = @Email, password = @Password, " +
+                    "app_preferences = @AppPreferences, dietary_preferences = @Dietary_Preferences," +
+                    " profile_picture = @ProfilePicture," +
+                    " author_list = @AuthorList, follow_list = @FollowList, cookbook = @CookBook" +
+                    " WHERE username = @Username;";
+                cmd.Parameters.AddWithValue("Email", inUser.Email);
+                cmd.Parameters.AddWithValue("Password", inUser.Password);
+                cmd.Parameters.AddWithValue("AppPreferences", inUser.AppPreferences);
+                cmd.Parameters.AddWithValue("DietaryPreferences", inUser.DietaryPreferences);
+                cmd.Parameters.AddWithValue("ProfilePicture", inUser.ProfilePicture);
+                cmd.Parameters.AddWithValue("AuthorList", inUser.AuthorList);
+                cmd.Parameters.AddWithValue("FollowList", inUser.FollowList);
+                cmd.Parameters.AddWithValue("CookBook", inUser.CookBook);
+                cmd.ExecuteNonQuery();
+                return UserEditError.NoError;
+            }
+            catch (Exception ex)
+            {
+                return UserEditError.DBEditError;
             }
         }
 
         public UserDeletionError DeleteUser(User inUser)
         {
-            throw new NotImplementedException();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            //initialize a new SQL command
+            var cmd = new NpgsqlCommand();
+            //connect the database to the command
+            cmd.Connection = conn;
+            //write the SQL statement to insert the recipe into the database
+            cmd.CommandText = "DELETE FROM users WHERE username = @Username";
+            cmd.Parameters.AddWithValue("Username", inUser.Username);
+            int result = cmd.ExecuteNonQuery();
+            if (result == 1)
+            {
+                return UserDeletionError.NoError;
+            }
+            else
+            {
+                return UserDeletionError.DBDeletionError;
+            }
         }
 
     }
