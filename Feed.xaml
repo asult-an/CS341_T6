@@ -70,7 +70,7 @@
         </StackLayout>
 
 
-        <ScrollView Orientation="Vertical" Grid.Row="3">
+        <ScrollView Orientation="Vertical" Grid.Row="3" VerticalScrollBarVisibility="Never">
             <StackLayout Padding="20, 10, 20, 0">
 
                 <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10">
