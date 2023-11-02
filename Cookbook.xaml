@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.Cookbook"
@@ -9,8 +9,12 @@
     </ContentPage.Title>
 
     <ContentPage.ToolbarItems>
-        <!-- Add a ToolbarItem with an icon -->
-        <ToolbarItem x:Name="iconToolbarItem" IconImageSource="icon.jpg" Order="Primary" Priority="0" />
+
+        <ToolbarItem x:Name="profileToolbarItem"
+                    IconImageSource="profile.png"
+                    Priority="1"
+                    Order="Primary" />
+
     </ContentPage.ToolbarItems>
 
     <Grid>
@@ -27,9 +31,7 @@
                     <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="20" WidthRequest="100">
                         <Label Text="Filter" FontAttributes="Bold" FontSize="16" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
                     </Frame>
-                    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="20" WidthRequest="100">
-                        <Label Text="Sort" FontAttributes="Bold" FontSize="16" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
-                    </Frame>
+                    
                 </StackLayout>
 
                 <!-- Recipe 1 -->
@@ -52,97 +54,9 @@
                     </Grid>
                 </Frame>
 
-                <!-- Recipe 2 -->
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Image Source="recipe2.jpg" Aspect="AspectFill" HeightRequest="150" WidthRequest="100" Grid.Row="0" Grid.Column="0" />
-                        <StackLayout Grid.Row="0" Grid.Column="1">
-                            <Label Text="Buffalo Chicken Dip" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Text="appetizer, chicken, american" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
-                        </StackLayout>
-                    </Grid>
-                </Frame>
-
-                <!--  Recipe 3 -->
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Image Source="recipe3.jpg" Aspect="AspectFill" HeightRequest="150" WidthRequest="100" Grid.Row="0" Grid.Column="0" />
-                        <StackLayout Grid.Row="0" Grid.Column="1">
-                            <Label Text="Easy Pesto Pizza" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Text="lunch, quick, italian" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
-
-                        </StackLayout>
-                    </Grid>
-                </Frame>
-
-                <!-- Recipe 4 -->
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Image Source="recipe4.jpg" Aspect="AspectFill" HeightRequest="150" WidthRequest="100" Grid.Row="0" Grid.Column="0" />
-                        <StackLayout Grid.Row="0" Grid.Column="1">
-                            <Label Text="Tasty Jambalaya" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Text="dinner, pork, african" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
-
-                        </StackLayout>
-                    </Grid>
-                </Frame>
-
-                <!-- Recipe 5 -->
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Image Source="recipe5.jpg" Aspect="AspectFill" HeightRequest="150" WidthRequest="100" Grid.Row="0" Grid.Column="0" />
-                        <StackLayout Grid.Row="0" Grid.Column="1">
-                            <Label Text="Chocolate Chip Muffins" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Text="dessert, sweet, chocolate" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
-
-                        </StackLayout>
-                    </Grid>
-                </Frame>
-
             </StackLayout>
         </ScrollView>
 
-        <!-- Tabs Section -->
-        <StackLayout Grid.Row="1" Orientation="Horizontal">
-            <Button Text="Home" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" />
-            <Button Text="Add Recipes" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" />
-            <Button Text="Cookbook" BackgroundColor="DarkGray" HorizontalOptions="FillAndExpand" />
-        </StackLayout>
+
     </Grid>
 </ContentPage>
