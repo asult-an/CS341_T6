@@ -68,5 +68,6 @@ public enum UserSelectionError
     InvalidPassword,
     InvalidUsername,
     NoUserWithEmail,
+    RecipeAlreadyFollowed,
     NoError
 }
