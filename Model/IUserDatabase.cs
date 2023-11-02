@@ -17,6 +17,14 @@ namespace CookNook.Model
         List<User> GetAllUsers();
 
         /// <summary>
+        /// allows grabbing a subset of users by their ids, useful in 
+        /// follower resolving
+        /// </summary>
+        /// <param name="userIds"></param>
+        /// <returns></returns>
+        List<User> GetUsersById(List<string> userIds);
+
+        /// <summary>
         /// Fetch a particular user by their email address.
         /// </summary>
         /// <param name="email">User email.</param>
@@ -54,6 +62,26 @@ namespace CookNook.Model
         /// <returns>Any errors that occurred during the edit operation.</returns>
         UserEditError EditUser(User inUser);
 
+
+        /// <summary>
+        /// Query user_following_user table for all followed_user_ids where 
+        /// follower_user_id matches the supplied userId.  Then, we call
+        /// GetUserRange to return the rest
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        UserSelectionError GetFollowers(int userId);
+
+    
+        /// <summary>
+        /// To modify user settings, a call to the user_settings table is made
+        /// where we update all followed_user_id by the follower_user_id
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="appPrefs"></param>
+        /// <returns></returns>
+        UserEditError UpdateUserInfo(string userId, List<string> appPrefs);
+
         /// <summary>
         /// Removes a user from the database, if they exist.
         /// </summary>
@@ -61,5 +89,6 @@ namespace CookNook.Model
         /// <returns>Any errors that occurred during the deletion operation.</returns>
         UserDeletionError DeleteUser(User inUser);
 
+       
     }
 }
