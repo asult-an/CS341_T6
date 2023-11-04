@@ -100,9 +100,9 @@ namespace CookNook.Model
             // add a row into user_following_table 
             var cmdChk = new NpgsqlCommand(@"SELECT COUNT(*) 
                                                     FROM user_following_user 
-                                                    WHERE follower_user_id = @userId AND followed_user_id = @followedUserId", conn);
-            cmdChk.Parameters.AddWithValue("followed_user_id", followedUserId);
-            cmdChk.Parameters.AddWithValue("follower_user_id", userId);
+                                                    WHERE follower_user_id = @UserId AND followed_user_id = @FollowedUserId", conn);
+            cmdChk.Parameters.AddWithValue("UserId", userId);
+            cmdChk.Parameters.AddWithValue("FollowedUserId", followedUserId);
 
             // if the count was 0, they weren't being followed
             int count = Convert.ToInt16(cmdChk.ExecuteScalar());
@@ -115,7 +115,8 @@ namespace CookNook.Model
             }
 
             // otherwise perform the add now that we've checked
-            var cmd = new NpgsqlCommand(@"INSERT INTO user_following_user (follower_user_id, followed_user_id) VALUES (@userId, @followedUserId)", conn);
+            var cmd = new NpgsqlCommand(@"INSERT INTO user_following_user 
+                                                (follower_user_id, followed_user_id) VALUES (@UserId, @FollowedUserId)", conn);
             int rowsAffected = cmd.ExecuteNonQuery();
 
             if (rowsAffected > 0)
@@ -130,12 +131,13 @@ namespace CookNook.Model
         }
 
         /// <summary>
-        /// Resolved a list of follower Ids to a 
+        /// Counts the number of followers a user has by quering the user_following_user table for 
+        /// rows where followed_user_id matches userId
         /// </summary>
         /// <param name="userId"></param>
         /// <param name="followers"></param>
-        /// <returns></returns>
-        public List<User> LoadFollowers(int userId)
+        /// <returns>List of the userIds following the User</returns>
+        public int GetFollowerCount(int userId)
         {
             List<string> followers = new List<string>();
             using var conn = new NpgsqlConnection(connString);
@@ -144,17 +146,20 @@ namespace CookNook.Model
             // build a list of user ids from the user_following_users table
             var cmd = new NpgsqlCommand(@"SELECT COUNT(*) 
                                                     FROM user_following_user 
-                                                    WHERE follower_user_id = @userId", conn);
-            cmd.Parameters.AddWithValue("follower_user_id", userId);
+                                                    WHERE follower_user_id = @UserId", conn);
+            cmd.Parameters.AddWithValue("UserId", userId);
 
 
             using var reader = cmd.ExecuteReader();
+            
+            // tally up each row the user has
             while (reader.Read())
             {
-                followers.Add(reader.GetString(0)); // Assuming the followed_user_id is of type string
+                followers.Add(reader.GetString(0)); // assuming the followed_user_id is of type string
             }
 
-            return GetUsersById(followers);
+            return followers.Count; 
+            //return GetUsersById(followers);
         }
     
 
@@ -175,8 +180,8 @@ namespace CookNook.Model
                                   FROM users AS u
                                   LEFT JOIN user_settings ON u.id = user_settings.user_id
                                   LEFT JOIN dietary_preferences AS dp ON u.id = dp.user_id
-                                  WHERE u.id = @userId", conn);
-            cmd.Parameters.AddWithValue("userId", userID);
+                                  WHERE u.id = @UserId", conn);
+            cmd.Parameters.AddWithValue("UserId", userID);
 
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
@@ -205,13 +210,15 @@ namespace CookNook.Model
             try
             {
                 // handle user info
-                using (var cmd = new NpgsqlCommand(@"INSERT INTO users(username, email, password, profilepic username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE id = @UserId", conn))
+                using (var cmd = new NpgsqlCommand(@"INSERT INTO users(username, email, password, profile_pic) 
+                                                            VALUE(@Username, @Email, @Password, @ProfilePic", conn))
                 {
                     cmd.Parameters.AddWithValue("Username", user.Username);
                     cmd.Parameters.AddWithValue("Email", user.Email);
                     cmd.Parameters.AddWithValue("Password", user.Password);
                     cmd.Parameters.AddWithValue("ProfilePic", user.ProfilePicture);
-                    cmd.Parameters.AddWithValue("UserId", user.Id);
+                    // set automatically by database on inserts
+                    //cmd.Parameters.AddWithValue("UsreId", user.Id);
                     cmd.ExecuteNonQuery();
                 }
 
@@ -364,14 +371,22 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userId">userId of the user being FOLLOWED</param>
         /// <returns>A list of UserIds belonging to followers of the passed userId</returns>
-        public List<int> GetFollowers(int userId)
+        public List<int> GetFollowerIds(int userId)
         {
+            List<int> followerIds = new List<int>();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
 
         }
     
     
 
-        public List<User> GetUsersById(List<string> userIds)
+        /// <summary>
+        /// Selects a range of users by their ids, and fully maps out the resulting User with its joined tables
+        /// </summary>
+        /// <param name="userIds">Ids to match in the result</param>
+        /// <returns>List of populated Users if any could be found</returns>
+        public List<User> GetUsersById(List<int> userIds)
         {
             List<User> outUsers = new List<User>();
             using var conn = new NpgsqlConnection(connString);
@@ -383,7 +398,7 @@ namespace CookNook.Model
             cmd.Connection = conn;
             NpgsqlDataReader reader;
 
-            foreach (string userID in userIds)
+            foreach (int userId in userIds)
             {
                 User user = new User();
                 // append the ranges from junction tables by using ARRAY_AGG as we do down here
@@ -400,8 +415,8 @@ namespace CookNook.Model
                                 LEFT JOIN public.dietary_preferences AS dp ON u.id = dp.user_id
                                 GROUP BY u.id, u.username, u.email, u.password, u.profile_pic, user_settings.settings, dp.preferences;";
 
-                cmd.Parameters.AddWithValue("Recipe_ID", userID);
-                reader = cmd.ExecuteReader();
+                cmd.Parameters.AddWithValue("Recipe_ID", userId);
+                var reader = cmd.ExecuteReader();
 
                 // ugly double nesting here, but should be okay with small ranged queries
                 while (reader.Read())
@@ -412,10 +427,10 @@ namespace CookNook.Model
                     user.ProfilePicture = reader.GetString(3);
 
                     user.AppPreferences = new List<string>(reader.GetString(4).Split(','));
-                    user.DietaryPreferences = new List<string>(reader.GetString(4).Split(','));
+                    user.DietaryPreferences = new List<string>(reader.GetString(5).Split(','));
                     
                     // the integer columns get handled differently since they get parsed
-                    user.AuthorList= new List<int>(Array.ConvertAll(reader.GetString(7).Split(','), int.Parse));
+                    user.AuthorList= new List<int>(Array.ConvertAll(reader.GetString(6).Split(','), int.Parse));
                     user.Following = new List<int>(Array.ConvertAll(reader.GetString(7).Split(','), int.Parse));
                     outUsers.Add(user);
                 }
@@ -450,19 +465,42 @@ namespace CookNook.Model
 
             //connect the database to the command
 
-            using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @userId", conn))
+            //initialize a new SQL command
+            using (var cmd = new NpgsqlCommand(@"DELETE FROM users WHERE email = @Email AND username = @Username", conn))
             {
-                cmd.Parameters.AddWithValue("userEmail", targetForDelete.Email);
-                cmd.Parameters.AddWithValue("userEmail", targetForDelete.Username);
+                cmd.Parameters.AddWithValue("Email", targetForDelete.Email);
+                cmd.Parameters.AddWithValue("Username", targetForDelete.Username);
 
                 //If we want the user to enter password to confirm deletion, we can add that as a param here to check it
-                cmd.Parameters.AddWithValue("password", targetForDelete.Password);
+                //cmd.Parameters.AddWithValue("Password", targetForDelete.Password);
                 cmd.ExecuteNonQuery();
+
+
+                // shouldn't need this since CASCADE ON DELETE is set up, but left it here for now just in case we need it
+                //foreach (var pref in targetForDelete.DietaryPreferences)
+                //{
+
+                //    // update the dietary preferences
+                //    using (var cmdDiet = new NpgsqlCommand("DELETE FROM dietary_preferences WHERE user_id = @UserId", conn))
+                //    {
+                //        cmdDiet.Parameters.AddWithValue("UserId", targetForDelete.Id);
+                //        cmdDiet.ExecuteNonQuery();
+                //    }
+
+                //    // clear and update following list
+                //    using (var cmdFollow = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
+                //    {
+                //        cmdFollow.Parameters.AddWithValue("UserId", targetForDelete.Id);
+                //        cmdFollow.ExecuteNonQuery();
+                //    }
+
+                //}
 
                 int rowsAffected = cmd.ExecuteNonQuery();
 
                 if (rowsAffected == 0)
                     return UserDeletionError.UserNotFound;
+            
                 return UserDeletionError.NoError;
             }
         }
