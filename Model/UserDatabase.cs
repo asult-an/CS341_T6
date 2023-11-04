@@ -195,19 +195,7 @@ namespace CookNook.Model
             return user;
         }
 
-        public UserAdditionError InsertUser(User inUser)
-        {
-            throw new NotImplementedException();
-
-        }
-
-
-        /// <summary>
-        /// Updates a users info in the User table
-        /// </summary>
-        /// <param name="user">The updated user information</param>
-        /// <returns></returns>
-        public UserEditError EditUser(User user)
+        public UserAdditionError InsertUser(User user)
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
@@ -217,7 +205,7 @@ namespace CookNook.Model
             try
             {
                 // handle user info
-                using (var cmd = new NpgsqlCommand("UPDATE users SET username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE id = @UserId", conn))
+                using (var cmd = new NpgsqlCommand(@"INSERT INTO users(username, email, password, profilepic username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE id = @UserId", conn))
                 {
                     cmd.Parameters.AddWithValue("Username", user.Username);
                     cmd.Parameters.AddWithValue("Email", user.Email);
@@ -271,17 +259,111 @@ namespace CookNook.Model
 
                 // commit the transaction
                 transaction.Commit();
+                return UserAdditionError.NoError;
+            }
+            catch
+            {
+                // Rollback any changes if an error occurs
+                transaction.Rollback();
+                return UserAdditionError.DBAdditionError;
+
+            }
+
+        }
+
+
+        /// <summary>
+        /// Updates a User in the database: touching the following tables in the process:
+        /// (users, user_settings, dietary_preferences)
+        /// </summary>
+        /// <remarks>Since the User model is complex and requires multiple join operations, 
+        /// we can alter our syntax from individual commands into using a full-blown transaction.
+        /// 
+        /// This offers the ability to rollback our attempted changes should something go wrong</remarks>
+        /// <param name="user">The updated user information</param>
+        /// <returns></returns>
+        public UserEditError EditUser(User user)
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+
+            // since multiple tables 
+            using var transaction = conn.BeginTransaction();
+            try
+            {
+                // handle user info
+                using (var cmd = new NpgsqlCommand("UPDATE users SET username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE id = @UserId", conn))
+                {
+                    cmd.Parameters.AddWithValue("Username", user.Username);
+                    cmd.Parameters.AddWithValue("Email", user.Email);
+                    cmd.Parameters.AddWithValue("Password", user.Password);
+                    cmd.Parameters.AddWithValue("ProfilePic", user.ProfilePicture);
+                    cmd.Parameters.AddWithValue("UserId", user.Id);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // now do the settings
+                using (var cmd = new NpgsqlCommand("UPDATE user_settings SET settings = @Settings WHERE user_id = @UserId", conn))
+                {
+                    cmd.Parameters.AddWithValue("Settings", string.Join(",", user.AppPreferences));
+                    cmd.Parameters.AddWithValue("UserId", user.Id);
+                    cmd.ExecuteNonQuery();
+                }
+
+                // and update the dietary preferences
+                using (var cmd = new NpgsqlCommand("DELETE FROM dietary_preferences WHERE user_id = @UserId", conn))
+                {
+                    cmd.Parameters.AddWithValue("UserId", user.Id);
+                    cmd.ExecuteNonQuery();
+                }
+
+                foreach (var pref in user.DietaryPreferences)
+                {
+                    using (var cmd = new NpgsqlCommand("INSERT INTO dietary_preferences(user_id, preferences) VALUES(@UserId, @Preference)", conn))
+                    {
+                        cmd.Parameters.AddWithValue("UserId", user.Id);
+                        cmd.Parameters.AddWithValue("Preference", pref);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+                
+                // clear and update following list
+                using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
+                {
+                    cmd.Parameters.AddWithValue("UserId", user.Id);
+                    cmd.ExecuteNonQuery();
+                }
+
+                foreach (var followingUserId in user.Following)
+                {
+                    using (var cmd = new NpgsqlCommand("INSERT INTO user_following_user(follower_user_id, followed_user_id) VALUES(@UserId, @FollowingUserId)", conn))
+                    {
+                        cmd.Parameters.AddWithValue("UserId", user.Id);
+                        cmd.Parameters.AddWithValue("FollowingUserId", followingUserId);
+                        cmd.ExecuteNonQuery();
+                    }
+                }
+
+                // commit the transaction
+                transaction.Commit();
                 return UserEditError.NoError;
             }
             catch
             {
                 // Rollback any changes if an error occurs
                 transaction.Rollback();
-                return UserEditError.UserNotFound;
+                return UserEditError.DBEditError;
 
             }
         }
 
+        /// <summary>
+        /// Queries the user_following_user table for rows where the 'followed_user_id' matches
+        /// the userId.  Since a User stores a lot of properties, we only bother getting the 
+        /// userIds from the result.
+        /// </summary>
+        /// <param name="userId">userId of the user being FOLLOWED</param>
+        /// <returns>A list of UserIds belonging to followers of the passed userId</returns>
         public List<int> GetFollowers(int userId)
         {
 
@@ -341,13 +423,26 @@ namespace CookNook.Model
             return outUsers;
         }
 
-
+        /// <summary>
+        /// Updates the user's preferences
+        /// </summary>
+        /// <param name="userId">the userId the settings belongs to</param>
+        /// <param name="appPrefs">json-ified representation of the settings config</param>
+        /// <returns></returns>
         public UserEditError UpdateUserInfo(int userId, string appPrefs)
         {
 
         }
 
-        public UserDeletionError DeleteUser(int userId)
+
+        /// <summary>
+        /// Deletes a user from the database.  Requires--at minimum--the USERNAME and the EMAIL
+        /// of the user to be defined in order to justify the assumption that the request comes
+        /// from the owner of the account/an admin
+        /// </summary>
+        /// <param name="targetForDelete">The partially/fully defined user-object</param>
+        /// <returns>UserDeletionError based on operation: NoError if successful</returns>
+        public UserDeletionError DeleteUser(User targetForDelete)
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
@@ -357,7 +452,11 @@ namespace CookNook.Model
 
             using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @userId", conn))
             {
-                cmd.Parameters.AddWithValue("userId", userId);
+                cmd.Parameters.AddWithValue("userEmail", targetForDelete.Email);
+                cmd.Parameters.AddWithValue("userEmail", targetForDelete.Username);
+
+                //If we want the user to enter password to confirm deletion, we can add that as a param here to check it
+                cmd.Parameters.AddWithValue("password", targetForDelete.Password);
                 cmd.ExecuteNonQuery();
 
                 int rowsAffected = cmd.ExecuteNonQuery();

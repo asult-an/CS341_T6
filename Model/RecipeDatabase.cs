@@ -70,11 +70,7 @@ namespace CookNook.Model
                 var cmd = new NpgsqlCommand();
                 cmd.Connection = conn;
                 //write the SQL statement with the following paramters
-                cmd.CommandText = "UPDATE recipes SET name = @name, description = @Description, " +
-                    "ingredients_list = @IngredientsList, ingredients_qty = @IngredientsQty, cook_time_mins = @CookTimeMins," +
-                    " course = @Course, rating = @Rating, servings = @Servings," +
-                    " image = @Image, tags = @Tags, followers = @Followers" +
-                    " WHERE recpie_id = @ID;";
+                cmd.CommandText = @"UPDATE users SET username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE user_id = @UserId\";
                 cmd.Parameters.AddWithValue("Recipe_ID", inRecipe.ID);
                 cmd.Parameters.AddWithValue("Name", inRecipe.Name);
                 cmd.Parameters.AddWithValue("Description", inRecipe.Description);
