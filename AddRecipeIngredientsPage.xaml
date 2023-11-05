@@ -57,7 +57,7 @@
 
                 <!-- (Input and Suggestions) -->
                 <StackLayout HorizontalOptions="StartAndExpand">
-                    <Entry Placeholder="Enter ingredient"/>
+                    <!--<Entry Placeholder="Enter ingredient"/>-->
                     <!-- Not shown: OnTextChanged() -->
                     <ListView IsVisible="False" BackgroundColor="DarkGrey">
                         <ListView.ItemsSource>

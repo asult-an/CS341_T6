@@ -249,7 +249,7 @@ namespace CookNook.Model
             }
         }
 
-        public ObservableCollection<User> SelectAllUsers(List<string> userIDs)
+        public ObservableCollection<User> DeleteUser(string userIDs)
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
