@@ -21,6 +21,14 @@ namespace CookNook.Model
         private List<int> following;
 
         private List<Recipe> cookBook;
+        public User() { }
+
+        public User(int id, string inUsername,  string inEmail, string inPassword)
+        {
+            username = inUsername;
+            email = inEmail;
+            password = inPassword;
+        }
 
         public int Id { get { return id; } set { id = value; } }
         public string Username { get { return username; } set {  username = value; } }

@@ -5,6 +5,8 @@ using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Diagnostics;
+
 
 namespace CookNook.Model
 {
@@ -15,6 +17,7 @@ namespace CookNook.Model
         static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
         static string dbUsername = "adeel";
         static int PORT_NUMBER = 26257;
+        private Random random = new Random();
 
         private IRecipeLogic recipeDB = new RecipeLogic();
 
@@ -22,6 +25,7 @@ namespace CookNook.Model
         {
             this.recipeDB = recipeLogic;
         }
+        public UserDatabase() { }
 
 
         public static string GetConnectionString()
@@ -186,7 +190,7 @@ namespace CookNook.Model
             using var reader = cmd.ExecuteReader();
             if (reader.Read())
             {
-                user = new User
+                user = new User()
                 {
                     Username = reader.GetString(0),
                     Email = reader.GetString(1),
@@ -200,81 +204,123 @@ namespace CookNook.Model
             return user;
         }
 
-        public UserAdditionError InsertUser(User user)
+        public UserAuthenticationError AuthenticateUser(string username, string password)
         {
-            using var conn = new NpgsqlConnection(connString);
-            conn.Open();
-
-            // since multiple tables 
-            using var transaction = conn.BeginTransaction();
             try
             {
+                using var conn = new NpgsqlConnection(connString);
+                conn.Open();
+
+                // since multiple tables 
+                //using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
+                var cmd = new NpgsqlCommand();
+                cmd.Connection = conn;
                 // handle user info
-                using (var cmd = new NpgsqlCommand(@"INSERT INTO users(username, email, password, profile_pic) 
-                                                            VALUE(@Username, @Email, @Password, @ProfilePic", conn))
+                cmd.CommandText = "SELECT password FROM users WHERE username=@Username";
+                
+                cmd.Parameters.AddWithValue("Username", username);
+                var reader = cmd.ExecuteReader();
+                
+                string DBPassword = reader.GetString(0);
+
+                if(DBPassword != password) 
                 {
+                    return UserAuthenticationError.InvalidPassword;
+                }
+
+            }
+            catch(Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return UserAuthenticationError.InvalidUsername;
+            }
+            return UserAuthenticationError.NoError;
+        }
+        public UserAdditionError InsertUser(User user)
+        {
+            
+            try
+            {
+                using var conn = new NpgsqlConnection(connString);
+                conn.Open();
+
+                // since multiple tables 
+                //using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
+                var cmd = new NpgsqlCommand();
+                cmd.Connection = conn;
+                // handle user info
+                cmd.CommandText = "INSERT INTO users(id, username, email, password, profile_pic)" + 
+                                                           " VALUES(@ID, @Username, @UserEmail, @Password, @ProfilePic)"; 
+                {
+                    //CREATE ID ASSIGNMENT METHOD
+                    cmd.Parameters.AddWithValue("ID", (int)random.NextInt64(5000));
                     cmd.Parameters.AddWithValue("Username", user.Username);
-                    cmd.Parameters.AddWithValue("Email", user.Email);
+                    cmd.Parameters.AddWithValue("UserEmail", user.Email);
                     cmd.Parameters.AddWithValue("Password", user.Password);
-                    cmd.Parameters.AddWithValue("ProfilePic", user.ProfilePicture);
+                    cmd.Parameters.AddWithValue("ProfilePic", "NO_IMAGE");
                     // set automatically by database on inserts
                     //cmd.Parameters.AddWithValue("UsreId", user.Id);
                     cmd.ExecuteNonQuery();
+                    //Debug.WriteLine(user.Username + user.Password + user.Email);
                 }
 
                 // now do the settings
-                using (var cmd = new NpgsqlCommand("UPDATE user_settings SET settings = @Settings WHERE user_id = @UserId", conn))
-                {
-                    cmd.Parameters.AddWithValue("Settings", string.Join(",", user.AppPreferences));
-                    cmd.Parameters.AddWithValue("UserId", user.Id);
-                    cmd.ExecuteNonQuery();
-                }
+                //    using (var cmd = new NpgsqlCommand("UPDATE user_settings SET settings = @Settings WHERE user_id = @UserId", conn))
+                //    {
+                //        cmd.Parameters.AddWithValue("Settings", string.Join(",", user.AppPreferences));
+                //        cmd.Parameters.AddWithValue("UserId", user.Id);
+                //        cmd.ExecuteNonQuery();
+                //    }
 
-                // and update the dietary preferences
-                using (var cmd = new NpgsqlCommand("DELETE FROM dietary_preferences WHERE user_id = @UserId", conn))
-                {
-                    cmd.Parameters.AddWithValue("UserId", user.Id);
-                    cmd.ExecuteNonQuery();
-                }
+                //    // and update the dietary preferences
+                //    using (var cmd = new NpgsqlCommand("DELETE FROM dietary_preferences WHERE user_id = @UserId", conn))
+                //    {
+                //        cmd.Parameters.AddWithValue("UserId", user.Id);
+                //        cmd.ExecuteNonQuery();
+                //    }
 
-                foreach (var pref in user.DietaryPreferences)
-                {
-                    using (var cmd = new NpgsqlCommand("INSERT INTO dietary_preferences(user_id, preferences) VALUES(@UserId, @Preference)", conn))
-                    {
-                        cmd.Parameters.AddWithValue("UserId", user.Id);
-                        cmd.Parameters.AddWithValue("Preference", pref);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
+                //    foreach (var pref in user.DietaryPreferences)
+                //    {
+                //        using (var cmd = new NpgsqlCommand("INSERT INTO dietary_preferences(user_id, preferences) VALUES(@UserId, @Preference)", conn))
+                //        {
+                //            cmd.Parameters.AddWithValue("UserId", user.Id);
+                //            cmd.Parameters.AddWithValue("Preference", pref);
+                //            cmd.ExecuteNonQuery();
+                //        }
+                //    }
 
-                // clear and update following list
-                using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
-                {
-                    cmd.Parameters.AddWithValue("UserId", user.Id);
-                    cmd.ExecuteNonQuery();
-                }
+                //    // clear and update following list
+                //    using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
+                //    {
+                //        cmd.Parameters.AddWithValue("UserId", user.Id);
+                //        cmd.ExecuteNonQuery();
+                //    }
 
-                foreach (var followingUserId in user.Following)
-                {
-                    using (var cmd = new NpgsqlCommand("INSERT INTO user_following_user(follower_user_id, followed_user_id) VALUES(@UserId, @FollowingUserId)", conn))
-                    {
-                        cmd.Parameters.AddWithValue("UserId", user.Id);
-                        cmd.Parameters.AddWithValue("FollowingUserId", followingUserId);
-                        cmd.ExecuteNonQuery();
-                    }
-                }
+                //    foreach (var followingUserId in user.Following)
+                //    {
+                //        using (var cmd = new NpgsqlCommand("INSERT INTO user_following_user(follower_user_id, followed_user_id) VALUES(@UserId, @FollowingUserId)", conn))
+                //        {
+                //            cmd.Parameters.AddWithValue("UserId", user.Id);
+                //            cmd.Parameters.AddWithValue("FollowingUserId", followingUserId);
+                //            cmd.ExecuteNonQuery();
+                //        }
+                //    }
 
-                // commit the transaction
-                transaction.Commit();
-                return UserAdditionError.NoError;
-            }
-            catch
+                //    // commit the transaction
+                //    transaction.Commit();
+                //    return UserAdditionError.NoError;
+                }
+            catch (Exception ex)
             {
                 // Rollback any changes if an error occurs
-                transaction.Rollback();
+                //transaction.Rollback();
+                Debug.WriteLine(ex.Message);
+                //Debug.WriteLine("TEST1");
                 return UserAdditionError.DBAdditionError;
 
             }
+            //Debug.WriteLine("THIS IS A TEST");
+            return UserAdditionError.NoError;
 
         }
 
@@ -376,6 +422,7 @@ namespace CookNook.Model
             List<int> followerIds = new List<int>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
+            throw new NotImplementedException();
 
         }
     
@@ -416,7 +463,7 @@ namespace CookNook.Model
                                 GROUP BY u.id, u.username, u.email, u.password, u.profile_pic, user_settings.settings, dp.preferences;";
 
                 cmd.Parameters.AddWithValue("Recipe_ID", userId);
-                var reader = cmd.ExecuteReader();
+                reader = cmd.ExecuteReader();
 
                 // ugly double nesting here, but should be okay with small ranged queries
                 while (reader.Read())
@@ -446,7 +493,7 @@ namespace CookNook.Model
         /// <returns></returns>
         public UserEditError UpdateUserInfo(int userId, string appPrefs)
         {
-
+            throw new NotImplementedException();
         }
 
 
@@ -503,6 +550,26 @@ namespace CookNook.Model
             
                 return UserDeletionError.NoError;
             }
+        }
+
+        public User GetUserByEmail(string email)
+        {
+            throw new NotImplementedException();
+        }
+
+        public List<int> GetFollowers(int userId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserSelectionError IsFollowingRecipeById(int userId, int recipeId)
+        {
+            throw new NotImplementedException();
+        }
+
+        public UserEditError UpdateUserInfo(string userId, List<string> appPrefs)
+        {
+            throw new NotImplementedException();
         }
     }
 }

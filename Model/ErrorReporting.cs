@@ -73,3 +73,10 @@ public enum UserSelectionError
     UserAlreadyUnfollowed,
     NoError
 }
+
+public enum UserAuthenticationError
+{
+    InvalidUsername,
+    InvalidPassword,
+    NoError
+}
