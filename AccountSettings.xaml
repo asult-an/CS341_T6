@@ -23,12 +23,21 @@
             <StackLayout Grid.Row="3">
                 <Label Text="Change Password:" Margin="10,5,10,0"/>
             </StackLayout>
-
+            
+            <StackLayout Grid.Row="4">
+                <Entry Placeholder="Current Password" Margin="10,0,10,10"/>
+            </StackLayout>
+            
             <StackLayout Grid.Row="4">
                 <Entry Placeholder="New Password" Margin="10,0,10,10"/>
             </StackLayout>
+            
             <StackLayout Grid.Row="5">
                 <Entry Placeholder="Re-enter Password" Margin="10,0,10,10"/>
+            </StackLayout>
+            
+            <StackLayout Grid.Row="5">
+                <Button Clicked="UpdateClicked" Text="Update" Margin="10,0,10,10"/>
             </StackLayout>
         </Grid>
         

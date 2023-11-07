@@ -213,16 +213,14 @@ namespace CookNook.Model
 
                 // since multiple tables 
                 //using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
-                var cmd = new NpgsqlCommand();
-                cmd.Connection = conn;
-                // handle user info
-                cmd.CommandText = "SELECT password FROM users WHERE username=@Username";
+                var cmd = new NpgsqlCommand("SELECT password FROM users WHERE username='ASULTAN'", conn);
+                
                 
                 cmd.Parameters.AddWithValue("Username", username);
-                var reader = cmd.ExecuteReader();
-                
-                string DBPassword = reader.GetString(0);
-
+                var reader = cmd.ExecuteReader(); 
+                string DBPassword = reader.GetString(1);
+                Debug.WriteLine(DBPassword);
+                conn.Close();
                 if(DBPassword != password) 
                 {
                     return UserAuthenticationError.InvalidPassword;
@@ -231,6 +229,7 @@ namespace CookNook.Model
             }
             catch(Exception ex)
             {
+                
                 Debug.WriteLine(ex.Message);
                 return UserAuthenticationError.InvalidUsername;
             }
@@ -261,6 +260,7 @@ namespace CookNook.Model
                     // set automatically by database on inserts
                     //cmd.Parameters.AddWithValue("UsreId", user.Id);
                     cmd.ExecuteNonQuery();
+                    conn.Close();
                     //Debug.WriteLine(user.Username + user.Password + user.Email);
                 }
 

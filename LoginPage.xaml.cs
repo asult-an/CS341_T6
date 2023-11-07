@@ -27,4 +27,9 @@ public partial class LoginPage : ContentPage
             await Navigation.PushAsync(nextPage);
         }
 	}
+
+	public async void BackClicked(object sender, EventArgs e)
+	{
+		await Navigation.PopAsync();
+	}
 }

@@ -22,4 +22,10 @@ public partial class Feed : ContentPage
         await DisplayAlert("All Recipes", recipesText, "OK");
     }
 
+    public async void ProfileClicked(object sender, EventArgs e)
+    {
+        Profile profilePage = new Profile();
+        await Navigation.PushAsync(profilePage);
+    }
+
 }

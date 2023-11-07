@@ -23,4 +23,9 @@ public partial class SignUpPage : ContentPage
 
     }
 
+    public async void BackClicked(object sender, EventArgs e)
+    {
+        await Navigation.PopAsync();
+    }
+
 }
