@@ -12,9 +12,13 @@ namespace CookNook.Model
     {
         private RecipeDatabase recipeDatabase;
 
-        public RecipeLogic()
+        /// <summary>
+        /// Initializes a new instance of the <see cref="RecipeLogic"/> class, with the database service injected
+        /// </summary>
+        /// <param name="recipeDatabase">The service for recipe-based database interactions</param>
+        public RecipeLogic(RecipeDatabase recipeDatabase)
         {
-            recipeDatabase = new RecipeDatabase();
+            this.recipeDatabase = recipeDatabase;
         }
 
        // this method may be redundant

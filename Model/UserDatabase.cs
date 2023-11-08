@@ -19,7 +19,7 @@ namespace CookNook.Model
         static int PORT_NUMBER = 26257;
         private Random random = new Random();
 
-        private IRecipeLogic recipeDB = new RecipeLogic();
+        private IRecipeLogic recipeDB;
 
         public UserDatabase(IRecipeLogic recipeLogic)
         {
