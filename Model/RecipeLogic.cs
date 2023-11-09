@@ -8,9 +8,10 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
-
     internal class RecipeLogic : IRecipeLogic
     {
+        const int MAX_RECIPE_NAME_LENGTH = 50;
+        const int MAX_RECIPE_DESCRIPTION_LENGTH = 150;
         private RecipeDatabase recipeDatabase;
 
         /// <summary>
@@ -23,25 +24,36 @@ namespace CookNook.Model
         }
 
        // this method may be redundant
-       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthorID,
+       public RecipeAdditionError CreateRecipe(string inName, string inDescription, int inAuthorId,
             string inIngredients, string inIngredientsQty,
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
             string inTags, string inFollowers)
         {
-            if (string.IsNullOrEmpty(inName))
+
+
+
+            // validate name
+            if (string.IsNullOrEmpty(inName) || inName.Length > MAX_RECIPE_NAME_LENGTH)
                 return RecipeAdditionError.InvalidName;
 
-            // Validate description is not too long
-            if (inDescription.Split(' ').Length > 150)
+            // Validate description
+            if (inDescription.Split(' ').Length > MAX_RECIPE_DESCRIPTION_LENGTH)
                 return RecipeAdditionError.InvalidDescription;
 
-            
-            
 
+
+
+            // Q: how do we resolve Id back from the Database (since it's returning a RecipeError) if it's automatically generated
             // If all validations pass, construct the Recipe object
-            Recipe newRecipe = new Recipe(inId, inName, inDescription, inAuthorID, inIngredients,
-                inIngredientsQty, inCooktime, inCourse, inRating, inServings, inImage, inTags, inFollowers);
-
+            Recipe newRecipe = new Recipe
+            {
+                AuthorID = inAuthorId,
+                CookTime = inCooktime,
+                Course = CourseType.Parse(inCourse),
+                Description = inDescription,
+                Followers = inFollowers,
+                Image = inImage,
+            };
            
             return AddRecipe(newRecipe);
         }
@@ -49,6 +61,7 @@ namespace CookNook.Model
 
         public RecipeAdditionError AddRecipe(Recipe recipe)
         {
+            // check for duplicate Id
             if (FindRecipe(recipe.ID) != null)
                 return RecipeAdditionError.DuplicateId;
 
@@ -107,11 +120,12 @@ namespace CookNook.Model
             }
             catch
             {
+                Console.WriteLine("Error finding recipe");
                 return null;
             }
         }
 
-        public ObservableCollection<Recipe> SelectAllRecipes() 
+        public List<Recipe>? SelectAllRecipes() 
         {
             try
             {
@@ -120,15 +134,18 @@ namespace CookNook.Model
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                string ingredients = "";
-                string ingredientsQty = "";
-                string tags = "";
-                string followers = "";
-                Recipe failRecipe = new Recipe(56, "The First Recipe!", "This is the first recipe inserted into the CookNook database!", 0, ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
-                ObservableCollection<Recipe> testList = new ObservableCollection<Recipe>();
-                testList.Add(failRecipe);
-                return testList;
+                throw new Exception("Error selecting all recipes", ex);
+
+                // why are we adding a reicpe in a catch block
+                //Debug.WriteLine(ex.Message);
+                //string ingredients = "";
+                //string ingredientsQty = "";
+                //string tags = "";
+                //string followers = "";
+                //Recipe failRecipe = new Recipe(56, "The First Recipe!","This is the first recipe inserted into the CookNook database!", 0, ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
+                //List<Recipe> testList = new List<Recipe>();
+                //testList.Add(failRecipe);
+                //return testList;
             }
         }
     }
