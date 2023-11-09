@@ -15,7 +15,8 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
     public string Ingredients { get; set; } 
 
-    private RecipeLogic recipeLogic = new RecipeLogic();
+    // TODO: fix the hacky depencdency injection workaround
+    private RecipeLogic recipeLogic = new RecipeLogic(new RecipeDatabase());
 
     public AddRecipeIngredientsPage()
     {
