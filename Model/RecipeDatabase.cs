@@ -16,15 +16,15 @@ namespace CookNook.Model
 
         private List<int> authorListIDs = new List<int>();
         private List<int> cookbookIDs = new List<int>();
-        private ObservableCollection<Recipe> authorList;
-        private ObservableCollection<Recipe> cookbook;
+        private List<Recipe> authorList;
+        private List<Recipe> cookbook;
         private string connString = GetConnectionString();
         static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
         static string dbUsername = "adeel";
         static int PORT_NUMBER = 26257;
         //create public property to access airport list
-        public ObservableCollection<Recipe> AuthorList { get { return authorList; } set { authorList = value; } }
-        public ObservableCollection<Recipe> Cookbook { get { return cookbook; } set { cookbook = value; } }
+        public List<Recipe> AuthorList { get { return authorList; } set { authorList = value; } }
+        public List<Recipe> Cookbook { get { return cookbook; } set { cookbook = value; } }
 
         public RecipeDeletionError DeleteFromAuthorList(int recipeID)
         {
@@ -70,7 +70,7 @@ namespace CookNook.Model
                 var cmd = new NpgsqlCommand();
                 cmd.Connection = conn;
                 //write the SQL statement with the following paramters
-                cmd.CommandText = @"UPDATE users SET username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE user_id = @UserId\";
+                cmd.CommandText = @"UPDATE users SET username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE user_id = @UserId";
                 cmd.Parameters.AddWithValue("Recipe_ID", inRecipe.ID);
                 cmd.Parameters.AddWithValue("Name", inRecipe.Name);
                 cmd.Parameters.AddWithValue("Description", inRecipe.Description);
@@ -132,9 +132,9 @@ namespace CookNook.Model
             return RecipeAdditionError.NoError;
         }
 
-        public ObservableCollection<Recipe> SelectAllRecipes(List<int> recipeList)
+        public List<Recipe> SelectAllRecipes(List<int> recipeList)
         {
-            ObservableCollection<Recipe> outRecipes = new ObservableCollection<Recipe>();
+            List<Recipe> outRecipes = new List<Recipe>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
@@ -158,7 +158,8 @@ namespace CookNook.Model
                 recipe.Ingredients = reader.GetString(4);
                 recipe.IngredientsQty = reader.GetString(5);
                 recipe.CookTime = reader.GetInt32(6);
-                recipe.Course = reader.GetString(7);
+                // CourseType is needed, so we have to use a helper function to convert it
+                recipe.Course = CourseType.Parse(reader.GetString(7));
                 recipe.Rating = reader.GetInt32(8);
                 recipe.Servings = reader.GetInt32(9);
                 recipe.Image = reader.GetString(10);
@@ -174,14 +175,16 @@ namespace CookNook.Model
         public Recipe SelectRecipe(int inID)
         {
             Recipe recipe = new Recipe();
+
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
-            var cmd = new NpgsqlCommand();
-            //connect the database to the command
-            cmd.Connection = conn;
-            cmd.CommandText = "SELECT * FROM recipes WHERE recipe_id = @Recipe_ID";
-            cmd.Parameters.AddWithValue("Recipe_ID", inID);
+            var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating, image servings, author_id
+                                FROM recipes AS r
+                                JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
+                                WHERE r.recipe_id = @RecipeId AND rt.recipe_id = @RecipeId;", conn);
+
+            cmd.Parameters.AddWithValue("RecipeId", inID);
             using var reader = cmd.ExecuteReader();
             reader.Read();
             
@@ -192,7 +195,7 @@ namespace CookNook.Model
             recipe.Ingredients = reader.GetString(4 );
             recipe.IngredientsQty = reader.GetString(5);
             recipe.CookTime = reader.GetInt32(6);
-            recipe.Course = reader.GetString(7);
+            recipe.Course = CourseType.Parse(reader.GetString(7));
             recipe.Rating = reader.GetInt32(8);
             recipe.Servings = reader.GetInt32(9);
             recipe.Image = reader.GetString(10);
@@ -203,7 +206,9 @@ namespace CookNook.Model
             
         }
 
-        public ObservableCollection<Recipe> SelectRecipeByCourse(string course)
+        public List<Recipe> GetRecipeByCourse(CourseType course) { return GetRecipeByCourse(course.Name); }
+
+        public List<Recipe> GetRecipeByCourse(string course)
         {
             List<int> recipeIDs = new List<int>();
             using var conn = new NpgsqlConnection(connString);
@@ -222,7 +227,7 @@ namespace CookNook.Model
             return SelectAllRecipes(recipeIDs);
         }
 
-        public ObservableCollection<Recipe> SelectRecipeByCooktime(int cooktime)
+        public List<Recipe> SelectRecipeByCooktime(int cooktime)
         {
             List<int> recipeIDs = new List<int>();
             using var conn = new NpgsqlConnection(connString);

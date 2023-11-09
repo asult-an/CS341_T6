@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
+
     internal class RecipeLogic : IRecipeLogic
     {
         private RecipeDatabase recipeDatabase;

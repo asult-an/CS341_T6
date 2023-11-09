@@ -9,6 +9,8 @@ namespace CookNook.Model
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
             string inTags, string inFollowers);
 
+        RecipeAdditionError CreateRecipe(string name, string desc, int cookTime,  );
+
         RecipeAdditionError AddRecipe(Recipe recipe);
 
         RecipeEditError EditRecipe(Recipe recipe);
