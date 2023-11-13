@@ -15,11 +15,23 @@ namespace CookNook.Model
         public RecipeAdditionError AddToAuthorList(int recipeID);
         public RecipeAdditionError AddToCookbook(int recipeID);
 
+        public List<Ingredient> GetIngredientsByRecipe(int recipeID);
 
-        public ObservableCollection<Recipe> SelectAllRecipes(List<int> recipeList);
+        public List<int> GetRecipeFollowers(int recipeID);
+
+
+        public List<Recipe> SelectAllRecipes();
+        
+        public List<Recipe> SelectRecipes(List<int> recipeList);
+
         public Recipe SelectRecipe(int recipeID);
-        public ObservableCollection<Recipe> SelectRecipeByCourse(string course);
-        public ObservableCollection<Recipe> SelectRecipeByCooktime(int cooktime);
+        public List<Recipe> SelectRecipeByCourse(string course);
+
+        //public List<Recipe> GetRecipesByCourseType(CourseType courseType);
+
+        public List<Tag> get 
+
+        public List<Recipe> SelectRecipeByCooktime(int cooktime);
 
         public RecipeAdditionError InsertRecipe(Recipe inRecipe);
         public RecipeDeletionError DeleteRecipe(int inID);
