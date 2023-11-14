@@ -359,7 +359,7 @@ namespace CookNook.Model
                 recipe.Course = CourseType.Parse(reader.GetString(7));
                 recipe.Rating = reader.GetInt32(8);
                 recipe.Servings = reader.GetInt32(9);
-                recipe.Image = reader.GetString(10);
+                recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 recipe.Tags = GetTagsForRecipe(recipe.ID).ToArray();
                 
                 // reader.Close();
@@ -403,7 +403,7 @@ namespace CookNook.Model
                             Course = CourseType.Parse(reader.GetString(4)),
                             Rating = reader.GetInt32(5),
                             Servings = reader.GetInt32(6),
-                            Image = reader.GetString(7),
+                            Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
                             AuthorID = reader.GetInt32(8)
                         };
 
@@ -448,8 +448,8 @@ namespace CookNook.Model
             recipe.Course = CourseType.Parse(reader.GetString(7));
             recipe.Rating = reader.GetInt32(8);
             recipe.Servings = reader.GetInt32(9);
-            recipe.Image = reader.GetString(10);
-            
+            recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
+                
             // get associative data
             recipe.Tags = GetTagsForRecipe(inID).ToArray();
             recipe.FollowerIds = GetRecipeFollowerIds(inID).ToArray();

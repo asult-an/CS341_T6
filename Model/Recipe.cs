@@ -29,7 +29,7 @@ namespace CookNook.Model
         private CourseType course;
         private int rating;
         private int servings;
-        private string image;
+        private byte[] image;
 
         private Tag[] tags;// todo
         private int[] followerIds;//todo
@@ -53,16 +53,19 @@ namespace CookNook.Model
         /// <param name="ingredients">Array of Ingredients, resolved by RecipeLogic</param>
         /// <param name="tags">Array of tagIds that this recipe is tagged as</param>
         /// <param name="followerIds">Array of userIds of the users following this recipe</param>
+        /// <param name="authorId">The Id of the user who created this recipe, -1 </param>
         public Recipe(
             string name,
             string description,
             int cookTime,
             Ingredient[] ingredients,
             CourseType course,
-            Tag[] tags = null,
+            int authorId,
             int rating = 3,
             int servings = 1,
-            int[] followerIds = null
+            Tag[] tags = null,
+            int[] followerIds = null,
+            byte[] imageArr = null
         )
         {
             this.name = name;
@@ -70,10 +73,12 @@ namespace CookNook.Model
             this.cookTime = cookTime;
             this.course = course;
             this.tags = tags;
+            this.authorId = authorId;
             this.rating = rating;
             this.servings = servings;
             this.followerIds = followerIds;
             this.ingredients = ingredients;
+            this.image = imageArr;
 
         }
         /// <summary>
@@ -89,6 +94,7 @@ namespace CookNook.Model
         /// <param name="ingredients">Array of Ingredients, resolved by RecipeLogic</param>
         /// <param name="tags">Array of tagIds that this recipe is tagged as</param>
         /// <param name="followerIds">Array of userIds of the users following this recipe</param>
+        /// <param name="imageArr">The i</param>
         public Recipe(
             int recipeID,
             string name,
@@ -96,10 +102,12 @@ namespace CookNook.Model
             int cookTime,
             Ingredient[] ingredients,
             CourseType course,
-            Tag[] tags = null,
+            int authorId,
             int rating = 3,
             int servings = 1,
-            int[] followerIds = null
+            Tag[] tags = null,
+            int[] followerIds = null,
+            byte[] imageArr = null
         )
         {
             this.name = name;
@@ -111,7 +119,7 @@ namespace CookNook.Model
             this.servings = servings;
             this.followerIds = followerIds;
             this.ingredients = ingredients;
-
+            this.image = imageArr;
         }
 
         public int ID { get { return id; } set { id = value; } }
@@ -132,7 +140,7 @@ namespace CookNook.Model
         public CourseType Course { get { return course; } set { course = value; } }
         public int Rating { get { return rating; } set { rating = value; } }
         public int Servings { get { return servings; } set { servings = value; } }
-        public string Image { get { return image; } set { image = value; } }
+        public byte[] Image { get { return image; } set { image = value; } }
         public Tag[] Tags { get { return tags; } set { tags = value; } }
         
         public int[] FollowerIds { get { return followerIds; } set { followerIds = value; } }

@@ -67,7 +67,7 @@ namespace CookNook.Model
         {
             Debug.Write("Here's what you need to parse: " + toParse);
 
-            throw new FormatException("Invalid CourseType!");
+            throw new FormatException("Invalid tag!");
         }
     }
 }
