@@ -59,8 +59,9 @@
                 <StackLayout HorizontalOptions="StartAndExpand">
                     <Entry Placeholder="Enter ingredient"/>
                     <!-- Not shown: OnTextChanged() -->
-                    <ListView IsVisible="False" BackgroundColor="DarkGrey">
+                    <ListView IsVisible="True" BackgroundColor="DarkGrey">
                         <ListView.ItemsSource>
+                            
                             <x:Array Type="{x:Type x:String}">
                                 <x:String>(Ch)eese</x:String>
                                 <x:String>(Ch)ocolate</x:String>
@@ -89,7 +90,7 @@
 
                     <!-- No separate column for "Ingredient", so it's placed in Row 0 -->
                     <Label Text="Ingredient" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="CenterAndExpand" VerticalOptions="Center"/>
-
+                      <!--When clicked, this should reveal a modal to show ingredients to choose to add-->
                     <Entry Grid.Row="1" Grid.Column="0" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                     <Entry Grid.Row="1" Grid.Column="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center"/>
                 </Grid>

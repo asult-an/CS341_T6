@@ -13,35 +13,55 @@ public partial class AddRecipeIngredientsPage : ContentPage
     private Random random = new Random();
     public AddRecipePage PreviousPageData { get; set; }
 
-    public string Ingredients { get; set; } 
+    // TODO: consider using Ingredient model instead of String
+    public string Ingredients { get; set; }
 
-    // TODO: fix the hacky depencdency injection workaround
-    private RecipeLogic recipeLogic = new RecipeLogic(new RecipeDatabase());
+    private IRecipeLogic recipeLogic;
 
     public AddRecipeIngredientsPage()
     {
         InitializeComponent();
     }
 
+    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic)
+    {
+        InitializeComponent();
+        this.recipeLogic = recipeLogic;
+    }
+
+    // W
     public async void NextClicked(object sender, EventArgs e)
     {
         //Ingredients = (this.FindByName("Ingredients") as Entry).Text;
-        
+
+        //Ingredient testIngredients = new Ingredient("test", 1, "test");
+        Ingredient[] testIngredients = new Ingredient[]
+        {
+                // one 'unitless' ingredient
+                new Ingredient("Industrial Runoff", "1"),
+                
+                // and a regular one
+                new Ingredient("Artichoke Hearts", "2", "oz")
+        };
+        Tag[] tags = { new Tag { DisplayName = "test" } };
+
         var newRecipe = new Recipe(
-            (int)random.NextInt64(5000),
-            PreviousPageData.RecipeName,
-            "Description",
-            0,
-            "",
-            "",
-            int.Parse(PreviousPageData.RecipeCooktime),
-            "Course",
-            0,
-            0,
-            "Image",
-            "",
-            ""
-        );
+            PreviousPageData.RecipeName,                              // name
+            PreviousPageData.RecipeInstructions,            // description
+            int.Parse(PreviousPageData.RecipeCooktime),       // cooktime 
+            testIngredients,          //recipeLogic.GetIngredientsByRecipe(1),
+            CourseType.Parse("DINNER"),
+            -1,
+            4,
+            1,
+            tags,             // recipeLogic.GetTagsForRecipe
+            new int[] {1}       // followerIds
+           
+        ); 
+            //recipeLogic.GetFollowerIds()
+
+        // TODO: map ingredients and their quantities...?
+
 
         // Add recipe to the database using RecipeLogic
         var result = recipeLogic.AddRecipe(newRecipe);
