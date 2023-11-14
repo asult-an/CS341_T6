@@ -29,7 +29,11 @@ namespace CookNook.Model
 
         //public List<Recipe> GetRecipesByCourseType(CourseType courseType);
 
-        public List<Tag> get 
+        public List<Tag> GetTagsForRecipe(int recipeID);
+
+        public List<Tag> GetTagsByUser(int userID);
+
+        //public List<Ingredient> GetIngredientsByUser(int userID);
 
         public List<Recipe> SelectRecipeByCooktime(int cooktime);
 
