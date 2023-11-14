@@ -15,9 +15,12 @@ namespace CookNook.Model
         public RecipeAdditionError AddToAuthorList(int recipeID);
         public RecipeAdditionError AddToCookbook(int recipeID);
 
+
+        public List<Ingredient> GetAllIngredients();
+
         public List<Ingredient> GetIngredientsByRecipe(int recipeID);
 
-        public List<int> GetRecipeFollowers(int recipeID);
+        public List<int> GetRecipeFollowerIds(int recipeID);
 
 
         public List<Recipe> SelectAllRecipes();
@@ -31,7 +34,7 @@ namespace CookNook.Model
 
         public List<Tag> GetTagsForRecipe(int recipeID);
 
-        public List<Tag> GetTagsByUser(int userID);
+        // public List<Tag> GetTagsByUser(int userID);
 
         //public List<Ingredient> GetIngredientsByUser(int userID);
 

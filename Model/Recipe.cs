@@ -7,24 +7,33 @@ using System.Threading.Tasks;
 
 namespace CookNook.Model
 {
+    /// <summary>
+    /// Class to represent a Recipe. 
+    /// TODO: forego custom_(...) tables for a isPublic column in the Database
+    /// Though, this creates a new design problem: 
+    /// what happens when a user creates a new tag?  Other users probably don't want to see them, so a custom_tags table still might be justifiable.
+    /// Since tags are otherwise public, any non-public tags should be shown to the user in an aggregate list during recipe creation
+    /// 
+    /// Only stores Ids of users following the recipe, not the users themselves.  Could either use UserDatabase or design a FollowerDatabase service, 
+    /// but using UserDatabase requires less refactoring
+    /// </summary>
     public class Recipe
     {
         private int id;
         private string name;
         private string description;
         private int authorId;
-        private string ingredients;
+        private Ingredient[] ingredients;
         private string ingredientsQty;
         private int cookTime;
         private CourseType course;
         private int rating;
         private int servings;
         private string image;
-        string tags;
-        int[] tagIds;// todo
-        int[] followerIds;//todo
-        string followers;
-        
+
+        private Tag[] tags;// todo
+        private int[] followerIds;//todo
+
         /// <summary>
         /// Empty constructor for a Recipe object, used for testing purposes
         /// </summary>
@@ -33,71 +42,101 @@ namespace CookNook.Model
 
         // TODO: use a default image as the default parameter instead of none
         /// <summary>
-        ///         /// Creates a new Recipe object, missing several parameters including author_id, tags, and followers
-        /// </summary&gt;
-        /// <param name="name">Recipe's name to be shown&lt;/param&gt;
-        /// <param name="description">More information about the recipe, should describe its taste&lt;/param&gt;
-        /// <param name="cookTime">Number of minutes to cook the meal, possibly counting cooling if specified in description&lt;/param&gt;
-        /// <param name="rating">the rating of the recipe: defaults to -1, especially if user chooses not to upload to public repository&lt;/param&gt;
-        /// <param name="servings">number of mouths the dish feeds&lt;/param&gt;
+        /// Creates a new Recipe object, missing several parameters including author_id, tags, and followers
+        /// </summary>
+        /// <param name="name">Recipe's name to be shown</param>
+        /// <param name="description">More information about the recipe, should describe its taste</param>
+        /// <param name="cookTime">Number of minutes to cook the meal, possibly counting cooling if specified in description</param>
+        /// <param name="rating">the rating of the recipe: defaults to -1, especially if user chooses not to upload to public repository</param>
+        /// <param name="servings">number of mouths the dish feeds</param>
         /// <param name="course">one of the predefined CourseTypes</param>
-        /// <param name="tagIds"></param>
-        /// <param name="rating"></param>
-        /// <param name="servings"></param>
-        public Recipe(string name, string description, int cookTime, CourseType course, int[] tagIds = null, int rating = 3, int servings = 1) { 
-             this.name = name;
+        /// <param name="ingredients">Array of Ingredients, resolved by RecipeLogic</param>
+        /// <param name="tagIds">Array of tagIds that this recipe is tagged as</param>
+        /// <param name="followerIds">Array of userIds of the users following this recipe</param>
+        public Recipe(
+            string name,
+            string description,
+            int cookTime,
+            Ingredient[] ingredients,
+            CourseType course,
+            Tag[] tags = null,
+            int rating = 3,
+            int servings = 1,
+            int[] followerIds = null
+        )
+        {
+            this.name = name;
             this.description = description;
             this.cookTime = cookTime;
             this.course = course;
-            this.tagIds = tagIds;
+            this.tags = tags;
             this.rating = rating;
             this.servings = servings;
-            followerIds = Array.Empty<int>();
-        }
+            this.followerIds = followerIds;
+            this.ingredients = ingredients;
 
+        }
         /// <summary>
-        /// Old constructor for the recipe, will be deleted when merging the final branch
+        /// Creates a new Recipe object, missing several parameters including author_id, tags, and followers
         /// </summary>
-        [Obsolete]
-        public Recipe(int inId, string inName, string inDescription, int inAuthorID,
-            string inIngredients, string inIngredientsQty, 
-            int inCooktime, string inCourse, int inRating, int inServings, string inImage,
-            string inTags, string inFollowers) 
-        { 
-            //id = inId;
-            //name = inName;
-            //description = inDescription;
-            //authorId = inAuthorID;
-            //ingredients = inIngredients;
-            //ingredientsQty = inIngredientsQty;
-            //cookTime = inCooktime;
-            //course = inCourse;
-            //rating = inRating;
-            //servings = inServings;
-            //image = inImage;
-            //tags = inTags;
-            //followers = inFollowers;
+        /// <param name="recipeID">Recipe's ID, used for updates</param>
+        /// <param name="name">Recipe's name to be shown</param>
+        /// <param name="description">More information about the recipe, should describe its taste</param>
+        /// <param name="cookTime">Number of minutes to cook the meal, possibly counting cooling if specified in description</param>
+        /// <param name="rating">the rating of the recipe: defaults to -1, especially if user chooses not to upload to public repository</param>
+        /// <param name="servings">number of mouths the dish feeds</param>
+        /// <param name="course">one of the predefined CourseTypes</param>
+        /// <param name="ingredients">Array of Ingredients, resolved by RecipeLogic</param>
+        /// <param name="tagIds">Array of tagIds that this recipe is tagged as</param>
+        /// <param name="followerIds">Array of userIds of the users following this recipe</param>
+        public Recipe(
+            int recipeID,
+            string name,
+            string description,
+            int cookTime,
+            Ingredient[] ingredients,
+            CourseType course,
+            Tag[] tags = null,
+            int rating = 3,
+            int servings = 1,
+            int[] followerIds = null
+        )
+        {
+            this.name = name;
+            this.description = description;
+            this.cookTime = cookTime;
+            this.course = course;
+            this.tags = tags;
+            this.rating = rating;
+            this.servings = servings;
+            this.followerIds = followerIds;
+            this.ingredients = ingredients;
+
         }
 
         public int ID { get { return id; } set { id = value; } }
-        public string Name { 
-            get { return name; } 
-            set { name = value; } }
+        public string Name
+        {
+            get { return name; }
+            set { name = value; }
+        }
         public string Description
         {
             get { return description; }
             set { description = value; }
         }
         public int AuthorID { get { return authorId; } set { authorId = value; } }
-        public String Ingredients { get { return ingredients; } set { ingredients = value; } }
+        public Ingredient[] Ingredients { get { return ingredients; } set { ingredients = value; } }
         public String IngredientsQty { get { return ingredientsQty; } set { ingredientsQty = value; } }
         public int CookTime { get { return cookTime; } set { cookTime = value; } }
         public CourseType Course { get { return course; } set { course = value; } }
         public int Rating { get { return rating; } set { rating = value; } }
         public int Servings { get { return servings; } set { servings = value; } }
         public string Image { get { return image; } set { image = value; } }
-        public String Tags { get { return tags; } set { tags = value; } }
-        public string Followers {  get { return followers; } set {  followers = value; } }
+        public Tag[] Tags { get { return tags; } set { tags = value; } }
+        
+        public int[] FollowerIds { get { return followerIds; } set { followerIds = value; } }
+
 
         public string IngredientsToString()
         {
@@ -113,7 +152,7 @@ namespace CookNook.Model
         }
         public string FollowersToString()
         {
-            return Followers.ToString();
+            return FollowerIds.ToString();
         }
     }
 }

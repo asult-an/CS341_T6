@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -39,6 +40,34 @@ namespace CookNook.Model
             set { id = value; }
         }
 
+        /// <summary>
+        /// Empty constructor, allows for bracketed object construction
+        /// </summary>
+        public Tag() { }
 
+        public Tag(int id, string name)
+        {
+            this.id = id;
+            this.displayName = name;
+        }
+
+        /// <summary>
+        /// Id-less constructor for a Tag: useful if the database can see the -1 as a trigger to 
+        /// generate a new Id.  Though, if we just don't send one up at all, it will also come up
+        /// with one.
+        /// </summary>
+        /// <param name="name"></param>
+        public Tag(string name)
+        {
+            this.id = -1;
+            this.displayName = name;
+        }
+
+        public static Tag Parse(string toParse)
+        {
+            Debug.Write("Here's what you need to parse: " + toParse);
+
+            throw new FormatException("Invalid CourseType!");
+        }
     }
 }
