@@ -182,6 +182,9 @@ namespace CookNook.Model
                 using var conn = new NpgsqlConnection(connString);
                 conn.Open();
 
+                using var transaction = conn.BeginTransaction(); 
+
+
                 // first we need to handle the base recipe attributes
                 using var cmdBaseRecipeAttributes = new NpgsqlCommand(@"UPDATE public.recipes
                         SET name=@Name, description=@Description, cook_time_mins=@CookTimeMins, course=@Course, 
@@ -201,8 +204,44 @@ namespace CookNook.Model
                 cmdBaseRecipeAttributes.Parameters.AddWithValue("Image", inRecipe.Image);
                 cmdBaseRecipeAttributes.Parameters.AddWithValue("Tags", inRecipe.TagsToString());
                 cmdBaseRecipeAttributes.Parameters.AddWithValue("Followers", inRecipe.FollowersToString());
+                
+               
                 //execute the command
                 var numAffected = cmdBaseRecipeAttributes.ExecuteNonQuery();
+
+                // next we take care of ingredients
+                using var cmdDeleteIngredients = new NpgsqlCommand("DELETE FROM recipe_ingredients WHERE recipe_id = @RecipeID", conn);
+                cmdDeleteIngredients.Parameters.AddWithValue("RecipeID", inRecipe.ID);
+                cmdDeleteIngredients.ExecuteNonQuery();
+
+                foreach (Ingredient ing in inRecipe.Ingredients)
+                {
+                    // insert row in the ingredients table
+                    // TODO: handle if null unit
+                    var cmdInsertIngredients = new NpgsqlCommand(
+                        @"INSERT INTO recipe_ingredients (ingredient_id, quantity, unit) 
+                                 VALUES (@IngredientID, @Quantity, @Unit)", conn);
+                    cmdInsertIngredients.Parameters.AddWithValue("IngredientID", ing.IngredientId);
+                    cmdInsertIngredients.Parameters.AddWithValue("Quantity", ing.Quantity);
+                    cmdInsertIngredients.Parameters.AddWithValue("Unit", ing.Unit);
+
+                    // not querying the database, just inserting to it, so we execute a NonQuery:
+                    cmdInsertIngredients.ExecuteNonQuery();
+                }
+
+                // now we delete and re-add the tags
+                using var cmdDeleteTags = new NpgsqlCommand("DELETE FROM recipe_tags WHERE recipe_id = @RecipeID", conn);
+                cmdDeleteTags.Parameters.AddWithValue("RecipeID", inRecipe.ID);
+                cmdDeleteTags.ExecuteNonQuery();
+
+                // re-add the newly updated tags back in
+                foreach (var tag in inRecipe.Tags)
+                {
+                    var cmdInsertTag = new NpgsqlCommand("INSERT INTO recipe_tags (recipe_id, tag_id) VALUES (@RecipeID, @TagID)", conn);
+                    cmdInsertTag.Parameters.AddWithValue("RecipeID", inRecipe.ID);
+                    cmdInsertTag.Parameters.AddWithValue("TagID", tag.Id);
+                    cmdInsertTag.ExecuteNonQuery();
+                }
 
                 //update the observable collection
                 authorList = SelectRecipes(authorListIDs);
@@ -233,7 +272,7 @@ namespace CookNook.Model
             NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO recipes (name, description, cook_time_mins, " +
                                 "course, rating, servings, image, author_id) VALUES " +
                                 "(@Name, @Description, @CookTimeMins, @Course, @Rating, @Servings, " +
-                                "@Image, @AuthorID) returning recipe_id", conn);
+                                "@Image, @AuthorID) RETURNING recipe_id", conn);
 
             //extract the relevant data from the recipe specified by the user
             cmd.Parameters.AddWithValue("Name", inRecipe.Name);
@@ -249,7 +288,7 @@ namespace CookNook.Model
             // first, we need the new ID of that recipe!
             int recipeID = (int)cmd.ExecuteScalar();
 
-            foreach(Ingredient ing in inRecipe.Ingredients)
+            foreach (Ingredient ing in inRecipe.Ingredients)
             {
                 // insert row in the ingredients table
                 // TODO: handle if null unit
@@ -262,6 +301,7 @@ namespace CookNook.Model
                 cmd.ExecuteNonQuery();
             }
 
+            // WARNING: Doesn't account for a tag being added that wasn't already in the database!
             // now we can handle any tags involved
             foreach(Tag tag in inRecipe.Tags)
             {
@@ -272,9 +312,10 @@ namespace CookNook.Model
                 cmd.Parameters.AddWithValue("TagID", tag.Id);
                 cmd.ExecuteNonQuery();
             }
-
-            transaction.Commit();
+            // add the user's ID to the recipe
             //AddToAuthorList(inRecipe.ID);
+            
+            transaction.Commit();
             return RecipeAdditionError.NoError;
         }
 
@@ -455,6 +496,12 @@ namespace CookNook.Model
             }
 
             return tags;
+        }
+
+        public Ingredient GetOrCreateIngredient(string ingredientName)
+        {
+           
+
         }
 
         public List<Recipe> SelectRecipeByCooktime(int cooktime)

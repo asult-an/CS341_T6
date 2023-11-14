@@ -38,6 +38,8 @@ namespace CookNook.Model
 
         //public List<Ingredient> GetIngredientsByUser(int userID);
 
+        public Ingredient GetOrCreateIngredient(string ingredientName);
+
         public List<Recipe> SelectRecipeByCooktime(int cooktime);
 
         public RecipeAdditionError InsertRecipe(Recipe inRecipe);
