@@ -174,6 +174,14 @@ namespace CookNook.Model
             return userIds;
         }
 
+
+        /// <summary>
+        /// Edits a recipe in the database. 
+        /// Note that associated entities (Tags and Ingredientes) are dropped and re-added, 
+        /// so take care not to 
+        /// </summary>
+        /// <param name="inRecipe"></param>
+        /// <returns></returns>
         public RecipeEditError EditRecipe(Recipe inRecipe)
         {
             try
@@ -229,7 +237,7 @@ namespace CookNook.Model
                     cmdInsertIngredients.ExecuteNonQuery();
                 }
 
-                // now we delete and re-add the tags
+                // now we delete tags for this recipe
                 using var cmdDeleteTags = new NpgsqlCommand("DELETE FROM recipe_tags WHERE recipe_id = @RecipeID", conn);
                 cmdDeleteTags.Parameters.AddWithValue("RecipeID", inRecipe.ID);
                 cmdDeleteTags.ExecuteNonQuery();
@@ -442,6 +450,8 @@ namespace CookNook.Model
             recipe.Rating = reader.GetInt32(8);
             recipe.Servings = reader.GetInt32(9);
             recipe.Image = reader.GetString(10);
+            
+            // get associative data
             recipe.Tags = GetTagsForRecipe(inID).ToArray();
             recipe.FollowerIds = GetRecipeFollowerIds(inID).ToArray();
 
@@ -498,11 +508,44 @@ namespace CookNook.Model
             return tags;
         }
 
+
+        /// <summary>
+        /// Queries the database for an ingredient by name, returning the existing entry if found.
+        /// If there was no match, then the ingredient will be created.
+        /// </summary>
+        /// <param name="ingredientName"></param>
+        /// <returns></returns>
         public Ingredient GetOrCreateIngredient(string ingredientName)
         {
-           
+            Ingredient outIngredient;
+
+            // query the database to see if it exists
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+
+
+            // to handle existing ingredients, we can leverage RETURNING stmnt to return the existing
+            // ingredient_id, should a conflict occur
+            var cmd = new NpgsqlCommand(@"INSERT INTO ingredients (name) VALUES (@Name) ON CONFLICT (name) 
+                                        DO UPDATE SET name = @Name RETURNING name, ingredient_id", conn);
+
+            cmd.Parameters.AddWithValue("Name", ingredientName);
+            using var reader = cmd.ExecuteReader();
+            reader.Read();
+
+            // our results is simple, only having the id and name: 
+            outIngredient = new Ingredient(reader.GetString(0), reader.GetString(1));
+            /* 
+             * SELECT recipe_ingredients.ingredient_id, ingredients.name, recipe_ingredients.quantity, recipe_ingredients.unit 
+               FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes
+               WHERE 
+               recipe_ingredients.ingredient_id = ingredients.ingredient_id
+               AND recipe_ingredients.recipe_id = recipes.recipe_id
+             */
+            return outIngredient;
 
         }
+
 
         public List<Recipe> SelectRecipeByCooktime(int cooktime)
         {

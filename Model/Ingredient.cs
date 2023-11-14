@@ -143,5 +143,17 @@ namespace CookNook.Model
 
             throw new FormatException("Invalid CourseType!");
         }
+
+		/// <summary>
+		/// Through a static method on IngredientManager, parse a string 
+		/// to see if it's already in the database as an ingredient
+		/// </summary>
+		/// <param name="ingredient"></param>
+		/// <returns></returns>
+		public static Ingredient Parse(string ingredient)
+		{
+			// Todo: create IngredientManager to store known recipes without querying
+			// IngredientManager.Parse(ingredient);
+		}
 	}
 }
