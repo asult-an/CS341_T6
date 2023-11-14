@@ -13,7 +13,6 @@ namespace CookNook.Model
 {
     internal class RecipeDatabase : IRecipeDatabase
     {
-
         private List<int> authorListIDs = new List<int>();
         private List<int> cookbookIDs = new List<int>();
         private List<Recipe> authorList;

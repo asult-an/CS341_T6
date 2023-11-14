@@ -51,7 +51,7 @@ namespace CookNook.Model
         /// <param name="servings">number of mouths the dish feeds</param>
         /// <param name="course">one of the predefined CourseTypes</param>
         /// <param name="ingredients">Array of Ingredients, resolved by RecipeLogic</param>
-        /// <param name="tagIds">Array of tagIds that this recipe is tagged as</param>
+        /// <param name="tags">Array of tagIds that this recipe is tagged as</param>
         /// <param name="followerIds">Array of userIds of the users following this recipe</param>
         public Recipe(
             string name,
@@ -87,7 +87,7 @@ namespace CookNook.Model
         /// <param name="servings">number of mouths the dish feeds</param>
         /// <param name="course">one of the predefined CourseTypes</param>
         /// <param name="ingredients">Array of Ingredients, resolved by RecipeLogic</param>
-        /// <param name="tagIds">Array of tagIds that this recipe is tagged as</param>
+        /// <param name="tags">Array of tagIds that this recipe is tagged as</param>
         /// <param name="followerIds">Array of userIds of the users following this recipe</param>
         public Recipe(
             int recipeID,

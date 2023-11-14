@@ -154,6 +154,7 @@ namespace CookNook.Model
 		{
 			// Todo: create IngredientManager to store known recipes without querying
 			// IngredientManager.Parse(ingredient);
+			return null;
 		}
 	}
 }
