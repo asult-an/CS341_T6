@@ -68,8 +68,11 @@ namespace CookNook.Model
 
 
 		/// <summary>
-		/// Unitless ingredient: will have a `unit` of NULL. 
-		/// Defaults to an ID of -1, so be sure to modify before inserting
+		/// Constructs a new 'Unitless ingredient' which will have a `unit` 
+		/// of NULL. Useful for ingredients that feature unique naming conventions, such 
+		/// as 'eggs', 'cans', 'apple(s)', etc.
+		/// 
+		/// IngredientId Defaults to an ID of -1, so be sure to modify before inserting
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="quantity"></param>
@@ -79,10 +82,12 @@ namespace CookNook.Model
 			this.ingredientId = -1;
 			this.Name = name;
 			this.quantity = quantity;
+			this.unit = null;
 		}
 
 		/// <summary>
-		/// 
+		/// Constructor for an ingredient that requires a unit and a quantity
+		/// e.g '2 tbsp (of) Milk', '3.5 cups (of) Flour', etc
 		/// </summary>
 		/// <param name="name"></param>
 		/// <param name="quantity"></param>
@@ -94,6 +99,42 @@ namespace CookNook.Model
 			this.unit = unit;
 		}
 
+        /// <summary>
+        /// Full constructor for a 'unitless' ingredient, exposing the ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="quantity"></param>
+        /// <param name="unit"></param>
+        public Ingredient(int id, string name, string quantity)
+        {
+            this.ingredientId = id;
+            this.Name = name;
+            this.quantity = quantity;
+            this.unit = null;
+        }
+
+        /// <summary>
+        /// Full constructor for an ingredient, exposing the ID
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="name"></param>
+        /// <param name="quantity"></param>
+        /// <param name="unit"></param>
+        public Ingredient(int id, string name, string quantity, string unit)
+        {
+            this.ingredientId = id;
+            this.Name = name;
+            this.quantity = quantity;
+            this.unit = unit;
+        }
+
+
+        /// <summary>
+        /// Empty constructor for an ingredient, made solely to allow the more 
+        /// readable bracketed object construction syntax
+        /// </summary>
+        public Ingredient(){}
 
         public static Ingredient ParseFromJson(string ingredientJSON)
         {
