@@ -102,5 +102,5 @@ namespace CookNook.Model
 
             throw new FormatException("Invalid CourseType!");
         }
-    }
+	}
 }
