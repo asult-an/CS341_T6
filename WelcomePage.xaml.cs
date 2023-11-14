@@ -8,11 +8,11 @@ public partial class WelcomePage : ContentPage
     
     RecipeDatabase TestDB = new RecipeDatabase();
     static ObservableCollection<String> ingredients = new ObservableCollection<String>();
-    
+   
     static ObservableCollection<String> ingredientsQty = new ObservableCollection<String>();
     static ObservableCollection<String> tags = new ObservableCollection<String>();
     static ObservableCollection<string> followers = new();
-    Recipe TestRecipe = new Recipe(56, "The First Recipe!", "This is the first recipe inserted into the CookNook database!", "SYSTEM", ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
+    Recipe TestRecipe = new Recipe(56, "The First Recipe!", "This is the first recipe inserted into the CookNook database!", 15, ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
     
 	public WelcomePage()
 	{

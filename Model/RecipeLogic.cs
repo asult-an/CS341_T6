@@ -17,9 +17,9 @@ namespace CookNook.Model
             recipeDatabase = new RecipeDatabase();
         }
 
-       // this method may be redundant
-       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, string inAuthor,
-            ObservableCollection<string> inIngredients, ObservableCollection<string> inIngredientsQty,
+       
+       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthor,
+            ObservableCollection<string> inIngredients, ObservableCollection<String> inIngredientsQty,
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
             ObservableCollection<string> inTags, ObservableCollection<string> inFollowers)
         {
@@ -54,8 +54,6 @@ namespace CookNook.Model
             }
             catch (Exception ex)
             {
-                // This is where adding a recipe is failing, its catching some exception 
-                // in the database, and I'm not sure what the issue is.
                 return RecipeAdditionError.DBAdditionError;
             }
         }
@@ -98,8 +96,9 @@ namespace CookNook.Model
                 return recipeDatabase.SelectRecipe(id);
 
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return null;
             }
         }
@@ -113,17 +112,34 @@ namespace CookNook.Model
             }
             catch (Exception ex)
             {
-                Debug.WriteLine(ex.Message);
-                ObservableCollection<String> ingredients = new ObservableCollection<String>();
-                ObservableCollection<String> ingredientsQty = new ObservableCollection<String>();
-                ObservableCollection<String> tags = new ObservableCollection<String>();
-                ObservableCollection<string> followers = new();
-                Recipe failRecipe = new Recipe(56, "The First Recipe!", "This is the first recipe inserted into the CookNook database!", "SYSTEM", ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
-                ObservableCollection<Recipe> testList = new ObservableCollection<Recipe>();
-                testList.Add(failRecipe);
-                return testList;
+                Debug.WriteLine(ex);
+                return null;
             }
         }
+
+        public int GetSmallestAvailableId()
+        {
+            var allIds = recipeDatabase.GetAllRecipeIds(); 
+            allIds.Sort();
+
+            int smallestAvailableId = 0;
+            foreach (var id in allIds)
+            {
+                if (id == smallestAvailableId)
+                {
+                    smallestAvailableId++; // Increment to the next ID if the current one is taken
+                }
+                else
+                {
+                    // break when we find unused ID.
+                    break;
+                }
+            }
+
+            return smallestAvailableId; 
+        }
+
+
     }
 }
 

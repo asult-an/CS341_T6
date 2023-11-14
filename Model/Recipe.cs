@@ -12,7 +12,7 @@ namespace CookNook.Model
         private int id;
         private string name;
         private string description;
-        private string author;
+        private int author;
         private ObservableCollection<String> ingredients;
         private ObservableCollection<String> ingredientsQty;
         private int cookTime;
@@ -24,7 +24,7 @@ namespace CookNook.Model
         private ObservableCollection<string> followers;
         public Recipe() { }
 
-        public Recipe(int inId, string inName, string inDescription, string inAuthor,
+        public Recipe(int inId, string inName, string inDescription, int inAuthor,
             ObservableCollection<String> inIngredients, ObservableCollection<String> inIngredientsQty, 
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
             ObservableCollection<String> inTags, ObservableCollection<string> inFollowers) 
@@ -53,7 +53,7 @@ namespace CookNook.Model
             get { return description; }
             set { description = value; }
         }
-        public string Author { get { return author; } set { author = value; } }
+        public int Author { get { return author; } set { author = value; } }
         public ObservableCollection<String> Ingredients { get { return ingredients; } set { ingredients = value; } }
         public ObservableCollection<String> IngredientsQty { get { return ingredientsQty; } set { ingredientsQty = value; } }
         public int CookTime { get { return cookTime; } set { cookTime = value; } }

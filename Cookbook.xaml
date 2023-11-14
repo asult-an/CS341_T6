@@ -23,39 +23,23 @@
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
 
-        <ScrollView Grid.Row="0">
-            <StackLayout Spacing="10">
+        <CollectionView x:Name="recipesCollectionView"  ItemsSource="{Binding Recipes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
+                        <Grid>
+                            <!-- Grid structure and definitions -->
+                            <Image Source="{Binding Image}" Aspect="AspectFill" HeightRequest="150" WidthRequest="100" Grid.Row="0" Grid.Column="0" />
+                            <StackLayout Grid.Row="0" Grid.Column="1">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Label Text="{Binding TagsToString}" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
 
-                <!-- Filter and Sort Buttons -->
-                <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="20" WidthRequest="100">
-                        <Label Text="Filter" FontAttributes="Bold" FontSize="16" HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" />
+                            </StackLayout>
+                        </Grid>
                     </Frame>
-                    
-                </StackLayout>
-
-                <!-- Recipe 1 -->
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
-                        <Grid.ColumnDefinitions>
-                            <ColumnDefinition Width="Auto" />
-                            <ColumnDefinition Width="*" />
-                        </Grid.ColumnDefinitions>
-
-                        <Image Source="recipe1.jpg" Aspect="AspectFill" HeightRequest="150" WidthRequest="100" Grid.Row="0" Grid.Column="0" />
-                        <StackLayout Grid.Row="0" Grid.Column="1">
-                            <Label Text="Best Birria Tacos" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
-                            <Label Text="dinner, beef, mexican" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
-                        </StackLayout>
-                    </Grid>
-                </Frame>
-
-            </StackLayout>
-        </ScrollView>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
 
 
     </Grid>
