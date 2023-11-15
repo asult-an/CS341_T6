@@ -4,6 +4,7 @@ namespace CookNook;
 
 public partial class LoginPage : ContentPage
 {
+
     private UserLogic userLogic = new UserLogic();
     public LoginPage()
 	{
@@ -34,3 +35,4 @@ public partial class LoginPage : ContentPage
 		await Navigation.PopAsync();
 	}
 }
+

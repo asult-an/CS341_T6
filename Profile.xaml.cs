@@ -2,6 +2,7 @@ namespace CookNook;
 
 public partial class Profile : ContentPage
 {
+
 	public Profile()
 	{
 		InitializeComponent();
@@ -10,5 +11,6 @@ public partial class Profile : ContentPage
 	{
 		UserSettings userSettingsPage = new UserSettings();
         await Navigation.PushAsync(userSettingsPage);
+
     }
 }

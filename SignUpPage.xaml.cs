@@ -4,6 +4,7 @@ namespace CookNook;
 
 public partial class SignUpPage : ContentPage
 {
+
 	private UserLogic userLogic = new UserLogic();
 	public SignUpPage()
 	{
@@ -23,12 +24,12 @@ public partial class SignUpPage : ContentPage
             await Navigation.PushAsync(nextPage);
         }
         //change to login page instead of pushing?
-        
 
     }
 
     public async void BackClicked(object sender, EventArgs e)
     {
+
         await Navigation.PopAsync();
     }
 

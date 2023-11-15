@@ -6,10 +6,10 @@ public partial class Feed : ContentPage
 {
     private RecipeLogic recipeLogic;
     public Feed()
-	{
-		InitializeComponent();
-		recipeLogic = new RecipeLogic();
-	}
+    {
+        InitializeComponent();
+        recipeLogic = new RecipeLogic();
+    }
 
     private async void ShowAllRecipesClicked(object sender, EventArgs e)
     {
@@ -22,10 +22,8 @@ public partial class Feed : ContentPage
         await DisplayAlert("All Recipes", recipesText, "OK");
     }
 
-    public async void ProfileClicked(object sender, EventArgs e)
+    public async void UserProfileClicked(object sender, EventArgs e)
     {
-        Profile profilePage = new Profile();
-        await Navigation.PushAsync(profilePage);
+        await Navigation.PushAsync(new Profile());
     }
-
 }

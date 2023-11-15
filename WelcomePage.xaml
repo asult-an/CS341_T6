@@ -2,21 +2,29 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.WelcomePage"
-             Title="WelcomePage">
+             NavigationPage.HasNavigationBar="False">
 
-    <Grid RowDefinitions="*, *, Auto, Auto, *, Auto">
+    <Grid>
 
-        <StackLayout Grid.Row="2" Padding="10">
-            <Button Text="Login" Clicked="LoginClicked"></Button>
+        <Image Source="steakimage.jpg" VerticalOptions="Start"></Image>
+
+        <Image Source="darkmodewelcomescreen2.png" Aspect="AspectFill"></Image>
+
+        <Grid RowDefinitions="*, *, *, Auto, Auto, *, Auto">
+
+        <StackLayout Grid.Row="3" Padding="10">
+            <Button Text="Login" Clicked="LoginClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
         </StackLayout>
         
-        <StackLayout Grid.Row="3" Padding="10">
-            <Button Text="Sign Up" Clicked="SignUpClicked"></Button>
+        <StackLayout Grid.Row="4" Padding="10">
+            <Button Text="Sign Up" Clicked="SignUpClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
         </StackLayout>
 
-        <StackLayout Grid.Row="5" Padding="10">
-            <Button Text="Skip" Clicked="SkipClicked"></Button>
+        <StackLayout Grid.Row="6" Padding="10">
+            <Button Text="Skip" Clicked="SkipClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
         </StackLayout>
+
+    </Grid>
 
     </Grid>
 
