@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.SignUpPage"
              NavigationPage.HasNavigationBar="False">
-
+  
     <Grid>
 
         <Image Source="steakimage.jpg" VerticalOptions="Start"></Image>
@@ -17,15 +17,20 @@
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Placeholder="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Entry Placeholder="Username" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
                 <Label Text="Password:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
             </StackLayout>
+          
+          <!-- fix this-->
+          <StackLayout Grid.Row="5">
+            <Entry Text="Test" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10"/>
+          </StackLayout>
 
             <StackLayout Grid.Row="6">
-                <Entry Placeholder="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Placeholder="Password" x:Name="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="7">
@@ -33,7 +38,7 @@
             </StackLayout>
 
             <StackLayout Grid.Row="8">
-                <Entry Placeholder="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Placeholder="Password" x:Name="ConfirmPassword" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="9" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
@@ -42,7 +47,7 @@
                     <Button Text="Back" Clicked="BackClicked" VerticalOptions="Center" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
                 </StackLayout>
 
-                <Button Text="Sign Up" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Sign Up" Clicked="SignUpClicked" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
 
             </StackLayout>
 

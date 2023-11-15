@@ -53,9 +53,7 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="Model\UserDatabase.cs" />
-	</ItemGroup>
-	<ItemGroup>
+	  <None Remove="Resources\Images\gearssolid.svg" />
 	  <None Remove="Resources\Images\icon.jpg" />
 	  <None Remove="Resources\Images\magnifyingglass.png" />
 	  <None Remove="Resources\Images\plus.png" />
@@ -68,6 +66,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Npgsql" Version="7.0.6" />
 	</ItemGroup>
@@ -118,6 +117,10 @@
 	  <MauiXaml Update="UserSettings.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <Folder Include="Services\" />
 	</ItemGroup>
 
 </Project>

@@ -18,10 +18,10 @@ namespace CookNook.Model
         }
 
        // this method may be redundant
-       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, string inAuthor,
-            ObservableCollection<string> inIngredients, ObservableCollection<string> inIngredientsQty,
+       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthorID,
+            string inIngredients, string inIngredientsQty,
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
-            ObservableCollection<string> inTags, ObservableCollection<string> inFollowers)
+            string inTags, string inFollowers)
         {
             if (string.IsNullOrEmpty(inName))
                 return RecipeAdditionError.InvalidName;
@@ -34,7 +34,7 @@ namespace CookNook.Model
             
 
             // If all validations pass, construct the Recipe object
-            Recipe newRecipe = new Recipe(inId, inName, inDescription, inAuthor, inIngredients,
+            Recipe newRecipe = new Recipe(inId, inName, inDescription, inAuthorID, inIngredients,
                 inIngredientsQty, inCooktime, inCourse, inRating, inServings, inImage, inTags, inFollowers);
 
            
@@ -54,10 +54,12 @@ namespace CookNook.Model
             }
             catch (Exception ex)
             {
+                Debug.WriteLine(ex.ToString());
                 // This is where adding a recipe is failing, its catching some exception 
                 // in the database, and I'm not sure what the issue is.
                 return RecipeAdditionError.DBAdditionError;
             }
+            return RecipeAdditionError.NoError;
         }
 
         public RecipeEditError EditRecipe(Recipe recipe)
@@ -114,11 +116,11 @@ namespace CookNook.Model
             catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
-                ObservableCollection<String> ingredients = new ObservableCollection<String>();
-                ObservableCollection<String> ingredientsQty = new ObservableCollection<String>();
-                ObservableCollection<String> tags = new ObservableCollection<String>();
-                ObservableCollection<string> followers = new();
-                Recipe failRecipe = new Recipe(56, "The First Recipe!", "This is the first recipe inserted into the CookNook database!", "SYSTEM", ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
+                string ingredients = "";
+                string ingredientsQty = "";
+                string tags = "";
+                string followers = "";
+                Recipe failRecipe = new Recipe(56, "The First Recipe!", "This is the first recipe inserted into the CookNook database!", 0, ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
                 ObservableCollection<Recipe> testList = new ObservableCollection<Recipe>();
                 testList.Add(failRecipe);
                 return testList;

@@ -70,15 +70,11 @@ namespace CookNook.Model
                 var cmd = new NpgsqlCommand();
                 cmd.Connection = conn;
                 //write the SQL statement with the following paramters
-                cmd.CommandText = "UPDATE recipes SET name = @name, description = @Description, " +
-                    "ingredients_list = @IngredientsList, ingredients_qty = @IngredientsQty, cook_time_mins = @CookTimeMins," +
-                    " course = @Course, rating = @Rating, servings = @Servings," +
-                    " image = @Image, tags = @Tags, followers = @Followers" +
-                    " WHERE recpie_id = @ID;";
+                cmd.CommandText = @"UPDATE users SET username = @Username, email = @Email, password = @Password, profile_pic = @ProfilePic WHERE user_id = @UserId\";
                 cmd.Parameters.AddWithValue("Recipe_ID", inRecipe.ID);
                 cmd.Parameters.AddWithValue("Name", inRecipe.Name);
                 cmd.Parameters.AddWithValue("Description", inRecipe.Description);
-                cmd.Parameters.AddWithValue("Author", inRecipe.Author);
+                cmd.Parameters.AddWithValue("Author", inRecipe.AuthorID);
                 cmd.Parameters.AddWithValue("IngredientsList", inRecipe.IngredientsToString());
                 cmd.Parameters.AddWithValue("IngredientsQty", inRecipe.IngredientsQtyToString());
                 cmd.Parameters.AddWithValue("CookTimeMins", inRecipe.CookTime);
@@ -113,28 +109,26 @@ namespace CookNook.Model
             //connect the database to the command
             cmd.Connection = conn;
             //write the SQL statement to insert the recipe into the database
-            cmd.CommandText = "INSERT INTO recipes (recipe_id, name, description, author, ingredients_list, " +
-                "ingredients_qty, cook_time_mins, course, rating, servings, image, tags, followers) VALUES " +
-                "(@Recipe_ID, @Name, @Description, @Author, @IngredientsList, @IngredientsQty, @CookTimeMins, " +
-                "@Course, @Rating, @Servings, @Image, @Tags, @Followers)";
+            cmd.CommandText = "INSERT INTO recipes (recipe_id, name, description, cook_time_mins, " +
+                "course, rating, servings, image, author_id) VALUES " +
+                "(@Recipe_ID, @Name, @Description, @CookTimeMins, @Course, @Rating, @Servings, " +
+                "@Image, @AuthorID)";
             //extract the relevant data from the recipe specified by the user
             cmd.Parameters.AddWithValue("Recipe_ID", inRecipe.ID);
             cmd.Parameters.AddWithValue("Name", inRecipe.Name);
             cmd.Parameters.AddWithValue("Description", inRecipe.Description);
-            cmd.Parameters.AddWithValue("Author", inRecipe.Author);
-            cmd.Parameters.AddWithValue("IngredientsList", inRecipe.IngredientsToString());
-            cmd.Parameters.AddWithValue("IngredientsQty", inRecipe.IngredientsQtyToString());
             cmd.Parameters.AddWithValue("CookTimeMins", inRecipe.CookTime);
             cmd.Parameters.AddWithValue("Course", inRecipe.Course);
             cmd.Parameters.AddWithValue("Rating", inRecipe.Rating);
             cmd.Parameters.AddWithValue("Servings", inRecipe.Servings);
             cmd.Parameters.AddWithValue("Image", inRecipe.Image);
-            cmd.Parameters.AddWithValue("Tags", inRecipe.TagsToString());
-            cmd.Parameters.AddWithValue("Followers", inRecipe.FollowersToString());
+            cmd.Parameters.AddWithValue("AuthorID", inRecipe.AuthorID);
+
+
             //execute the insert command
             cmd.ExecuteNonQuery();
 
-            AddToAuthorList(inRecipe.ID);
+            //AddToAuthorList(inRecipe.ID);
             return RecipeAdditionError.NoError;
         }
 
@@ -160,16 +154,16 @@ namespace CookNook.Model
                 recipe.ID = reader.GetInt32(0);
                 recipe.Name = reader.GetString(1);
                 recipe.Description = reader.GetString(2);
-                recipe.Author = reader.GetString(3);
-                recipe.Ingredients = CreateStringCollection(reader.GetString(4));
-                recipe.IngredientsQty = CreateStringCollection(reader.GetString(5));
+                recipe.AuthorID = reader.GetInt32(3);
+                recipe.Ingredients = reader.GetString(4);
+                recipe.IngredientsQty = reader.GetString(5);
                 recipe.CookTime = reader.GetInt32(6);
                 recipe.Course = reader.GetString(7);
                 recipe.Rating = reader.GetInt32(8);
                 recipe.Servings = reader.GetInt32(9);
                 recipe.Image = reader.GetString(10);
-                recipe.Tags = CreateStringCollection(reader.GetString(11));
-                recipe.Followers = CreateStringCollection(reader.GetString(12));
+                recipe.Tags = reader.GetString(11);
+                recipe.Followers = reader.GetString(12);
                 reader.Close();
                 outRecipes.Add(recipe);
             }
@@ -194,16 +188,16 @@ namespace CookNook.Model
             recipe.ID = reader.GetInt32(0);
             recipe.Name = reader.GetString(1);
             recipe.Description = reader.GetString(2);
-            recipe.Author = reader.GetString(3);
-            recipe.Ingredients = CreateStringCollection(reader.GetString(4));
-            recipe.IngredientsQty = CreateStringCollection(reader.GetString(5));
+            recipe.AuthorID = reader.GetInt32(3);
+            recipe.Ingredients = reader.GetString(4 );
+            recipe.IngredientsQty = reader.GetString(5);
             recipe.CookTime = reader.GetInt32(6);
             recipe.Course = reader.GetString(7);
             recipe.Rating = reader.GetInt32(8);
             recipe.Servings = reader.GetInt32(9);
             recipe.Image = reader.GetString(10);
-            recipe.Tags = CreateStringCollection(reader.GetString(11));
-            recipe.Followers = CreateStringCollection(reader.GetString(12));
+            recipe.Tags = reader.GetString(11);
+            recipe.Followers = reader.GetString(12);
 
             return recipe;
             

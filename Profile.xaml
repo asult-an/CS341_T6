@@ -2,15 +2,24 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.Profile"
-             Title="Username">
+             Title="Profile">
 
     <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="searchToolbarItem"
+                IconImageSource="magnifyingglass.png"
+                Priority="0"
+                Order="Primary" />
+
         <ToolbarItem x:Name="profileToolbarItem"
-                    IconImageSource="hamburgermenu.png"
-                    Priority="1"
-                    Order="Primary"
-                    Clicked="SettingsClicked"/>
+                IconImageSource="gearssolid.svg"
+                Priority="1"
+                Order="Primary" 
+                Clicked="SettingsClicked"/>
     </ContentPage.ToolbarItems>
+    <VerticalStackLayout
+        Spacing="25"
+        Padding="30,0"
+        VerticalOptions="Start">
 
         <ScrollView>
             <Grid

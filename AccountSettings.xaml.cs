@@ -1,4 +1,4 @@
-namespace CookNook;
+﻿namespace CookNook;
 
 public partial class AccountSettings : ContentPage
 {
@@ -6,4 +6,10 @@ public partial class AccountSettings : ContentPage
 	{
 		InitializeComponent();
 	}
+
+	public async void UpdateClicked(object sender, EventArgs e)
+	{
+		//call UpdatePassword UL→DB methods
+	}
+	
 }
