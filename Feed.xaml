@@ -13,7 +13,8 @@
         <ToolbarItem x:Name="profileToolbarItem"
                     IconImageSource="profile.png"
                     Priority="1"
-                    Order="Primary" />
+                    Order="Primary" 
+                     Clicked="ProfileClicked"/>
     </ContentPage.ToolbarItems>
 
 

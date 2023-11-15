@@ -8,8 +8,12 @@ namespace CookNook
 {
     public partial class AddRecipePage : ContentPage
     {
-        public string RecipeName { get; set; }
-        public string RecipeTimeToMake { get; set; }
+        private string recipeName;
+        private string recipeCooktime;
+        private string recipeInstructions;
+        public string RecipeName { get { return recipeName; } set { recipeName = value; } }
+        public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
+        public string RecipeInstructions { get { return recipeInstructions; } set { recipeInstructions = value; } }
 
         public AddRecipePage()
         {
@@ -18,10 +22,13 @@ namespace CookNook
 
         public async void NextClicked(object sender, EventArgs e)
         {
+            
             // Capture user input
             RecipeName = (this.FindByName("Name") as Entry).Text;
-            RecipeTimeToMake = (this.FindByName("TimeToMake") as Entry).Text;
-
+            RecipeCooktime = (this.FindByName("Cooktime") as Entry).Text;
+            
+            //RecipeInstructions = (this.FindByName("Instructions") as Entry).Text;
+            //DisplayAlert("Error", "Test", "Okay");
             var nextPage = new AddRecipeIngredientsPage { PreviousPageData = this };
             await Navigation.PushAsync(nextPage);
         }

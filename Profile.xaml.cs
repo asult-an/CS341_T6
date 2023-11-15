@@ -6,4 +6,9 @@ public partial class Profile : ContentPage
 	{
 		InitializeComponent();
 	}
+	public async void SettingsClicked(object sender, EventArgs e)
+	{
+		UserSettings userSettingsPage = new UserSettings();
+        await Navigation.PushAsync(userSettingsPage);
+    }
 }

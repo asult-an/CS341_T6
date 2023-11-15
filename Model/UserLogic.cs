@@ -1,6 +1,7 @@
 ﻿using Npgsql;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -8,10 +9,14 @@ using System.Threading.Tasks;
 //namespace CookNook.Services
 namespace CookNook.Model
 {
-    internal class UserLogic
+    
+    public class UserLogic
     {
+        Random random = new Random();
         // place for the injected datbase instance to load into
-        private readonly IUserDatabase userDatabase;
+        private readonly IUserDatabase _userDatabase;
+
+        private UserDatabase userDatabase = new UserDatabase();
 
         // since users can interact with recipies, inject RecipeLogic
         // may not use it now, but by doing this we can send recipe data to users
@@ -30,8 +35,9 @@ namespace CookNook.Model
         [Obsolete]
         public UserLogic(IUserDatabase userDatabase)
         {
-            this.userDatabase = userDatabase;
+            this._userDatabase = userDatabase;
         }
+        public UserLogic() { }
 
         /// <summary>
         /// 
@@ -42,13 +48,42 @@ namespace CookNook.Model
         {
 
         }
-
-
-        public bool RegisterNewUser(string username, string email)
+        public UserAuthenticationError AuthenticateUser(string username, string password)
         {
-            return false;
+           return userDatabase.AuthenticateUser(username, password);
         }
-        
+
+        public UserAdditionError RegisterNewUser(string username, string email, string password, string confirmPassword)
+        {
+            //TODO: add email confirmation
+            if(!validateSignupInput(username, email, password, confirmPassword))
+            {
+                return UserAdditionError.InvalidPassword;
+            }
+            User newUser = new User((int)random.NextInt64(5000), username, email, password);
+            try
+            {
+                userDatabase.InsertUser(newUser);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.ToString());
+                return UserAdditionError.DBAdditionError;
+            }
+            return UserAdditionError.NoError;
+        }
+        private bool validateSignupInput(string username, string email, string password, string confirmPassword)
+        {
+
+            if(password != confirmPassword)
+            {
+                return false;
+            }
+            //TODO: Add profanity filter
+            //TODO: add special character invalidator
+            return true;
+        }
+
         /// <summary>
         /// Attempt to follow a recipe if not already following.  If
         /// 
@@ -67,9 +102,9 @@ namespace CookNook.Model
 
         }
 
-        public List<User> GetAllUsers()
+        public List<User> GetUsersByID(List<int> userIDs)
         {
-            return userDatabase.GetAllUsers();
+            return userDatabase.GetUsersById(userIDs);
         }
 
         public User GetUserByEmail(string email)
@@ -88,11 +123,21 @@ namespace CookNook.Model
             return userDatabase.InsertUser(inUser);
         }
 
-        public UserEditError EditUser(User inUser)
-        {
-            return userDatabase.EditUser(inUser);
+        //public UserEditError UpdateUserInfo(int id, string username, string password, string imgPath)
+        //{
+        //    return userDatabase.UpdateUserInfo(id, username, password, imgPath);
 
-        }
+        //}
+
+        //public UserEditError UpdateFollowedUser(string followedId, string followerId)
+        //{
+
+        //}
+
+        //public UserSelectionError GetFollowedUsers(int userId)
+        //{
+
+        //}
 
         public UserDeletionError DeleteUser(User inUser)
         {

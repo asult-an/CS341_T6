@@ -9,28 +9,38 @@ namespace CookNook.Model
 {
     public class User
     {
+        private int id;
         private string username;
         private string email;
         private string password;
-        private ObservableCollection<string> appPreferences;
-        private ObservableCollection<string> dietaryPreferences;
+        private List<string> appPreferences;
+        private List<string> dietaryPreferences;
         private string profilePicture;
-        private ObservableCollection<Recipe> authorList;
-        private List<string> followers;
-        private List<string> following;
+        private List<int> authorList;
+        private List<int> followers;
+        private List<int> following;
 
-        private ObservableCollection<Recipe> cookBook;
+        private List<Recipe> cookBook;
+        public User() { }
 
+        public User(int id, string inUsername,  string inEmail, string inPassword)
+        {
+            username = inUsername;
+            email = inEmail;
+            password = inPassword;
+        }
+
+        public int Id { get { return id; } set { id = value; } }
         public string Username { get { return username; } set {  username = value; } }
         public string Email { get { return email; } set { email = value; } }
         public string Password { get { return password; } set { password = value; } }
-        public ObservableCollection<string> AppPreferences { get {  return appPreferences; } set {  appPreferences = value; } }
-        public ObservableCollection <string> DietaryPreferences { get { return dietaryPreferences; } set {  dietaryPreferences = value; } }
+        public List<string> AppPreferences { get {  return appPreferences; } set {  appPreferences = value; } }
+        public List<string> DietaryPreferences { get { return dietaryPreferences; } set {  dietaryPreferences = value; } }
         public string ProfilePicture { get {  return profilePicture; } set {  profilePicture = value; } }
-        public ObservableCollection<Recipe > AuthorList { get { return authorList; } set { authorList = value; } }
-        public List<string> Followers { get { return followers; } set {  followers = value; } }
-        public List<string> Following { get { return following; } set { following = value; } }
-        public ObservableCollection<Recipe> CookBook { get {  return cookBook; } set {  cookBook = value; } }
+        public List<int> AuthorList { get { return authorList; } set { authorList = value; } }
+        public List<int> Followers { get { return followers; } set {  followers = value; } }
+        public List<int> Following { get { return following; } set { following = value; } }
+        public List<Recipe> CookBook { get {  return cookBook; } set {  cookBook = value; } }
 
     }
 }

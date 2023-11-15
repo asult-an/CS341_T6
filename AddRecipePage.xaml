@@ -10,7 +10,6 @@
                 <Label Text="This is a placeholder for adding an image" />
             </Frame>
             
-            
             <!--<StackLayout Spacing="0" Padding="10">
             <Picker x:Name="picker"
                     Title="Publishing Setting">
@@ -24,15 +23,15 @@
             </StackLayout>-->
 
             <StackLayout Spacing="0" Padding="10">
-            <Entry x:Name="Name" Placeholder="Enter recipe name..." />
+            <Entry Text="Test"  x:Name="Name" Placeholder="Enter recipe name..." />
             </StackLayout>
 
             <StackLayout Spacing="0" Padding="10">
-            <Entry x:Name="TimeToMake" Placeholder="Enter cook time" />
+            <Entry Text="60"  x:Name="Cooktime" Placeholder="Enter cook time" />
             </StackLayout>
 
-            <!--<StackLayout Spacing="0" Padding="10">
-            <Editor Placeholder="Enter instructions here..."
+            <StackLayout Spacing="0" Padding="10">
+            <Editor Text="Test" x:Name="Instructions" Placeholder="Enter instructions here..."
                 AutoSize="TextChanges"
                 HeightRequest="150" />
             </StackLayout>-->

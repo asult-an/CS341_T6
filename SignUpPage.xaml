@@ -4,39 +4,47 @@
              x:Class="CookNook.SignUpPage"
              Title="SignUpPage">
 
-    <Grid RowDefinitions="*, *, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto">
+    <Grid RowDefinitions="*, *, Auto, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *, Auto">
 
         <StackLayout Grid.Row="2">
             <Label Text="Username:" Margin="10,10,10,0"/>
         </StackLayout>
 
         <StackLayout Grid.Row="3">
-            <Entry Placeholder="Username" Margin="10,0,10,10"/>
+            <Entry Text="Test" x:Name="Username" Placeholder="Username" Margin="10,0,10,10"/>
         </StackLayout>
 
         <StackLayout Grid.Row="4">
-            <Label Text="Password:" Margin="10,20,10,0"/>
+            <Label Text="Email:" Margin="10,10,10,0"/>
         </StackLayout>
 
         <StackLayout Grid.Row="5">
-            <Entry Placeholder="Password" Margin="10,0,10,10"></Entry>
+            <Entry Text="Test" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10"/>
         </StackLayout>
 
         <StackLayout Grid.Row="6">
-            <Label Text="Re-Enter Password:" Margin="10,20,10,0"/>
+            <Label Text="Password:" Margin="10,20,10,0"/>
         </StackLayout>
 
         <StackLayout Grid.Row="7">
-            <Entry Placeholder="Password" Margin="10,0,10,10"></Entry>
+            <Entry Text="Test" x:Name="Password" Placeholder="Password" Margin="10,0,10,10"></Entry>
         </StackLayout>
 
-        <StackLayout Grid.Row="9" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+        <StackLayout Grid.Row="8">
+            <Label Text="Re-Enter Password:" Margin="10,20,10,0"/>
+        </StackLayout>
 
-            <StackLayout Padding="10" VerticalOptions="Center">
-                <Button Text="Back" VerticalOptions="Center" />
+        <StackLayout Grid.Row="9">
+            <Entry Text="Test"  x:Name="ConfirmPassword" Placeholder="Password" Margin="10,0,10,10"></Entry>
+        </StackLayout>
+
+        <StackLayout Grid.Row="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+
+            <StackLayout Padding="11" VerticalOptions="Center">
+                <Button Clicked="BackClicked" Text="Back" VerticalOptions="Center" />
             </StackLayout>
 
-            <Button Text="Sign Up" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10" />
+            <Button Clicked="SignUpClicked" Text="Sign Up" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10" />
 
         </StackLayout>
 
