@@ -1,70 +1,290 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.Feed"
-             Title="Feed">
-    <VerticalStackLayout
-        
-        Spacing="25"
-        Padding="5,0"
-        VerticalOptions="Start">
-        <HorizontalStackLayout HeightRequest="100" VerticalOptions="Start" Padding="0">
-            
-            <!--<Grid ColumnDefinitions="*,auto,auto,auto,*" Padding="30,0">-->
-            <ImageButton Padding="15" Source="magnifyingglass.png" BackgroundColor="Transparent"  Aspect="AspectFit" WidthRequest="90"></ImageButton>
+             Title="Feed"
+             NavigationPage.HasBackButton="False">
 
-            <ImageButton Padding="15" Source="profile.png" BackgroundColor="Transparent"  Aspect="AspectFit" WidthRequest="500"></ImageButton>
-            <!--</Grid>-->
-        </HorizontalStackLayout>
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="searchToolbarItem"
+                    IconImageSource="magnifyingglass.png"
+                    Priority="0"
+                    Order="Primary" />
 
-        <HorizontalStackLayout HeightRequest="100" VerticalOptions="Start" Padding="0">
+        <ToolbarItem x:Name="profileToolbarItem"
+                    IconImageSource="profile.png"
+                    Priority="1"
+                    Order="Primary"
+                    Clicked="UserProfileClicked"/>
+    </ContentPage.ToolbarItems>
 
-            <!--<Grid ColumnDefinitions="*,auto,auto,auto,*" Padding="30,0">-->
-            <Label Text="Filter" VerticalOptions="Center" Margin="10,10,10,10" FontSize="20"/>
-            <Button x:Name="btnShowAllRecipes" Text="Show All Recipes" Clicked="ShowAllRecipesClicked"/>
-            <Button Text="dinner" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
-            <Button Text="beef" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
-            <Button Text="mexican" HeightRequest="40" BorderColor="Black" BackgroundColor="Transparent" TextColor="Black" BorderWidth="1.0" Margin="10,10,10,10"/>
-            <!--</Grid>-->
-        </HorizontalStackLayout>
-        
 
-        <ScrollView Margin="20" BackgroundColor="Transparent" Orientation="Vertical">
-            <StackLayout Orientation="Vertical" >
-                <HorizontalStackLayout HeightRequest="50" VerticalOptions="Start" Margin="0,0,0,10">
-                    <ImageButton Padding="0" Source="profile.png" BackgroundColor="Transparent"  Aspect="AspectFit" WidthRequest="90"></ImageButton>
-                    <Label Text="asultan" VerticalOptions="Center" Margin="10,10,10,10" FontSize="20"/>
-                </HorizontalStackLayout>
-                <Label Text="Best Birria Tacos" FontSize="20"></Label>
-                <ImageButton Source="tacos.png" BackgroundColor="Beige" Aspect="AspectFill"></ImageButton>
-                <ImageButton Source="tacos.png" BackgroundColor="Beige" Aspect="AspectFill"></ImageButton>
+
+    <Grid RowDefinitions="0, 80, 10, *" BackgroundColor="#202c39">
+
+
+        <Grid Grid.Row="1" Padding="20" ColumnDefinitions="80, 15,  *">
+
+            <Button Text="Filter" Grid.Column="0" HeightRequest="40" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
+
+            <StackLayout Padding="10, 0, 10, 0" Orientation="Horizontal" Grid.Column="1">
+                <BoxView BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="Center" />
             </StackLayout>
 
+
+            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Grid.Column="2">
+
+                <StackLayout Orientation="Horizontal">
+
+                    <StackLayout Padding="5, 0, 5, 0">
+                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                            <Label Text="Dinner" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        </Frame>
+                    </StackLayout>
+
+                    <StackLayout Padding="5, 0, 5, 0">
+                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                            <Label Text="Beef" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        </Frame>
+                    </StackLayout>
+
+                    <StackLayout Padding="5, 0, 5, 0">
+                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                            <Label Text="Mexican" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        </Frame>
+                    </StackLayout>
+
+                    <StackLayout Padding="5, 0, 5, 0">
+                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                            <Label Text="Grill" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        </Frame>
+                    </StackLayout>
+
+                </StackLayout>
+
+            </ScrollView>
+
+
+        </Grid>
+
+        <StackLayout Orientation="Horizontal" Grid.Row="2">
+            <BoxView BackgroundColor="Black" HeightRequest="1" HorizontalOptions="FillAndExpand" VerticalOptions="Center" />
+        </StackLayout>
+
+
+        <ScrollView Orientation="Vertical" Grid.Row="3" VerticalScrollBarVisibility="Never">
+            <StackLayout Padding="20, 10, 20, 0">
+
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Label Text="Username"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="StartAndExpand"
+                                FontSize="20" />
+                            <Image Source="profile.png"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="Center"
+                                HeightRequest="40" />
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                            Text="Food Name"
+                            FontSize="20"
+                            VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand" />
+
+                        <Image Grid.Row="2"
+                            Source="tacos.png"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Aspect="AspectFill"
+                            HeightRequest="150" />
+                    </Grid>
+                </Frame>
+
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Label Text="Username"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="StartAndExpand"
+                                FontSize="20" />
+                            <Image Source="profile.png"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="Center"
+                                HeightRequest="40" />
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                            Text="Food Name"
+                            FontSize="20"
+                            VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand" />
+
+                        <Image Grid.Row="2"
+                            Source="tacos.png"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Aspect="AspectFill"
+                            HeightRequest="150" />
+                    </Grid>
+                </Frame>
+
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Label Text="Username"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="StartAndExpand"
+                                FontSize="20" />
+                            <Image Source="profile.png"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="Center"
+                                HeightRequest="40" />
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                            Text="Food Name"
+                            FontSize="20"
+                            VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand" />
+
+                        <Image Grid.Row="2"
+                            Source="tacos.png"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Aspect="AspectFill"
+                            HeightRequest="150" />
+                    </Grid>
+                </Frame>
+
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Label Text="Username"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="StartAndExpand"
+                                FontSize="20" />
+                            <Image Source="profile.png"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="Center"
+                                HeightRequest="40" />
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                            Text="Food Name"
+                            FontSize="20"
+                            VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand" />
+
+                        <Image Grid.Row="2"
+                            Source="tacos.png"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Aspect="AspectFill"
+                            HeightRequest="150" />
+                    </Grid>
+                </Frame>
+
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Label Text="Username"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="StartAndExpand"
+                                FontSize="20" />
+                            <Image Source="profile.png"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="Center"
+                                HeightRequest="40" />
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                            Text="Food Name"
+                            FontSize="20"
+                            VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand" />
+
+                        <Image Grid.Row="2"
+                            Source="tacos.png"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Aspect="AspectFill"
+                            HeightRequest="150" />
+                    </Grid>
+                </Frame>
+
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
+
+                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Label Text="Username"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="StartAndExpand"
+                                FontSize="20" />
+                            <Image Source="profile.png"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="Center"
+                                HeightRequest="40" />
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                            Text="Food Name"
+                            FontSize="20"
+                            VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand" />
+
+                        <Image Grid.Row="2"
+                            Source="tacos.png"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Aspect="AspectFill"
+                            HeightRequest="150" />
+                    </Grid>
+                </Frame>
+
+
+            </StackLayout>
         </ScrollView>
-        
-        <!--<Grid
-            RowDefinitions="5*,*,*,*,*,*"
-            Padding="30,0">
-            <Button Padding="60" ImageSource="profile.png" BackgroundColor="Transparent" ></Button>
-            <StackLayout Grid.Row="1">
-                <Label Text="Email: sultaa03@uwosh.edu" Margin="10,10,10,0"/>
-            </StackLayout>
 
-            <StackLayout Grid.Row="2">
-                <Label Text="Username: asultan" Margin="10,15,10,10"/>
-            </StackLayout>
 
-            <StackLayout Grid.Row="3">
-                <Label Text="Change Password:" Margin="10,5,10,0"/>
-            </StackLayout>
 
-            <StackLayout Grid.Row="4">
-                <Entry Placeholder="New Password" Margin="10,0,10,10"/>
-            </StackLayout>
-            <StackLayout Grid.Row="5">
-                <Entry Placeholder="Re-enter Password" Margin="10,0,10,10"/>
-            </StackLayout>
-        </Grid>-->
-        
-    </VerticalStackLayout>
+    </Grid>
+
 </ContentPage>
