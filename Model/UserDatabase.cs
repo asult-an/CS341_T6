@@ -209,17 +209,17 @@ namespace CookNook.Model
             try
             {
                 using var conn = new NpgsqlConnection(connString);
-                conn.Open();
+                
 
                 // since multiple tables 
                 //using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
-                var cmd = new NpgsqlCommand("SELECT password FROM users", conn);
-                Debug.WriteLine(cmd.CommandText.ToString());
+                var cmd = new NpgsqlCommand("SELECT password FROM users WHERE username = @Username", conn);
 
                 cmd.Parameters.AddWithValue("Username", username);
-                var reader = cmd.ExecuteReader(); 
-                string DBPassword = reader.GetString(1);
-                //Debug.WriteLine(DBPassword);
+                conn.Open();
+                var reader = cmd.ExecuteReader();
+                reader.Read();
+                string DBPassword = reader.GetString(0);
                 conn.Close();
                 if(DBPassword != password) 
                 {
@@ -248,7 +248,7 @@ namespace CookNook.Model
                 var cmd = new NpgsqlCommand();
                 cmd.Connection = conn;
                 // handle user info
-                cmd.CommandText = "INSERT INTO users(id, username, email, password, profile_pic)" + 
+                cmd.CommandText = "INSERT INTO users(user_id, username, email, password, profile_pic)" + 
                                                            " VALUES(@ID, @Username, @UserEmail, @Password, @ProfilePic)"; 
                 {
                     //CREATE ID ASSIGNMENT METHOD

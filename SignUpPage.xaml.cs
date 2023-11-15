@@ -15,11 +15,15 @@ public partial class SignUpPage : ContentPage
 		UserAdditionError result = userLogic.RegisterNewUser(Username.Text, UserEmail.Text, Password.Text, ConfirmPassword.Text);
 		if(result != UserAdditionError.NoError)
 		{
-			DisplayAlert("Error", "Registration Error", "Okay");
+			await DisplayAlert("Error", "Registration Error", "Okay");
 		}
+		else
+		{
+            var nextPage = new LoginPage();
+            await Navigation.PushAsync(nextPage);
+        }
         //change to login page instead of pushing?
-        var nextPage = new LoginPage();
-		await Navigation.PushAsync(nextPage);
+        
 
     }
 

@@ -63,7 +63,11 @@ namespace CookNook.Model
             User newUser = new User((int)random.NextInt64(5000), username, email, password);
             try
             {
-                userDatabase.InsertUser(newUser);
+                UserAdditionError result = userDatabase.InsertUser(newUser);
+                if (result != UserAdditionError.NoError) 
+                {
+                    return result;
+                }
             }
             catch (Exception ex)
             {

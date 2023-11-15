@@ -1,4 +1,5 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+    <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.AddRecipePage"
              Title="Add Recipe">
@@ -30,13 +31,13 @@
             <Entry Text="60"  x:Name="Cooktime" Placeholder="Enter cook time" />
             </StackLayout>
 
-            <StackLayout Spacing="0" Padding="10">
+        <StackLayout Spacing="0" Padding="10">
             <Editor Text="Test" x:Name="Instructions" Placeholder="Enter instructions here..."
                 AutoSize="TextChanges"
                 HeightRequest="150" />
-            </StackLayout>-->
+        </StackLayout>
 
-            <StackLayout Spacing="0" Padding="10">
+        <StackLayout Spacing="0" Padding="10">
             <Button Text="Add Recipe" Clicked="NextClicked" />
             </StackLayout>
 
