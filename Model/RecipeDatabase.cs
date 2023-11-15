@@ -604,6 +604,7 @@ namespace CookNook.Model
 
         public static String GetConnectionString()
         {
+            // postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
             //initialize the string builder
             var connStringBuilder = new NpgsqlConnectionStringBuilder();
             //set the properties of the string builder

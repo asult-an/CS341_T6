@@ -11,10 +11,18 @@ namespace CookNook;
 public partial class AddRecipeIngredientsPage : ContentPage
 {
     private Random random = new Random();
+
+    /// <summary>
+    /// The list of ingredients the user will chooser from, exposed as a property
+    /// </summary>
+    public static IEnumerable<Ingredient> IngredientList { get; set; }  //  => IngredientList;
+
+
     public AddRecipePage PreviousPageData { get; set; }
 
+
     // TODO: consider using Ingredient model instead of String
-    public string Ingredients { get; set; }
+    public string Ingredients => Ingredients;
 
     private IRecipeLogic recipeLogic;
 
@@ -23,10 +31,15 @@ public partial class AddRecipeIngredientsPage : ContentPage
         InitializeComponent();
     }
 
+    /// <summary>
+    /// Injects recipeLogic, then populates the list with ingredients to add to their recipe
+    /// </summary>
+    /// <param name="recipeLogic"></param>
     public AddRecipeIngredientsPage(IRecipeLogic recipeLogic)
     {
         InitializeComponent();
         this.recipeLogic = recipeLogic;
+        IngredientList = recipeLogic.GetAllIngredients();
     }
 
     // W

@@ -95,7 +95,6 @@ namespace CookNook.Model
                 // in the database, and I'm not sure what the issue is.
                 return RecipeAdditionError.DBAdditionError;
             }
-            return RecipeAdditionError.NoError;
         }
 
         public RecipeEditError EditRecipe(Recipe recipe)

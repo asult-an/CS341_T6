@@ -4,12 +4,18 @@ namespace CookNook;
 
 public partial class Feed : ContentPage
 {
-    private RecipeLogic recipeLogic;
+    private IRecipeLogic recipeLogic;
     public Feed()
 	{
 		InitializeComponent();
-		recipeLogic = new RecipeLogic();
+		//recipeLogic = new RecipeLogic();
 	}
+
+    
+    public Feed(IRecipeLogic recipeLogic)
+    {
+        this.recipeLogic = recipeLogic;
+    }
 
     private async void ShowAllRecipesClicked(object sender, EventArgs e)
     {
