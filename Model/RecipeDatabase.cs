@@ -66,7 +66,9 @@ namespace CookNook.Model
             conn.Open();
 
             var cmd = new NpgsqlCommand(
-                "SELECT public.tags.* FROM public.recipe_tags, public.tags WHERE tags.tag_id = recipe_tags.tag_id", conn);
+                //"SELECT public.tags.* FROM public.recipe_tags, public.tags WHERE tags.tag_id = recipe_tags.tag_id", conn);
+                @"SELECT recipe_ingredients.ingredient_id, recipe_ingredients.quantity,recipe_ingredients, ingredients.name
+                FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes", conn);
 
             using NpgsqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
