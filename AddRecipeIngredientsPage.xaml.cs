@@ -16,7 +16,6 @@ public partial class AddRecipeIngredientsPage : ContentPage
     {
         InitializeComponent();
         currentRecipe = recipe;
-        // You may want to initialize the ObservableCollection if it's not already done
         currentRecipe.Ingredients = new ObservableCollection<string>();
         currentRecipe.IngredientsQty = new ObservableCollection<string>();
     }
