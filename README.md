@@ -8,6 +8,9 @@ The ER Diagram was found to be misrepresentative: after revision, several major 
 	the relation between tags, ingredients, and preferences were resolved 😃😃😃
 The DB has been prepped for user preferences to be implemented, we will likely be foregoing JSON for *dietary* preferences 
 The UI's backend has been revised to incorporate the new models and their respective interfaces 😃
+Add recipe pages are able to select images stored on phone to store in database
+Cookbook is partially implemented and is fetching data from the database
+Color changes and user design have been updated
 
 # Changes (PROJECT MILESTONE 2)
 UserLogic, RecipeLogic, and RecipeDatabase classes have been implemented 😃
@@ -15,8 +18,7 @@ UserDatabase have been partially implemented, and will need some work to bring t
 UserLogic, UserDatabase, RecipeLogic, and RecipeDatabase interfaces have been implemented 😃
 Feed and AddRecipe pages have been filled with additional placeholder data and input elements 😃😃😃
 Navigation to Login/Signup, Feed, Cookbook, and Add Recipe pages has been implemented 😃😃
-Add recipe pages are able to select images stored on phone to store in database
-Cookbook is partially implemented and is fetching data from the database
+
 
 # Coding Standards
 
