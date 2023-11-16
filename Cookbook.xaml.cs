@@ -13,7 +13,7 @@ public partial class Cookbook : ContentPage
         InitializeComponent();
         recipeLogic = new RecipeLogic(new RecipeDatabase());
       
-        LoadRecipes();
+        //LoadRecipes();
     }
 
    

@@ -17,7 +17,7 @@
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Placeholder="Username" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Entry Text="Test" Placeholder="Username" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
@@ -25,7 +25,7 @@
             </StackLayout>
 
             <StackLayout Grid.Row="6">
-                <Entry Placeholder="Password" x:Name="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Text="Test" Placeholder="Password" x:Name="Password" IsPassword="True" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="8" Orientation="Horizontal" HorizontalOptions="FillAndExpand">

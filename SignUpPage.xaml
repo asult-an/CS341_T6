@@ -10,38 +10,40 @@
 
         <Image Source="darkmodesignupscreen2.png" Aspect="AspectFill"></Image>
 
-        <Grid RowDefinitions="*, *, *, Auto, Auto, Auto, Auto, Auto, Auto, *">
+        <Grid RowDefinitions="*, *, *, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *">
 
             <StackLayout Grid.Row="3">
                 <Label Text="Username:" Margin="10,10,10,0" TextColor="#ffe6a7"/>
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Placeholder="Username" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Entry Text="Test" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
-                <Label Text="Password:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
+                <Label Text="Email:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
+                <Entry Text="Test" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10" TextColor="#ffe6a7"/>
             </StackLayout>
           
           <!-- fix this-->
-          <StackLayout Grid.Row="5">
-            <Entry Text="Test" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10"/>
-          </StackLayout>
 
             <StackLayout Grid.Row="6">
-                <Entry Placeholder="Password" x:Name="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Label Text="Password:" Margin="10,10,10,0" TextColor="#ffe6a7"/>
             </StackLayout>
-
+            
             <StackLayout Grid.Row="7">
-                <Label Text="Re-Enter Password:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
+                <Entry Text="Test" IsPassword="True" x:Name="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="8">
-                <Entry Placeholder="Password" x:Name="ConfirmPassword" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Label Text="Re-Enter Password:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
             </StackLayout>
 
-            <StackLayout Grid.Row="9" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
+            <StackLayout Grid.Row="9">
+                <Entry Text="Test" IsPassword="True" x:Name="ConfirmPassword" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+            </StackLayout>
+
+            <StackLayout Grid.Row="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
 
                 <StackLayout Padding="10" VerticalOptions="Center">
                     <Button Text="Back" Clicked="BackClicked" VerticalOptions="Center" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
