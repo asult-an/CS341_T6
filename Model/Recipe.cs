@@ -123,7 +123,6 @@ namespace CookNook.Model
             this.image = imageArr;
         }
 
-        
         public int ID { get { return id; } set { id = value; } }
         public string Name
         {
