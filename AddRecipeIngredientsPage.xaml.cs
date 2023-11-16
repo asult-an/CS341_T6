@@ -81,9 +81,10 @@ public partial class AddRecipeIngredientsPage : ContentPage
         {
                 // one 'unitless' ingredient
                 new Ingredient("Pie Crust", "1"),
-                
+                //TODO new ingredients fail
                 // and a regular one
-                new Ingredient("Artichoke Hearts", "2", "oz")
+                //new Ingredient("Artichoke Hearts", "2", "oz")
+                new Ingredient("Apple (Red Delicious)", "2")
         };
         Tag[] tags = { new Tag { DisplayName = "test" } };
 
