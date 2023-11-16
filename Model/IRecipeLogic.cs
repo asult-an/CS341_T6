@@ -4,10 +4,12 @@ namespace CookNook.Model
 {
     public interface IRecipeLogic
     {
-        RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthor,
-            ObservableCollection<string> inIngredients, ObservableCollection<String> inIngredientsQty,
+
+        RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthorID,
+            string inIngredients, string inIngredientsQty,
+
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
-            ObservableCollection<string> inTags, ObservableCollection<string> inFollowers);
+            string inTags, string inFollowers);
 
         RecipeAdditionError AddRecipe(Recipe recipe);
 

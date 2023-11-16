@@ -11,6 +11,14 @@ namespace CookNook
     public partial class AddRecipePage : ContentPage
     {
 
+        private string recipeName;
+        private string recipeCooktime;
+        private string recipeInstructions;
+        public string RecipeName { get { return recipeName; } set { recipeName = value; } }
+        public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
+        public string RecipeInstructions { get { return recipeInstructions; } set { recipeInstructions = value; } }
+
+
         private String imagePath;
         public AddRecipePage()
         {
@@ -19,6 +27,7 @@ namespace CookNook
 
         private async void NextClicked(object sender, EventArgs e)
         {
+
             if (SelectedImage.Source is FileImageSource fileImageSource)
             {
                 imagePath = fileImageSource.File;
@@ -65,6 +74,15 @@ namespace CookNook
                 ImageSource imageSource = ImageSource.FromStream(() => stream);
                 SelectedImage.Source = imageSource;
             }
+
+            
+            
+            
+            //RecipeInstructions = (this.FindByName("Instructions") as Entry).Text;
+            //DisplayAlert("Error", "Test", "Okay");
+            //var nextPage = new AddRecipeIngredientsPage { PreviousPageData = this };
+           // await Navigation.PushAsync(nextPage);
+
         }
 
     }

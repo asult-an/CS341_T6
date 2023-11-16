@@ -1,7 +1,10 @@
-﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<?xml version="1.0" encoding="utf-8" ?>
+    <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.AddRecipePage"
-             Title="Add Recipe">
+             Title="Add Recipe"
+             NavigationPage.HasBackButton="False">
+
 
     <StackLayout Spacing="0" Padding="10">
 
@@ -12,20 +15,32 @@
 
         <Button Text="Pick an Image" Clicked="PickImageClicked" />
 
-        <!-- Recipe Name Entry -->
-        <Entry x:Name="Name" Placeholder="Enter recipe name..." />
+ 
 
-        <!-- Cook Time Entry -->
-        <Entry x:Name="TimeToMake" Placeholder="Enter cook time (in minutes)..." Keyboard="Numeric" />
-
-        <!-- Servings Entry -->
-        <Entry x:Name="Servings" Placeholder="Enter number of servings..." Keyboard="Numeric" />
-
-        <!-- Description Editor -->
+        <!-- Description Editor 
         <Editor x:Name="Description" Placeholder="Enter description here..." AutoSize="TextChanges" HeightRequest="150" />
+          -->
+        
 
-        <!-- Add Recipe Button -->
-        <Button Text="Add Recipe" Clicked="NextClicked" />
+
+    <Grid RowDefinitions="150, auto, auto, *, auto" Padding="20" BackgroundColor="#202c39">
+
+        
+
+        <StackLayout Grid.Row="2">
+            <Entry x:Name="Name" Placeholder="Enter recipe name..." TextColor="#ffe6a7"/>
+        </StackLayout>
+
+        <StackLayout Grid.Row="3">
+            <Entry x:Name="TimeToMake" Placeholder="Enter cook time" TextColor="#ffe6a7"/>
+        </StackLayout>
+
+        <StackLayout Grid.Row="4">
+            <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+        </StackLayout>
+
+    </Grid>
+
 
     </StackLayout>
 
@@ -34,63 +49,3 @@
 
 
 
-<!--  
-
-
-            <Grid Padding="10">
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="Auto" />
-                </Grid.RowDefinitions>
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="Auto" />
-                </Grid.ColumnDefinitions>
-
-                
-                <BoxView Grid.Row="0" Grid.ColumnSpan="2" HeightRequest="1" BackgroundColor="Gray" VerticalOptions="End" />
-            </Grid>
-
-            
-            <StackLayout Padding="10" Margin="0,10,0,0">
-                 <Entry x:Name="Name" Placeholder="Enter recipe name..." />
-            </StackLayout>
-
-            
-            <StackLayout Padding="10" Margin="0,10,0,0">
-                 <Entry x:Name="TimeToMake" Placeholder="Enter cook time" />
-            </StackLayout>
-
-            
-            <StackLayout Padding="10" Margin="0,10,0,0">
-                <Grid>
-                    <Grid.ColumnDefinitions>
-                        <ColumnDefinition Width="*" />
-                        <ColumnDefinition Width="Auto" />
-                    </Grid.ColumnDefinitions>
-
-                    
-                    <Label Grid.Column="0" Text="Instructions" />
-
-                    
-                    <Image Grid.Column="1" Source="Resources/pencil_icon.png" WidthRequest="24" HeightRequest="24" />
-
-                </Grid>
-                
-                <Editor Placeholder="Enter instructions here..." BackgroundColor="#D3D3D3" AutoSize="TextChanges" />
-            </StackLayout>
-
-            
-            <Grid Padding="10" Margin="0,20,0,0">
-                <Grid.ColumnDefinitions>
-                    <ColumnDefinition Width="*" />
-                    <ColumnDefinition Width="*" />
-                </Grid.ColumnDefinitions>
-
-                
-                <Button Grid.Column="0" Text="BACK" HorizontalOptions="Center" />
-
-                
-                <Button Grid.Column="1" Text="NEXT" Clicked="NextClicked" HorizontalOptions="Center" />
-            </Grid>
-
--->

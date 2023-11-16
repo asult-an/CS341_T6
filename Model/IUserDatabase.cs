@@ -10,11 +10,14 @@ namespace CookNook.Model
 {
     public interface IUserDatabase
     {
+        /* ===================== [ GETTERS ] ====================== */ 
         /// <summary>
-        /// Grabs all users from the database, seldom used.
+        /// allows grabbing a subset of users by their ids, useful in 
+        /// follower resolving
         /// </summary>
-        /// <returns>Collection of Users in a List.</returns>
-        List<User> GetAllUsers();
+        /// <param name="userIds"></param>
+        /// <returns></returns>
+        List<User> GetUsersById(List<int> userIds);
 
         /// <summary>
         /// Fetch a particular user by their email address.
@@ -30,6 +33,21 @@ namespace CookNook.Model
         /// <returns>User object if found, null otherwise. .</returns>
         User GetUserById(int id);
 
+        /// <summary>
+        /// Query user_following_user table for all followed_user_ids where 
+        /// follower_user_id matches the supplied userId.  Then, we call
+        /// GetUserRange to return the rest
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <returns></returns>
+        List<int> GetFollowers(int userId);
+        
+        /* ============== [ DATA MANIPULATION METHODS ] ================= */
+        /**
+         * These methods should use the User{...}Error from ErrorReporting to 
+         * report back to the appropriate BusinessLogic whether or not the 
+         * operation was completed successfully or had to abort
+         */ 
         /// <summary>
         /// Queries the junction table from user-recipe to see if a certain
         /// recipe is being followed by a particular user.
@@ -55,11 +73,35 @@ namespace CookNook.Model
         UserEditError EditUser(User inUser);
 
         /// <summary>
+        /// Attempts to add a row into user_following_user table
+        /// </summary>
+        /// <param name="userId">userId of the follower </param>
+        /// <param name="followerId">userId of the followed user</param>
+        /// <returns>Noerror on success, else AlreadyFollowingUser</returns>
+        UserSelectionError FollowUser(int userId, int followerId);
+
+        /// <summary>
+        /// Attempts to remove a row into user_following_user table
+        /// </summary>
+        /// <param name="userId">userId of the follower </param>
+        /// <param name="followerId">userId of the followed user</param>
+        /// <returns>NoError on success, else NoUserWithId</returns>
+        UserSelectionError UnfollowUser(int userId, int followerId);
+
+        /// <summary>
+        /// To modify user settings, a call to the user_settings table is made
+        /// where we update all followed_user_id by the follower_user_id
+        /// </summary>
+        /// <param name="userId">the id of the user we're polling</param>
+        /// <param name="appPrefs">json collection of the settings</param>
+        /// <returns></returns>
+        UserEditError UpdateUserInfo(string userId, List<string> appPrefs);
+
+        /// <summary>
         /// Removes a user from the database, if they exist.
         /// </summary>
         /// <param name="inUser">User object to be deleted.</param>
         /// <returns>Any errors that occurred during the deletion operation.</returns>
         UserDeletionError DeleteUser(User inUser);
-
     }
 }

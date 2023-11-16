@@ -2,7 +2,8 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.Feed"
-             Title="Feed">
+             Title="Feed"
+             NavigationPage.HasBackButton="False">
 
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="searchToolbarItem"
@@ -13,17 +14,17 @@
         <ToolbarItem x:Name="profileToolbarItem"
                     IconImageSource="profile.png"
                     Priority="1"
-                    Order="Primary" />
+                    Order="Primary"
+                    Clicked="UserProfileClicked"/>
     </ContentPage.ToolbarItems>
 
+    <Grid RowDefinitions="0, 80, 10, *" BackgroundColor="#202c39">
 
-
-    <Grid RowDefinitions="0, 80, 10, *">
 
 
         <Grid Grid.Row="1" Padding="20" ColumnDefinitions="80, 15,  *">
 
-            <Button Text="Filter" Grid.Column="0" HeightRequest="40"></Button>
+            <Button Text="Filter" Grid.Column="0" HeightRequest="40" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
 
             <StackLayout Padding="10, 0, 10, 0" Orientation="Horizontal" Grid.Column="1">
                 <BoxView BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="Center" />
@@ -36,25 +37,25 @@
 
                     <StackLayout Padding="5, 0, 5, 0">
                         <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Dinner" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="Dinner" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
                         </Frame>
                     </StackLayout>
 
                     <StackLayout Padding="5, 0, 5, 0">
                         <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Beef" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="Beef" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
                         </Frame>
                     </StackLayout>
 
                     <StackLayout Padding="5, 0, 5, 0">
                         <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Mexican" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="Mexican" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
                         </Frame>
                     </StackLayout>
 
                     <StackLayout Padding="5, 0, 5, 0">
                         <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Grill" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center"></Label>
+                            <Label Text="Grill" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
                         </Frame>
                     </StackLayout>
 
@@ -72,8 +73,40 @@
 
         <ScrollView Orientation="Vertical" Grid.Row="3" VerticalScrollBarVisibility="Never">
             <StackLayout Padding="20, 10, 20, 0">
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
+                    <Grid>
+                        <Grid.RowDefinitions>
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="40" />
+                            <RowDefinition Height="*" />
+                        </Grid.RowDefinitions>
 
-                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10">
+                        <StackLayout Grid.Row="0" Orientation="Horizontal">
+                            <Label Text="Username"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="StartAndExpand"
+                                FontSize="20" />
+                            <Image Source="profile.png"
+                                VerticalOptions="CenterAndExpand"
+                                HorizontalOptions="Center"
+                                HeightRequest="40" />
+                        </StackLayout>
+
+                        <Label Grid.Row="1"
+                            Text="Food Name"
+                            FontSize="20"
+                            VerticalOptions="Center"
+                            HorizontalOptions="StartAndExpand" />
+
+                        <Image Grid.Row="2"
+                            Source="tacos.png"
+                            VerticalOptions="Fill"
+                            HorizontalOptions="Fill"
+                            Aspect="AspectFill"
+                            HeightRequest="150" />
+                    </Grid>
+                </Frame>
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -107,7 +140,7 @@
                     </Grid>
                 </Frame>
 
-                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10">
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -141,7 +174,7 @@
                     </Grid>
                 </Frame>
 
-                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10">
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -175,7 +208,7 @@
                     </Grid>
                 </Frame>
 
-                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10">
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -209,41 +242,7 @@
                     </Grid>
                 </Frame>
 
-                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10">
-                    <Grid>
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="40" />
-                            <RowDefinition Height="40" />
-                            <RowDefinition Height="*" />
-                        </Grid.RowDefinitions>
-
-                        <StackLayout Grid.Row="0" Orientation="Horizontal">
-                            <Label Text="Username"
-                                VerticalOptions="CenterAndExpand"
-                                HorizontalOptions="StartAndExpand"
-                                FontSize="20" />
-                            <Image Source="profile.png"
-                                VerticalOptions="CenterAndExpand"
-                                HorizontalOptions="Center"
-                                HeightRequest="40" />
-                        </StackLayout>
-
-                        <Label Grid.Row="1"
-                            Text="Food Name"
-                            FontSize="20"
-                            VerticalOptions="Center"
-                            HorizontalOptions="StartAndExpand" />
-
-                        <Image Grid.Row="2"
-                            Source="tacos.png"
-                            VerticalOptions="Fill"
-                            HorizontalOptions="Fill"
-                            Aspect="AspectFill"
-                            HeightRequest="150" />
-                    </Grid>
-                </Frame>
-
-                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10">
+                <Frame HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
                     <Grid>
                         <Grid.RowDefinitions>
                             <RowDefinition Height="40" />
@@ -286,3 +285,4 @@
     </Grid>
 
 </ContentPage>
+

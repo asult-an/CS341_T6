@@ -45,7 +45,6 @@
 
 		<!-- Images -->
 		<MauiImage Include="Resources\Images\*" />
-		<MauiImage Update="Resources\Images\dotnet_bot.svg" BaseSize="168,208" />
 
 		<!-- Custom Fonts -->
 		<MauiFont Include="Resources\Fonts\*" />
@@ -54,9 +53,7 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
-	  <Compile Remove="Model\UserDatabase.cs" />
-	</ItemGroup>
-	<ItemGroup>
+	  <None Remove="Resources\Images\gearssolid.svg" />
 	  <None Remove="Resources\Images\icon.jpg" />
 	  <None Remove="Resources\Images\magnifyingglass.png" />
 	  <None Remove="Resources\Images\plus.png" />

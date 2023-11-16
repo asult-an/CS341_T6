@@ -2,8 +2,9 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.AddRecipeIngredientsPage"
-             Title="Add Recipe Ingredients">
 
+             Title="Add Recipe Ingredients">
+  <!--to fix
     <StackLayout Margin="10">
         <CollectionView x:Name="IngredientsList">
             <CollectionView.ItemTemplate>
@@ -17,9 +18,78 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
+  
+        
+           
+   
+       
+    </StackLayout>
+   -->
 
-        <Entry x:Name="IngredientEntry" Placeholder="Enter ingredient name"/>
-        <Entry x:Name="QuantityEntry" Placeholder="Enter quantity" Keyboard="Numeric"/>
+             Title="Add Recipe"
+             NavigationPage.HasBackButton="False">
+
+    <Grid RowDefinitions="auto, *, auto, auto, *, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
+
+        <Label Text="Ingredients" Margin="0, 0, 0, 20" FontSize="Large" TextColor="#ffe6a7"/>
+
+        <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="#7D8895">
+            <ScrollView>
+                <StackLayout Orientation="Vertical">
+
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 0, 0, 5">
+                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 1</Label>
+                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
+                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 2</Label>
+                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
+                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 3</Label>
+                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
+                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 4</Label>
+                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
+                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 5</Label>
+                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    </Grid>
+
+                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
+                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 6</Label>
+                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    </Grid>
+                </StackLayout>
+            </ScrollView>
+        </Frame>
+
+        <Grid ColumnDefinitions="*, 100, 100" Grid.Row="2" Padding="0, 20, 0, 0">
+
+            <StackLayout Grid.Column="0">
+
+                <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>
+
+            </StackLayout>
+
+            <StackLayout Grid.Column="1">
+
+                <Entry x:Name="QuantityEntry" Keyboard="Numeric" Placeholder="Qty" TextColor="#ffe6a7"></Entry>
+
+            </StackLayout>
+
+            <StackLayout Grid.Column="2">
+
+                
+               
+             
+        
 
         <Picker x:Name="UnitPicker" Title="Select a unit">
             <Picker.ItemsSource>
@@ -33,9 +103,53 @@
                 </x:Array>
             </Picker.ItemsSource>
         </Picker>
+              <!--
             <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
-        <Button Text="Add Ingredient" Clicked="AddIngredientClicked"/>
-        <Button Text="Complete Recipe" Clicked="CompleteRecipeClicked" HorizontalOptions="Center"/>
-    </StackLayout>
+                  -->
+            </StackLayout>
+
+
+        </Grid>
+
+        <Grid Grid.Row="3">
+
+            <StackLayout>
+
+                <Editor Placeholder="Special Instructions" AutoSize="TextChanges" TextColor="#ffe6a7"></Editor>
+
+            </StackLayout>
+
+        </Grid>
+
+        <Grid Grid.Row="4">
+
+            <StackLayout Grid.Column="0">
+
+                <Button Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
+
+            </StackLayout>
+
+        </Grid>
+
+        <Grid ColumnDefinitions="auto, *" Grid.Row="5">
+
+            <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
+
+                <Button Text="Back" Clicked="BackClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+
+            </StackLayout>
+
+            <StackLayout Grid.Column="1" Padding="10, 0, 0, 0">
+
+                <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+
+            </StackLayout>
+
+        </Grid>
+
+
+    </Grid>
+
+
 
 </ContentPage>
