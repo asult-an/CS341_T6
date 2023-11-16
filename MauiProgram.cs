@@ -33,11 +33,14 @@ public static class MauiProgram
 	/// <returns>the builder, once it's had the services added</returns>
 	public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
 	{
-		//builder.Services.AddScoped<UserService, IUserDatabase>();
+		// builder.Services.AddScoped<UserDatabase, IUserDatabase>();
 		
+		builder.Services.AddScoped<IRecipeDatabase, RecipeDatabase>();
+		builder.Services.AddScoped<IRecipeLogic, RecipeLogic>();
+
 		// Hacky, but this gets it to compile for now.
 		// TODO: troubleshoot later, true DI needed
-		builder.Services.AddSingleton<UserLogic>();
+		//builder.Services.AddSingleton<UserLogic>();
 		return builder;
 	}
 }

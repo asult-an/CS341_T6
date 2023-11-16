@@ -14,16 +14,25 @@ namespace CookNook
         private string recipeName;
         private string recipeCooktime;
         private string recipeInstructions;
+        private IRecipeLogic recipeLogic;
         public string RecipeName { get { return recipeName; } set { recipeName = value; } }
         public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
         public string RecipeInstructions { get { return recipeInstructions; } set { recipeInstructions = value; } }
-
-
         private String imagePath;
+
+        // constructor with dependency injection
+        public AddRecipePage(IRecipeLogic recipeLogic)
+        {
+            InitializeComponent();
+            this.recipeLogic = recipeLogic; 
+        }
+      
         public AddRecipePage()
         {
             InitializeComponent();
+            this.recipeLogic = new RecipeLogic(new RecipeDatabase());
         }
+      
 
         private async void NextClicked(object sender, EventArgs e)
         {
@@ -75,9 +84,16 @@ namespace CookNook
                 SelectedImage.Source = imageSource;
             }
 
-            
-            
-            
+           
+            // Capture user input
+            RecipeName = (this.FindByName("Name") as Entry).Text;
+            RecipeCooktime = (this.FindByName("Cooktime") as Entry).Text;
+            RecipeInstructions = (this.FindByName("Instructions") as Editor).Text;
+
+            //DisplayAlert("Error", "Test", "Okay");
+            var nextPage = new AddRecipeIngredientsPage(recipeLogic) { PreviousPageData = this };
+            await Navigation.PushAsync(nextPage);
+
             //RecipeInstructions = (this.FindByName("Instructions") as Entry).Text;
             //DisplayAlert("Error", "Test", "Okay");
             //var nextPage = new AddRecipeIngredientsPage { PreviousPageData = this };

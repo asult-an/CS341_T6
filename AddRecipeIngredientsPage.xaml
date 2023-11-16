@@ -86,23 +86,18 @@
 
             <StackLayout Grid.Column="2">
 
-                
-               
-             
-        
-
-        <Picker x:Name="UnitPicker" Title="Select a unit">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>cups</x:String>
-                    <x:String>oz</x:String>
-                    <x:String>lbs</x:String>
-                    <x:String>tbsps</x:String>
-                    <x:String>tsps</x:String>
-                    <x:String>grams</x:String>
-                </x:Array>
-            </Picker.ItemsSource>
-        </Picker>
+                <Picker x:Name="UnitPicker" Title="Select a unit">
+                    <Picker.ItemsSource>
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>cups</x:String>
+                            <x:String>oz</x:String>
+                            <x:String>lbs</x:String>
+                            <x:String>tbsps</x:String>
+                            <x:String>tsps</x:String>
+                            <x:String>grams</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
               <!--
             <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
                   -->
@@ -116,6 +111,7 @@
             <StackLayout>
 
                 <Editor Placeholder="Special Instructions" AutoSize="TextChanges" TextColor="#ffe6a7"></Editor>
+
 
             </StackLayout>
 

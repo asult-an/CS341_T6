@@ -19,7 +19,7 @@ namespace CookNook.Model
         static int PORT_NUMBER = 26257;
         private Random random = new Random();
 
-        private IRecipeLogic recipeDB = new RecipeLogic();
+        private IRecipeLogic recipeDB;
 
         public UserDatabase(IRecipeLogic recipeLogic)
         {
@@ -244,15 +244,14 @@ namespace CookNook.Model
                 conn.Open();
 
                 // since multiple tables 
-                //using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
-                var cmd = new NpgsqlCommand();
-                cmd.Connection = conn;
-                // handle user info
-                cmd.CommandText = "INSERT INTO users(user_id, username, email, password, profile_pic)" + 
-                                                           " VALUES(@ID, @Username, @UserEmail, @Password, @ProfilePic)"; 
+                var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
+                var cmd = new NpgsqlCommand("INSERT INTO users(id, username, email, password, profile_pic)" + 
+                                                           " VALUES(@ID, @Username, @UserEmail, @Password, @ProfilePic)", conn);
                 {
-                    //CREATE ID ASSIGNMENT METHOD
-                    cmd.Parameters.AddWithValue("ID", (int)random.NextInt64(5000));
+                    
+                    // Id is assigned by the database automatically thanks to the `UNIQUE` keyword
+
+                    //cmd.Parameters.AddWithValue("ID", (int)random.NextInt64(5000));
                     cmd.Parameters.AddWithValue("Username", user.Username);
                     cmd.Parameters.AddWithValue("UserEmail", user.Email);
                     cmd.Parameters.AddWithValue("Password", user.Password);
@@ -279,36 +278,36 @@ namespace CookNook.Model
                 //        cmd.ExecuteNonQuery();
                 //    }
 
-                //    foreach (var pref in user.DietaryPreferences)
-                //    {
-                //        using (var cmd = new NpgsqlCommand("INSERT INTO dietary_preferences(user_id, preferences) VALUES(@UserId, @Preference)", conn))
-                //        {
-                //            cmd.Parameters.AddWithValue("UserId", user.Id);
-                //            cmd.Parameters.AddWithValue("Preference", pref);
-                //            cmd.ExecuteNonQuery();
-                //        }
-                //    }
+                    //foreach (var pref in user.DietaryPreferences)
+                    //{
+                    //    using (var cmd = new NpgsqlCommand("INSERT INTO dietary_preferences(user_id, preferences) VALUES(@UserId, @Preference)", conn))
+                    //    {
+                    //        cmd.Parameters.AddWithValue("UserId", user.Id);
+                    //        cmd.Parameters.AddWithValue("Preference", pref);
+                    //        cmd.ExecuteNonQuery();
+                    //    }
+                    //}
 
-                //    // clear and update following list
-                //    using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
-                //    {
-                //        cmd.Parameters.AddWithValue("UserId", user.Id);
-                //        cmd.ExecuteNonQuery();
-                //    }
+                    //// clear and update following list
+                    //using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
+                    //{
+                    //    cmd.Parameters.AddWithValue("UserId", user.Id);
+                    //    cmd.ExecuteNonQuery();
+                    //}
 
-                //    foreach (var followingUserId in user.Following)
-                //    {
-                //        using (var cmd = new NpgsqlCommand("INSERT INTO user_following_user(follower_user_id, followed_user_id) VALUES(@UserId, @FollowingUserId)", conn))
-                //        {
-                //            cmd.Parameters.AddWithValue("UserId", user.Id);
-                //            cmd.Parameters.AddWithValue("FollowingUserId", followingUserId);
-                //            cmd.ExecuteNonQuery();
-                //        }
-                //    }
+                    //foreach (var followingUserId in user.Following)
+                    //{
+                    //    using (var cmd = new NpgsqlCommand("INSERT INTO user_following_user(follower_user_id, followed_user_id) VALUES(@UserId, @FollowingUserId)", conn))
+                    //    {
+                    //        cmd.Parameters.AddWithValue("UserId", user.Id);
+                    //        cmd.Parameters.AddWithValue("FollowingUserId", followingUserId);
+                    //        cmd.ExecuteNonQuery();
+                    //    }
+                    //}
 
-                //    // commit the transaction
-                //    transaction.Commit();
-                //    return UserAdditionError.NoError;
+                    // commit the transaction
+                    transaction.Commit();
+                    return UserAdditionError.NoError;
                 }
             catch (Exception ex)
             {

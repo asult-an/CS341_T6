@@ -15,17 +15,26 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
     private Recipe currentRecipe;
 
-    public AddRecipeIngredientsPage(Recipe recipe)
 
     private Random random = new Random();
+
+    /// <summary>
+    /// The list of ingredients the user will chooser from, exposed as a property
+    /// </summary>
+    public static IEnumerable<Ingredient> IngredientList { get; set; }  //  => IngredientList;
+
+
     public AddRecipePage PreviousPageData { get; set; }
 
     public string Ingredients { get; set; }
 
-    private RecipeLogic recipeLogic = new RecipeLogic();
+    // TODO: consider using Ingredient model instead of String
+    public string Ingredients => Ingredients;
+
+    private IRecipeLogic recipeLogic;
 
     
-
+    public AddRecipeIngredientsPage(Recipe recipe)
     {
         InitializeComponent();
         currentRecipe = recipe;
@@ -33,6 +42,18 @@ public partial class AddRecipeIngredientsPage : ContentPage
         currentRecipe.IngredientsQty = new ObservableCollection<string>();
     }
 
+    /// <summary>
+    /// Injects recipeLogic, then populates the list with ingredients to add to their recipe
+    /// </summary>
+    /// <param name="recipeLogic"></param>
+    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic)
+    {
+        InitializeComponent();
+        this.recipeLogic = recipeLogic;
+        IngredientList = recipeLogic.GetAllIngredients();
+    }
+
+    // W
     private void AddIngredientClicked(object sender, EventArgs e)
     {
 
@@ -58,24 +79,37 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
 
 
-
+    public async void NextClicked(object sender, EventArgs e)
+    {
         //Ingredients = (this.FindByName("Ingredients") as Entry).Text;
-        
-       var newRecipe = new Recipe(
-           1,
-           PreviousPageData.RecipeName,
-           "Description",
-           "SYSTEM",
-           new System.Collections.ObjectModel.ObservableCollection<string>(),
-           new System.Collections.ObjectModel.ObservableCollection<string>(),
-           int.Parse(PreviousPageData.RecipeTimeToMake),
-           "Course",
-           0,
-           0,
-           "Image",
-           new System.Collections.ObjectModel.ObservableCollection<string>(),
-           new System.Collections.ObjectModel.ObservableCollection<string>()
-       );
+
+        //Ingredient testIngredients = new Ingredient("test", 1, "test");
+        Ingredient[] testIngredients = new Ingredient[]
+        {
+                // one 'unitless' ingredient
+                new Ingredient("Industrial Runoff", "1"),
+                
+                // and a regular one
+                new Ingredient("Artichoke Hearts", "2", "oz")
+        };
+        Tag[] tags = { new Tag { DisplayName = "test" } };
+
+        var newRecipe = new Recipe(
+            PreviousPageData.RecipeName,                              // name
+            PreviousPageData.RecipeInstructions,            // description
+            int.Parse(PreviousPageData.RecipeCooktime),       // cooktime 
+            testIngredients,          //recipeLogic.GetIngredientsByRecipe(1),
+            CourseType.Parse("DINNER"),
+            -1,
+            4,
+            1,
+            tags,             // recipeLogic.GetTagsForRecipe
+            new int[] {1}       // followerIds
+           
+        ); 
+            //recipeLogic.GetFollowerIds()
+
+        // TODO: map ingredients and their quantities...?
 
        // Add recipe to the database using RecipeLogic
        var result = recipeLogic.AddRecipe(newRecipe);
