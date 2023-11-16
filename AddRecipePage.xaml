@@ -6,11 +6,26 @@
              NavigationPage.HasBackButton="False">
 
 
+    <StackLayout Spacing="0" Padding="10">
+
+        <!-- Image Frame -->
+        <Frame HasShadow="True" BorderColor="Black" Padding="10, 50, 10, 50">
+            <Image x:Name="SelectedImage" Aspect="AspectFit" HeightRequest="200" />
+        </Frame>
+
+        <Button Text="Pick an Image" Clicked="PickImageClicked" />
+
+ 
+
+        <!-- Description Editor 
+        <Editor x:Name="Description" Placeholder="Enter description here..." AutoSize="TextChanges" HeightRequest="150" />
+          -->
+        
+
+
     <Grid RowDefinitions="150, auto, auto, *, auto" Padding="20" BackgroundColor="#202c39">
 
-        <Frame Grid.Row="0" HasShadow="True" BorderColor="Black" Padding="10, 50, 10, 50" BackgroundColor="#7D8895">
-                <Label Text="This is a placeholder for adding an image" />
-        </Frame>
+        
 
         <StackLayout Grid.Row="2">
             <Entry x:Name="Name" Placeholder="Enter recipe name..." TextColor="#ffe6a7"/>
@@ -27,7 +42,10 @@
     </Grid>
 
 
+    </StackLayout>
+
 </ContentPage>
+
 
 
 

@@ -1,9 +1,31 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:local="clr-namespace:CookNook"
              x:Class="CookNook.AddRecipeIngredientsPage"
+
+             Title="Add Recipe Ingredients">
+  <!--to fix
+    <StackLayout Margin="10">
+        <CollectionView x:Name="IngredientsList">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <StackLayout Orientation="Horizontal">
+                        <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
+                        <Label Text="{Binding Quantity}" HorizontalOptions="Center"/>
+                        <Label Text="{Binding Unit}" HorizontalOptions="Center"/>
+                        <Button Text="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding .}"/>
+                    </StackLayout>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+  
+        
+           
+   
+       
+    </StackLayout>
+   -->
+
              Title="Add Recipe"
              NavigationPage.HasBackButton="False">
 
@@ -52,21 +74,40 @@
 
             <StackLayout Grid.Column="0">
 
-                <Entry Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>
+                <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>
 
             </StackLayout>
 
             <StackLayout Grid.Column="1">
 
-                <Entry Placeholder="Qty" TextColor="#ffe6a7"></Entry>
+                <Entry x:Name="QuantityEntry" Keyboard="Numeric" Placeholder="Qty" TextColor="#ffe6a7"></Entry>
 
             </StackLayout>
 
             <StackLayout Grid.Column="2">
 
-                <Entry Placeholder="Unit" TextColor="#ffe6a7"></Entry>
+                
+               
+             
+        
 
+        <Picker x:Name="UnitPicker" Title="Select a unit">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>cups</x:String>
+                    <x:String>oz</x:String>
+                    <x:String>lbs</x:String>
+                    <x:String>tbsps</x:String>
+                    <x:String>tsps</x:String>
+                    <x:String>grams</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
+              <!--
+            <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
+                  -->
             </StackLayout>
+
 
         </Grid>
 
@@ -84,7 +125,7 @@
 
             <StackLayout Grid.Column="0">
 
-                <Button Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
 
             </StackLayout>
 

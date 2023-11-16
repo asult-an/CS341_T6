@@ -137,11 +137,11 @@ namespace CookNook.Model
             ObservableCollection<Recipe> outRecipes = new ObservableCollection<Recipe>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-            //initialize a new SQL command
-            var cmd = new NpgsqlCommand();
-            //connect the database to the command
-            cmd.Connection = conn;
-            NpgsqlDataReader reader;
+            var cmd = new NpgsqlCommand
+            {
+                Connection = conn
+            };
+
             foreach (int recipeID in recipeList)
             {
                 cmd.Parameters.Clear();
@@ -149,6 +149,7 @@ namespace CookNook.Model
                 Recipe recipe = new Recipe();
                 cmd.CommandText = "SELECT * FROM recipes WHERE recipe_id = @Recipe_ID";
                 cmd.Parameters.AddWithValue("Recipe_ID", recipeID);
+
                 reader = cmd.ExecuteReader();
                 reader.Read();
                 recipe.ID = reader.GetInt32(0);
@@ -165,11 +166,13 @@ namespace CookNook.Model
                 recipe.Tags = reader.GetString(11);
                 recipe.Followers = reader.GetString(12);
                 reader.Close();
+
                 outRecipes.Add(recipe);
             }
+
             return outRecipes;
-    
         }
+
 
         public Recipe SelectRecipe(int inID)
         {
@@ -188,16 +191,21 @@ namespace CookNook.Model
             recipe.ID = reader.GetInt32(0);
             recipe.Name = reader.GetString(1);
             recipe.Description = reader.GetString(2);
+
             recipe.AuthorID = reader.GetInt32(3);
             recipe.Ingredients = reader.GetString(4 );
             recipe.IngredientsQty = reader.GetString(5);
+
             recipe.CookTime = reader.GetInt32(6);
-            recipe.Course = reader.GetString(7);
+            recipe.Ingredients = CreateStringCollection(reader.GetString(7));
+            
             recipe.Rating = reader.GetInt32(8);
+
             recipe.Servings = reader.GetInt32(9);
             recipe.Image = reader.GetString(10);
             recipe.Tags = reader.GetString(11);
             recipe.Followers = reader.GetString(12);
+
 
             return recipe;
             

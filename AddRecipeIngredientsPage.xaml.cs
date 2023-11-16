@@ -1,6 +1,7 @@
 ﻿
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,11 @@ namespace CookNook;
 
 public partial class AddRecipeIngredientsPage : ContentPage
 {
+
+    private Recipe currentRecipe;
+
+    public AddRecipeIngredientsPage(Recipe recipe)
+
     private Random random = new Random();
     public AddRecipePage PreviousPageData { get; set; }
 
@@ -18,13 +24,39 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
     private RecipeLogic recipeLogic = new RecipeLogic();
 
-    public AddRecipeIngredientsPage()
+    
+
     {
         InitializeComponent();
+        currentRecipe = recipe;
+        currentRecipe.Ingredients = new ObservableCollection<string>();
+        currentRecipe.IngredientsQty = new ObservableCollection<string>();
     }
 
-    public async void NextClicked(object sender, EventArgs e)
+    private void AddIngredientClicked(object sender, EventArgs e)
     {
+
+        string ingredient = IngredientEntry.Text;
+        int quantity = int.Parse(QuantityEntry.Text);
+        string unit = UnitPicker.SelectedItem.ToString();
+
+
+        string displayQuantity = $"{quantity} {unit}";
+
+        // Add to the ObservableCollection
+        currentRecipe.Ingredients.Add(ingredient);
+        currentRecipe.IngredientsQty.Add(displayQuantity);
+
+        //clear entries and picker
+        IngredientEntry.Text = string.Empty;
+        QuantityEntry.Text = string.Empty;
+        UnitPicker.SelectedIndex = -1;
+    }
+
+    
+
+
+
 
 
         //Ingredients = (this.FindByName("Ingredients") as Entry).Text;
@@ -86,7 +118,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             "",
             ""
         );
-
+         /**
         // Add recipe to the database using RecipeLogic
         var result = recipeLogic.AddRecipe(newRecipe);
         //DisplayAlert("Debug", result.ToString(), "Okay");
@@ -104,6 +136,8 @@ public partial class AddRecipeIngredientsPage : ContentPage
         {
             await DisplayAlert("Error", "Failed to add recipe", "OK");
         }
+        */
 
     }
 }
+

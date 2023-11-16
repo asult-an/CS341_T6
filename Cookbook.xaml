@@ -16,6 +16,33 @@
     </ContentPage.ToolbarItems>
 
 
+    <!-- Reference for database                                   
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
+        </Grid.RowDefinitions>
+
+        <CollectionView x:Name="recipesCollectionView"  ItemsSource="{Binding Recipes}">
+            <CollectionView.ItemTemplate>
+                <DataTemplate>
+                    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
+                        <Grid>
+                            <!-- Grid structure and definitions -->
+                            <Image Source="{Binding Image}" Aspect="AspectFill" HeightRequest="150" WidthRequest="100" Grid.Row="0" Grid.Column="0" />
+                            <StackLayout Grid.Row="0" Grid.Column="1">
+                                <Label Text="{Binding Name}" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" VerticalOptions="Center" />
+                                <Label Text="{Binding TagsToString}" FontSize="16" HorizontalOptions="Center" VerticalOptions="Center" />
+
+                            </StackLayout>
+                        </Grid>
+                    </Frame>
+                </DataTemplate>
+            </CollectionView.ItemTemplate>
+        </CollectionView>
+      -->
+
+
     <Grid RowDefinitions="auto, 10, *" BackgroundColor="#202c39">
 
         <Grid ColumnDefinitions="auto, *, auto" Padding="20">
@@ -241,6 +268,7 @@
             </StackLayout>
         </ScrollView>
     </Grid>
+
 
 
 

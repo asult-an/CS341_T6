@@ -17,9 +17,11 @@ namespace CookNook.Model
             recipeDatabase = new RecipeDatabase();
         }
 
+
        // this method may be redundant
        public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthorID,
             string inIngredients, string inIngredientsQty,
+
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
             string inTags, string inFollowers)
         {
@@ -54,9 +56,11 @@ namespace CookNook.Model
             }
             catch (Exception ex)
             {
+
                 Debug.WriteLine(ex.ToString());
                 // This is where adding a recipe is failing, its catching some exception 
                 // in the database, and I'm not sure what the issue is.
+
                 return RecipeAdditionError.DBAdditionError;
             }
             return RecipeAdditionError.NoError;
@@ -100,8 +104,9 @@ namespace CookNook.Model
                 return recipeDatabase.SelectRecipe(id);
 
             }
-            catch
+            catch (Exception ex)
             {
+                Debug.WriteLine(ex);
                 return null;
             }
         }
@@ -115,6 +120,7 @@ namespace CookNook.Model
             }
             catch (Exception ex)
             {
+
                 Debug.WriteLine(ex.Message);
                 string ingredients = "";
                 string ingredientsQty = "";
@@ -124,8 +130,33 @@ namespace CookNook.Model
                 ObservableCollection<Recipe> testList = new ObservableCollection<Recipe>();
                 testList.Add(failRecipe);
                 return testList;
+
             }
         }
+
+        public int GetSmallestAvailableId()
+        {
+            var allIds = recipeDatabase.GetAllRecipeIds(); 
+            allIds.Sort();
+
+            int smallestAvailableId = 0;
+            foreach (var id in allIds)
+            {
+                if (id == smallestAvailableId)
+                {
+                    smallestAvailableId++; // Increment to the next ID if the current one is taken
+                }
+                else
+                {
+                    // break when we find unused ID.
+                    break;
+                }
+            }
+
+            return smallestAvailableId; 
+        }
+
+
     }
 }
 
