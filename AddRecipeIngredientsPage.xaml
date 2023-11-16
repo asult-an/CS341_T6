@@ -99,9 +99,9 @@
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>
-              <!--
+              
             <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
-                  -->
+                  
             </StackLayout>
 
 

@@ -50,5 +50,11 @@ namespace CookNook.Model
 
         public List<Recipe> SelectRecipeByCooktime(int cooktime);
 
+        /// <summary>
+        /// Returns all recipes authored by a given user
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
+        public List<Recipe> GetRecipesByUserId(int userID);
     }
 }

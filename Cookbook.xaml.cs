@@ -6,7 +6,7 @@ namespace CookNook;
 public partial class Cookbook : ContentPage
 {
 
-    private RecipeLogic recipeLogic;
+    private IRecipeLogic recipeLogic;
 
     public Cookbook()
     {
@@ -16,7 +16,15 @@ public partial class Cookbook : ContentPage
         //LoadRecipes();
     }
 
+    public Cookbook(IRecipeLogic recipeLogic)
+    {
+        InitializeComponent();
+        this.recipeLogic = recipeLogic;
+
+        LoadRecipes();
+    }
    
+    // TODO: Add comments.  What does this do?
     private void LoadRecipes()
     {
         List<Recipe> recipes = recipeLogic.SelectAllRecipes();

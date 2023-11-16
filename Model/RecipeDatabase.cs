@@ -64,15 +64,15 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userID">The userID of the author to query</param>
         /// <returns>List of type Recipe</returns>
-        public List<Recipe> GetRecipeByUserId(int userID)
+        public List<Recipe> GetRecipesByUserId(int userID)
         {
             List<Recipe> outRecipes = new List<Recipe>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
 
-                // TODO: fully qualify the asterisk 
-                var cmd = new NpgsqlCommand(
-                    @"SELECT recipe_id, name, description, cook_time_mins, course, 
+            // TODO: fully qualify the asterisk 
+            var cmd = new NpgsqlCommand(
+                @"SELECT recipe_id, name, description, cook_time_mins, course, 
                             rating, servings, image, author_id FROM public.recipes 
                             WHERE 
                                 author_id = @User_ID;", conn);
@@ -107,6 +107,8 @@ namespace CookNook.Model
             }
             return outRecipes;
         }
+
+
 
 
         public List<Ingredient> GetAllIngredients()
