@@ -13,4 +13,8 @@ public partial class Profile : ContentPage
         await Navigation.PushAsync(userSettingsPage);
 
     }
+    public async void SearchClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new SearchPage());
+    }
 }

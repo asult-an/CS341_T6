@@ -31,4 +31,8 @@ public partial class Feed : ContentPage
     {
         await Navigation.PushAsync(new Profile());
     }
+    public async void SearchClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new SearchPage());
+    }
 }

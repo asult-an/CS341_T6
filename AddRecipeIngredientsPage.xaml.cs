@@ -80,7 +80,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
         Ingredient[] testIngredients = new Ingredient[]
         {
                 // one 'unitless' ingredient
-                new Ingredient("Industrial Runoff", "1"),
+                new Ingredient("Pie Crust", "1"),
                 
                 // and a regular one
                 new Ingredient("Artichoke Hearts", "2", "oz")
@@ -93,6 +93,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             currentRecipe.CookTime,       // cooktime 
             testIngredients,          //recipeLogic.GetIngredientsByRecipe(1),
             CourseType.Parse("Dinner"),
+            //CourseType.Parse(CourseEntry.Text),
             -1,
             4,
             1,

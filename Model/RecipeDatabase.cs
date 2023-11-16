@@ -339,22 +339,57 @@ namespace CookNook.Model
             cmd.Parameters.AddWithValue("Name", inRecipe.Name);
             cmd.Parameters.AddWithValue("Description", inRecipe.Description);
             cmd.Parameters.AddWithValue("CookTimeMins", inRecipe.CookTime);
-            cmd.Parameters.AddWithValue("Course", inRecipe.Course);
+            cmd.Parameters.AddWithValue("Course", inRecipe.Course.Name);
             cmd.Parameters.AddWithValue("Rating", inRecipe.Rating);
             cmd.Parameters.AddWithValue("Servings", inRecipe.Servings);
             cmd.Parameters.AddWithValue("Image", inRecipe.Image);
             cmd.Parameters.AddWithValue("AuthorID", inRecipe.AuthorID);
 
-           
+
             // first, we need the new ID of that recipe!
-            int recipeID = (int)cmd.ExecuteScalar();
+            var result = cmd.ExecuteScalar();
+            int recipeID = int.Parse(result.ToString());
+
+            if(result == null)
+            {
+                Debug.WriteLine("Null result: ", result);
+                return RecipeAdditionError.DBAdditionError; 
+            }
+            else
+            {
+                Debug.WriteLine("Result: ", result);
+            }
+            
 
             foreach (Ingredient ing in inRecipe.Ingredients)
             {
                 // insert row in the ingredients table
+                // TODO: don't add existing ingredients when adding a new recipe
                 // TODO: handle if null unit
-                cmd = new NpgsqlCommand("INSERT INTO ingredients (name, quantity, unit) VALUES (@Name, @Quantity, @Unit)", conn);
+                int ingredientId;
+
+                // Check if ingredient exists and get ID, else insert and get new ID
+                cmd = new NpgsqlCommand("SELECT ingredient_id FROM ingredients WHERE name = @Name", conn);
                 cmd.Parameters.AddWithValue("Name", ing.Name);
+                var ingResult = cmd.ExecuteScalar();
+                // if the ingredient DOESN'T exist:
+                if (ingResult == null)
+                {
+                    cmd = new NpgsqlCommand("INSERT INTO ingredients (name) VALUES (@Name) RETURNING ingredient_id", conn);
+                    cmd.Parameters.AddWithValue("Name", ing.Name);
+                    var newIngResult= cmd.ExecuteScalar();
+                    ingredientId = int.Parse(newIngResult.ToString());
+                }
+                else
+                    ingredientId = (int)ingResult;
+                
+                ing.IngredientId = ingredientId;
+                
+                // now that we know the ingredient is in the table, we can enter it's recipe-specific information
+                cmd = new NpgsqlCommand("INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity, unit) " +
+                                        "VALUES (@RecipeID, @IngredientID, @Quantity, @Unit)", conn);
+                cmd.Parameters.AddWithValue("RecipeID", recipeID);
+                cmd.Parameters.AddWithValue("IngredientID", ingredientId);
                 cmd.Parameters.AddWithValue("Quantity", ing.Quantity);
                 cmd.Parameters.AddWithValue("Unit", ing.Unit);
 
@@ -366,6 +401,24 @@ namespace CookNook.Model
             // now we can handle any tags involved
             foreach(Tag tag in inRecipe.Tags)
             {
+                int tagId;
+                // Check if tag exists and get ID, else insert and get new ID
+                cmd = new NpgsqlCommand("SELECT tag_id FROM tags WHERE name = @Name", conn);
+                cmd.Parameters.AddWithValue("Name", tag.DisplayName);
+                var tagResult = cmd.ExecuteScalar();
+
+                if (tagResult == null)
+                {
+                    cmd = new NpgsqlCommand("INSERT INTO tags (name) VALUES (@Name) RETURNING tag_id", conn);
+                    cmd.Parameters.AddWithValue("Name", tag.DisplayName);
+                    tagId = (int)cmd.ExecuteScalar();
+                }
+                else
+                {
+                    tagId = (int)tagResult;
+                }
+
+
                 cmd = new NpgsqlCommand("INSERT INTO recipe_tags (recipe_id, tag_id) VALUES (@RecipeID, @TagID)", conn);
                 
                 // here we get to use that ID we grabbed earlier
@@ -491,10 +544,11 @@ namespace CookNook.Model
             var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating, image servings, author_id
                                 FROM recipes AS r
                                 JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
-                                WHERE r.recipe_id = @RecipeId AND rt.recipe_id = @RecipeId;", conn);
+                                WHERE rt.recipe_id = @RecipeId 
+                                    AND @RecipeId = ", conn)
+            {
 
-
-
+            };
             cmd.Parameters.AddWithValue("RecipeId", inID);
             using var reader = cmd.ExecuteReader();
             reader.Read();

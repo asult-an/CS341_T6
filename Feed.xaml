@@ -9,7 +9,8 @@
         <ToolbarItem x:Name="searchToolbarItem"
                     IconImageSource="magnifyingglass.png"
                     Priority="0"
-                    Order="Primary" />
+                    Order="Primary" 
+                     Clicked="SearchClicked"/>
 
         <ToolbarItem x:Name="profileToolbarItem"
                     IconImageSource="profile.png"
