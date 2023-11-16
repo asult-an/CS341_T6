@@ -6,6 +6,7 @@ public partial class WelcomePage : ContentPage
 {
     //TEST DATABASE INSERTS
     
+
 	public WelcomePage()
 	{
 		InitializeComponent();

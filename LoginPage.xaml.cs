@@ -4,6 +4,7 @@ namespace CookNook;
 
 public partial class LoginPage : ContentPage
 {
+
     private UserLogic userLogic = new UserLogic();
     public LoginPage()
 	{
@@ -13,7 +14,8 @@ public partial class LoginPage : ContentPage
 	public async void LoginClicked(object sender, EventArgs e)
 	{
 		UserAuthenticationError result = userLogic.AuthenticateUser(Username.Text, Password.Text);
-		if(result == UserAuthenticationError.InvalidUsername)
+        //TODO: Change invalid username/password alert to be identical.
+        if (result == UserAuthenticationError.InvalidUsername)
 		{
 			DisplayAlert("Error", "Invalid Username", "Retry");
 		}
@@ -33,3 +35,4 @@ public partial class LoginPage : ContentPage
 		await Navigation.PopAsync();
 	}
 }
+

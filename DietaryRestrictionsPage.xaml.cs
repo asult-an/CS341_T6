@@ -12,4 +12,14 @@ public partial class DietaryRestrictionsPage : ContentPage
     {
         InitializeComponent();
     }
+
+    public async void BackClicked(object sender, EventArgs e)
+    {
+        await Navigation.PopToRootAsync();
+    }
+
+    public async void FinishedAddClick(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new TabView());
+    }
 }

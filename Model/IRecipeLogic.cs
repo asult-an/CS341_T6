@@ -6,7 +6,9 @@ namespace CookNook.Model
     {
         // this method may be redundant
         public RecipeAdditionError CreateRecipe(string inName, string inDescription, int inAuthorId,
+
             string inIngredients, string inIngredientsQty,
+
             int inCooktime, string inCourse, int inRating, int inServings, string inImage,
             string inTags, string inFollowers);
 

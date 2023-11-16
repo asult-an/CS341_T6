@@ -22,9 +22,11 @@ namespace CookNook.Model
         private int id;
         private string name;
         private string description;
+
         private int authorId;
         private Ingredient[] ingredients;
         private string ingredientsQty;
+
         private int cookTime;
         private CourseType course;
         private int rating;
@@ -120,7 +122,7 @@ namespace CookNook.Model
             this.followerIds = followerIds;
             this.ingredients = ingredients;
             this.image = imageArr;
-        }
+
 
         public int ID { get { return id; } set { id = value; } }
         public string Name
@@ -133,9 +135,11 @@ namespace CookNook.Model
             get { return description; }
             set { description = value; }
         }
+
         public int AuthorID { get { return authorId; } set { authorId = value; } }
         public Ingredient[] Ingredients { get { return ingredients; } set { ingredients = value; } }
         public String IngredientsQty { get { return ingredientsQty; } set { ingredientsQty = value; } }
+
         public int CookTime { get { return cookTime; } set { cookTime = value; } }
         public CourseType Course { get { return course; } set { course = value; } }
         public int Rating { get { return rating; } set { rating = value; } }

@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -24,12 +24,14 @@ namespace CookNook.Model
             this.recipeDatabase = recipeDatabase;
         }
 
+
        // this method may be redundant
        public RecipeAdditionError CreateRecipe(string inName, string inDescription, int inAuthorId,
            string inIngredients, string inIngredientsQty,
            int inCooktime, string inCourse, int inRating, int inServings, string inImage,
            string inTags, string inFollowers)
-        {
+
+       {
 
             //TODO: ingredients will become Ingredient[] instead of a spring 
 
@@ -41,9 +43,6 @@ namespace CookNook.Model
             // Validate description
             if (inDescription.Split(' ').Length > MAX_RECIPE_DESCRIPTION_LENGTH)
                 return RecipeAdditionError.InvalidDescription;
-
-
-
 
             // Q: how do we resolve Id back from the Database (since it's returning a RecipeError) if it's automatically generated
             // A: The returned object from the query may have something to answer this, otherwise we could do a SELECT FROM RECIPES WHERE...
@@ -90,9 +89,11 @@ namespace CookNook.Model
             }
             catch (Exception ex)
             {
+
                 Debug.WriteLine(ex.ToString());
                 // This is where adding a recipe is failing, its catching some exception 
                 // in the database, and I'm not sure what the issue is.
+
                 return RecipeAdditionError.DBAdditionError;
             }
         }
@@ -147,9 +148,9 @@ namespace CookNook.Model
                 return recipeDatabase.SelectRecipe(id);
 
             }
-            catch
+            catch (Exception ex)
             {
-                Console.WriteLine("Error finding recipe");
+                Debug.WriteLine("Error finding recipe: " + ex);
                 return null;
             }
         }
@@ -199,19 +200,32 @@ namespace CookNook.Model
             catch (Exception ex)
             {
                 throw new Exception("Error selecting all recipes", ex);
-
-                // why are we adding a reicpe in a catch block
-                //Debug.WriteLine(ex.Message);
-                //string ingredients = "";
-                //string ingredientsQty = "";
-                //string tags = "";
-                //string followers = "";
-                //Recipe failRecipe = new Recipe(56, "The First Recipe!","This is the first recipe inserted into the CookNook database!", 0, ingredients, ingredientsQty, 60, "Dinner", 50, 6, "image_ref", tags, followers);
-                //List<Recipe> testList = new List<Recipe>();
-                //testList.Add(failRecipe);
-                //return testList;
             }
         }
+
+        public int GetSmallestAvailableId()
+        {
+            var allIds = recipeDatabase.GetAllRecipeIds(); 
+            allIds.Sort();
+
+            int smallestAvailableId = 0;
+            foreach (var id in allIds)
+            {
+                if (id == smallestAvailableId)
+                {
+                    smallestAvailableId++; // Increment to the next ID if the current one is taken
+                }
+                else
+                {
+                    // break when we find unused ID.
+                    break;
+                }
+            }
+
+            return smallestAvailableId; 
+        }
+
+
     }
 }
 

@@ -334,11 +334,10 @@ namespace CookNook.Model
         /// <returns></returns>
         public List<Recipe> SelectAllRecipes()
         {
-            List<Recipe> outRecipees = new List<Recipe>();
-
             List<Recipe> outRecipes = new List<Recipe>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
+            
             //initialize a new SQL command
             var cmd = new NpgsqlCommand();
             //connect the database to the command
@@ -348,6 +347,7 @@ namespace CookNook.Model
             cmd.CommandText = "SELECT * FROM recipes;";
             reader = cmd.ExecuteReader();
             while (reader.Read()) {
+
                 reader.Read();
                 recipe.ID = reader.GetInt32(0);
                 recipe.Name = reader.GetString(1);
@@ -360,13 +360,18 @@ namespace CookNook.Model
                 // CourseType is needed, so we have to use a helper function to convert it
                 recipe.Course = CourseType.Parse(reader.GetString(7));
                 recipe.Rating = reader.GetInt32(8);
-                recipe.Servings = reader.GetInt32(9);
+                recipe.Servings = reader.GetInt32(9
+                
                 recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 recipe.Tags = GetTagsForRecipe(recipe.ID).ToArray();
-                
-                // reader.Close();
+               
+                // TODO: this probably isn't parsing properly
+                recipe.Followers = reader.GetString(12);
+                reader.Close();
+
                 outRecipes.Add(recipe);
             }
+
             return outRecipes;
         }
         
@@ -444,17 +449,21 @@ namespace CookNook.Model
             recipe.ID = reader.GetInt32(0);
             recipe.Name = reader.GetString(1);
             recipe.Description = reader.GetString(2);
+
             recipe.AuthorID = reader.GetInt32(3);
             recipe.Ingredients = GetIngredientsByRecipe(inID).ToArray();
             recipe.CookTime = reader.GetInt32(6);
             recipe.Course = CourseType.Parse(reader.GetString(7));
+
             recipe.Rating = reader.GetInt32(8);
+
             recipe.Servings = reader.GetInt32(9);
             recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 
             // get associative data
             recipe.Tags = GetTagsForRecipe(inID).ToArray();
             recipe.FollowerIds = GetRecipeFollowerIds(inID).ToArray();
+
 
             return recipe;
 
