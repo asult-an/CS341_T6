@@ -203,29 +203,6 @@ namespace CookNook.Model
             }
         }
 
-        public int GetSmallestAvailableId()
-        {
-            var allIds = recipeDatabase.GetAllRecipeIds(); 
-            allIds.Sort();
-
-            int smallestAvailableId = 0;
-            foreach (var id in allIds)
-            {
-                if (id == smallestAvailableId)
-                {
-                    smallestAvailableId++; // Increment to the next ID if the current one is taken
-                }
-                else
-                {
-                    // break when we find unused ID.
-                    break;
-                }
-            }
-
-            return smallestAvailableId; 
-        }
-
-
     }
 }
 

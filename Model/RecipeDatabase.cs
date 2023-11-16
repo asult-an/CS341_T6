@@ -353,9 +353,9 @@ namespace CookNook.Model
                 recipe.Name = reader.GetString(1);
                 recipe.Description = reader.GetString(2);
                 recipe.AuthorID = reader.GetInt32(3);
-                //recipe.Ingredients = reader.GetString(4);
+                recipe.Ingredients = GetIngredientsByRecipe(recipe.ID).ToArray();
 
-                recipe.IngredientsQty = reader.GetString(5);
+                //recipe.IngredientsQty = reader.GetString(5);
                 recipe.CookTime = reader.GetInt32(6);
                 // CourseType is needed, so we have to use a helper function to convert it
                 recipe.Course = CourseType.Parse(reader.GetString(7));
