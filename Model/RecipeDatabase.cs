@@ -59,6 +59,56 @@ namespace CookNook.Model
 
         }
 
+        /// <summary>
+        /// Gets all recipes that a user has authored
+        /// </summary>
+        /// <param name="userID">The userID of the author to query</param>
+        /// <returns>List of type Recipe</returns>
+        public List<Recipe> GetRecipeByUserId(int userID)
+        {
+            List<Recipe> outRecipes = new List<Recipe>();
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+
+                // TODO: fully qualify the asterisk 
+                var cmd = new NpgsqlCommand(
+                    @"SELECT recipe_id, name, description, cook_time_mins, course, 
+                            rating, servings, image, author_id FROM public.recipes 
+                            WHERE 
+                                author_id = @User_ID;", conn);
+
+            cmd.Parameters.AddWithValue("User_ID", userID);
+
+            using (var reader = cmd.ExecuteReader())
+            {
+                Debug.Write($"UserID from GetRecepeByUserId: ${userID}");
+                while (reader.Read())
+                {
+                    var recipeId = reader.GetInt32(0);
+                    var ingredients = GetIngredientsByRecipe(recipeId).ToArray();
+
+                    Recipe recipe = new Recipe
+                    {
+                        ID = recipeId,
+                        Name = reader.GetString(1),
+                        Description = reader.GetString(2),
+                        CookTime = reader.GetInt32(3),
+                        Course = CourseType.Parse(reader.GetString(4)),
+                        Rating = reader.GetInt32(5),
+                        Servings = reader.GetInt32(6),
+                        Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
+                        AuthorID = reader.GetInt32(8),
+                        Ingredients = ingredients
+                    };
+
+                    outRecipes.Add(recipe);
+                }
+
+            }
+            return outRecipes;
+        }
+
+
         public List<Ingredient> GetAllIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
