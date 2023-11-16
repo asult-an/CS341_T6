@@ -14,6 +14,8 @@ namespace CookNook
         private string recipeName;
         private string recipeCooktime;
         private string recipeInstructions;
+        private string Description;
+        private int Servings;
         private IRecipeLogic recipeLogic;
         public string RecipeName { get { return recipeName; } set { recipeName = value; } }
         public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
@@ -47,10 +49,10 @@ namespace CookNook
             {
 
                 Name = Name.Text,
-                Description = Description.Text,
+                //Description = Description.Text,
                 CookTime = int.Parse(TimeToMake.Text),
-                Servings = int.Parse(Servings.Text),
-                Image = imagePath
+                //Servings = int.Parse(Servings.Text),
+                Image = Encoding.ASCII.GetBytes(imagePath)
             };
 
             // Navigate to the Addingredients page and pass the newRecipe object

@@ -33,7 +33,7 @@
                 <Image Grid.Row="4" Source="tacos.png"></Image>
             </Grid>
         </ScrollView>
-        
+    </VerticalStackLayout>
 
 
 </ContentPage>

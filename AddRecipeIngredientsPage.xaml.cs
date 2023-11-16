@@ -29,7 +29,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
     public string Ingredients { get; set; }
 
     // TODO: consider using Ingredient model instead of String
-    public string Ingredients => Ingredients;
+    //public string Ingredients => Ingredients;
 
     private IRecipeLogic recipeLogic;
 
@@ -38,8 +38,8 @@ public partial class AddRecipeIngredientsPage : ContentPage
     {
         InitializeComponent();
         currentRecipe = recipe;
-        currentRecipe.Ingredients = new ObservableCollection<string>();
-        currentRecipe.IngredientsQty = new ObservableCollection<string>();
+        currentRecipe.Ingredients = new List<Ingredient>().ToArray();
+        //currentRecipe.IngredientsQty = new List<string>();
     }
 
     /// <summary>
@@ -65,8 +65,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
         string displayQuantity = $"{quantity} {unit}";
 
         // Add to the ObservableCollection
-        currentRecipe.Ingredients.Add(ingredient);
-        currentRecipe.IngredientsQty.Add(displayQuantity);
+        //currentRecipe.Ingredients.Add(ingredient);
 
         //clear entries and picker
         IngredientEntry.Text = string.Empty;
@@ -75,10 +74,6 @@ public partial class AddRecipeIngredientsPage : ContentPage
     }
 
     
-
-
-
-
     public async void NextClicked(object sender, EventArgs e)
     {
         //Ingredients = (this.FindByName("Ingredients") as Entry).Text;
@@ -137,21 +132,20 @@ public partial class AddRecipeIngredientsPage : ContentPage
     {
         await Navigation.PopToRootAsync();
         
-        var newRecipe = new Recipe(
-            (int)random.NextInt64(5000),
-            PreviousPageData.RecipeName,
-            "Description",
-            0,
-            "",
-            "",
-            int.Parse(PreviousPageData.RecipeCooktime),
-            "Course",
-            0,
-            0,
-            "Image",
-            "",
-            ""
-        );
+        //var newRecipe = new Recipe(
+        //    (int)random.NextInt64(5000),
+        //    PreviousPageData.RecipeName,
+        //    "Description",
+        //    int.Parse(PreviousPageData.RecipeCooktime),
+        //    Ingredient[] ingredients,
+        //    new CourseType(),
+        //    1,
+        //    0,
+        //    0,
+        //    "Image",
+        //    "",
+        //    ""
+        //);
          /**
         // Add recipe to the database using RecipeLogic
         var result = recipeLogic.AddRecipe(newRecipe);

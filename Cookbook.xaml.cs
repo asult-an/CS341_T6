@@ -11,7 +11,7 @@ public partial class Cookbook : ContentPage
     public Cookbook()
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic();
+        recipeLogic = new RecipeLogic(new RecipeDatabase());
       
         LoadRecipes();
     }
@@ -19,8 +19,8 @@ public partial class Cookbook : ContentPage
    
     private void LoadRecipes()
     {
-        ObservableCollection<Recipe> recipes = recipeLogic.SelectAllRecipes();
-        recipesCollectionView.ItemsSource = recipes;
+        List<Recipe> recipes = recipeLogic.SelectAllRecipes();
+        //recipesCollectionView.ItemsSource = recipes;
      }
     
 

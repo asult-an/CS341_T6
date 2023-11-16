@@ -24,10 +24,11 @@
    
        
     </StackLayout>
-   -->
-
-             Title="Add Recipe"
-             NavigationPage.HasBackButton="False">
+   Title="Add Recipe"
+   NavigationPage.HasBackButton="False">
+-->
+             
+ 
 
     <Grid RowDefinitions="auto, *, auto, auto, *, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
 

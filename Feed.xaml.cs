@@ -8,7 +8,7 @@ public partial class Feed : ContentPage
     public Feed()
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic();
+        recipeLogic = new RecipeLogic(new RecipeDatabase());
     }
     
     public Feed(IRecipeLogic recipeLogic)
