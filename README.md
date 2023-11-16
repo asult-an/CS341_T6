@@ -15,6 +15,8 @@ UserDatabase have been partially implemented, and will need some work to bring t
 UserLogic, UserDatabase, RecipeLogic, and RecipeDatabase interfaces have been implemented 😃
 Feed and AddRecipe pages have been filled with additional placeholder data and input elements 😃😃😃
 Navigation to Login/Signup, Feed, Cookbook, and Add Recipe pages has been implemented 😃😃
+Add recipe pages are able to select images stored on phone to store in database
+Cookbook is partially implemented and is fetching data from the database
 
 # Coding Standards
 
