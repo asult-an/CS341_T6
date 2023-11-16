@@ -376,21 +376,39 @@ namespace CookNook.Model
                 if (ingResult == null)
                 {
                     cmd = new NpgsqlCommand("INSERT INTO ingredients (name) VALUES (@Name) RETURNING ingredient_id", conn);
+                    //cmd = new NpgsqlCommand("INSERT INTO ingredients (ingredient_id, name) VALUES (nextval('ingredients_id_seq'), @Name) RETURNING ingredient_id", conn);
+
                     cmd.Parameters.AddWithValue("Name", ing.Name);
-                    var newIngResult= cmd.ExecuteScalar();
+                    var newIngResult = cmd.ExecuteScalar();
                     ingredientId = int.Parse(newIngResult.ToString());
                 }
+                else if (ingResult != null)
+                {
+                    // otherwise just use the existing ingredient'd ID
+                    ingredientId = int.Parse(ingResult.ToString());
+
+                    // add the new recipe_ingredients
+                }
                 else
-                    ingredientId = (int)ingResult;
+                {
+                    return RecipeAdditionError.DBAdditionError;
+                }
                 
                 ing.IngredientId = ingredientId;
-                
+                // if (ingResult != null)
+                // TODO:
+                // SQL has to carry the NULL for Unit when dealing with unitless ingredients
+
                 // now that we know the ingredient is in the table, we can enter it's recipe-specific information
                 cmd = new NpgsqlCommand("INSERT INTO recipe_ingredients (recipe_id, ingredient_id, quantity, unit) " +
                                         "VALUES (@RecipeID, @IngredientID, @Quantity, @Unit)", conn);
                 cmd.Parameters.AddWithValue("RecipeID", recipeID);
                 cmd.Parameters.AddWithValue("IngredientID", ingredientId);
                 cmd.Parameters.AddWithValue("Quantity", ing.Quantity);
+                // wipe `Unit` if necessary
+                if (ing.Unit == ing.Name)
+                    ing.Unit = null;
+               
                 cmd.Parameters.AddWithValue("Unit", ing.Unit);
 
                 // not querying the database, just inserting to it, so we execute a NonQuery:
@@ -411,11 +429,13 @@ namespace CookNook.Model
                 {
                     cmd = new NpgsqlCommand("INSERT INTO tags (name) VALUES (@Name) RETURNING tag_id", conn);
                     cmd.Parameters.AddWithValue("Name", tag.DisplayName);
-                    tagId = (int)cmd.ExecuteScalar();
+                    var newTagResult = cmd.ExecuteScalar();
+                    tagId = int.Parse(newTagResult.ToString());
                 }
                 else
                 {
-                    tagId = (int)tagResult;
+                    tagId = int.Parse(tagResult.ToString());
+
                 }
 
 
