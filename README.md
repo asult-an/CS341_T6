@@ -3,7 +3,11 @@
 # Changes (PROJECT MILESTONE 3)
 Signup, Login, and Add Recipe functionalities have been implemented and tested 😃😃
 The AccountSettings page has been implemented and allows the user to change their password 😃
-
+Our rudimentary testbed has been upgraded to introduce (and implement) models for Tag & Ingredient
+The ER Diagram was found to be misrepresentative: after revision, several major BL ambiguities surrounding
+	the relation between tags, ingredients, and preferences were resolved 😃😃😃
+The DB has been prepped for user preferences to be implemented, we will likely be foregoing JSON for *dietary* preferences 
+The UI's backend has been revised to incorporate the new models and their respective interfaces 😃
 
 # Changes (PROJECT MILESTONE 2)
 UserLogic, RecipeLogic, and RecipeDatabase classes have been implemented 😃
