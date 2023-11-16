@@ -4,7 +4,6 @@
 Signup, Login, and Add Recipe functionalities have been implemented and tested 😃😃
 The AccountSettings page has been implemented and allows the user to change their password 😃
 
-
 # Changes (PROJECT MILESTONE 2)
 UserLogic, RecipeLogic, and RecipeDatabase classes have been implemented 😃
 UserDatabase have been partially implemented, and will need some work to bring them to expected functionality 
