@@ -82,6 +82,12 @@ namespace CookNook.Model
             if (FindRecipe(recipe.ID) != null)
                 return RecipeAdditionError.DuplicateId;
 
+            if (recipe.Description == null)
+                recipe.Description = "";
+
+            if (recipe.Image == null)
+                recipe.Image = Encoding.ASCII.GetBytes("NO_IMAGE");
+
             try
             {
                 recipeDatabase.InsertRecipe(recipe);

@@ -93,6 +93,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             currentRecipe.CookTime,       // cooktime 
             testIngredients,          //recipeLogic.GetIngredientsByRecipe(1),
             CourseType.Parse("Dinner"),
+            //CourseType.Parse(CourseEntry.Text),
             -1,
             4,
             1,

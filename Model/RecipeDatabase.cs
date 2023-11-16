@@ -339,7 +339,7 @@ namespace CookNook.Model
             cmd.Parameters.AddWithValue("Name", inRecipe.Name);
             cmd.Parameters.AddWithValue("Description", inRecipe.Description);
             cmd.Parameters.AddWithValue("CookTimeMins", inRecipe.CookTime);
-            cmd.Parameters.AddWithValue("Course", inRecipe.Course);
+            cmd.Parameters.AddWithValue("Course", inRecipe.Course.Name);
             cmd.Parameters.AddWithValue("Rating", inRecipe.Rating);
             cmd.Parameters.AddWithValue("Servings", inRecipe.Servings);
             cmd.Parameters.AddWithValue("Image", inRecipe.Image);
@@ -491,10 +491,11 @@ namespace CookNook.Model
             var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating, image servings, author_id
                                 FROM recipes AS r
                                 JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
-                                WHERE r.recipe_id = @RecipeId AND rt.recipe_id = @RecipeId;", conn);
+                                WHERE rt.recipe_id = @RecipeId 
+                                    AND @RecipeId = ", conn)
+            {
 
-
-
+            };
             cmd.Parameters.AddWithValue("RecipeId", inID);
             using var reader = cmd.ExecuteReader();
             reader.Read();
