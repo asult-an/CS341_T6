@@ -187,14 +187,26 @@ namespace CookNook.Model
             // throw new NotImplementedException();
         }
 
+        public List<Recipe>? GetRecipesByUserId(int userID)
+        {
+            try
+            {
+                return recipeDatabase.GetRecipesByUserId(userID);
+            }
+            catch (Exception e)
+            {
+                Console.WriteLine(e);
+                throw;
+            }
+        }
+
+
         public List<Recipe>? SelectAllRecipes() 
         {
             try
             {
                 // get by user...?
 
-                //List<int> allRecipeIds = recipeDatabase.GetAllRecipeIds();
-                //return recipeDatabase.SelectRecipes(allRecipeIds);
                 return recipeDatabase.SelectAllRecipes();
             }
             catch (Exception ex)

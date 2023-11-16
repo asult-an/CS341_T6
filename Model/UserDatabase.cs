@@ -257,6 +257,8 @@ namespace CookNook.Model
                     cmd.Parameters.AddWithValue("Password", user.Password);
                     cmd.Parameters.AddWithValue("ProfilePic", "NO_IMAGE");
                     // set automatically by database on inserts
+                    transaction.Commit();
+
                     //cmd.Parameters.AddWithValue("UsreId", user.Id);
                     transaction.Commit();
                     cmd.ExecuteNonQuery();

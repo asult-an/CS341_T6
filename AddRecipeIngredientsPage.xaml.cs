@@ -24,8 +24,6 @@ public partial class AddRecipeIngredientsPage : ContentPage
     public static IEnumerable<Ingredient> IngredientList { get; set; }  //  => IngredientList;
 
 
-    public AddRecipePage PreviousPageData { get; set; }
-
     public string Ingredients { get; set; }
 
     // TODO: consider using Ingredient model instead of String
@@ -34,7 +32,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
     private IRecipeLogic recipeLogic;
 
     
-    public AddRecipeIngredientsPage(Recipe recipe)
+    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, Recipe recipe)
     {
         InitializeComponent();
         currentRecipe = recipe;
@@ -90,11 +88,11 @@ public partial class AddRecipeIngredientsPage : ContentPage
         Tag[] tags = { new Tag { DisplayName = "test" } };
 
         var newRecipe = new Recipe(
-            PreviousPageData.RecipeName,                              // name
-            PreviousPageData.RecipeInstructions,            // description
-            int.Parse(PreviousPageData.RecipeCooktime),       // cooktime 
+            currentRecipe.Name,                              // name
+            currentRecipe.Description,            // description
+            currentRecipe.CookTime,       // cooktime 
             testIngredients,          //recipeLogic.GetIngredientsByRecipe(1),
-            CourseType.Parse("DINNER"),
+            CourseType.Parse("Dinner"),
             -1,
             4,
             1,
@@ -105,9 +103,32 @@ public partial class AddRecipeIngredientsPage : ContentPage
             //recipeLogic.GetFollowerIds()
 
         // TODO: map ingredients and their quantities...?
+        if (recipeLogic == null)
+        {
+            recipeLogic = new RecipeLogic(new RecipeDatabase());
+        }
 
-       // Add recipe to the database using RecipeLogic
-       var result = recipeLogic.AddRecipe(newRecipe);
+        // Add recipe to the database using RecipeLogic
+        /**
+         * TEMPORARY
+         * 
+         * [0:] Error finding recipe: System.InvalidOperationException: No row is available
+            at Npgsql.NpgsqlDataReader.GetFieldValue[Int32](Int32 ordinal)
+            at Npgsql.NpgsqlDataReader.GetInt32(Int32 ordinal)
+            at CookNook.Model.RecipeDatabase.SelectRecipe(Int32 inID) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeDatabase.cs:line 502
+            at CookNook.Model.RecipeLogic.FindRecipe(Int32 id) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeLogic.cs:line 148
+            [0:] System.InvalidOperationException: Parameter 'Description' must have either its NpgsqlDbType or its DataTypeName or its Value set
+            at Npgsql.NpgsqlParameter.ResolveHandler(TypeMapper typeMapper)
+            at Npgsql.NpgsqlParameter.Bind(TypeMapper typeMapper)
+            at Npgsql.NpgsqlParameterCollection.ProcessParameters(TypeMapper typeMapper, Boolean validateValues, CommandType commandType)
+            at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+            at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
+            at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
+            at Npgsql.NpgsqlCommand.ExecuteScalar()
+            at CookNook.Model.RecipeDatabase.InsertRecipe(Recipe inRecipe) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeDatabase.cs:line 350
+            at CookNook.Model.RecipeLogic.AddRecipe(Recipe recipe) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeLogic.cs:line 87
+         */
+        var result = recipeLogic.AddRecipe(newRecipe);
 
        // Check if the recipe was added successfully and navigate accordingly
        if (result == RecipeAdditionError.NoError)
@@ -127,44 +148,50 @@ public partial class AddRecipeIngredientsPage : ContentPage
        
     }
 
-
+    /// <summary>
+    /// Sends the recipe back to the previous page so the entered 
+    /// data is not lost during navigation
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
     public async void BackClicked(object sender, EventArgs e)
     {
         await Navigation.PopToRootAsync();
-        
-        //var newRecipe = new Recipe(
-        //    (int)random.NextInt64(5000),
-        //    PreviousPageData.RecipeName,
-        //    "Description",
-        //    int.Parse(PreviousPageData.RecipeCooktime),
-        //    Ingredient[] ingredients,
-        //    new CourseType(),
-        //    1,
-        //    0,
-        //    0,
-        //    "Image",
-        //    "",
-        //    ""
-        //);
-         /**
-        // Add recipe to the database using RecipeLogic
-        var result = recipeLogic.AddRecipe(newRecipe);
-        //DisplayAlert("Debug", result.ToString(), "Okay");
-        // Check if the recipe was added successfully and navigate accordingly
-        if (result == RecipeAdditionError.NoError)
-        {
-            await Navigation.PushAsync(new DietaryRestrictionsPage());
-            await DisplayAlert("Success", "Recipe added successfully!", "OK");
-        }
-        else if (result == RecipeAdditionError.DBAdditionError)
-        {
-            await DisplayAlert("Error", "LogicError", "OK");
-        }
-        else
-        {
-            await DisplayAlert("Error", "Failed to add recipe", "OK");
-        }
-        */
+
+        var newRecipe = new Recipe(
+            (int)random.NextInt64(5000),
+            currentRecipe.Name,
+            "Description",
+            currentRecipe.CookTime,
+            new Ingredient[] { },
+            CourseType.Parse(CourseEntry.Text),
+            1,
+            0,
+            0,
+            new Tag[] { },
+            new int[] { },
+            //Encoding.ASCII.GetBytes(PreviousPageData.ImagePath)
+            Encoding.ASCII.GetBytes("NO_IMAGE")
+        );
+        /**
+       // Add recipe to the database using RecipeLogic
+       var result = recipeLogic.AddRecipe(newRecipe);
+       //DisplayAlert("Debug", result.ToString(), "Okay");
+       // Check if the recipe was added successfully and navigate accordingly
+       if (result == RecipeAdditionError.NoError)
+       {
+           await Navigation.PushAsync(new DietaryRestrictionsPage());
+           await DisplayAlert("Success", "Recipe added successfully!", "OK");
+       }
+       else if (result == RecipeAdditionError.DBAdditionError)
+       {
+           await DisplayAlert("Error", "LogicError", "OK");
+       }
+       else
+       {
+           await DisplayAlert("Error", "Failed to add recipe", "OK");
+       }
+       */
 
     }
 }
