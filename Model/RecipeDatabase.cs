@@ -360,13 +360,14 @@ namespace CookNook.Model
                 // CourseType is needed, so we have to use a helper function to convert it
                 recipe.Course = CourseType.Parse(reader.GetString(7));
                 recipe.Rating = reader.GetInt32(8);
-                recipe.Servings = reader.GetInt32(9
+                recipe.Servings = reader.GetInt32(9);
                 
                 recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 recipe.Tags = GetTagsForRecipe(recipe.ID).ToArray();
                
                 // TODO: this probably isn't parsing properly
-                recipe.Followers = reader.GetString(12);
+            //    recipe.Followers = reader.GetString(12);
+                recipe.FollowerIds = GetRecipeFollowerIds(recipe.ID).ToArray();
                 reader.Close();
 
                 outRecipes.Add(recipe);
