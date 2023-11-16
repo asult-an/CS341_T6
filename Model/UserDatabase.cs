@@ -245,8 +245,8 @@ namespace CookNook.Model
 
                 // since multiple tables 
                 var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
-                var cmd = new NpgsqlCommand("INSERT INTO users(id, username, email, password, profile_pic)" + 
-                                                           " VALUES(@ID, @Username, @UserEmail, @Password, @ProfilePic)", conn);
+                var cmd = new NpgsqlCommand("INSERT INTO users(user_id, username, email, password, profile_pic)" +
+                                                           " VALUES(unique_rowid(), @Username, @UserEmail, @Password, @ProfilePic)", conn);
                 {
                     
                     // Id is assigned by the database automatically thanks to the `UNIQUE` keyword
