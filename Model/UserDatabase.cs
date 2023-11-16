@@ -135,10 +135,11 @@ namespace CookNook.Model
         }
 
         /// <summary>
-        /// Counts the number of followers a user has by querying the user_following_user table for 
+        /// Counts the number of followers a user has by quering the user_following_user table for 
         /// rows where followed_user_id matches userId
         /// </summary>
         /// <param name="userId"></param>
+        /// <param name="followers"></param>
         /// <returns>List of the userIds following the User</returns>
         public int GetFollowerCount(int userId)
         {
@@ -257,6 +258,7 @@ namespace CookNook.Model
                     cmd.Parameters.AddWithValue("ProfilePic", "NO_IMAGE");
                     // set automatically by database on inserts
                     //cmd.Parameters.AddWithValue("UsreId", user.Id);
+                    transaction.Commit();
                     cmd.ExecuteNonQuery();
                     conn.Close();
                     //Debug.WriteLine(user.Username + user.Password + user.Email);
@@ -305,7 +307,7 @@ namespace CookNook.Model
                     //}
 
                     // commit the transaction
-                    transaction.Commit();
+                    
                     return UserAdditionError.NoError;
                 }
             catch (Exception ex)

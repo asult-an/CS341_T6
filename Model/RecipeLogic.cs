@@ -193,7 +193,7 @@ namespace CookNook.Model
             {
                 // get by user...?
 
-                List<int> allRecipeIds = recipeDatabase.GetAllRecipeIds();
+                //List<int> allRecipeIds = recipeDatabase.GetAllRecipeIds();
                 //return recipeDatabase.SelectRecipes(allRecipeIds);
                 return recipeDatabase.SelectAllRecipes();
             }
