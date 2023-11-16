@@ -72,6 +72,8 @@ namespace CookNook.Model
 
         List<Tag> GetTagsForRecipe(int recipeID);
 
+        public ObservableCollection<Recipe> CookBookRecipes();
+
     }
 }
 

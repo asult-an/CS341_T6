@@ -200,6 +200,18 @@ namespace CookNook.Model
             }
         }
 
+        public ObservableCollection<Recipe> CookBookRecipes()
+        {
+            try
+            {
+                return recipeDatabase.CookbookRecipes();
+            } catch (Exception e)
+            {
+                Console.WriteLine(e);
+                return null;
+            }
+        }
+
 
         public List<Recipe>? SelectAllRecipes() 
         {

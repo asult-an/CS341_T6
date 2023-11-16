@@ -56,5 +56,7 @@ namespace CookNook.Model
         /// <param name="userID"></param>
         /// <returns></returns>
         public List<Recipe> GetRecipesByUserId(int userID);
+
+        public ObservableCollection<Recipe> CookbookRecipes();
     }
 }
