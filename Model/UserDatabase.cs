@@ -165,6 +165,40 @@ namespace CookNook.Model
             return followers.Count; 
             //return GetUsersById(followers);
         }
+
+        //We currently have no method for getting a user's ID from the DB - ADEEL
+        /// <summary>
+        /// Get a User by their username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public User GetUserByUsername(string username)
+        {
+            int userID = -1;
+            var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT user_id FROM users WHERE username = @Username", conn);
+            cmd.Parameters.AddWithValue("Username", username);
+            try
+            {
+                using var reader = cmd.ExecuteReader();
+                reader.Read();
+                userID = reader.GetInt32(0);
+                Debug.WriteLine("Retreived ID = " + userID);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("TEST");
+                Debug.WriteLine(ex.Message);
+            }
+            conn.Close();
+            cmd.Parameters.Clear();
+            cmd.Dispose();
+            
+            
+            
+            return GetUserById(userID);
+        }
     
 
         /// <summary>
@@ -177,30 +211,37 @@ namespace CookNook.Model
             User user = null;
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-
-            var cmd = new NpgsqlCommand(@"SELECT u.username, u.email, u.password, u.profile_pic,
-                                        ARRAY_TO_STRING(user_settings.settings, ',') AS settings,
-                                        ARRAY_TO_STRING(dp.preferences, ',') AS dietary_preferences
-                                  FROM users AS u
-                                  LEFT JOIN user_settings ON u.id = user_settings.user_id
-                                  LEFT JOIN dietary_preferences AS dp ON u.id = dp.user_id
-                                  WHERE u.id = @UserId", conn);
+            //CHANGING THIS TO RETREIVE ESSENTIAL FIELDS FOR NOW - ADEEL
+            //var cmd = new NpgsqlCommand(@"SELECT u.username, u.email, u.password, u.profile_pic,
+            //                            ARRAY_TO_STRING(user_settings.settings, ',') AS settings,
+            //                            ARRAY_TO_STRING(dp.preferences, ',') AS dietary_preferences
+            //                      FROM users AS u
+            //                      LEFT JOIN user_settings ON u.id = user_settings.user_id
+            //                      LEFT JOIN dietary_preferences AS dp ON u.id = dp.user_id
+            //                      WHERE u.id = @UserId", conn);
+            var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users where user_id = @UserID", conn);
             cmd.Parameters.AddWithValue("UserId", userID);
 
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
+            try
             {
-                user = new User()
+                using var reader = cmd.ExecuteReader();
+                
+                if (reader.Read())
                 {
-                    Username = reader.GetString(0),
-                    Email = reader.GetString(1),
-                    Password = reader.GetString(2),
-                    ProfilePicture = reader.GetString(3),
-                    AppPreferences = new List<string>(reader.GetString(4).Split(',')),
-                    DietaryPreferences = new List<string>(reader.GetString(5).Split(','))
-                };
+                    user = new User()
+                    {
+                        Username = reader.GetString(0),
+                        Email = reader.GetString(1),
+                        Password = reader.GetString(2),
+                        ProfilePicture = reader.GetString(3)
+                    };
+                }
             }
-
+            catch( Exception ex )
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            conn.Close();
             return user;
         }
 
@@ -257,7 +298,6 @@ namespace CookNook.Model
                     cmd.Parameters.AddWithValue("Password", user.Password);
                     cmd.Parameters.AddWithValue("ProfilePic", "NO_IMAGE");
                     // set automatically by database on inserts
-                    transaction.Commit();
 
                     //cmd.Parameters.AddWithValue("UsreId", user.Id);
                     transaction.Commit();

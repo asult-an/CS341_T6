@@ -5,6 +5,14 @@ namespace CookNook;
 public partial class Feed : ContentPage
 {
     private IRecipeLogic recipeLogic;
+    private User user;
+    public Feed(User inUser)
+    {
+        InitializeComponent();
+        recipeLogic = new RecipeLogic(new RecipeDatabase());
+        user = inUser;
+        DisplayAlert("Alert", user.Username, "Close");
+    }
     public Feed()
     {
         InitializeComponent();
