@@ -26,7 +26,7 @@ namespace CookNook.Model
 
 
        // this method may be redundant
-       public RecipeAdditionError CreateRecipe(string inName, string inDescription, int inAuthorId,
+       public RecipeAdditionError CreateRecipe(string inName, string inDescription, Int64 inAuthorId,
            string inIngredients, string inIngredientsQty,
            int inCooktime, string inCourse, int inRating, int inServings, string inImage,
            string inTags, string inFollowers)
@@ -64,7 +64,7 @@ namespace CookNook.Model
         }
 
 
-       public RecipeAdditionError CreateRecipe(int inId, string inName, string inDescription, int inAuthorID, string inIngredients,
+       public RecipeAdditionError CreateRecipe(Int64 inId, string inName, string inDescription, Int64 inAuthorID, string inIngredients,
            string inIngredientsQty, int inCooktime, string inCourse, int inRating, int inServings, string inImage,
            string inTags, string inFollowers)
        {
@@ -142,12 +142,12 @@ namespace CookNook.Model
             return recipeDatabase.SelectRecipeByCooktime(cooktime);
         }
 
-        public List<Recipe> SelectRecipes(List<int> recipeList)
+        public List<Recipe> SelectRecipes(List<Int64> recipeList)
         {
             return recipeDatabase.SelectRecipes(recipeList);
         }
 
-        public Recipe FindRecipe(int id)
+        public Recipe FindRecipe(Int64 id)
         {
             try
             {
@@ -161,14 +161,14 @@ namespace CookNook.Model
             }
         }
 
-        public List<int> GetFollowerIds(int recipeID)
+        public List<Int64> GetFollowerIds(Int64 recipeID)
         {
             return recipeDatabase.GetRecipeFollowerIds(recipeID);
             // throw new NotImplementedException();
 
         }
 
-        public List<Ingredient> GetIngredientsByRecipe(int recipeID)
+        public List<Ingredient> GetIngredientsByRecipe(Int64 recipeID)
         {
             return recipeDatabase.GetIngredientsByRecipe(recipeID);
             // throw new NotImplementedException();
@@ -185,7 +185,7 @@ namespace CookNook.Model
             return recipeDatabase.GetOrCreateIngredient(ingredientName);
         }
 
-        public List<Tag> GetTagsForRecipe(int recipeID)
+        public List<Tag> GetTagsForRecipe(Int64 recipeID)
         {
             // TODO: might need to return error rather than propogate the Tag up
             // if recipeID is not valid:
@@ -193,7 +193,7 @@ namespace CookNook.Model
             // throw new NotImplementedException();
         }
 
-        public List<Recipe>? GetRecipesByUserId(int userID)
+        public List<Recipe>? GetRecipesByUserId(Int64 userID)
         {
             try
             {

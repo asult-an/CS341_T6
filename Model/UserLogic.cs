@@ -13,9 +13,11 @@ namespace CookNook.Model
     public class UserLogic
     {
         Random random = new Random();
+
         // place for the injected datbase instance to load into
         private readonly IUserDatabase _userDatabase;
 
+        // TODO: check to see if we can justify keeping this, or if _userDatabase can be utilized
         private UserDatabase userDatabase = new UserDatabase();
 
         // since users can interact with recipies, inject RecipeLogic
@@ -46,7 +48,8 @@ namespace CookNook.Model
         /// <param name="recipeLogic"></param>
         public UserLogic(IUserDatabase userDatabase, IRecipeLogic recipeLogic)
         {
-
+            this._userDatabase = userDatabase;
+            this.recipeLogic = recipeLogic;
         }
         public UserAuthenticationError AuthenticateUser(string username, string password)
         {
@@ -60,7 +63,9 @@ namespace CookNook.Model
             {
                 return UserAdditionError.InvalidPassword;
             }
-            User newUser = new User((int)random.NextInt64(5000), username, email, password);
+            // Note:  we want the database to come up with Id, since we're wasting computation if the 
+            // insert is going to fail
+            User newUser = new User((Int64)random.NextInt64(5000), username, email, password);
             try
             {
                 UserAdditionError result = userDatabase.InsertUser(newUser);
@@ -95,7 +100,7 @@ namespace CookNook.Model
         /// <param name="userId"></param>
         /// <param name="recipeId"></param>
         /// <returns></returns>
-        public UserSelectionError FollowRecipe(int userId, int recipeId)
+        public UserSelectionError FollowRecipe(Int64 userId, Int64 recipeId)
         {
             /* if recipeLogic injected:
              * check if recipeID is valid
@@ -106,7 +111,7 @@ namespace CookNook.Model
 
         }
 
-        public List<User> GetUsersByID(List<int> userIDs)
+        public List<User> GetUsersByID(List<Int64> userIDs)
         {
             return userDatabase.GetUsersById(userIDs);
         }
@@ -116,7 +121,7 @@ namespace CookNook.Model
             return userDatabase.GetUserByEmail(email);
         }
 
-        public User GetUserById(int id)
+        public User GetUserById(Int64 id)
         {
 
             return userDatabase.GetUserById(id);
@@ -132,7 +137,7 @@ namespace CookNook.Model
             return userDatabase.InsertUser(inUser);
         }
 
-        //public UserEditError UpdateUserInfo(int id, string username, string password, string imgPath)
+        //public UserEditError UpdateUserInfo(Int64 id, string username, string password, string imgPath)
         //{
         //    return userDatabase.UpdateUserInfo(id, username, password, imgPath);
 

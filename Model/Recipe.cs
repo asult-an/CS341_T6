@@ -19,11 +19,11 @@ namespace CookNook.Model
     /// </summary>
     public class Recipe
     {
-        private int id;
+        private Int64 id;
         private string name;
         private string description;
 
-        private int authorId;
+        private Int64 authorId;
         private Ingredient[] ingredients;
 
         private int cookTime;
@@ -33,7 +33,7 @@ namespace CookNook.Model
         private byte[] image;
 
         private Tag[] tags;// todo
-        private int[] followerIds;//todo
+        private Int64[] followerIds;//todo
 
         /// <summary>
         /// Empty constructor for a Recipe object, used for testing purposes
@@ -65,7 +65,7 @@ namespace CookNook.Model
             int rating = 3,
             int servings = 1,
             Tag[] tags = null,
-            int[] followerIds = null,
+            Int64[] followerIds = null,
             byte[] imageArr = null
         )
         {
@@ -97,17 +97,17 @@ namespace CookNook.Model
         /// <param name="followerIds">Array of userIds of the users following this recipe</param>
         /// <param name="imageArr">The i</param>
         public Recipe(
-            int recipeID,
+            Int64 recipeID,
             string name,
             string description,
             int cookTime,
             Ingredient[] ingredients,
             CourseType course,
-            int authorId,
+            Int64 authorId,
             int rating = 3,
             int servings = 1,
             Tag[] tags = null,
-            int[] followerIds = null,
+            Int64[] followerIds = null,
             byte[] imageArr = null
         )
         {
@@ -123,7 +123,7 @@ namespace CookNook.Model
             this.image = imageArr;
         }
 
-        public int ID { get { return id; } set { id = value; } }
+        public Int64 ID { get { return id; } set { id = value; } }
         public string Name
         {
             get { return name; }
@@ -135,7 +135,7 @@ namespace CookNook.Model
             set { description = value; }
         }
 
-        public int AuthorID { get { return authorId; } set { authorId = value; } }
+        public Int64 AuthorID { get { return authorId; } set { authorId = value; } }
         public Ingredient[] Ingredients { get { return ingredients; } set { ingredients = value; } }
         //public String IngredientsQty { get { return ingredientsQty; } set { ingredientsQty = value; } }
 
@@ -146,7 +146,7 @@ namespace CookNook.Model
         public byte[] Image { get { return image; } set { image = value; } }
         public Tag[] Tags { get { return tags; } set { tags = value; } }
         
-        public int[] FollowerIds { get { return followerIds; } set { followerIds = value; } }
+        public Int64[] FollowerIds { get { return followerIds; } set { followerIds = value; } }
 
 
         public string IngredientsToString()

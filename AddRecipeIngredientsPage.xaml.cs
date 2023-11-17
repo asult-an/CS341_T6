@@ -99,7 +99,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             4,
             1,
             tags,             // recipeLogic.GetTagsForRecipe
-            new int[] {1}       // followerIds
+            new long[] {1}       // followerIds
            
         ); 
             //recipeLogic.GetFollowerIds()
@@ -171,7 +171,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             0,
             0,
             new Tag[] { },
-            new int[] { },
+            new long[] { },
             //Encoding.ASCII.GetBytes(PreviousPageData.ImagePath)
             Encoding.ASCII.GetBytes("NO_IMAGE")
         );

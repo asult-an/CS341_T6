@@ -12,7 +12,7 @@ namespace CookNook.Model
 	/// </summary>
     public class Ingredient
     {
-		private int ingredientId;
+		private Int64 ingredientId;
 		private string name;
 		private string quantity;
 		private string? unit;
@@ -60,7 +60,7 @@ namespace CookNook.Model
 		}
 
 
-		public int IngredientId
+		public Int64 IngredientId
 		{
 			get { return ingredientId; }
 			set { ingredientId = value; }
@@ -106,7 +106,7 @@ namespace CookNook.Model
         /// <param name="name"></param>
         /// <param name="quantity"></param>
         /// <param name="unit"></param>
-        public Ingredient(int id, string name, string quantity)
+        public Ingredient(Int64 id, string name, string quantity)
         {
             this.ingredientId = id;
             this.Name = name;
@@ -121,7 +121,7 @@ namespace CookNook.Model
         /// <param name="name"></param>
         /// <param name="quantity"></param>
         /// <param name="unit"></param>
-        public Ingredient(int id, string name, string quantity, string unit)
+        public Ingredient(Int64 id, string name, string quantity, string unit)
         {
             this.ingredientId = id;
             this.Name = name;

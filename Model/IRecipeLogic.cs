@@ -5,7 +5,7 @@ namespace CookNook.Model
     public interface IRecipeLogic
     {
         // this method may be redundant
-        public RecipeAdditionError CreateRecipe(string inName, string inDescription, int inAuthorId,
+        public RecipeAdditionError CreateRecipe(string inName, string inDescription, Int64 inAuthorId,
 
             string inIngredients, string inIngredientsQty,
 
@@ -34,7 +34,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="recipeList"></param>
         /// <returns></returns>
-        public List<Recipe> SelectRecipes(List<int> recipeList);
+        public List<Recipe> SelectRecipes(List<Int64> recipeList);
 
 
         /// <summary>
@@ -42,14 +42,14 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="recipeID"></param>
         /// <returns></returns>
-        Recipe FindRecipe(int recipeID);
+        Recipe FindRecipe(Int64 recipeID);
 
         /// <summary>
         /// Polls the recipe_followers relation for all rows with a given recipeID 
         /// </summary>
         /// <param name="recipeID"></param>
         /// <returns></returns>
-        List<int> GetFollowerIds(int recipeID);
+        List<Int64> GetFollowerIds(Int64 recipeID);
  
 
         /// <summary>
@@ -57,7 +57,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="recipeID">Id to search for</param>
         /// <returns></returns>
-        List<Ingredient> GetIngredientsByRecipe(int recipeID);
+        List<Ingredient> GetIngredientsByRecipe(Int64 recipeID);
 
         public List<Ingredient> GetAllIngredients();
 
@@ -70,7 +70,7 @@ namespace CookNook.Model
         public Ingredient GetOrCreateIngredient(string ingredientName);
 
 
-        List<Tag> GetTagsForRecipe(int recipeID);
+        List<Tag> GetTagsForRecipe(Int64 recipeID);
 
         public ObservableCollection<Recipe> CookBookRecipes();
 
