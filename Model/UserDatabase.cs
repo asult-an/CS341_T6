@@ -46,7 +46,7 @@ namespace CookNook.Model
         }
 
 
-        public UserSelectionError UnfollowUser(int userId, int followedUserId)
+        public UserSelectionError UnfollowUser(Int64 userId, Int64 followedUserId)
         {
             // if a row exists in user_following_user table where both userId and followingId match the
             // supplied parameters, remove it.
@@ -96,7 +96,7 @@ namespace CookNook.Model
         /// <param name="userId"></param>
         /// <param name="followedUserId"></param>
         /// <returns></returns>
-        public UserSelectionError FollowUser(int userId, int followedUserId)
+        public UserSelectionError FollowUser(Int64 userId, Int64 followedUserId)
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
@@ -141,7 +141,7 @@ namespace CookNook.Model
         /// <param name="userId"></param>
         /// <param name="followers"></param>
         /// <returns>List of the userIds following the User</returns>
-        public int GetFollowerCount(int userId)
+        public Int64 GetFollowerCount(Int64 userId)
         {
             List<string> followers = new List<string>();
             using var conn = new NpgsqlConnection(connString);
@@ -172,7 +172,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public User GetUserById(int userID)
+        public User GetUserById(Int64 userID)
         {
             User user = null;
             using var conn = new NpgsqlConnection(connString);
@@ -419,9 +419,9 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userId">userId of the user being FOLLOWED</param>
         /// <returns>A list of UserIds belonging to followers of the passed userId</returns>
-        public List<int> GetFollowerIds(int userId)
+        public List<Int64> GetFollowerIds(Int64 userId)
         {
-            List<int> followerIds = new List<int>();
+            List<Int64> followerIds = new List<Int64>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             throw new NotImplementedException();
@@ -435,7 +435,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userIds">Ids to match in the result</param>
         /// <returns>List of populated Users if any could be found</returns>
-        public List<User> GetUsersById(List<int> userIds)
+        public List<User> GetUsersById(List<Int64> userIds)
         {
             List<User> outUsers = new List<User>();
             using var conn = new NpgsqlConnection(connString);
@@ -479,8 +479,8 @@ namespace CookNook.Model
                     user.DietaryPreferences = new List<string>(reader.GetString(5).Split(','));
                     
                     // the integer columns get handled differently since they get parsed
-                    user.AuthorList= new List<int>(Array.ConvertAll(reader.GetString(6).Split(','), int.Parse));
-                    user.Following = new List<int>(Array.ConvertAll(reader.GetString(7).Split(','), int.Parse));
+                    user.AuthorList= new List<Int64>(Array.ConvertAll(reader.GetString(6).Split(','), Int64.Parse));
+                    user.Following = new List<Int64>(Array.ConvertAll(reader.GetString(7).Split(','), Int64.Parse));
                     outUsers.Add(user);
                 }
             }
@@ -559,12 +559,12 @@ namespace CookNook.Model
             throw new NotImplementedException();
         }
 
-        public List<int> GetFollowers(int userId)
+        public List<Int64> GetFollowers(Int64 userId)
         {
             throw new NotImplementedException();
         }
 
-        public UserSelectionError IsFollowingRecipeById(int userId, int recipeId)
+        public UserSelectionError IsFollowingRecipeById(Int64 userId, Int64 recipeId)
         {
             throw new NotImplementedException();
         }

@@ -13,9 +13,12 @@ namespace CookNook.Model
 {
     internal class RecipeDatabase : IRecipeDatabase
     {
-        private List<int> authorListIDs = new List<int>();
-        private List<int> cookbookIDs = new List<int>();
+        private List<Int64> authorListIDs = new List<Int64>();
+        private List<Int64> cookbookIDs = new List<Int64>();
+        
+        // is this supposed to store recipes created by followed users?
         private List<Recipe> authorList;
+        
         private List<Recipe> cookbook;
         private string connString = GetConnectionString();
         static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
@@ -25,7 +28,7 @@ namespace CookNook.Model
         public List<Recipe> AuthorList { get { return authorList; } set { authorList = value; } }
         public List<Recipe> Cookbook { get { return cookbook; } set { cookbook = value; } }
 
-        public RecipeDeletionError DeleteFromAuthorList(int recipeID)
+        public RecipeDeletionError DeleteFromAuthorList(Int64 recipeID)
         {
             authorListIDs.Remove(recipeID);
             DeleteRecipe(recipeID);
@@ -34,7 +37,7 @@ namespace CookNook.Model
 
         }
 
-        public RecipeDeletionError DeleteFromCookbook(int recipeID)
+        public RecipeDeletionError DeleteFromCookbook(Int64 recipeID)
         {
             cookbookIDs.Remove(recipeID);
             cookbook = SelectRecipes(cookbookIDs);
@@ -42,7 +45,7 @@ namespace CookNook.Model
 
         }
 
-        public RecipeAdditionError AddToAuthorList(int recipeID)
+        public RecipeAdditionError AddToAuthorList(Int64 recipeID)
         {
             authorListIDs.Add(recipeID);
             authorList = SelectRecipes(authorListIDs);
@@ -50,7 +53,7 @@ namespace CookNook.Model
 
         }
 
-        public RecipeAdditionError AddToCookbook(int recipeID)
+        public RecipeAdditionError AddToCookbook(Int64 recipeID)
         {
             cookbookIDs.Add(recipeID);
             cookbook = SelectRecipes(cookbookIDs);
@@ -64,7 +67,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userID">The userID of the author to query</param>
         /// <returns>List of type Recipe</returns>
-        public List<Recipe> GetRecipesByUserId(int userID)
+        public List<Recipe> GetRecipesByUserId(Int64 userID)
         {
             List<Recipe> outRecipes = new List<Recipe>();
             using var conn = new NpgsqlConnection(connString);
@@ -84,7 +87,7 @@ namespace CookNook.Model
                 Debug.Write($"UserID from GetRecepeByUserId: ${userID}");
                 while (reader.Read())
                 {
-                    var recipeId = reader.GetInt32(0);
+                    var recipeId = reader.GetInt64(0);
                     var ingredients = GetIngredientsByRecipe(recipeId).ToArray();
 
                     Recipe recipe = new Recipe
@@ -97,7 +100,7 @@ namespace CookNook.Model
                         Rating = reader.GetInt32(5),
                         Servings = reader.GetInt32(6),
                         Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
-                        AuthorID = reader.GetInt32(8),
+                        AuthorID = reader.GetInt64(8),
                         Ingredients = ingredients
                     };
 
@@ -125,7 +128,7 @@ namespace CookNook.Model
             using NpgsqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                int ingredientId = reader.GetInt32(0);
+                Int64 ingredientId = reader.GetInt64(0);
                 string name = reader.GetString(1);
                 string qty = reader.GetString(2);
                 string unit = reader.GetString(3);
@@ -152,7 +155,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="recipeID">ID of the recipe to query</param>
         /// <returns>a list of Ingredients found in the recipe</returns>
-        public List<Ingredient> GetIngredientsByRecipe(int recipeID)
+        public List<Ingredient> GetIngredientsByRecipe(Int64 recipeID)
         {
             
             List<Ingredient> ingredients = new List<Ingredient>();
@@ -170,7 +173,7 @@ namespace CookNook.Model
             using NpgsqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                int ingredientId = reader.GetInt32(0);
+                Int64 ingredientId = reader.GetInt64(0);
                 string name = reader.GetString(1);
                 string qty = reader.GetString(2);
                 string unit = reader.GetString(3);
@@ -203,9 +206,9 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="recipeID">the id of the recipe to check for</param>
         /// <returns>List of user Ids that are following the given recipe</returns>
-        public List<int> GetRecipeFollowerIds(int recipeID)
+        public List<Int64> GetRecipeFollowerIds(Int64 recipeID)
         {
-            List<int> userIds = new List<int>();
+            List<Int64> userIds = new List<Int64>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             var cmd = new NpgsqlCommand(
@@ -348,7 +351,7 @@ namespace CookNook.Model
 
             // first, we need the new ID of that recipe!
             var result = cmd.ExecuteScalar();
-            int recipeID = int.Parse(result.ToString());
+            Int64 recipeID = Int64.Parse(result.ToString());
 
             if(result == null)
             {
@@ -366,7 +369,7 @@ namespace CookNook.Model
                 // insert row in the ingredients table
                 // TODO: don't add existing ingredients when adding a new recipe
                 // TODO: handle if null unit
-                int ingredientId;
+                Int64 ingredientId;
 
                 // Check if ingredient exists and get ID, else insert and get new ID
                 cmd = new NpgsqlCommand("SELECT ingredient_id FROM ingredients WHERE name = @Name", conn);
@@ -375,17 +378,19 @@ namespace CookNook.Model
                 // if the ingredient DOESN'T exist:
                 if (ingResult == null)
                 {
-                    cmd = new NpgsqlCommand("INSERT INTO ingredients (name) VALUES (@Name) RETURNING ingredient_id", conn);
-                    //cmd = new NpgsqlCommand("INSERT INTO ingredients (ingredient_id, name) VALUES (nextval('ingredients_id_seq'), @Name) RETURNING ingredient_id", conn);
+                    // Method used to bypass autogenerated id during demo:
+                    //cmd = new NpgsqlCommand("INSERT INTO ingredients (name) VALUES (@Name) RETURNING ingredient_id", conn);
+                    
+                    cmd = new NpgsqlCommand("INSERT INTO ingredients (ingredient_id, name) VALUES (nextval('ingredients_id_seq'), @Name) RETURNING ingredient_id", conn);
 
                     cmd.Parameters.AddWithValue("Name", ing.Name);
                     var newIngResult = cmd.ExecuteScalar();
-                    ingredientId = int.Parse(newIngResult.ToString());
+                    ingredientId = Int64.Parse(newIngResult.ToString());
                 }
                 else if (ingResult != null)
                 {
                     // otherwise just use the existing ingredient'd ID
-                    ingredientId = int.Parse(ingResult.ToString());
+                    ingredientId = Int64.Parse(ingResult.ToString());
 
                     // add the new recipe_ingredients
                 }
@@ -417,6 +422,8 @@ namespace CookNook.Model
 
             // WARNING: Doesn't account for a tag being added that wasn't already in the database!
             // now we can handle any tags involved
+            // Until we resolve tags properly, disabled for the sprint 3 demo 
+            /**
             foreach(Tag tag in inRecipe.Tags)
             {
                 int tagId;
@@ -446,6 +453,7 @@ namespace CookNook.Model
                 cmd.Parameters.AddWithValue("TagID", tag.Id);
                 cmd.ExecuteNonQuery();
             }
+            */
             // add the user's ID to the recipe
             //AddToAuthorList(inRecipe.ID);
             
@@ -474,10 +482,10 @@ namespace CookNook.Model
             while (reader.Read()) {
 
                 reader.Read();
-                recipe.ID = reader.GetInt32(0);
+                recipe.ID = reader.GetInt64(0);
                 recipe.Name = reader.GetString(1);
-                recipe.Description = reader.GetString(2);
-                recipe.AuthorID = reader.GetInt32(3);
+                recipe.Description = reader.GetString(2);   
+                recipe.AuthorID = reader.GetInt64(3);
                 recipe.Ingredients = GetIngredientsByRecipe(recipe.ID).ToArray();
 
                 //recipe.IngredientsQty = reader.GetString(5);
@@ -503,13 +511,13 @@ namespace CookNook.Model
         
 
 
-        public List<Recipe> SelectRecipes(List<int> recipeList)
+        public List<Recipe> SelectRecipes(List<Int64> recipeList)
         {
             List<Recipe> outRecipes = new List<Recipe>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
 
-            foreach (int recipeID in recipeList)
+            foreach (Int64 recipeID in recipeList)
             {
                 // TODO: fully qualify the asterisk 
                 var cmd = new NpgsqlCommand(
@@ -529,7 +537,7 @@ namespace CookNook.Model
 
                         Recipe recipe = new Recipe
                         {
-                            ID = reader.GetInt32(0),
+                            ID = reader.GetInt64(0),
                             Name = reader.GetString(1),
                             Description = reader.GetString(2),
                             CookTime = reader.GetInt32(3),
@@ -537,7 +545,7 @@ namespace CookNook.Model
                             Rating = reader.GetInt32(5),
                             Servings = reader.GetInt32(6),
                             Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
-                            AuthorID = reader.GetInt32(8)
+                            AuthorID = reader.GetInt64(8)
                         };
 
                         outRecipes.Add(recipe);
@@ -554,7 +562,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="inID"></param>
         /// <returns></returns>
-        public Recipe SelectRecipe(int inID)
+        public Recipe SelectRecipe(Int64 inID)
         {
             Recipe recipe = new Recipe();
 
@@ -573,7 +581,7 @@ namespace CookNook.Model
             using var reader = cmd.ExecuteReader();
             reader.Read();
 
-            recipe.ID = reader.GetInt32(0);
+            recipe.ID = reader.GetInt64(0);
             recipe.Name = reader.GetString(1);
             recipe.Description = reader.GetString(2);
 
@@ -606,7 +614,7 @@ namespace CookNook.Model
 
         public List<Recipe> SelectRecipeByCourse(string course)
         {
-            List<int> recipeIDs = new List<int>();
+            List<Int64> recipeIDs = new List<Int64>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
@@ -618,12 +626,12 @@ namespace CookNook.Model
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                recipeIDs.Add(int.Parse(reader.GetString(0)));
+                recipeIDs.Add(Int64.Parse(reader.GetString(0)));
             }
             return SelectRecipes(recipeIDs);
         }
 
-        public List<Tag> GetTagsForRecipe(int recipeID)
+        public List<Tag> GetTagsForRecipe(Int64 recipeID)
         {
             List<Tag> tags = new List<Tag>();
 
@@ -638,7 +646,7 @@ namespace CookNook.Model
             while (reader.Read())
             {
                 // get the tag_id, and the name
-                Tag newTag = new Tag(reader.GetInt32(0), reader.GetString(1));
+                Tag newTag = new Tag(reader.GetInt64(0), reader.GetString(1));
                 tags.Add(newTag);
             }
 
@@ -686,7 +694,7 @@ namespace CookNook.Model
 
         public List<Recipe> SelectRecipeByCooktime(int cooktime)
         {
-            List<int> recipeIDs = new List<int>();
+            List<Int64> recipeIDs = new List<Int64>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
@@ -699,12 +707,12 @@ namespace CookNook.Model
             using var reader = cmd.ExecuteReader();
             while (reader.Read())
             {
-                recipeIDs.Add(int.Parse(reader.GetString(0)));
+                recipeIDs.Add(Int64.Parse(reader.GetString(0)));
             }
             return SelectRecipes(recipeIDs);
         }
 
-        public RecipeDeletionError DeleteRecipe(int inID)
+        public RecipeDeletionError DeleteRecipe(Int64 inID)
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
@@ -725,11 +733,12 @@ namespace CookNook.Model
         // I added this method to get all the ID's of the recipes in the database
         // so I can make a list of recipe ID's to pass to SelectRecipes() Method
 
-        public List<int> GetAllRecipeIds()
+        public List<Int64> GetAllRecipeIds()
         {
-            List<int> recipeIds = new List<int>();
+            List<Int64> recipeIds = new List<Int64>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
+
             var cmd = new NpgsqlCommand("SELECT recipe_id FROM recipes", conn);
             using NpgsqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
