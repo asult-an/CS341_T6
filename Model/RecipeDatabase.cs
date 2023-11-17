@@ -698,7 +698,7 @@ namespace CookNook.Model
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
-            var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating, image servings, author_id
+            var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating, image, servings, author_id
                                 FROM recipes AS r
                                 JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
                                 WHERE r.cook_time_mins = @Cooktime;", conn);
@@ -748,6 +748,41 @@ namespace CookNook.Model
             reader.Close();
             return recipeIds;
         }
+
+        //This method gets the recipes for a user cookbook
+        // for now, it is just getting select few recipes
+        // and some of their fields, it is temporary because
+        // we should use the already made  public List<Recipe> GetRecipesByUserId(int userID) method
+
+        public ObservableCollection<Recipe> CookbookRecipes()
+        {
+            ObservableCollection<Recipe> recipes = new ObservableCollection<Recipe>();
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand("SELECT recipe_id, name, description, cook_time_mins, image FROM recipes", conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var recipe = new Recipe
+                            {
+                                ID = reader.GetInt32(0),
+                                Name = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+                                CookTime = reader.GetInt32(3),
+                                Image = reader.IsDBNull(4) ? null : Encoding.ASCII.GetBytes(reader.GetString(4))
+                            };
+
+                            recipes.Add(recipe);
+                        }
+                    }
+                }
+            }
+            return recipes;
+        }
+
 
         public static String GetConnectionString()
         {
