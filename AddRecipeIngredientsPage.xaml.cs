@@ -80,10 +80,11 @@ public partial class AddRecipeIngredientsPage : ContentPage
         Ingredient[] testIngredients = new Ingredient[]
         {
                 // one 'unitless' ingredient
-                new Ingredient("Industrial Runoff", "1"),
-                
+                new Ingredient("Pie Crust", "1"),
+                //TODO new ingredients fail
                 // and a regular one
-                new Ingredient("Artichoke Hearts", "2", "oz")
+                //new Ingredient("Artichoke Hearts", "2", "oz")
+                new Ingredient("Apple (Red Delicious)", "2")
         };
         Tag[] tags = { new Tag { DisplayName = "test" } };
 
@@ -98,7 +99,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             4,
             1,
             tags,             // recipeLogic.GetTagsForRecipe
-            new int[] {1}       // followerIds
+            new long[] {1}       // followerIds
            
         ); 
             //recipeLogic.GetFollowerIds()
@@ -170,7 +171,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             0,
             0,
             new Tag[] { },
-            new int[] { },
+            new long[] { },
             //Encoding.ASCII.GetBytes(PreviousPageData.ImagePath)
             Encoding.ASCII.GetBytes("NO_IMAGE")
         );

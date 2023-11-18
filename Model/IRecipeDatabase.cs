@@ -10,12 +10,12 @@ namespace CookNook.Model
 {
     public interface IRecipeDatabase
     {
-        public RecipeDeletionError DeleteFromAuthorList(int recipeID);
-        public RecipeDeletionError DeleteFromCookbook(int recipeID);
-        public RecipeAdditionError AddToAuthorList(int recipeID);
-        public RecipeAdditionError AddToCookbook(int recipeID);
+        public RecipeDeletionError DeleteFromAuthorList(Int64 recipeID);
+        public RecipeDeletionError DeleteFromCookbook(Int64 recipeID);
+        public RecipeAdditionError AddToAuthorList(Int64 recipeID);
+        public RecipeAdditionError AddToCookbook(Int64 recipeID);
         public RecipeAdditionError InsertRecipe(Recipe inRecipe);
-        public RecipeDeletionError DeleteRecipe(int inID);
+        public RecipeDeletionError DeleteRecipe(Int64 inID);
         public RecipeEditError EditRecipe(Recipe inRecipe);
 
 
@@ -26,21 +26,21 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="recipeID">Id to search for</param>
         /// <returns></returns>
-        public List<Ingredient> GetIngredientsByRecipe(int recipeID);
+        public List<Ingredient> GetIngredientsByRecipe(Int64 recipeID);
 
-        public List<int> GetRecipeFollowerIds(int recipeID);
+        public List<Int64> GetRecipeFollowerIds(Int64 recipeID);
 
 
         public List<Recipe> SelectAllRecipes();
         
-        public List<Recipe> SelectRecipes(List<int> recipeList);
+        public List<Recipe> SelectRecipes(List<Int64> recipeList);
         public List<Recipe> SelectRecipeByCourse(string course);
 
-        public Recipe SelectRecipe(int recipeID);
+        public Recipe SelectRecipe(Int64 recipeID);
 
         //public List<Recipe> GetRecipesByCourseType(CourseType courseType);
 
-        public List<Tag> GetTagsForRecipe(int recipeID);
+        public List<Tag> GetTagsForRecipe(Int64 recipeID);
 
         // public List<Tag> GetTagsByUser(int userID);
 
@@ -55,6 +55,8 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public List<Recipe> GetRecipesByUserId(int userID);
+        public List<Recipe> GetRecipesByUserId(Int64 userID);
+
+        public ObservableCollection<Recipe> CookbookRecipes();
     }
 }

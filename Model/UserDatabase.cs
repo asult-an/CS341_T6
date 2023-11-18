@@ -46,7 +46,7 @@ namespace CookNook.Model
         }
 
 
-        public UserSelectionError UnfollowUser(int userId, int followedUserId)
+        public UserSelectionError UnfollowUser(Int64 userId, Int64 followedUserId)
         {
             // if a row exists in user_following_user table where both userId and followingId match the
             // supplied parameters, remove it.
@@ -96,7 +96,7 @@ namespace CookNook.Model
         /// <param name="userId"></param>
         /// <param name="followedUserId"></param>
         /// <returns></returns>
-        public UserSelectionError FollowUser(int userId, int followedUserId)
+        public UserSelectionError FollowUser(Int64 userId, Int64 followedUserId)
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
@@ -141,7 +141,7 @@ namespace CookNook.Model
         /// <param name="userId"></param>
         /// <param name="followers"></param>
         /// <returns>List of the userIds following the User</returns>
-        public int GetFollowerCount(int userId)
+        public Int64 GetFollowerCount(Int64 userId)
         {
             List<string> followers = new List<string>();
             using var conn = new NpgsqlConnection(connString);
@@ -165,6 +165,40 @@ namespace CookNook.Model
             return followers.Count; 
             //return GetUsersById(followers);
         }
+
+        //We currently have no method for getting a user's ID from the DB - ADEEL
+        /// <summary>
+        /// Get a User by their username
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
+        public User GetUserByUsername(string username)
+        {
+            int userID = -1;
+            var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            using var cmd = new NpgsqlCommand("SELECT user_id FROM users WHERE username = @Username", conn);
+            cmd.Parameters.AddWithValue("Username", username);
+            try
+            {
+                using var reader = cmd.ExecuteReader();
+                reader.Read();
+                userID = reader.GetInt32(0);
+                Debug.WriteLine("Retreived ID = " + userID);
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine("TEST");
+                Debug.WriteLine(ex.Message);
+            }
+            conn.Close();
+            cmd.Parameters.Clear();
+            cmd.Dispose();
+            
+            
+            
+            return GetUserById(userID);
+        }
     
 
         /// <summary>
@@ -172,35 +206,42 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public User GetUserById(int userID)
+        public User GetUserById(Int64 userID)
         {
             User user = null;
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-
-            var cmd = new NpgsqlCommand(@"SELECT u.username, u.email, u.password, u.profile_pic,
-                                        ARRAY_TO_STRING(user_settings.settings, ',') AS settings,
-                                        ARRAY_TO_STRING(dp.preferences, ',') AS dietary_preferences
-                                  FROM users AS u
-                                  LEFT JOIN user_settings ON u.id = user_settings.user_id
-                                  LEFT JOIN dietary_preferences AS dp ON u.id = dp.user_id
-                                  WHERE u.id = @UserId", conn);
+            //CHANGING THIS TO RETREIVE ESSENTIAL FIELDS FOR NOW - ADEEL
+            //var cmd = new NpgsqlCommand(@"SELECT u.username, u.email, u.password, u.profile_pic,
+            //                            ARRAY_TO_STRING(user_settings.settings, ',') AS settings,
+            //                            ARRAY_TO_STRING(dp.preferences, ',') AS dietary_preferences
+            //                      FROM users AS u
+            //                      LEFT JOIN user_settings ON u.id = user_settings.user_id
+            //                      LEFT JOIN dietary_preferences AS dp ON u.id = dp.user_id
+            //                      WHERE u.id = @UserId", conn);
+            var cmd = new NpgsqlCommand("SELECT username, email, password, profile_pic FROM users where user_id = @UserID", conn);
             cmd.Parameters.AddWithValue("UserId", userID);
 
-            using var reader = cmd.ExecuteReader();
-            if (reader.Read())
+            try
             {
-                user = new User()
+                using var reader = cmd.ExecuteReader();
+                
+                if (reader.Read())
                 {
-                    Username = reader.GetString(0),
-                    Email = reader.GetString(1),
-                    Password = reader.GetString(2),
-                    ProfilePicture = reader.GetString(3),
-                    AppPreferences = new List<string>(reader.GetString(4).Split(',')),
-                    DietaryPreferences = new List<string>(reader.GetString(5).Split(','))
-                };
+                    user = new User()
+                    {
+                        Username = reader.GetString(0),
+                        Email = reader.GetString(1),
+                        Password = reader.GetString(2),
+                        ProfilePicture = reader.GetString(3)
+                    };
+                }
             }
-
+            catch( Exception ex )
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            conn.Close();
             return user;
         }
 
@@ -257,7 +298,6 @@ namespace CookNook.Model
                     cmd.Parameters.AddWithValue("Password", user.Password);
                     cmd.Parameters.AddWithValue("ProfilePic", "NO_IMAGE");
                     // set automatically by database on inserts
-                    transaction.Commit();
 
                     //cmd.Parameters.AddWithValue("UsreId", user.Id);
                     transaction.Commit();
@@ -419,9 +459,9 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userId">userId of the user being FOLLOWED</param>
         /// <returns>A list of UserIds belonging to followers of the passed userId</returns>
-        public List<int> GetFollowerIds(int userId)
+        public List<Int64> GetFollowerIds(Int64 userId)
         {
-            List<int> followerIds = new List<int>();
+            List<Int64> followerIds = new List<Int64>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             throw new NotImplementedException();
@@ -435,7 +475,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userIds">Ids to match in the result</param>
         /// <returns>List of populated Users if any could be found</returns>
-        public List<User> GetUsersById(List<int> userIds)
+        public List<User> GetUsersById(List<Int64> userIds)
         {
             List<User> outUsers = new List<User>();
             using var conn = new NpgsqlConnection(connString);
@@ -479,8 +519,8 @@ namespace CookNook.Model
                     user.DietaryPreferences = new List<string>(reader.GetString(5).Split(','));
                     
                     // the integer columns get handled differently since they get parsed
-                    user.AuthorList= new List<int>(Array.ConvertAll(reader.GetString(6).Split(','), int.Parse));
-                    user.Following = new List<int>(Array.ConvertAll(reader.GetString(7).Split(','), int.Parse));
+                    user.AuthorList= new List<Int64>(Array.ConvertAll(reader.GetString(6).Split(','), Int64.Parse));
+                    user.Following = new List<Int64>(Array.ConvertAll(reader.GetString(7).Split(','), Int64.Parse));
                     outUsers.Add(user);
                 }
             }
@@ -559,12 +599,12 @@ namespace CookNook.Model
             throw new NotImplementedException();
         }
 
-        public List<int> GetFollowers(int userId)
+        public List<Int64> GetFollowers(Int64 userId)
         {
             throw new NotImplementedException();
         }
 
-        public UserSelectionError IsFollowingRecipeById(int userId, int recipeId)
+        public UserSelectionError IsFollowingRecipeById(Int64 userId, Int64 recipeId)
         {
             throw new NotImplementedException();
         }
