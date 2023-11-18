@@ -1,13 +1,21 @@
+using CookNook.Model;
 namespace CookNook;
 
 public partial class UserSettings : ContentPage
 {
+    private User user;
 	public UserSettings()
 	{
 		InitializeComponent();
 	}
 
-	public async void UserAccountSettingsClicked(object sender, EventArgs e)
+    public UserSettings(User inUser)
+    {
+        InitializeComponent();
+        user = inUser;
+    }
+
+    public async void UserAccountSettingsClicked(object sender, EventArgs e)
 	{
 		AccountSettings accountSettings = new AccountSettings();
 		await Navigation.PushAsync(accountSettings);

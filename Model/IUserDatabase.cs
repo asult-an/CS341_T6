@@ -17,7 +17,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userIds"></param>
         /// <returns></returns>
-        List<User> GetUsersById(List<int> userIds);
+        List<User> GetUsersById(List<Int64> userIds);
 
         /// <summary>
         /// Fetch a particular user by their email address.
@@ -31,7 +31,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="id">The ID of the User, not their Username.</param>
         /// <returns>User object if found, null otherwise. .</returns>
-        User GetUserById(int id);
+        User GetUserById(Int64 id);
 
         /// <summary>
         /// Query user_following_user table for all followed_user_ids where 
@@ -40,7 +40,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        List<int> GetFollowers(int userId);
+        List<Int64> GetFollowers(Int64 userId);
         
         /* ============== [ DATA MANIPULATION METHODS ] ================= */
         /**
@@ -55,7 +55,7 @@ namespace CookNook.Model
         /// <param name="userId">ID of the user to look for.</param>
         /// <param name="recipeId">ID of the recipe we're checking.</param>
         /// <returns>NoError if successful, else an error.</returns>
-        UserSelectionError IsFollowingRecipeById(int userId, int recipeId);
+        UserSelectionError IsFollowingRecipeById(Int64 userId, Int64 recipeId);
 
         /// <summary>
         /// Adds a user to the database if they aren't already present.
@@ -78,7 +78,7 @@ namespace CookNook.Model
         /// <param name="userId">userId of the follower </param>
         /// <param name="followerId">userId of the followed user</param>
         /// <returns>Noerror on success, else AlreadyFollowingUser</returns>
-        UserSelectionError FollowUser(int userId, int followerId);
+        UserSelectionError FollowUser(Int64 userId, Int64 followerId);
 
         /// <summary>
         /// Attempts to remove a row into user_following_user table
@@ -86,7 +86,7 @@ namespace CookNook.Model
         /// <param name="userId">userId of the follower </param>
         /// <param name="followerId">userId of the followed user</param>
         /// <returns>NoError on success, else NoUserWithId</returns>
-        UserSelectionError UnfollowUser(int userId, int followerId);
+        UserSelectionError UnfollowUser(Int64 userId, Int64 followerId);
 
         /// <summary>
         /// To modify user settings, a call to the user_settings table is made

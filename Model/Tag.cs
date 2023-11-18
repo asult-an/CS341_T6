@@ -18,7 +18,7 @@ namespace CookNook.Model
     /// </summary>
     public class Tag
     {
-        private int id;
+        private Int64 id;
         private string displayName;
 
 
@@ -34,7 +34,7 @@ namespace CookNook.Model
         /// <summary>
         /// Unique identifier for the tag
         /// </summary>
-        public int Id
+        public Int64 Id
         {
             get { return id; }
             set { id = value; }
@@ -45,7 +45,7 @@ namespace CookNook.Model
         /// </summary>
         public Tag() { }
 
-        public Tag(int id, string name)
+        public Tag(Int64 id, string name)
         {
             this.id = id;
             this.displayName = name;

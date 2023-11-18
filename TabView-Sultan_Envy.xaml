@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<TabbedPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+            xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+            xmlns:android="clr-namespace:Microsoft.Maui.Controls.PlatformConfiguration.AndroidSpecific;assembly=Microsoft.Maui.Controls"
+            android:TabbedPage.ToolbarPlacement="Bottom"
+            x:Class="CookNook.TabView"
+            xmlns:local="clr-namespace:CookNook"
+            NavigationPage.HasBackButton="False"
+            BarBackgroundColor="#202c39"
+            BarTextColor="#ffe6a7"
+            CurrentPageChanged="PageClicked"
+            >
+
+    <TabbedPage.Children>
+        <NavigationPage Title="Feed">
+            <x:Arguments>
+                <local:Feed />
+            </x:Arguments>
+            <NavigationPage.IconImageSource>
+                <FileImageSource File="plus.png" />
+            </NavigationPage.IconImageSource>
+        </NavigationPage>
+
+        <NavigationPage Title="Add Recipe">
+            <x:Arguments>
+                <local:AddRecipePage/>
+            </x:Arguments>
+            <NavigationPage.IconImageSource>
+                <FileImageSource File="plus.png" />
+            </NavigationPage.IconImageSource>
+        </NavigationPage>
+
+        <NavigationPage Title="Cookbook">
+            <x:Arguments>
+                <local:Cookbook />
+            </x:Arguments>
+            <NavigationPage.IconImageSource>
+                <FileImageSource File="plus.png" />
+            </NavigationPage.IconImageSource>
+        </NavigationPage>
+    </TabbedPage.Children>
+
+</TabbedPage>

@@ -1,4 +1,5 @@
 ﻿using CookNook.Model;
+using System.Diagnostics;
 
 namespace CookNook;
 
@@ -25,7 +26,14 @@ public partial class LoginPage : ContentPage
         }
 		else
 		{
-            var nextPage = new Feed();
+			User user = userLogic.GetUserByUsername(Username.Text);
+			if (user == null)
+			{
+				DisplayAlert("Error", "No user found", "Close");
+				Debug.WriteLine("DB Retreival Failed");
+			}
+			//PASS USER INTO FEED
+            var nextPage = new TabView(user);
             await Navigation.PushAsync(nextPage);
         }
 	}
