@@ -72,7 +72,7 @@ namespace CookNook.Model
 
         List<Tag> GetTagsForRecipe(Int64 recipeID);
 
-        public ObservableCollection<Recipe> CookBookRecipes();
+        public ObservableCollection<Recipe> CookBookRecipes(long userID);
 
     }
 }

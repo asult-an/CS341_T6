@@ -75,10 +75,8 @@ namespace CookNook.Model
 
             // TODO: fully qualify the asterisk 
             var cmd = new NpgsqlCommand(
-                @"SELECT recipe_id, name, description, cook_time_mins, course, 
-                            rating, servings, image, author_id FROM public.recipes 
-                            WHERE 
-                                author_id = @User_ID;", conn);
+                @"SELECT recipe_id, name, description, cook_time_mins, image FROM public.recipes 
+                            WHERE author_id = @User_ID;", conn);
 
             cmd.Parameters.AddWithValue("User_ID", userID);
 
@@ -87,27 +85,21 @@ namespace CookNook.Model
                 Debug.Write($"UserID from GetRecepeByUserId: ${userID}");
                 while (reader.Read())
                 {
-                    var recipeId = reader.GetInt64(0);
-                    var ingredients = GetIngredientsByRecipe(recipeId).ToArray();
-
                     Recipe recipe = new Recipe
                     {
-                        ID = recipeId,
+                        ID = reader.GetInt64(0),
                         Name = reader.GetString(1),
                         Description = reader.GetString(2),
                         CookTime = reader.GetInt32(3),
-                        Course = CourseType.Parse(reader.GetString(4)),
-                        Rating = reader.GetInt32(5),
-                        Servings = reader.GetInt32(6),
-                        Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
-                        AuthorID = reader.GetInt64(8),
-                        Ingredients = ingredients
+                        Image = Encoding.ASCII.GetBytes(reader.GetString(4)),
+                        AuthorID = userID,
                     };
 
                     outRecipes.Add(recipe);
                 }
 
             }
+            Debug.WriteLine("\n\n\n\n");
             return outRecipes;
         }
 
@@ -754,13 +746,20 @@ namespace CookNook.Model
         // and some of their fields, it is temporary because
         // we should use the already made  public List<Recipe> GetRecipesByUserId(int userID) method
 
-        public ObservableCollection<Recipe> CookbookRecipes()
+        public ObservableCollection<Recipe> CookbookRecipes(long userID)
         {
+            //Calls GetRecipeByID method to retreive recipes from the database
             ObservableCollection<Recipe> recipes = new ObservableCollection<Recipe>();
+            List<Recipe> recipesList = GetRecipesByUserId(userID);
+            foreach (Recipe r in recipesList)
+            {
+                recipes.Add(r);
+            }
+            return recipes;
             using (var conn = new NpgsqlConnection(connString))
             {
                 conn.Open();
-                using (var cmd = new NpgsqlCommand("SELECT recipe_id, name, description, cook_time_mins, image FROM recipes", conn))
+                using (var cmd = new NpgsqlCommand("SELECT recipe_id, name, description, cook_time_mins, image FROM recipes WHERE author_id=@UserID", conn))
                 {
                     using (var reader = cmd.ExecuteReader())
                     {

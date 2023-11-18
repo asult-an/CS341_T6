@@ -206,11 +206,11 @@ namespace CookNook.Model
             }
         }
 
-        public ObservableCollection<Recipe> CookBookRecipes()
+        public ObservableCollection<Recipe> CookBookRecipes(long userID)
         {
             try
             {
-                return recipeDatabase.CookbookRecipes();
+                return recipeDatabase.CookbookRecipes(userID);
             } catch (Exception e)
             {
                 Console.WriteLine(e);

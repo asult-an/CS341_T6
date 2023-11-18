@@ -2,7 +2,8 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.Cookbook"
              Title="{Binding PageTitle}"
-             NavigationPage.HasBackButton="False">
+             NavigationPage.HasBackButton="False"
+             BackgroundColor="#202c39">
 
 
     <CollectionView x:Name="recipesCollectionView" Margin="10">

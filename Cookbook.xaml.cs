@@ -16,21 +16,21 @@ public partial class Cookbook : ContentPage
         recipeLogic = new RecipeLogic(new RecipeDatabase());
         user = UserViewModel.Instance.AppUser;
         BindingContext = this;
-        LoadRecipes();
+        LoadRecipes(user.Id);
         
     }
 
-    // Constructor with dependency injection
+    // Constructor with dependency injection (UNUSED)
     public Cookbook(IRecipeLogic recipeLogic)
     {
         InitializeComponent();
         this.recipeLogic = recipeLogic;
-        LoadRecipes();
+        LoadRecipes(user.Id);
     }
 
-    private void LoadRecipes()
+    private void LoadRecipes(long userID)
     {
-        recipesCollectionView.ItemsSource = recipeLogic.CookBookRecipes();
+        recipesCollectionView.ItemsSource = recipeLogic.CookBookRecipes(userID);
     }
 
     // Other methods
