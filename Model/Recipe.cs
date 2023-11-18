@@ -61,7 +61,7 @@ namespace CookNook.Model
             int cookTime,
             Ingredient[] ingredients,
             CourseType course,
-            int authorId,
+            Int64 authorId,
             int rating = 3,
             int servings = 1,
             Tag[] tags = null,

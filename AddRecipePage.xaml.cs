@@ -37,23 +37,31 @@ namespace CookNook
             InitializeComponent();
             this.recipeLogic = new RecipeLogic(new RecipeDatabase());
             user = UserViewModel.Instance.AppUser;
-            Debug.WriteLine("\n\n\n" + user.Username);
         }
 
 
         private async void NextClicked(object sender, EventArgs e)
         {
-
-            var newRecipe = new Recipe
+            try
             {
-                Name = Name.Text,
-                CookTime = int.Parse(TimeToMake.Text),
-                Description = recipeInstructions,
-                Image = imageBytes // Use the byte array of the selected image
-            };
+                var newRecipe = new Recipe
+                {
+                    Name = Name.Text,
+                    CookTime = int.Parse(TimeToMake.Text),
+                    Description = recipeInstructions,
+                    Image = imageBytes, // Use the byte array of the selected image
+                    AuthorID = user.Id
+                };
 
-            // Navigate to the Addingredients page and pass the newRecipe object
-            await Navigation.PushAsync(new AddRecipeIngredientsPage(this.recipeLogic, newRecipe, user));
+                // Navigate to the Addingredients page and pass the newRecipe object
+                await Navigation.PushAsync(new AddRecipeIngredientsPage(this.recipeLogic, newRecipe, user));
+            }
+            catch (Exception ex)
+            {
+                Debug.Write("AddRecipePage: " + ex.Message);
+                DisplayAlert("Error", "Recipe Add Failed", "Okay");
+            }
+            
         }
 
         private async void PickImageClicked(object sender, EventArgs e)

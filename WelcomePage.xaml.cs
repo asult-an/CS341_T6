@@ -12,7 +12,7 @@ public partial class WelcomePage : ContentPage
 	public WelcomePage()
 	{
 		InitializeComponent();
-        //TestDB.InsertRecipe(TestRecipe);
+        
 	}
 
 	public async void LoginClicked(object sender, EventArgs e)
@@ -27,10 +27,10 @@ public partial class WelcomePage : ContentPage
 
     public async void SkipClicked(object sender, EventArgs e)
     {
-        //TestDB.InsertRecipe(TestRecipe);// TEST DATABASE INSERTS
+        
         try
         {
-            await Navigation.PushAsync(new TabView());
+            await Navigation.PushAsync(new Feed());
         }
         catch (Exception ex)
         {

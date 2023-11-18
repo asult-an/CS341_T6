@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -55,13 +56,22 @@ public partial class AddRecipeIngredientsPage : ContentPage
     // W
     private void AddIngredientClicked(object sender, EventArgs e)
     {
+        try
+        {
+            string ingredient = IngredientEntry.Text;
+            int quantity = int.Parse(QuantityEntry.Text);
+            string unit = UnitPicker.SelectedItem.ToString();
+            string displayQuantity = $"{quantity} {unit}";
+        }
+        catch (Exception ex)
+        {
+            Debug.Write("AddIngredientsPage: " + ex.Message);
+            DisplayAlert("Error", "Ingredient Add Failed", "Okay");
+        }
+        
 
-        string ingredient = IngredientEntry.Text;
-        int quantity = int.Parse(QuantityEntry.Text);
-        string unit = UnitPicker.SelectedItem.ToString();
 
-
-        string displayQuantity = $"{quantity} {unit}";
+        
 
         // Add to the ObservableCollection
         //currentRecipe.Ingredients.Add(ingredient);
@@ -96,7 +106,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
             testIngredients,          //recipeLogic.GetIngredientsByRecipe(1),
             CourseType.Parse("Dinner"),
             //CourseType.Parse(CourseEntry.Text),
-            -1,
+            currentRecipe.AuthorID,
             4,
             1,
             tags,             // recipeLogic.GetTagsForRecipe
@@ -150,7 +160,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
        
     }
-
+    //REVISE, some properties may be incorrect
     /// <summary>
     /// Sends the recipe back to the previous page so the entered 
     /// data is not lost during navigation

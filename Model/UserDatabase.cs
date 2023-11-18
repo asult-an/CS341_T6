@@ -174,7 +174,7 @@ namespace CookNook.Model
         /// <returns></returns>
         public User GetUserByUsername(string username)
         {
-            int userID = -1;
+            long userID = -1;
             var conn = new NpgsqlConnection(connString);
             conn.Open();
             using var cmd = new NpgsqlCommand("SELECT user_id FROM users WHERE username = @Username", conn);
@@ -183,12 +183,12 @@ namespace CookNook.Model
             {
                 using var reader = cmd.ExecuteReader();
                 reader.Read();
-                userID = reader.GetInt32(0);
+                userID = reader.GetInt64(0);
                 Debug.WriteLine("Retreived ID = " + userID);
             }
             catch (Exception ex)
             {
-                Debug.WriteLine("TEST");
+                Debug.WriteLine("GetByUsername Failed");
                 Debug.WriteLine(ex.Message);
             }
             conn.Close();
@@ -230,6 +230,7 @@ namespace CookNook.Model
                 {
                     user = new User()
                     {
+                        Id = userID,
                         Username = reader.GetString(0),
                         Email = reader.GetString(1),
                         Password = reader.GetString(2),

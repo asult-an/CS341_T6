@@ -17,12 +17,12 @@
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Text="Test" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Entry Text="SYSTEM" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
                 <Label Text="Email:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
-                <Entry Text="Test" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Entry Text="SYSTEM@Cooknook.com" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10" TextColor="#ffe6a7"/>
             </StackLayout>
           
           <!-- fix this-->
@@ -32,7 +32,7 @@
             </StackLayout>
             
             <StackLayout Grid.Row="7">
-                <Entry Text="Test" IsPassword="True" x:Name="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Text="SYSTEM" IsPassword="True" x:Name="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="8">
@@ -40,7 +40,7 @@
             </StackLayout>
 
             <StackLayout Grid.Row="9">
-                <Entry Text="Test" IsPassword="True" x:Name="ConfirmPassword" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Text="SYSTEM" IsPassword="True" x:Name="ConfirmPassword" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
