@@ -13,7 +13,7 @@
     <TabbedPage.Children>
         <NavigationPage Title="Feed">
             <x:Arguments>
-                <local:Feed />
+                <local:Feed BindingContext="{x:Static local:Model.UserViewModel.Instance}"/>
             </x:Arguments>
             <NavigationPage.IconImageSource>
                 <FileImageSource File="plus.png" />

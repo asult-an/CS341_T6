@@ -1,4 +1,5 @@
 using CookNook.Model;
+using System.Diagnostics;
 
 namespace CookNook;
 
@@ -11,12 +12,12 @@ public partial class Feed : ContentPage
         InitializeComponent();
         recipeLogic = new RecipeLogic(new RecipeDatabase());
         user = inUser;
-        DisplayAlert("Alert", user.Username, "Close");
     }
     public Feed()
     {
         InitializeComponent();
         recipeLogic = new RecipeLogic(new RecipeDatabase());
+        user = UserViewModel.Instance.AppUser;
     }
     
     public Feed(IRecipeLogic recipeLogic)
@@ -37,7 +38,8 @@ public partial class Feed : ContentPage
 
     public async void UserProfileClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new Profile());
+        Debug.WriteLine(user.Username);
+        await Navigation.PushAsync(new Profile(user));
     }
     public async void SearchClicked(object sender, EventArgs e)
     {

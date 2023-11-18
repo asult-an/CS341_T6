@@ -29,18 +29,14 @@ public partial class LoginPage : ContentPage
 			User user = userLogic.GetUserByUsername(Username.Text);
 			if (user == null)
 			{
-<<<<<<< HEAD
+
 				DisplayAlert("Error", "No user found", "Close");
 				Debug.WriteLine("DB Retreival Failed");
 			}
-			//PASS USER INTO FEED
+			UserViewModel.Instance.AppUser = user;
+			
             var nextPage = new TabView(user);
-=======
-				Debug.WriteLine("DB Retreival Failed");
-			}
-			//PASS USER INTO FEED
-            var nextPage = new Feed(user);
->>>>>>> 177cb58f198ec0d99110b4a50b6e05d14c53f0af
+
             await Navigation.PushAsync(nextPage);
         }
 	}

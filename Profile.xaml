@@ -30,7 +30,7 @@
                 Padding="30,0">
                 <Button Grid.Row="0" Padding="30" ImageSource="profile.png" BackgroundColor="Transparent"></Button>
 
-                <Label Grid.Row="1" Text="Username" HorizontalTextAlignment="Center" FontSize="Title" TextColor="#ffe6a7"></Label>
+                <Label Grid.Row="1" Text="{Binding AppUser.Username}" HorizontalTextAlignment="Center" FontSize="Title" TextColor="#ffe6a7"></Label>
 
                 <Label Grid.Row="3" Text="Best Birria Tacos" TextColor="#ffe6a7"></Label>
                 <Image Grid.Row="4" Source="tacos.png"></Image>

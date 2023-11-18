@@ -23,6 +23,7 @@ namespace CookNook
         public string RecipeInstructions { get { return recipeInstructions; } set { recipeInstructions = value; } }
         private string imagePath;
         private byte[] imageBytes;
+        private User user;
 
         // constructor with dependency injection
         public AddRecipePage(IRecipeLogic recipeLogic)
@@ -35,6 +36,8 @@ namespace CookNook
         {
             InitializeComponent();
             this.recipeLogic = new RecipeLogic(new RecipeDatabase());
+            user = UserViewModel.Instance.AppUser;
+            Debug.WriteLine("\n\n\n" + user.Username);
         }
 
 
@@ -50,7 +53,7 @@ namespace CookNook
             };
 
             // Navigate to the Addingredients page and pass the newRecipe object
-            await Navigation.PushAsync(new AddRecipeIngredientsPage(this.recipeLogic, newRecipe));
+            await Navigation.PushAsync(new AddRecipeIngredientsPage(this.recipeLogic, newRecipe, user));
         }
 
         private async void PickImageClicked(object sender, EventArgs e)

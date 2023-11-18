@@ -15,7 +15,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
     private Recipe currentRecipe;
 
-
+    private User user;
     private Random random = new Random();
 
     /// <summary>
@@ -31,12 +31,13 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
     private IRecipeLogic recipeLogic;
 
-    
-    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, Recipe recipe)
+
+    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, Recipe recipe, User inUser)
     {
         InitializeComponent();
         currentRecipe = recipe;
         currentRecipe.Ingredients = new List<Ingredient>().ToArray();
+        user = inUser;
         //currentRecipe.IngredientsQty = new List<string>();
     }
 
@@ -135,7 +136,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
        // Check if the recipe was added successfully and navigate accordingly
        if (result == RecipeAdditionError.NoError)
        {
-           await Navigation.PushAsync(new DietaryRestrictionsPage());
+           await Navigation.PushAsync(new DietaryRestrictionsPage(user));
            await DisplayAlert("Success", "Recipe added successfully!", "OK");
        }
        else if (result == RecipeAdditionError.DBAdditionError)

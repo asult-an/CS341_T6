@@ -14,11 +14,11 @@ public partial class TabView : TabbedPage
         user = inUser;
     }
 
-    private async void PageClicked(object sender, EventArgs e)
-    {
-        var currentPage = CurrentPage as NavigationPage; if (currentPage?.CurrentPage is AddRecipePage addRecipePage) 
-        {
-            addRecipePage.PageUser = user;
-        }
-    }
+    //private async void PageClicked(object sender, EventArgs e)
+    //{
+    //    var currentPage = CurrentPage as NavigationPage; if (currentPage?.CurrentPage is AddRecipePage addRecipePage) 
+    //    {
+    //        addRecipePage.PageUser = user;
+    //    }
+    //}
 }
