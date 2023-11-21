@@ -23,7 +23,6 @@ namespace CookNook.Model
         /// <returns>list of ingredients per the ids</returns>
         List<Ingredient> GetIngredientRange(Int64[] ingredientIds);
 
-
         /// <summary>
         /// Fetch a particular ingredient by its name.
         /// </summary>
@@ -37,7 +36,6 @@ namespace CookNook.Model
         /// <param name="recipeId">recipe id</param>
         /// <returns>List of Ingredient object if found, null otherwise</returns>
         List<Ingredient> GetIngredientsFromRecipe(Int64 recipeId);
-        
  
         /// <summary>
         /// Fetch a particular ingredient by its id.

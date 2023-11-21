@@ -50,7 +50,7 @@ namespace CookNook.Model
          */ 
         /// <summary>
         /// Queries the junction table from user-recipe to see if a certain
-        /// recipe is being followed by a particular user.
+        /// recipe is being followed Iby a particular user.
         /// </summary>
         /// <param name="userId">ID of the user to look for.</param>
         /// <param name="recipeId">ID of the recipe we're checking.</param>
