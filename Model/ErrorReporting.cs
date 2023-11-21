@@ -80,3 +80,45 @@ public enum UserAuthenticationError
     InvalidPassword,
     NoError
 }
+
+public enum TagAdditionError
+{
+    TagAlreadyExists,
+    DBAdditionError,
+    NoError
+}
+
+public enum TagDeleteError
+{
+    TagNotFound,
+    DBDeletionError,
+    NoError
+}
+
+public enum TagUpdateError
+{
+    TagNotFound,
+    DBUpdateError,
+    NoError
+}
+
+public enum IngredientAdditionError
+{
+    IngredientAlreadyExists,
+    DBAdditionError,
+    NoError
+}
+
+public enum IngredientDeleteError
+{
+    IngredientNotFound,
+    DBDeletionError,
+    NoError
+}
+
+public enum IngredientUpdateError
+{
+    IngredientNotFound,
+    DBUpdateError,
+    NoError
+}
