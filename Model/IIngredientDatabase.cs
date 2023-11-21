@@ -14,6 +14,14 @@ namespace CookNook.Model
         /// </summary>
         /// <returns></returns>
         List<Ingredient> GetAllIngredients();
+        
+        /// <summary>
+        /// Allows for a subset of ingredients to be selected
+        /// e.g all recipe_ids in a cookbook page
+        /// </summary>
+        /// <param name="ingredientIds">Array of ingredientIds</param>
+        /// <returns>list of ingredients per the ids</returns>
+        List<Ingredient> GetIngredientRange(Int64[] ingredientIds);
 
 
         /// <summary>
@@ -56,12 +64,16 @@ namespace CookNook.Model
         IngredientAdditionError CreateIngredient(Ingredient ingredient);
         
         /// <summary>
-        /// SImilar to CreateIngredient, except in cases where a duplicate ingredient is 
-        /// inserted, the existing ingredient is instead returned
+        /// Similar to CreateIngredient, except in cases where a duplicate ingredient is 
+        /// inserted, the existing ingredient is instead returned.
+        /// 
+        /// WARNING: since this features a `dynamic` type,
+        /// the resulting object will need to be type-checked so that we can 
+        /// handle the operation's result appropriately.
         /// </summary>
         /// <param name="ingredient"></param>
-        /// <returns></returns>
-        IngredientAdditionError GetOrCreateIngredient(Ingredient ingredient);
+        /// <returns>Either returns an IngredientAdditionError, or the Ingredient</returns>
+        dynamic GetOrCreateIngredient(Ingredient ingredient);
 
 
         /// <summary>
