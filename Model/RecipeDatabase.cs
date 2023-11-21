@@ -91,9 +91,20 @@ namespace CookNook.Model
                         Name = reader.GetString(1),
                         Description = reader.GetString(2),
                         CookTime = reader.GetInt32(3),
-                        Image = Encoding.ASCII.GetBytes(reader.GetString(4)),
                         AuthorID = userID,
                     };
+
+                    if (!reader.IsDBNull(4))
+                    {
+                        long dataLength = reader.GetBytes(4, 0, null, 0, 0); // first need to get length of image
+                        byte[] imageData = new byte[dataLength];
+                        reader.GetBytes(4, 0, imageData, 0, (int)dataLength); //  then read the image data
+                        recipe.Image = imageData;
+                    }
+                    else
+                    {
+                        recipe.Image = null;
+                    }
 
                     outRecipes.Add(recipe);
                 }
@@ -486,7 +497,7 @@ namespace CookNook.Model
                 recipe.Course = CourseType.Parse(reader.GetString(7));
                 recipe.Rating = reader.GetInt32(8);
                 recipe.Servings = reader.GetInt32(9);
-                
+                //TDOD: updade image reader to GetBytes(10) rather than GetString(10)
                 recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 recipe.Tags = GetTagsForRecipe(recipe.ID).ToArray();
                
@@ -536,6 +547,7 @@ namespace CookNook.Model
                             Course = CourseType.Parse(reader.GetString(4)),
                             Rating = reader.GetInt32(5),
                             Servings = reader.GetInt32(6),
+                            // TODO switch to reader.GetBytes
                             Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
                             AuthorID = reader.GetInt64(8)
                         };
@@ -585,6 +597,7 @@ namespace CookNook.Model
             recipe.Rating = reader.GetInt32(8);
 
             recipe.Servings = reader.GetInt32(9);
+            //TODO switch to reader.GetBytes
             recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 
             // get associative data
