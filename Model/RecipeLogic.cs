@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CookNook.Services;
 
 namespace CookNook.Model
 {
@@ -12,7 +13,7 @@ namespace CookNook.Model
     {
         const int MAX_RECIPE_NAME_LENGTH = 50;
         const int MAX_RECIPE_DESCRIPTION_LENGTH = 150;
-
+        private IngredientLogic ingredientLogic = new IngredientLogic(new IngredientDatabase());
         private IRecipeDatabase recipeDatabase;
 
         /// <summary>
@@ -168,21 +169,11 @@ namespace CookNook.Model
 
         }
 
-        public List<Ingredient> GetIngredientsByRecipe(Int64 recipeID)
-        {
-            return recipeDatabase.GetIngredientsByRecipe(recipeID);
-            // throw new NotImplementedException();
-        }
-
-        public List<Ingredient> GetAllIngredients()
-        {
-            return recipeDatabase.GetAllIngredients();
-        }
 
         public Ingredient GetOrCreateIngredient(string ingredientName)
         {
             // if the ingredient already exists...
-            return recipeDatabase.GetOrCreateIngredient(ingredientName);
+            return ingredientLogic.GetOrCreateIngredient(ingredientName);
         }
 
         public List<Tag> GetTagsForRecipe(Int64 recipeID)
