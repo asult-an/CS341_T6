@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookNook.Model
+namespace CookNook.Model.Interfaces
 {
     public interface IIngredientDatabase
     {
@@ -21,14 +21,14 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="ingredientIds">Array of ingredientIds</param>
         /// <returns>list of ingredients per the ids</returns>
-        List<Ingredient> GetIngredientRange(Int64[] ingredientIds);
+        //List<Ingredient> GetIngredientRange(Int64[] ingredientIds);
 
         /// <summary>
         /// Fetch a particular ingredient by its name.
         /// </summary>
         /// <param name="name">Ingredient name.</param>
         /// <returns>Ingredient object if found, null otherwise.</returns>
-        Ingredient GetIngredientByName(string name);
+        //Ingredient GetIngredientByName(string name);
 
         /// <summary>
         /// Fetch all ingredients that belong to a particular recipe
@@ -49,10 +49,10 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="ingredientId"></param>
         /// <param name="name"></param>
-        /// <param name="quantity"></param>
-        /// <param name="unit"></param>
         /// <returns></returns>
-        IngredientUpdateError UpdateIngredient(Int64 ingredientId, string name, string quantity, string? unit);
+        IngredientUpdateError UpdateIngredient(Int64 ingredientId, string name);
+        //IngredientUpdateError UpdateIngredient(Int64 ingredientId, string name, string quantity, string? unit);
+
 
         /// <summary>
         /// Inserts a new ingredient into the database

@@ -50,25 +50,6 @@ namespace CookNook.Model
         /// <param name="recipeID"></param>
         /// <returns></returns>
         List<Int64> GetFollowerIds(Int64 recipeID);
- 
-
-        /// <summary>
-        /// Polls the recipe_ingredients relation for all rows with a given recipeID
-        /// </summary>
-        /// <param name="recipeID">Id to search for</param>
-        /// <returns></returns>
-        List<Ingredient> GetIngredientsByRecipe(Int64 recipeID);
-
-        public List<Ingredient> GetAllIngredients();
-
-        /// <summary>
-        /// Creates an ingredient if it doesn't already exist.  Returns the entered 
-        /// ingredient if found, otherwise adds into the database.
-        /// </summary>
-        /// <param name="ingredientName"></param>
-        /// <returns></returns>
-        public Ingredient GetOrCreateIngredient(string ingredientName);
-
 
         List<Tag> GetTagsForRecipe(Int64 recipeID);
 
