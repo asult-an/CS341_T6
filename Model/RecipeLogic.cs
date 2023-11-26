@@ -219,6 +219,30 @@ namespace CookNook.Model
         }
 
 
+        public ObservableCollection<Recipe> FeedRecipes()
+        {
+            try
+            {
+                List<Int64> ids = recipeDatabase.GetAllRecipeIds();
+                Random rand = new Random();
+
+                List<Int64> randomNumbers = ids.OrderBy(x => rand.Next()).Take(10).ToList();
+                List <Recipe> randomRecipes = recipeDatabase.SelectRecipes(randomNumbers);
+                ObservableCollection<Recipe> feedRecipes = new ObservableCollection<Recipe>();
+                foreach(Recipe r in  randomRecipes)
+                {
+                    feedRecipes.Add(r);
+                }
+                return feedRecipes;
+            } 
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return null;
+            }
+        }
+
+
         public List<Recipe>? SelectAllRecipes() 
         {
             try

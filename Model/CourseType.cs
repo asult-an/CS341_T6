@@ -42,7 +42,7 @@ namespace CookNook.Model
         {
             foreach(CourseType courseType in _CourseTypes)
             {
-                if (courseType.Name == toParse)
+                if (string.Equals(courseType.Name, toParse, StringComparison.OrdinalIgnoreCase))
                     return courseType;
             }
             throw new FormatException("Invalid CourseType!");

@@ -536,7 +536,7 @@ namespace CookNook.Model
                     Debug.Write(recipeID);
                     while (reader.Read())
                     {
-                        var ingredients = GetIngredientsByRecipe(recipeID).ToArray();
+                       // var ingredients = GetIngredientsByRecipe(recipeID).ToArray();
 
                         Recipe recipe = new Recipe
                         {
@@ -547,10 +547,20 @@ namespace CookNook.Model
                             Course = CourseType.Parse(reader.GetString(4)),
                             Rating = reader.GetInt32(5),
                             Servings = reader.GetInt32(6),
-                            // TODO switch to reader.GetBytes
-                            Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
                             AuthorID = reader.GetInt64(8)
                         };
+
+                        if (!reader.IsDBNull(7))
+                        {
+                            long dataLength = reader.GetBytes(7, 0, null, 0, 0); // first need to get length of image
+                            byte[] imageData = new byte[dataLength];
+                            reader.GetBytes(7, 0, imageData, 0, (int)dataLength); //  then read the image data
+                            recipe.Image = imageData;
+                        }
+                        else
+                        {
+                            recipe.Image = null;
+                        }
 
                         outRecipes.Add(recipe);
                     }
@@ -755,10 +765,7 @@ namespace CookNook.Model
         }
 
         //This method gets the recipes for a user cookbook
-        // for now, it is just getting select few recipes
-        // and some of their fields, it is temporary because
-        // we should use the already made  public List<Recipe> GetRecipesByUserId(int userID) method
-
+        
         public ObservableCollection<Recipe> CookbookRecipes(long userID)
         {
             //Calls GetRecipeByID method to retreive recipes from the database
@@ -767,30 +774,6 @@ namespace CookNook.Model
             foreach (Recipe r in recipesList)
             {
                 recipes.Add(r);
-            }
-            return recipes;
-            using (var conn = new NpgsqlConnection(connString))
-            {
-                conn.Open();
-                using (var cmd = new NpgsqlCommand("SELECT recipe_id, name, description, cook_time_mins, image FROM recipes WHERE author_id=@UserID", conn))
-                {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var recipe = new Recipe
-                            {
-                                ID = reader.GetInt32(0),
-                                Name = reader.IsDBNull(1) ? null : reader.GetString(1),
-                                Description = reader.IsDBNull(2) ? null : reader.GetString(2),
-                                CookTime = reader.GetInt32(3),
-                                Image = reader.IsDBNull(4) ? null : Encoding.ASCII.GetBytes(reader.GetString(4))
-                            };
-
-                            recipes.Add(recipe);
-                        }
-                    }
-                }
             }
             return recipes;
         }
