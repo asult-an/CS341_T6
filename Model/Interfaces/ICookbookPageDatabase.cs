@@ -23,11 +23,11 @@ public interface ICookbookPageDatabase
     public CookbookPageDeletionError RemoveRecipeFromCookbookPage(Int64 recipeID, Int64 cookbookPageID);
     
     ///<summary>
-    ///    /// Gets all recipes on a given cookbook page
+    /// Gets all recipes on a given cookbook page
     /// </summary>
     /// <param name="cookbookPageID"></param>
     /// <returns></returns>
-    public List<Recipe> GetRecipesOnCookbookPage(Int64 cookbookPageID);
+    public List<long> GetRecipesOnCookbookPage(Int64 cookbookPageID);
     
 
     /// <summary>
