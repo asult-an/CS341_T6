@@ -48,7 +48,7 @@ namespace CookNook
         private async void NextClicked(object sender, EventArgs e)
         {
             // warn the user if they try to enter a recipe with missing datum
-            if (Name.Text == null || TimeToMake.Text == null || RecipeDescription.Text == null)
+            if (Name.Text == null || TimeToMake.Text == null || recipeInstructions == null)
             {
                 await DisplayAlert("Error", "Please fill out all fields", "Okay");
                 return;
@@ -60,7 +60,7 @@ namespace CookNook
                 {
                     Name = Name.Text,
                     CookTime = int.Parse(TimeToMake.Text),
-                    Description = RecipeDescription.Text,
+                    Description = recipeInstructions,
                     Image = imageBytes,                 // Use the byte array of the selected image
                     AuthorID = user.Id
                 };
