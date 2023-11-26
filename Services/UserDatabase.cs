@@ -6,10 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using CookNook.Services;
+using CookNook.Model;
 
 
-namespace CookNook.Model
+namespace CookNook.Services
 {
     public class UserDatabase : IUserDatabase
     {
@@ -24,7 +24,7 @@ namespace CookNook.Model
 
         public UserDatabase(IRecipeLogic recipeLogic)
         {
-            this.recipeDB = recipeLogic;
+            recipeDB = recipeLogic;
         }
         public UserDatabase() { }
 
@@ -47,7 +47,7 @@ namespace CookNook.Model
         }
 
 
-        public UserSelectionError UnfollowUser(Int64 userId, Int64 followedUserId)
+        public UserSelectionError UnfollowUser(long userId, long followedUserId)
         {
             // if a row exists in user_following_user table where both userId and followingId match the
             // supplied parameters, remove it.
@@ -97,7 +97,7 @@ namespace CookNook.Model
         /// <param name="userId"></param>
         /// <param name="followedUserId"></param>
         /// <returns></returns>
-        public UserSelectionError FollowUser(Int64 userId, Int64 followedUserId)
+        public UserSelectionError FollowUser(long userId, long followedUserId)
         {
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
@@ -142,7 +142,7 @@ namespace CookNook.Model
         /// <param name="userId"></param>
         /// <param name="followers"></param>
         /// <returns>List of the userIds following the User</returns>
-        public Int64 GetFollowerCount(Int64 userId)
+        public long GetFollowerCount(long userId)
         {
             List<string> followers = new List<string>();
             using var conn = new NpgsqlConnection(connString);
@@ -156,14 +156,14 @@ namespace CookNook.Model
 
 
             using var reader = cmd.ExecuteReader();
-            
+
             // tally up each row the user has
             while (reader.Read())
             {
                 followers.Add(reader.GetString(0)); // assuming the followed_user_id is of type string
             }
 
-            return followers.Count; 
+            return followers.Count;
             //return GetUsersById(followers);
         }
 
@@ -195,19 +195,19 @@ namespace CookNook.Model
             conn.Close();
             cmd.Parameters.Clear();
             cmd.Dispose();
-            
-            
-            
+
+
+
             return GetUserById(userID);
         }
-    
+
 
         /// <summary>
         /// Selects a user by their userId
         /// </summary>
         /// <param name="userID"></param>
         /// <returns></returns>
-        public User GetUserById(Int64 userID)
+        public User GetUserById(long userID)
         {
             User user = null;
             using var conn = new NpgsqlConnection(connString);
@@ -226,7 +226,7 @@ namespace CookNook.Model
             try
             {
                 using var reader = cmd.ExecuteReader();
-                
+
                 if (reader.Read())
                 {
                     user = new User()
@@ -239,7 +239,7 @@ namespace CookNook.Model
                     };
                 }
             }
-            catch( Exception ex )
+            catch (Exception ex)
             {
                 Debug.WriteLine(ex.Message);
             }
@@ -252,7 +252,7 @@ namespace CookNook.Model
             try
             {
                 using var conn = new NpgsqlConnection(connString);
-                
+
 
                 // since multiple tables 
                 //using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
@@ -264,15 +264,15 @@ namespace CookNook.Model
                 reader.Read();
                 string DBPassword = reader.GetString(0);
                 conn.Close();
-                if(DBPassword != password) 
+                if (DBPassword != password)
                 {
                     return UserAuthenticationError.InvalidPassword;
                 }
 
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
-                   
+
                 Debug.WriteLine(ex.Message);
                 return UserAuthenticationError.InvalidUsername;
             }
@@ -280,7 +280,7 @@ namespace CookNook.Model
         }
         public UserAdditionError InsertUser(User user)
         {
-            
+
             try
             {
                 using var conn = new NpgsqlConnection(connString);
@@ -291,7 +291,7 @@ namespace CookNook.Model
                 var cmd = new NpgsqlCommand("INSERT INTO users(user_id, username, email, password, profile_pic)" +
                                                            " VALUES(unique_rowid(), @Username, @UserEmail, @Password, @ProfilePic)", conn);
                 {
-                    
+
                     // Id is assigned by the database automatically thanks to the `UNIQUE` keyword
 
                     //cmd.Parameters.AddWithValue("ID", (int)random.NextInt64(5000));
@@ -323,37 +323,37 @@ namespace CookNook.Model
                 //        cmd.ExecuteNonQuery();
                 //    }
 
-                    //foreach (var pref in user.DietaryPreferences)
-                    //{
-                    //    using (var cmd = new NpgsqlCommand("INSERT INTO dietary_preferences(user_id, preferences) VALUES(@UserId, @Preference)", conn))
-                    //    {
-                    //        cmd.Parameters.AddWithValue("UserId", user.Id);
-                    //        cmd.Parameters.AddWithValue("Preference", pref);
-                    //        cmd.ExecuteNonQuery();
-                    //    }
-                    //}
+                //foreach (var pref in user.DietaryPreferences)
+                //{
+                //    using (var cmd = new NpgsqlCommand("INSERT INTO dietary_preferences(user_id, preferences) VALUES(@UserId, @Preference)", conn))
+                //    {
+                //        cmd.Parameters.AddWithValue("UserId", user.Id);
+                //        cmd.Parameters.AddWithValue("Preference", pref);
+                //        cmd.ExecuteNonQuery();
+                //    }
+                //}
 
-                    //// clear and update following list
-                    //using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
-                    //{
-                    //    cmd.Parameters.AddWithValue("UserId", user.Id);
-                    //    cmd.ExecuteNonQuery();
-                    //}
+                //// clear and update following list
+                //using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
+                //{
+                //    cmd.Parameters.AddWithValue("UserId", user.Id);
+                //    cmd.ExecuteNonQuery();
+                //}
 
-                    //foreach (var followingUserId in user.Following)
-                    //{
-                    //    using (var cmd = new NpgsqlCommand("INSERT INTO user_following_user(follower_user_id, followed_user_id) VALUES(@UserId, @FollowingUserId)", conn))
-                    //    {
-                    //        cmd.Parameters.AddWithValue("UserId", user.Id);
-                    //        cmd.Parameters.AddWithValue("FollowingUserId", followingUserId);
-                    //        cmd.ExecuteNonQuery();
-                    //    }
-                    //}
+                //foreach (var followingUserId in user.Following)
+                //{
+                //    using (var cmd = new NpgsqlCommand("INSERT INTO user_following_user(follower_user_id, followed_user_id) VALUES(@UserId, @FollowingUserId)", conn))
+                //    {
+                //        cmd.Parameters.AddWithValue("UserId", user.Id);
+                //        cmd.Parameters.AddWithValue("FollowingUserId", followingUserId);
+                //        cmd.ExecuteNonQuery();
+                //    }
+                //}
 
-                    // commit the transaction
-                    
-                    return UserAdditionError.NoError;
-                }
+                // commit the transaction
+
+                return UserAdditionError.NoError;
+            }
             catch (Exception ex)
             {
                 // Rollback any changes if an error occurs
@@ -423,7 +423,7 @@ namespace CookNook.Model
                         cmd.ExecuteNonQuery();
                     }
                 }
-                
+
                 // clear and update following list
                 using (var cmd = new NpgsqlCommand("DELETE FROM user_following_user WHERE follower_user_id = @UserId", conn))
                 {
@@ -461,23 +461,23 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="userId">userId of the user being FOLLOWED</param>
         /// <returns>A list of UserIds belonging to followers of the passed userId</returns>
-        public List<Int64> GetFollowerIds(Int64 userId)
+        public List<long> GetFollowerIds(long userId)
         {
-            List<Int64> followerIds = new List<Int64>();
+            List<long> followerIds = new List<long>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             throw new NotImplementedException();
 
         }
-    
-    
+
+
 
         /// <summary>
         /// Selects a range of users by their ids, and fully maps out the resulting User with its joined tables
         /// </summary>
         /// <param name="userIds">Ids to match in the result</param>
         /// <returns>List of populated Users if any could be found</returns>
-        public List<User> GetUsersById(List<Int64> userIds)
+        public List<User> GetUsersById(List<long> userIds)
         {
             List<User> outUsers = new List<User>();
             using var conn = new NpgsqlConnection(connString);
@@ -519,10 +519,10 @@ namespace CookNook.Model
 
                     user.AppPreferences = new List<string>(reader.GetString(4).Split(','));
                     user.DietaryPreferences = new List<string>(reader.GetString(5).Split(','));
-                    
+
                     // the integer columns get handled differently since they get parsed
-                    user.AuthorList= new List<Int64>(Array.ConvertAll(reader.GetString(6).Split(','), Int64.Parse));
-                    user.Following = new List<Int64>(Array.ConvertAll(reader.GetString(7).Split(','), Int64.Parse));
+                    user.AuthorList = new List<long>(Array.ConvertAll(reader.GetString(6).Split(','), long.Parse));
+                    user.Following = new List<long>(Array.ConvertAll(reader.GetString(7).Split(','), long.Parse));
                     outUsers.Add(user);
                 }
             }
@@ -591,7 +591,7 @@ namespace CookNook.Model
 
                 if (rowsAffected == 0)
                     return UserDeletionError.UserNotFound;
-            
+
                 return UserDeletionError.NoError;
             }
         }
@@ -601,12 +601,12 @@ namespace CookNook.Model
             throw new NotImplementedException();
         }
 
-        public List<Int64> GetFollowers(Int64 userId)
+        public List<long> GetFollowers(long userId)
         {
             throw new NotImplementedException();
         }
 
-        public UserSelectionError IsFollowingRecipeById(Int64 userId, Int64 recipeId)
+        public UserSelectionError IsFollowingRecipeById(long userId, long recipeId)
         {
             throw new NotImplementedException();
         }

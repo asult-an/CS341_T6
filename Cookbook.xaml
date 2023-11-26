@@ -12,7 +12,14 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-
+    <!--TODO: Use a picker to bind to a collection of CookbookPageModels-->
+    <!--
+    <Picker>
+        The dropdown will display page_title, but we still need to track the list_id
+        <Picker.ItemDisplayBinding>
+            <Binding Path="PageTitle"/>
+    </Picker>-->
+    
     <CollectionView x:Name="recipesCollectionView" Margin="10">
         <CollectionView.ItemTemplate>
             <DataTemplate>

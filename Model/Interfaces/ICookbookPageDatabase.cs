@@ -6,6 +6,8 @@
 /// </summary>
 public interface ICookbookPageDatabase
 {
+    // TODO: implement CRUD operations for cookbooks themselves
+
     /// <summary>
     /// Adds a recipe to a cookbook page
     /// </summary>
@@ -22,6 +24,7 @@ public interface ICookbookPageDatabase
     /// <returns></returns>
     public CookbookPageDeletionError RemoveRecipeFromCookbookPage(Int64 recipeID, Int64 cookbookPageID);
     
+    // TODO: move to CookbookPageLogic
     ///<summary>
     /// Gets all recipes on a given cookbook page
     /// </summary>
@@ -29,12 +32,26 @@ public interface ICookbookPageDatabase
     /// <returns></returns>
     public List<long> GetRecipesOnCookbookPage(Int64 cookbookPageID);
     
-
+    ///<summary>
+    /// Gets all recipes on a given cookbook page
+    /// </summary>
+    /// <param name="cookbookPageID"></param>
+    /// <returns></returns>
+    public List<long> GetRecipeIdsForCookbookPage(Int64 cookbookPageID);
+    
     /// <summary>
     /// Gets all cookbook pages for a given user
     /// </summary>
     /// <param name="userID"></param>
     /// <returns></returns>
     public List<CookbookPageModel> GetCookbookPagesForUser(Int64 userID);
+
+
        
+    /// <summary>
+    /// Fetches a single cookbook page by its id
+    /// </summary>
+    /// <param name="cookbookPageID"></param>
+    /// <returns></returns>
+    public CookbookPageModel GetCookbookPageByID(Int64 cookbookPageID);
 }

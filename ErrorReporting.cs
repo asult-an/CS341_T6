@@ -137,11 +137,13 @@ public enum CookbookPageAdditionError
 {
     InvalidRecipeProvided,
     ListNotFound,
+    Unpsecified,
     NoError
 }
 public enum CookbookPageDeletionError
 {
     InvalidRecipeProvided,
     ListNotFound,
+    Unspecified,
     NoError
 }
