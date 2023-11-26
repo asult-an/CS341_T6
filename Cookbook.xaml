@@ -33,11 +33,8 @@
                         <Label Text="{Binding Description}" Grid.Row="1"/>
 
                         <!-- Recipe Image -->
-<<<<<<< HEAD
-                        <Button Clicked="RecipeClicked" ImageSource="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}" Grid.Row="2"/>
-=======
+
                         <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
->>>>>>> 9ac9d2de2f662efcd1e3e88d67b59785b855097a
 
                         <!-- Cook Time -->
                         <Label Text="{Binding CookTime}" Grid.Row="3"/>

@@ -17,8 +17,8 @@ namespace CookNook
         private string recipeName;
         private string recipeCooktime;
         private string recipeInstructions;
-        private string Description;
-        private int Servings;
+        private string description;
+        private int servings;
         private IRecipeLogic recipeLogic;
         private IIngredientLogic ingredientLogic;
 
