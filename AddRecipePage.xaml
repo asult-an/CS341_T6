@@ -36,7 +36,7 @@
         </StackLayout>
 
         <StackLayout Grid.Row="4">
-            <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+            <Button Text="Next" x:Name="RecipeDescription" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
         </StackLayout>
 
     </Grid>
