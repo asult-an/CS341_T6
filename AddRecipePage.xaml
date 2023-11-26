@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
-    <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.AddRecipePage"
              Title="Add Recipe"
@@ -15,37 +15,36 @@
 
         <Button Text="Pick an Image" Clicked="PickImageClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7" Margin="10"/>
 
- 
-
-        <!--Description Editor--> 
-    <Editor x:Name="Description" Placeholder="Enter description here..." AutoSize="Disabled"  HeightRequest="50" BackgroundColor="LightBlue" />
-          
-        
 
 
-    <Grid RowDefinitions="150, auto, auto, *, auto" Padding="20" BackgroundColor="#202c39">
+        <!--Description Editor-->
+        <Editor Text="test" x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." AutoSize="Disabled"  HeightRequest="50" MaximumHeightRequest="150" BackgroundColor="LightBlue" />
 
-        
 
-        <StackLayout Grid.Row="2">
-            <Entry x:Name="Name" Placeholder="Enter recipe name..." TextColor="#ffe6a7"/>
-        </StackLayout>
 
-        <StackLayout Grid.Row="3">
-            <Entry x:Name="TimeToMake" Placeholder="Enter cook time" TextColor="#ffe6a7"/>
-        </StackLayout>
 
-        <StackLayout Grid.Row="4">
-            <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-        </StackLayout>
+        <Grid RowDefinitions="150, auto, auto, *, auto" Padding="20" BackgroundColor="#202c39">
 
-    </Grid>
+
+
+            <StackLayout Grid.Row="2">
+                <Entry Text="test"  x:Name="Name" Placeholder="Enter recipe name..." TextColor="#ffe6a7"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="3">
+                <Entry Text="60" x:Name="TimeToMake" Placeholder="Enter cook time" TextColor="#ffe6a7" Keyboard="Numeric"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="4">
+                <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+            </StackLayout>
+
+        </Grid>
 
 
     </StackLayout>
 
 </ContentPage>
-
 
 
 
