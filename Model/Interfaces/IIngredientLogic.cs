@@ -1,22 +1,28 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace CookNook.Model
+﻿namespace CookNook.Model.Interfaces
 {
     public interface IIngredientLogic
     {
         /// <summary>
         /// Inserts a new ingredient into the database, as long as an
-        /// existing ingredient is already present 
+        /// existing ingredient isn't already present 
         /// </summary>
-        /// <param name="ingredientId">UNCHANGED: used to anchor the existing row</param>
+        /// <remarks>For <b>creating an ingredient from AddRecipeIngredientsPage</b>.
+        /// </remarks>
+        /// <param name="recipeId">UNCHANGED: </param>
         /// <param name="name">the name of the ingredient</param>
         /// <param name="unit">Nullable unit field, in case ingredient is unitless</param>
         /// <returns>IngredientError</returns>
-        IngredientAdditionError CreateIngredient(Int64 ingredientId, string name, string? unit);
+        //IngredientAdditionError CreateIngredient(Int64 ingredientId, string name, string? unit);
+        //public IngredientAdditionError CreateIngredientForRecipe(Int64 recipeId, string name, string? unit, string quantity);
+
+        /// <summary>
+        /// Creates an ingredient in the database, not attached to any recipe.
+        /// This type of creation is suitable from ingredient management
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>IngredientAdditionError</returns>
+
+        IngredientAdditionError CreateIngredient(string name);
 
         /// <summary>
         /// Update an ingredient 
@@ -42,7 +48,15 @@ namespace CookNook.Model
         /// <returns>An ingredient object</returns>
         Ingredient GetIngredientById(Int64 ingredientId);
 
-        List<Ingredient> GetIngredientRange(Int64[] ingredientIds);
+
+        /// <summary>
+        /// Fetches an ingredient by its name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>An ingredient, otherwise null/error</returns>
+        Ingredient GetIngredientByName(string name);
+
+        //List<Ingredient> GetIngredientRange(Int64[] ingredientIds);
 
         /// <summary>
         /// Given a recipeId, queries all the ingredients in the database
@@ -61,20 +75,20 @@ namespace CookNook.Model
         /// <returns>A list of Ingredient type</returns>
         List<Ingredient> GetAllIngredients();
 
-        /// <summary>
-        /// Checks for an existing Ingredient before attempting to add it.
-        /// If the ingredient is found, then it will return that Ingredient.
-        /// If it's not found, and the data is valid, then we add it to the db.
-        /// </summary>
-        /// <remarks>
-        /// Note that the dynamic return type allows for IngredientAdditionErrors
-        /// in the event that the data is invalid
-        /// </remarks>
-        /// <param name="name"></param>
-        /// <param name="quantity"></param>
-        /// <param name="unit"></param>
-        /// <returns>Either the Ingredent (existing/inserted) or a IngredientAdditionError</returns>
-        dynamic GetOrCreateIngredient(string name, string quantity, string? unit);
+        ///// <summary>
+        ///// Checks for an existing Ingredient before attempting to add it.
+        ///// If the ingredient is found, then it will return that Ingredient.
+        ///// If it's not found, and the data is valid, then we add it to the db.
+        ///// </summary>
+        ///// <remarks>
+        ///// Note that the dynamic return type allows for IngredientAdditionErrors
+        ///// in the event that the data is invalid
+        ///// </remarks>
+        ///// <param name="name"></param>
+        ///// <param name="quantity"></param>
+        ///// <param name="unit"></param>
+        ///// <returns>Either the Ingredient (existing/inserted) or a IngredientAdditionError</returns>
+        //dynamic GetOrCreateIngredient(string name, string quantity, string? unit);
 
     }
 }

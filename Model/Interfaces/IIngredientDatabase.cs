@@ -14,7 +14,7 @@ namespace CookNook.Model.Interfaces
         /// </summary>
         /// <returns></returns>
         List<Ingredient> GetAllIngredients();
-        
+
         /// <summary>
         /// Allows for a subset of ingredients to be selected
         /// e.g all recipe_ids in a cookbook page
@@ -28,14 +28,8 @@ namespace CookNook.Model.Interfaces
         /// </summary>
         /// <param name="name">Ingredient name.</param>
         /// <returns>Ingredient object if found, null otherwise.</returns>
-        //Ingredient GetIngredientByName(string name);
+        Ingredient GetIngredientByName(string name);
 
-        /// <summary>
-        /// Fetch all ingredients that belong to a particular recipe
-        /// </summary>
-        /// <param name="recipeId">recipe id</param>
-        /// <returns>List of Ingredient object if found, null otherwise</returns>
-        List<Ingredient> GetIngredientsFromRecipe(Int64 recipeId);
  
         /// <summary>
         /// Fetch a particular ingredient by its id.
@@ -44,6 +38,23 @@ namespace CookNook.Model.Interfaces
         /// <returns>Ingredient object if found, null otherwise.</returns>
         Ingredient GetIngredientById(Int64 id);
 
+        /// <summary>
+        /// Fetch all ingredients that belong to a particular recipe
+        /// </summary>
+        /// <param name="recipeId">recipe id</param>
+        /// <returns>List of Ingredient object if found, null otherwise</returns>
+        List<Ingredient> GetIngredientsFromRecipe(Int64 recipeId);
+        
+        
+        /// <summary>
+        /// Associates an ingredient to a particular recipe by creating a new row 
+        /// in the recipe_ingredients table. 
+        /// </summary>
+        /// <param name="recipeId">Recipe's Id</param>
+        /// <param name="ingredientId">Ingredient's Id</param>
+        /// <returns></returns>
+        // IngredientAdditionError AddIngredientToRecipe(Int64 recipeId, Int64 ingredientId);
+        
         /// <summary>
         /// Updates an ingredient by its id
         /// </summary>
@@ -59,7 +70,7 @@ namespace CookNook.Model.Interfaces
         /// </summary>
         /// <param name="ingredient">the new ingredient to be added</param>
         /// <returns></returns>
-        IngredientAdditionError CreateIngredient(Ingredient ingredient);
+        IngredientAdditionError CreateIngredient(string name);
         
         /// <summary>
         /// Similar to CreateIngredient, except in cases where a duplicate ingredient is 

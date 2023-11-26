@@ -17,9 +17,9 @@
 
  
 
-        <!-- Description Editor 
-        <Editor x:Name="Description" Placeholder="Enter description here..." AutoSize="TextChanges" HeightRequest="150" />
-          -->
+         <!--Description Editor--> 
+        <Editor x:Name="Description" Placeholder="Enter description here..." AutoSize="Disabled"  HeightRequest="50" BackgroundColor="LightBlue" />
+          
         
 
 

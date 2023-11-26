@@ -48,8 +48,38 @@ namespace CookNook.Services
                 }
                 ingredients.Add(ingredient);
             }
+
             reader.Close();
             return ingredients;
+        }
+
+        /// <summary>
+        /// Selects an ingredient from the Ingredients table by its name and returns it
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>Nullable ingredient</returns>
+        public Ingredient GetIngredientByName(string name)
+        {
+            Ingredient? queriedIngredient = null;
+            using var conn = new NpgsqlConnection(DbConn.ConnectionString);
+            conn.Open();
+
+            // we can leverage the ANY() operator to query for a range of ids
+            var cmd = new NpgsqlCommand("SELECT * FROM ingredients WHERE name = @Name", conn);
+            cmd.Parameters.AddWithValue("Name", name);
+            using var reader = cmd.ExecuteReader();
+
+            reader.Read();
+            if (reader.HasRows == false)
+                // already set to null, so just return early
+                return queriedIngredient;
+
+            Int64 ingredientId = reader.GetInt64(0);
+            string ingredientName = reader.GetString(1);
+            queriedIngredient = new Ingredient(ingredientId, ingredientName, null);
+            
+            reader.Close();
+            return queriedIngredient;
         }
 
 
@@ -92,8 +122,11 @@ namespace CookNook.Services
 
                 results.Add(ingredient);
             }
+
+            reader.Close();
             return results;
         }
+
 
         // TODO: this might make more sense to be defined on a RecipeList class
         /// <summary>
@@ -103,7 +136,6 @@ namespace CookNook.Services
         /// <returns></returns>
         //public Ingredient GetIngredientByName(string name)
         //{
-
         //}
 
         /// <summary>
@@ -111,7 +143,7 @@ namespace CookNook.Services
         /// </summary>
         /// <param name="recipeID">ID of the recipe to query</param>
         /// <returns>a list of Ingredients found in the recipe</returns>
-        public List<Ingredient> GetIngredientsFromRecipe(long recipeId)
+        public List<Ingredient> GetIngredientsFromRecipe(Int64 recipeId)
         {
             List<Ingredient> ingredients = new List<Ingredient>();
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
@@ -151,6 +183,32 @@ namespace CookNook.Services
         }
 
         /// <summary>
+        /// Adds an ingredient-recipe relation to the recipe_ingredients table
+        /// </summary>
+        /// <remarks>NOTE: the ingredient must already exist for the operation to succeed</remarks>
+        /// <param name="recipeId">recipe's id</param>
+        /// <param name="ingredientId">ingredient's id</param>
+        /// <returns></returns>
+        public IngredientAdditionError AddIngredientToRecipe(long recipeId, long ingredientId)
+        {
+            using var conn = new NpgsqlConnection(DbConn.ConnectionString);
+            conn.Open();
+
+            var cmd = new NpgsqlCommand(@"INSERT INTO recipe_ingredients (recipe_id, ingredient_id) VALUES (@Recipe_ID, @Ingredient_ID)", conn);
+            cmd.Parameters.AddWithValue("Recipe_ID", recipeId);
+            cmd.Parameters.AddWithValue("Ingredient_ID", ingredientId);
+            var reader = cmd.ExecuteReader();
+            reader.Close();
+
+            // return the appropriate error if the insert failed
+            if (reader.RecordsAffected == 0)
+            {
+                return IngredientAdditionError.DBAdditionError;
+            }
+            return IngredientAdditionError.NoError;
+        }
+
+        /// <summary>
         /// returns a singular ingredient by its ID.
         /// NOTE: without a recipe_Id, the unit and quantity will be null.
         /// </summary>
@@ -182,26 +240,32 @@ namespace CookNook.Services
             return ingredient;
         }
 
+        /// <summary>
+        /// Updates an ingredient in the database
+        /// </summary>
+        /// <param name="ingredientId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
         public IngredientUpdateError UpdateIngredient(long ingredientId, string name)
         {
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
-            var cmd = new NpgsqlCommand(@"UPDATE ingredients SET name = @Name, quantity = @Quantity, unit = @Unit WHERE ingredient_id = @Ingredient_ID", conn);
+            //var cmd = new NpgsqlCommand(@"UPDATE ingredients SET name = @Name, quantity = @Quantity, unit = @Unit WHERE ingredient_id = @Ingredient_ID", conn);
+            var cmd = new NpgsqlCommand(@"UPDATE ingredients SET name = @Name WHERE ingredient_id = @Ingredient_ID", conn);
             cmd.Parameters.AddWithValue("Ingredient_ID", ingredientId);
             cmd.Parameters.AddWithValue("Name", name);
             //cmd.Parameters.AddWithValue("Quantity", quantity);
             //cmd.Parameters.AddWithValue("Unit", unit);
+
             // if no rows were affected, the ingredient id probably doesn't exist
             try
             {
+                // if no rows were returned...
                 if (cmd.ExecuteNonQuery() == 0)
                 {
                     return IngredientUpdateError.IngredientNotFound;
                 }
-                else
-                {
-                    return IngredientUpdateError.NoError;
-                }
+                return IngredientUpdateError.NoError;
             }
             catch (Exception e)
             {
@@ -216,9 +280,9 @@ namespace CookNook.Services
         /// Adds a new ingredient name into the ingredients table to be used when 
         /// creating new recipes.
         /// </summary>
-        /// <param name="ingredient"></param>
+        /// <param name="name">name of the ingredient</param>
         /// <returns></returns>
-        public IngredientAdditionError CreateIngredient(Ingredient ingredient)
+        public IngredientAdditionError CreateIngredient(string name)
         {
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
@@ -227,7 +291,7 @@ namespace CookNook.Services
             // attempt to insert into the database, throwing an error on failed insertions
             try
             {
-                cmd.Parameters.AddWithValue("Name", ingredient.Name);
+                cmd.Parameters.AddWithValue("Name", name);
                 cmd.ExecuteNonQuery();
                 return IngredientAdditionError.NoError;
             }
@@ -273,6 +337,8 @@ namespace CookNook.Services
                recipe_ingredients.ingredient_id = ingredients.ingredient_id
                AND recipe_ingredients.recipe_id = recipes.recipe_id
              */
+            reader.Close();
+
             return outIngredient;
         }
 
@@ -286,6 +352,8 @@ namespace CookNook.Services
             using var reader = cmd.ExecuteReader();
             reader.Read();
             int rowsAffected = reader.RecordsAffected;
+            reader.Close();
+
             if (rowsAffected == 0)
             {
                 return IngredientDeleteError.DBDeletionError;

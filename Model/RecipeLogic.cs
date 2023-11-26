@@ -143,17 +143,29 @@ namespace CookNook.Model
             return recipeDatabase.SelectRecipeByCooktime(cooktime);
         }
 
+        /// <summary>
+        /// Grabs a list of recipes by their ids
+        /// </summary>
+        /// <param name="recipeList"></param>
+        /// <returns>List of recipes</returns>
         public List<Recipe> SelectRecipes(List<Int64> recipeList)
         {
+            if (recipeList == null || recipeList.Count == 0)
+                throw new ArgumentException("recipeList cannot be null or empty");
+
             return recipeDatabase.SelectRecipes(recipeList);
         }
 
+        /// <summary>
+        /// Selects a recipe by its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Recipe object, else null</returns>
         public Recipe FindRecipe(Int64 id)
         {
             try
             {
                 return recipeDatabase.SelectRecipe(id);
-
             }
             catch (Exception ex)
             {
@@ -165,16 +177,8 @@ namespace CookNook.Model
         public List<Int64> GetFollowerIds(Int64 recipeID)
         {
             return recipeDatabase.GetRecipeFollowerIds(recipeID);
-            // throw new NotImplementedException();
-
         }
 
-
-        public Ingredient GetOrCreateIngredient(string ingredientName)
-        {
-            // if the ingredient already exists...
-            return ingredientLogic.GetOrCreateIngredient(ingredientName);
-        }
 
         public List<Tag> GetTagsForRecipe(Int64 recipeID)
         {

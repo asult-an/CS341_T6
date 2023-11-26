@@ -1,5 +1,5 @@
 ﻿
-namespace CookNook.Model;
+namespace CookNook;
 
 public enum RecipeAdditionError
 {
@@ -106,6 +106,7 @@ public enum IngredientAdditionError
 {
     IngredientAlreadyExists,
     DBAdditionError,
+    BadParameters,
     NoError
 }
 
@@ -120,5 +121,13 @@ public enum IngredientUpdateError
 {
     IngredientNotFound,
     DBUpdateError,
+    BadParameters,
+    NoError
+}
+
+public enum IngredientSelectionError
+{
+    IngredientNotFound,
+    BadParameters,
     NoError
 }

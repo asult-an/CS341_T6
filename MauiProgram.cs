@@ -1,4 +1,6 @@
 ﻿using CookNook.Model;
+using CookNook.Model.Interfaces;
+using CookNook.Services;
 using Microsoft.Extensions.Logging;
 namespace CookNook;
 
@@ -32,12 +34,14 @@ public static class MauiProgram
 	/// <param name="builder">the instance of the builder hosting the App</param>
 	/// <returns>the builder, once it's had the services added</returns>
 	public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
-	{
-		// builder.Services.AddScoped<UserDatabase, IUserDatabase>();
-		
+	{ 
 		builder.Services.AddScoped<IRecipeDatabase, RecipeDatabase>();
 		builder.Services.AddScoped<IRecipeLogic, RecipeLogic>();
+		builder.Services.AddScoped<IIngredientDatabase, IngredientDatabase>();
+		builder.Services.AddScoped<IIngredientLogic, IngredientLogic>();
+		builder.Services.AddScoped<IUserDatabase, UserDatabase>();
 
+		//builder.Services.
 		// Hacky, but this gets it to compile for now.
 		// TODO: troubleshoot later, true DI needed
 		//builder.Services.AddSingleton<UserLogic>();

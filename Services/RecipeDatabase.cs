@@ -10,6 +10,7 @@ namespace CookNook.Services
     internal class RecipeDatabase : IRecipeDatabase
     {
         private IIngredientDatabase ingredientDatabase;
+        // private IIngredientLogic ingredientLogic;
 
         public RecipeDatabase()
         {
@@ -480,7 +481,7 @@ namespace CookNook.Services
         /// Selects a recipe by its recipeId
         /// </summary>
         /// <param name="inID"></param>
-        /// <returns></returns>
+        /// <returns>The recipe if found, else null</returns>
         public Recipe SelectRecipe(Int64 inID)
         {
             Recipe recipe = new Recipe();
@@ -492,13 +493,14 @@ namespace CookNook.Services
                                 FROM recipes AS r
                                 JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
                                 WHERE rt.recipe_id = @RecipeId 
-                                    AND @RecipeId = ", conn)
-            {
-
-            };
+                                    AND @RecipeId = ", conn);
             cmd.Parameters.AddWithValue("RecipeId", inID);
             using var reader = cmd.ExecuteReader();
             reader.Read();
+
+            // check if nothing was found:
+            if (reader.HasRows == false)
+                return null;
 
             recipe.ID = reader.GetInt64(0);
             recipe.Name = reader.GetString(1);
