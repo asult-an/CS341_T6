@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -11,36 +12,61 @@ using Microsoft.Maui.Storage;
 
 namespace CookNook
 {
-    public partial class AddRecipePage : ContentPage
+    public partial class AddRecipePage : ContentPage, INotifyPropertyChanged
     {
         private string recipeName;
         private string recipeCooktime;
         private string recipeInstructions;
+<<<<<<< HEAD
 
         //private string Description
         private int Servings;
+=======
+        // private string description
+        // private int servings;
+>>>>>>> 1bcdde6282e19ce11b60af23d0378a028a943f87
         private IRecipeLogic recipeLogic;
         private IIngredientLogic ingredientLogic;
-
-        // TODO: PreviousPageData uses these three.  Are we grabbing these?
-        public string RecipeName { get { return recipeName; } set { recipeName = value; } }
-        public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
-        public string RecipeInstructions { get { return recipeInstructions; } set { recipeInstructions = value; } }
         private string imagePath;
         private byte[] imageBytes;
         private User user;
 
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        // TODO: PreviousPageData uses these three.  Are we grabbing these?
+        public string RecipeName { get { return recipeName; } set { recipeName = value; } }
+        public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
+        
+        /// <summary>
+        /// The instructions for the recipe, bound to the Description inpue in the XAML
+        /// </summary>
+        public string RecipeInstructions { 
+            get { return recipeInstructions; } 
+            set { 
+                // if not null, set the value
+                if(recipeInstructions != value)
+                {
+                    recipeInstructions = value; 
+                    OnPropertyChanged(nameof(RecipeInstructions));
+                }
+            } 
+        }
+
+
         // constructor with dependency injection
-        public AddRecipePage(IRecipeLogic recipeLogic)
+        public AddRecipePage(IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic)
         {
             InitializeComponent();
             this.recipeLogic = recipeLogic;
+            this.ingredientLogic = ingredientLogic;
+            user = UserViewModel.Instance.AppUser;
         }
 
         public AddRecipePage()
         {
             InitializeComponent();
             this.recipeLogic = new RecipeLogic(new RecipeDatabase());
+            this.ingredientLogic = new IngredientLogic(new IngredientDatabase());
             user = UserViewModel.Instance.AppUser;
         }
 
@@ -48,11 +74,18 @@ namespace CookNook
         private async void NextClicked(object sender, EventArgs e)
         {
             // warn the user if they try to enter a recipe with missing datum
+<<<<<<< HEAD
             if (Name.Text == null || TimeToMake.Text == null || RecipeDescription.Text == null)
+=======
+            // TODO: write better sanity checks
+            //if (Name.Text == null || TimeToMake.Text == null || recipeInstructions == null)
+            if (Name.Text == null || TimeToMake.Text == null || Description.Text == null)
+>>>>>>> 1bcdde6282e19ce11b60af23d0378a028a943f87
             {
                 await DisplayAlert("Error", "Please fill out all fields", "Okay");
                 return;
             }
+            recipeInstructions = Description.Text;
 
             try
             {
@@ -112,7 +145,9 @@ namespace CookNook
             }
         }
 
-
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
     }
-
 }

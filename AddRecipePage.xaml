@@ -18,7 +18,7 @@
  
 
         <!--Description Editor--> 
-    <Editor x:Name="Description" Placeholder="Enter description here..." AutoSize="Disabled"  HeightRequest="50" BackgroundColor="LightBlue" />
+    <Editor x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." AutoSize="Disabled"  HeightRequest="50" MaximumHeightRequest="150" BackgroundColor="LightBlue" />
           
         
 
