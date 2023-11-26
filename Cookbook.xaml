@@ -1,10 +1,17 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:CookNook.Model"
              x:Class="CookNook.Cookbook"
              Title="{Binding PageTitle}"
              NavigationPage.HasBackButton="False"
              BackgroundColor="#202c39"
              xmlns:model="clr-namespace:CookNook.Model">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
 
     <CollectionView x:Name="recipesCollectionView" Margin="10">
@@ -26,7 +33,11 @@
                         <Label Text="{Binding Description}" Grid.Row="1"/>
 
                         <!-- Recipe Image -->
+<<<<<<< HEAD
                         <Button Clicked="RecipeClicked" ImageSource="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}" Grid.Row="2"/>
+=======
+                        <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+>>>>>>> 9ac9d2de2f662efcd1e3e88d67b59785b855097a
 
                         <!-- Cook Time -->
                         <Label Text="{Binding CookTime}" Grid.Row="3"/>

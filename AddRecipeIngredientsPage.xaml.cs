@@ -110,8 +110,8 @@ public partial class AddRecipeIngredientsPage : ContentPage
             4,
             1,
             tags,             // recipeLogic.GetTagsForRecipe
-            new long[] {1}       // followerIds
-           
+            new long[] {1},      // followerIds
+            currentRecipe.Image
         ); 
             //recipeLogic.GetFollowerIds()
 
