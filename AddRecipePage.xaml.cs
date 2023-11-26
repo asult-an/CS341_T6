@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CookNook.Model;
+using CookNook.Model.Interfaces;
+using CookNook.Services;
 using Microsoft.Maui.Storage;
 
 namespace CookNook
@@ -18,6 +20,8 @@ namespace CookNook
         private string Description;
         private int Servings;
         private IRecipeLogic recipeLogic;
+        private IIngredientLogic ingredientLogic;
+
         public string RecipeName { get { return recipeName; } set { recipeName = value; } }
         public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
         public string RecipeInstructions { get { return recipeInstructions; } set { recipeInstructions = value; } }
@@ -42,6 +46,13 @@ namespace CookNook
 
         private async void NextClicked(object sender, EventArgs e)
         {
+            // warn the user if they try to enter a recipe with missing datum
+            if (Name.Text == null || TimeToMake.Text == null || recipeInstructions == null)
+            {
+                await DisplayAlert("Error", "Please fill out all fields", "Okay");
+                return;
+            }
+
             try
             {
                 var newRecipe = new Recipe
@@ -49,12 +60,12 @@ namespace CookNook
                     Name = Name.Text,
                     CookTime = int.Parse(TimeToMake.Text),
                     Description = recipeInstructions,
-                    Image = imageBytes, // Use the byte array of the selected image
+                    Image = imageBytes,                 // Use the byte array of the selected image
                     AuthorID = user.Id
                 };
 
                 // Navigate to the Addingredients page and pass the newRecipe object
-                await Navigation.PushAsync(new AddRecipeIngredientsPage(this.recipeLogic, newRecipe, user));
+                await Navigation.PushAsync(new AddRecipeIngredientsPage(this.recipeLogic, this.ingredientLogic, newRecipe, user));
             }
             catch (Exception ex)
             {

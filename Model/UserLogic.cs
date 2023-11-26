@@ -1,4 +1,5 @@
-﻿using Npgsql;
+﻿using CookNook.Services;
+using Npgsql;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -9,7 +10,7 @@ using System.Threading.Tasks;
 //namespace CookNook.Services
 namespace CookNook.Model
 {
-    
+
     public class UserLogic
     {
         Random random = new Random();

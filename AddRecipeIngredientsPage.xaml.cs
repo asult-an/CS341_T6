@@ -1,5 +1,4 @@
-﻿
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
@@ -7,7 +6,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CookNook.Model;
-
+using CookNook.Model.Interfaces;
+using CookNook.Services;
 
 namespace CookNook;
 
@@ -15,6 +15,8 @@ public partial class AddRecipeIngredientsPage : ContentPage
 {
 
     private Recipe currentRecipe;
+    private IRecipeLogic recipeLogic;
+    private IIngredientLogic ingredientLogic;
 
     private User user;
     private Random random = new Random();
@@ -30,15 +32,26 @@ public partial class AddRecipeIngredientsPage : ContentPage
     // TODO: consider using Ingredient model instead of String
     //public string Ingredients => Ingredients;
 
-    private IRecipeLogic recipeLogic;
 
 
-    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, Recipe recipe, User inUser)
+    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic, Recipe recipe, User inUser)
     {
         InitializeComponent();
-        currentRecipe = recipe;
+        if (recipe == null)
+        {
+            Debug.Write("AddRecipeIngredientsPage: recipe is null!");
+            currentRecipe = new Recipe();
+        }
+        else
+        {
+            currentRecipe = recipe;
+        }
         currentRecipe.Ingredients = new List<Ingredient>().ToArray();
         user = inUser;
+        IngredientList = ingredientLogic.GetAllIngredients();
+        this.ingredientLogic = ingredientLogic;
+        this.recipeLogic = recipeLogic;
+        this.BindingContext = this;
         //currentRecipe.IngredientsQty = new List<string>();
     }
 
@@ -46,11 +59,16 @@ public partial class AddRecipeIngredientsPage : ContentPage
     /// Injects recipeLogic, then populates the list with ingredients to add to their recipe
     /// </summary>
     /// <param name="recipeLogic"></param>
-    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic)
+    /// <param name="ingredientLogic"></param>
+    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic)
     {
         InitializeComponent();
+         
+        //this.recipeLogic = recipeLogic
+        // use the recipeLogic scoped from Dependency Injection
         this.recipeLogic = recipeLogic;
-        IngredientList = recipeLogic.GetAllIngredients();
+        this.ingredientLogic = ingredientLogic;
+        IngredientList = ingredientLogic.GetAllIngredients();
     }
 
     // W
@@ -58,28 +76,36 @@ public partial class AddRecipeIngredientsPage : ContentPage
     {
         try
         {
-            string ingredient = IngredientEntry.Text;
+            string ingredientName = IngredientEntry.Text;
             int quantity = int.Parse(QuantityEntry.Text);
             string unit = UnitPicker.SelectedItem.ToString();
             string displayQuantity = $"{quantity} {unit}";
+            List<Ingredient> ingredients = new List<Ingredient>();
+
+            // if the data was able to be parse, structure into a new Ingredient obj according to which values are null
+            if(string.IsNullOrEmpty(ingredientName) || string.IsNullOrEmpty(unit))
+            {
+                ingredients = currentRecipe.Ingredients.Append(new Ingredient(ingredientName, QuantityEntry.Text)).ToList();
+            }
+            else
+            {
+                ingredients = currentRecipe.Ingredients.Append(new Ingredient(ingredientName, QuantityEntry.Text, unit)).ToList();
+            }
+            currentRecipe.Ingredients = ingredients.ToArray();
+
         }
         catch (Exception ex)
         {
             Debug.Write("AddIngredientsPage: " + ex.Message);
             DisplayAlert("Error", "Ingredient Add Failed", "Okay");
         }
-        
-
-
-        
-
-        // Add to the ObservableCollection
-        //currentRecipe.Ingredients.Add(ingredient);
-
-        //clear entries and picker
-        IngredientEntry.Text = string.Empty;
-        QuantityEntry.Text = string.Empty;
-        UnitPicker.SelectedIndex = -1;
+        finally
+        {
+            //clear entries and picker
+            IngredientEntry.Text = string.Empty;
+            QuantityEntry.Text = string.Empty;
+            UnitPicker.SelectedIndex = -1;
+        }
     }
 
     
@@ -94,26 +120,28 @@ public partial class AddRecipeIngredientsPage : ContentPage
                 new Ingredient("Pie Crust", "1"),
                 //TODO new ingredients fail
                 // and a regular one
+
                 //new Ingredient("Artichoke Hearts", "2", "oz")
                 new Ingredient("Apple (Red Delicious)", "2")
         };
+
         Tag[] tags = { new Tag { DisplayName = "test" } };
 
         var newRecipe = new Recipe(
-            currentRecipe.Name,                              // name
+            currentRecipe.Name,                   // name
             currentRecipe.Description,            // description
-            currentRecipe.CookTime,       // cooktime 
-            testIngredients,          //recipeLogic.GetIngredientsByRecipe(1),
-            CourseType.Parse("Dinner"),
-            //CourseType.Parse(CourseEntry.Text),
+            currentRecipe.CookTime,               // cooktime 
+            testIngredients,                      //recipeLogic.GetIngredientsByRecipe(1),
+            // CourseType.Parse("Dinner"),
+            CourseType.Parse(CourseEntry.Text),
             currentRecipe.AuthorID,
-            4,
-            1,
-            tags,             // recipeLogic.GetTagsForRecipe
-            new long[] {1},      // followerIds
-            currentRecipe.Image
-        ); 
+            4,                             // rating
+            1,                            // servings
+            tags,                                 // recipeLogic.GetTagsForRecipe
+            new long[] { }             // followerIds
             //recipeLogic.GetFollowerIds()
+
+        ); 
 
         // TODO: map ingredients and their quantities...?
         if (recipeLogic == null)
@@ -143,23 +171,23 @@ public partial class AddRecipeIngredientsPage : ContentPage
          */
         var result = recipeLogic.AddRecipe(newRecipe);
 
-       // Check if the recipe was added successfully and navigate accordingly
-       if (result == RecipeAdditionError.NoError)
-       {
-           await Navigation.PushAsync(new DietaryRestrictionsPage(user));
-           await DisplayAlert("Success", "Recipe added successfully!", "OK");
-       }
-       else if (result == RecipeAdditionError.DBAdditionError)
-       {
-           await DisplayAlert("Error", "LogicError", "OK");
-       }
-       else
-       {
-           await DisplayAlert("Error", "Failed to add recipe", "OK");
-       }
-
-       
+        // Check if the recipe was added successfully and navigate accordingly
+        switch (result)
+        {
+            case RecipeAdditionError.NoError:
+                await Navigation.PushAsync(new DietaryRestrictionsPage(user));
+                await DisplayAlert("Success", "Recipe added successfully!", "OK");
+                break;
+            case RecipeAdditionError.DBAdditionError:
+                await DisplayAlert("Error", "LogicError", "OK");
+                break;
+            default:
+                await DisplayAlert("Error", "Failed to add recipe", "OK");
+                break;
+        }
     }
+
+
     //REVISE, some properties may be incorrect
     /// <summary>
     /// Sends the recipe back to the previous page so the entered 
@@ -174,9 +202,9 @@ public partial class AddRecipeIngredientsPage : ContentPage
         var newRecipe = new Recipe(
             (int)random.NextInt64(5000),
             currentRecipe.Name,
-            "Description",
+            currentRecipe.Description,
             currentRecipe.CookTime,
-            new Ingredient[] { },
+            new Ingredient[] { },        //currentRecipe.Ingredients,
             CourseType.Parse(CourseEntry.Text),
             1,
             0,

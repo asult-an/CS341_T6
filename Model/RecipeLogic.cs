@@ -5,6 +5,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CookNook.Services;
 
 namespace CookNook.Model
 {
@@ -12,7 +13,7 @@ namespace CookNook.Model
     {
         const int MAX_RECIPE_NAME_LENGTH = 50;
         const int MAX_RECIPE_DESCRIPTION_LENGTH = 150;
-
+        private IngredientLogic ingredientLogic = new IngredientLogic(new IngredientDatabase());
         private IRecipeDatabase recipeDatabase;
 
         /// <summary>
@@ -142,17 +143,29 @@ namespace CookNook.Model
             return recipeDatabase.SelectRecipeByCooktime(cooktime);
         }
 
+        /// <summary>
+        /// Grabs a list of recipes by their ids
+        /// </summary>
+        /// <param name="recipeList"></param>
+        /// <returns>List of recipes</returns>
         public List<Recipe> SelectRecipes(List<Int64> recipeList)
         {
+            if (recipeList == null || recipeList.Count == 0)
+                throw new ArgumentException("recipeList cannot be null or empty");
+
             return recipeDatabase.SelectRecipes(recipeList);
         }
 
+        /// <summary>
+        /// Selects a recipe by its Id
+        /// </summary>
+        /// <param name="id"></param>
+        /// <returns>Recipe object, else null</returns>
         public Recipe FindRecipe(Int64 id)
         {
             try
             {
                 return recipeDatabase.SelectRecipe(id);
-
             }
             catch (Exception ex)
             {
@@ -164,26 +177,8 @@ namespace CookNook.Model
         public List<Int64> GetFollowerIds(Int64 recipeID)
         {
             return recipeDatabase.GetRecipeFollowerIds(recipeID);
-            // throw new NotImplementedException();
-
         }
 
-        public List<Ingredient> GetIngredientsByRecipe(Int64 recipeID)
-        {
-            return recipeDatabase.GetIngredientsByRecipe(recipeID);
-            // throw new NotImplementedException();
-        }
-
-        public List<Ingredient> GetAllIngredients()
-        {
-            return recipeDatabase.GetAllIngredients();
-        }
-
-        public Ingredient GetOrCreateIngredient(string ingredientName)
-        {
-            // if the ingredient already exists...
-            return recipeDatabase.GetOrCreateIngredient(ingredientName);
-        }
 
         public List<Tag> GetTagsForRecipe(Int64 recipeID)
         {
