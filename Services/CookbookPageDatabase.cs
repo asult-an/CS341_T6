@@ -109,6 +109,7 @@ namespace CookNook.Services
             return recipeIds;
         }
 
+
         public List<long> GetRecipeIdsForCookbookPage(long cookbookPageID)
         {
 
@@ -135,11 +136,35 @@ namespace CookNook.Services
         /// <returns></returns>
         public List<CookbookPageModel> GetCookbookPagesForUser(long userID)
         {
-            
+            using var conn = new NpgsqlConnection(DbConn.ConnectionString);
+            conn.Open();
+            // using the recipe_id stored, select all recipes that have their id present
+            var cmd = new NpgsqlCommand("SELECT list_id, user_id, page_title FROM user_cookbook_pages WHERE user_id = @UserID", conn);
 
-            // TODO:
-            throw new NotImplementedException();
+            cmd.Parameters.AddWithValue("@UserID", userID);
+
+            var reader = cmd.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                Debug.Write($"No cookbook pages found for user {userID}");
+                return null;
+            }
+
+            // unpack results
+            List<CookbookPageModel> results = new List<CookbookPageModel>();
+            while (reader.Read())
+            {
+                long listId = reader.GetInt64(0);
+                long userId = reader.GetInt64(1);
+                string pageName = reader.GetString(2);
+
+                // structure into the model:
+                var model = new CookbookPageModel(pageName, userId, listId);
+                results.Add(model);
+            }
+            return results;
         }
+
 
         public CookbookPageModel GetCookbookPageByID(long cookbookPageID)
         {
