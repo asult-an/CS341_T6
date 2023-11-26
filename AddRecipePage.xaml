@@ -20,8 +20,6 @@
         <!--Description Editor--> 
     <Editor x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." AutoSize="Disabled"  HeightRequest="50" MaximumHeightRequest="150" BackgroundColor="LightBlue" />
           
-        
-
 
     <Grid RowDefinitions="150, auto, auto, *, auto" Padding="20" BackgroundColor="#202c39">
 

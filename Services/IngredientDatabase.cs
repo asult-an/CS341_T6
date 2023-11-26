@@ -16,6 +16,12 @@ namespace CookNook.Services
         //TODO: implement RecipeLogic/RecipeDb interfaces
 
         //TODO: TagLogic/TagDB + interfaces
+
+
+        /// <summary>
+        /// Gets all ingredients from the database and returns them as a list
+        /// </summary>
+        /// <returns></returns>
         public List<Ingredient> GetAllIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
@@ -103,6 +109,7 @@ namespace CookNook.Services
             var cmd = new NpgsqlCommand("SELECT * FROM ingredients WHERE ingredient_id = ANY(@IngredientIds)", conn);
             cmd.Parameters.AddWithValue("IngredientIds", ingredientIds);
             using NpgsqlDataReader reader = cmd.ExecuteReader();
+
             while (reader.Read())
             {
                 Int64 ingredientId = reader.GetInt64(0);

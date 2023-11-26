@@ -131,3 +131,17 @@ public enum IngredientSelectionError
     BadParameters,
     NoError
 }
+
+
+public enum CookbookPageAdditionError
+{
+    InvalidRecipeProvided,
+    ListNotFound,
+    NoError
+}
+public enum CookbookPageDeletionError
+{
+    InvalidRecipeProvided,
+    ListNotFound,
+    NoError
+}
