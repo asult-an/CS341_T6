@@ -1,6 +1,7 @@
 using CookNook.Model;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CookNook.Model.Interfaces;
 using CookNook.Services;
 
 namespace CookNook;

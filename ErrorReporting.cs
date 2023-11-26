@@ -136,14 +136,19 @@ public enum IngredientSelectionError
 public enum CookbookPageAdditionError
 {
     InvalidRecipeProvided,
+    InvalidListProvided,
     ListNotFound,
-    Unpsecified,
+    Unauthenticated,
+    Unspecified,
     NoError
 }
 public enum CookbookPageDeletionError
 {
+    AdminOnlyOperation,
     InvalidRecipeProvided,
+    InvalidListProvided,
     ListNotFound,
+    Unauthenticated,
     Unspecified,
     NoError
 }

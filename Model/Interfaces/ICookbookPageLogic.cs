@@ -10,7 +10,7 @@ namespace CookNook.Model.Interfaces
     /// <summary>
     /// handles more intensive operations on the cookbook, so anything like setting colors based on preferences will be done here
     /// </summary>
-    internal interface ICookbookPageLogic
+    public interface ICookbookPageLogic
     {
         /// <summary>
         /// Used when the FIRST item in a NEW COOKBOOK LIST is created
