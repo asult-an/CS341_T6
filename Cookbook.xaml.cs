@@ -32,6 +32,14 @@ public partial class Cookbook : ContentPage
     {
         recipesCollectionView.ItemsSource = recipeLogic.CookBookRecipes(userID);
     }
+    public async void RecipeClicked(object sender, EventArgs e)
+    {
+        var button = (Button)sender;
+        Recipe recipe = (Recipe)button.BindingContext;
+        
+        Debug.WriteLine(recipe.CookTime);
+        await Navigation.PushAsync(new RecipeDetailedView(recipe));
+    }
 
     // Other methods
 }
