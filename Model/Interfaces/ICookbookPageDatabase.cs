@@ -54,4 +54,13 @@ public interface ICookbookPageDatabase
     /// <param name="cookbookPageID"></param>
     /// <returns></returns>
     public CookbookPageModel GetCookbookPageByID(Int64 cookbookPageID);
+
+
+    /// <summary>
+    /// To fetch a page by name, the author's Id must be supplied for the operation to succeed
+    /// </summary>
+    /// <param name="userId">id of the list's author</param>
+    /// <param name="name">page title of the list</param>
+    /// <returns></returns>
+    public CookbookPageModel GetCookbbookPageByName(long userId, string name);
 }

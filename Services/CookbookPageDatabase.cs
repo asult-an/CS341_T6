@@ -49,13 +49,13 @@ namespace CookNook.Services
                 else
                 {
                     reader.Close();
-                    return CookbookPageAdditionError.Unpsecified;
+                    return CookbookPageAdditionError.Unspecified;
                 }
             }
             catch (Exception e)
             {
                 Console.WriteLine(e);
-                return CookbookPageAdditionError.Unpsecified;
+                return CookbookPageAdditionError.Unspecified;
             }
         }
 
@@ -192,6 +192,34 @@ namespace CookNook.Services
             // structure into the model:
             var model = new CookbookPageModel(pageName, userId, listId);
             return model;
+        }
+
+
+        /// <summary>
+        /// Returns a cookbook page by its name, provided the author of the user is sending their id along as a parameter
+        /// </summary>
+        /// <param name="userId"></param>
+        /// <param name="name"></param>
+        /// <returns></returns>
+        public CookbookPageModel GetCookbbookPageByName(long userId, string name)
+        {
+            using var conn = new NpgsqlConnection(DbConn.ConnectionString);
+            conn.Open();
+            // using the recipe_id stored, select all recipes that have their id present
+            var cmd = new NpgsqlCommand("SELECT list_id, user_id, name FROM user_cookbook_pages WHERE user_id = @UserID;", conn);
+            cmd.Parameters.AddWithValue("@UserID", userId);
+
+            var reader = cmd.ExecuteReader();
+            if (!reader.HasRows)
+            {
+                   Debug.Write($"No cookbook page found with name {name} for user {userId}");
+                return null;
+            }
+
+            var listId = reader.GetInt64(0);
+            var pageName = reader.GetString(1);
+            
+            return new CookbookPageModel(pageName, userId, listId);
         }
     }
 }
