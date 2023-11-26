@@ -19,33 +19,36 @@ namespace CookNook.Services
         public List<Ingredient> GetAllIngredients()
         {
             List<Ingredient> ingredients = new List<Ingredient>();
-            using var conn = new NpgsqlConnection();
+            using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
 
-            var cmd = new NpgsqlCommand(
+            var cmd = new NpgsqlCommand("SELECT ingredient_id, name FROM ingredients;", conn);
+                
                 //"SELECT public.tags.* FROM public.recipe_tags, public.tags WHERE tags.tag_id = recipe_tags.tag_id", conn);
-                @"SELECT recipe_ingredients.ingredient_id, recipe_ingredients.quantity,recipe_ingredients, ingredients.name
-                FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes", conn);
+
+                //@"SELECT recipe_ingredients.ingredient_id, ingredients.name, recipe_ingredients.quantity, recipe_ingredients
+                //FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes", conn);
 
             using NpgsqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
             {
                 Int64 ingredientId = reader.GetInt64(0);
                 string name = reader.GetString(1);
-                string qty = reader.GetString(2);
-                string unit = reader.GetString(3);
-                Ingredient ingredient;
+                //string qty = reader.GetString(2);
+                //string unit = reader.GetString(3);
+                Ingredient ingredient = new Ingredient(ingredientId, name);
 
-                // if the cell was NULL in the database:
-                if (string.IsNullOrEmpty(unit))
-                {
-                    // use the 'unitless ingredient' constructor
-                    ingredient = new Ingredient(ingredientId, name, qty);
-                }
-                else
-                {
-                    ingredient = new Ingredient(ingredientId, name, qty, unit);
-                }
+
+                //// if the cell was NULL in the database:
+                //if (string.IsNullOrEmpty(unit))
+                //{
+                //    // use the 'unitless ingredient' constructor
+                //    ingredient = new Ingredient(ingredientId, name, qty);
+                //}
+                //else
+                //{
+                //    ingredient = new Ingredient(ingredientId, name, qty, unit);
+                //}
                 ingredients.Add(ingredient);
             }
 
