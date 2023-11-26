@@ -13,15 +13,15 @@ namespace CookNook
 {
     public partial class AddRecipePage : ContentPage
     {
-
         private string recipeName;
         private string recipeCooktime;
         private string recipeInstructions;
-        private string Description;
+        //private string Description
         private int Servings;
         private IRecipeLogic recipeLogic;
         private IIngredientLogic ingredientLogic;
 
+        // TODO: PreviousPageData uses these three.  Are we grabbing these?
         public string RecipeName { get { return recipeName; } set { recipeName = value; } }
         public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
         public string RecipeInstructions { get { return recipeInstructions; } set { recipeInstructions = value; } }
