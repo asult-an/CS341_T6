@@ -14,13 +14,17 @@ public partial class Cookbook : ContentPage
 
     public User AppUser { get { return user; } set { user = value; } }
     public string PageTitle { get { return user.Username + "'s Cookbook"; } }
+    
+    
     public Cookbook()
     {
         InitializeComponent();
         recipeLogic = new RecipeLogic(new RecipeDatabase());
-        cookbookPageLogic = new CookbookPageLogic(new CookbookPageDatabase());
         user = UserViewModel.Instance.AppUser;
-        BindingContext = this;
+        cookbookPageLogic = new CookbookPageLogic(new CookbookPageDatabase(user.Id), recipeLogic);
+
+        this.BindingContext = this;
+        // TODO: see if we still need LoadRecipes, or if we're calling it twice
         LoadRecipes(user.Id);
         
     }
@@ -41,4 +45,5 @@ public partial class Cookbook : ContentPage
     }
 
     // Other methods
+    // TODO: CookbookPagePickerSelection_Changed...
 }

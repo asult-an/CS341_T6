@@ -61,6 +61,14 @@ namespace CookNook.Model.Interfaces
         /// <param name="pageName"></param>
         /// <returns></returns>
         public CookbookPageAdditionError CreateCookbookPage(long userID, string pageName);
+
+        ///<summary>
+        /// Gets all recipes on a given cookbook page, using an instance of IRecipeLogic accessible
+        /// to the concrete implementation inheriting this interface
+        /// </summary>
+        /// <param name="cookbookPageID"></param>
+        /// <returns></returns>
+        public List<Recipe> GetRecipesOnCookbookPage(Int64 cookbookPageID);
     }
 
 }

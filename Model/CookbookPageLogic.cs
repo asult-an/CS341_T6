@@ -5,6 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CookNook.Model.Interfaces;
+using CookNook.Services;
+using Npgsql;
 
 namespace CookNook.Model
 {
@@ -23,6 +25,8 @@ namespace CookNook.Model
             this.cookbookPageDatabase = cookbookPageDatabase;
             this.recipeLogic = recipeLogic;
         }
+
+        //public CookbookPageLogic(long userId) { }
 
         /// <summary>
         /// Associates a recipe with a cookbook page
@@ -59,6 +63,7 @@ namespace CookNook.Model
             // now we can get the id of the list, so add the recipes to that list
             return cookbookPageDatabase.AddRecipeToCookbookPage(recipeID, pageOfOperation.ListId);
         }
+
 
         /// <summary>
         /// Removes a recipe from a particular cookbook page
@@ -101,12 +106,33 @@ namespace CookNook.Model
 
         public List<CookbookPageModel> GetCookbookPagesForUser(long userID)
         {
-            throw new NotImplementedException();
+            return cookbookPageDatabase.GetCookbookPagesForUser(userID);
         }
 
+        /// <summary>
+        /// Through RecipeLogic, constructs all recipes belonging to a cookbook page
+        /// </summary>
+        /// <param name="cookbookPageID"></param>
+        /// <returns></returns>
         public List<long> GetRecipeIdsForCookbookPage(long cookbookPageID)
         {
-            throw new NotImplementedException();
+            return cookbookPageDatabase.GetRecipeIdsForCookbookPage(cookbookPageID);
+        }
+
+
+        /// <summary>
+        ///  returns all recipies associated with this cookbookpage's ID
+        /// </summary>
+        /// <param name="cookbookPageID"></param>
+        /// <returns>a List of recipeIds that can be handled by RecipeDatabase</returns>
+        public List<Recipe> GetRecipesOnCookbookPage(long cookbookPageID)
+        {
+            // 1. get the recipes on the page
+            var recipeIds = cookbookPageDatabase.GetRecipeIdsForCookbookPage(cookbookPageID);
+
+            // 2. pass the list of recipes into RecipeLogic
+            var recipes = recipeLogic.SelectRecipes(recipeIds);
+            return recipes;
         }
 
         public CookbookPageAdditionError CreateCookbookPage(long userID, string pageName)

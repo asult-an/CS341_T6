@@ -20,6 +20,12 @@ namespace CookNook.Services
         private List<CookbookPageModel> cookbookPages;
 
         /// <summary>
+        /// Empty constructor for the cookbookPageDatabase: will not fetch any pages without userID
+        /// </summary>
+        public CookbookPageDatabase() { }   
+        
+
+        /// <summary>
         /// Constructor that instructs the database to load all cookbook pages for a particular user
         /// </summary>
         /// <param name="userId"></param>
@@ -81,32 +87,6 @@ namespace CookNook.Services
                 return CookbookPageDeletionError.Unspecified;
             }
 
-        }
-
-
-        [Obsolete]        
-        // TODO: this might belong better in RecipeLogic...?
-        /// <summary>
-        ///  returns all recipies associated with this cookbookpage's ID
-        /// </summary>
-        /// <param name="cookbookPageID"></param>
-        /// <returns>a List of recipeIds that can be handled by RecipeDatabase</returns>
-        public List<long> GetRecipesOnCookbookPage(long cookbookPageID)
-        {
-            //   List<Recipe> results = new List<Recipe>();
-            List<long> recipeIds = new List<long>();
-            using var conn = new NpgsqlConnection(DbConn.ConnectionString);
-            conn.Open();
-            // using the recipe_id stored, select all recipes that have their id present
-            var cmd = new NpgsqlCommand("SELECT recipe_id FROM cookbook_contents WHERE list_id = @ListID", conn);
-
-            cmd.Parameters.AddWithValue("@ListID", cookbookPageID);
-            var reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                recipeIds.Add(reader.GetInt64(0));
-            }
-            return recipeIds;
         }
 
 

@@ -40,11 +40,13 @@ public static class MauiProgram
 		builder.Services.AddScoped<IIngredientDatabase, IngredientDatabase>();
 		builder.Services.AddScoped<IIngredientLogic, IngredientLogic>();
 		builder.Services.AddScoped<IUserDatabase, UserDatabase>();
+		// builder.Services.AddScoped<IUserLogic, UserLogic>();
+		builder.Services.AddScoped<ICookbookPageDatabase, CookbookPageDatabase>();
+		builder.Services.AddScoped<ICookbookPageLogic, CookbookPageLogic>();
 
-		//builder.Services.
 		// Hacky, but this gets it to compile for now.
-		// TODO: troubleshoot later, true DI needed
-		//builder.Services.AddSingleton<UserLogic>();
+		builder.Services.AddSingleton<UserLogic>();
+
 		return builder;
 	}
 }
