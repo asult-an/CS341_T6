@@ -71,6 +71,7 @@
             <StackLayout Grid.Column="0">
 
                 <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>
+                <Button Grid.RowSpan="2" Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
 
             </StackLayout>
 
@@ -104,24 +105,19 @@
 
         <Grid Grid.Row="3">
 
-            <StackLayout>
+            <!--<StackLayout>
 
                 <Editor Placeholder="Special Instructions" AutoSize="TextChanges" TextColor="#ffe6a7"></Editor>
 
 
-            </StackLayout>
+            </StackLayout>-->
 
         </Grid>
 
-        <Grid Grid.Row="4">
-
+        <!--<Grid Grid.Row="4"
             <StackLayout Grid.Column="0">
-
-                <Button Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
-
             </StackLayout>
-
-        </Grid>
+        </Grid>-->
 
         <Grid ColumnDefinitions="auto, *" Grid.Row="5">
 
