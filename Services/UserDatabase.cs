@@ -6,7 +6,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
-using CookNook.Services;
 
 
 namespace CookNook.Model
@@ -14,7 +13,7 @@ namespace CookNook.Model
     public class UserDatabase : IUserDatabase
     {
 
-        private string connString = DbConn.GetConnectionString();
+        private string connString = GetConnectionString();
         static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
         static string dbUsername = "adeel";
         static int PORT_NUMBER = 26257;
