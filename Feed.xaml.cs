@@ -46,7 +46,7 @@ public partial class Feed : ContentPage
     {
         if (sender is Frame frame && frame.BindingContext is Recipe recipe)
         {
-            // Navigate to the RecipeDetailPage with the selected recipe
+            // Navigate to the RecipePopUpPage with the selected recipe
             var popup = new RecipePopUpView(recipe);
             await Navigation.PushModalAsync(popup);
         }
