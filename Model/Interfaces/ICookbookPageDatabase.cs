@@ -57,5 +57,5 @@ public interface ICookbookPageDatabase
     /// <param name="userId">id of the list's author</param>
     /// <param name="name">page title of the list</param>
     /// <returns></returns>
-    public CookbookPageModel GetCookbbookPageByName(long userId, string name);
+    public CookbookPageModel GetCookbookPageByName(long userId, string name);
 }

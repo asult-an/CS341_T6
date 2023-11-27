@@ -58,7 +58,7 @@ namespace CookNook.Model
                 return CookbookPageAdditionError.Unspecified;
             }
 
-            var pageOfOperation = cookbookPageDatabase.GetCookbbookPageByName(userID, pageName);
+            var pageOfOperation = cookbookPageDatabase.GetCookbookPageByName(userID, pageName);
 
             // now we can get the id of the list, so add the recipes to that list
             return cookbookPageDatabase.AddRecipeToCookbookPage(recipeID, pageOfOperation.ListId);
@@ -95,7 +95,7 @@ namespace CookNook.Model
                 return CookbookPageDeletionError.Unspecified;
             }
 
-            var pageOfOperation = cookbookPageDatabase.GetCookbbookPageByName(userID, pageName);
+            var pageOfOperation = cookbookPageDatabase.GetCookbookPageByName(userID, pageName);
             return cookbookPageDatabase.RemoveRecipeFromCookbookPage(recipeID, pageOfOperation.ListId);
         }
 

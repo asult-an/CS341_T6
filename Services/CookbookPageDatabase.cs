@@ -181,7 +181,7 @@ namespace CookNook.Services
         /// <param name="userId"></param>
         /// <param name="name"></param>
         /// <returns></returns>
-        public CookbookPageModel GetCookbbookPageByName(long userId, string name)
+        public CookbookPageModel GetCookbookPageByName(long userId, string name)
         {
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
