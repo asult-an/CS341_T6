@@ -27,7 +27,6 @@ public interface IAutocompleteStrategy<T>
     /// context of the requested operation.
     /// </summary>
     /// <param name="input">the string to search the collection with</param>
-    /// <param name="collection"></param>
     /// <returns></returns>
-    Task<IEnumerable<string>> GetSuggestionsAsync(string input, IEnumerable<T> collection);
+    Task<IEnumerable<string>> GetSuggestionsAsync(string input);
 }
