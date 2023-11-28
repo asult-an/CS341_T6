@@ -5,26 +5,36 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CookNook.Model.Interfaces;
 using CookNook.Services;
 
 namespace CookNook.Model
 {
     internal class RecipeLogic : IRecipeLogic
     {
+        private List<Recipe> recipes;
+
         const int MAX_RECIPE_NAME_LENGTH = 50;
         const int MAX_RECIPE_DESCRIPTION_LENGTH = 150;
-        private IngredientLogic ingredientLogic = new IngredientLogic(new IngredientDatabase());
+        private IIngredientLogic ingredientLogic;
         private IRecipeDatabase recipeDatabase;
+        public List<Recipe> Recipes
+        {
+            get { return recipes; }
+            set { recipes = value; }
+        }
 
         /// <summary>
         /// Initializes a new instance of the <see cref="RecipeLogic"/> class, with the database service injected
         /// </summary>
         /// <param name="recipeDatabase">The service for recipe-based database interactions</param>
-        public RecipeLogic(IRecipeDatabase recipeDatabase)
+        public RecipeLogic(IRecipeDatabase recipeDatabase, IIngredientLogic ingredientLogic)
         {
             this.recipeDatabase = recipeDatabase;
+            this.ingredientLogic = ingredientLogic;
         }
 
+     
 
        // this method may be redundant
        public RecipeAdditionError CreateRecipe(string inName, string inDescription, Int64 inAuthorId,
@@ -107,11 +117,15 @@ namespace CookNook.Model
 
         public RecipeEditError EditRecipe(Recipe recipe)
         {
-            if (FindRecipe(recipe.ID) == null)
-                return RecipeEditError.RecipeNotFound;
+            //if (FindRecipe(recipe.ID) == null)
+            //    return RecipeEditError.RecipeNotFound;
 
             try
             {
+                var target = recipes.Find(r => r.ID == recipe.ID);
+                if (target == null)
+                    return RecipeEditError.RecipeNotFound;
+
                 recipeDatabase.EditRecipe(recipe);
                 return RecipeEditError.NoError;
             }
@@ -153,6 +167,9 @@ namespace CookNook.Model
             if (recipeList == null || recipeList.Count == 0)
                 throw new ArgumentException("recipeList cannot be null or empty");
 
+            if (recipeList.Any(id => FindRecipe(id) == null))
+                throw new ArgumentException("recipeList contains invalid recipe Ids");
+            
             return recipeDatabase.SelectRecipes(recipeList);
         }
 

@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CookNook.Model.Interfaces;
 
 //namespace CookNook.Services
 namespace CookNook.Model
@@ -16,10 +17,10 @@ namespace CookNook.Model
         Random random = new Random();
 
         // place for the injected datbase instance to load into
-        private readonly IUserDatabase _userDatabase;
+        private readonly IUserDatabase userDatabase;
 
-        // TODO: check to see if we can justify keeping this, or if _userDatabase can be utilized
-        private UserDatabase userDatabase = new UserDatabase();
+        // TODO: check to see if we can justify keeping this, or if userDatabase can be utilized
+        //private UserDatabase userDatabase = new UserDatabase();
 
         // since users can interact with recipies, inject RecipeLogic
         // may not use it now, but by doing this we can send recipe data to users
@@ -38,7 +39,7 @@ namespace CookNook.Model
         [Obsolete]
         public UserLogic(IUserDatabase userDatabase)
         {
-            this._userDatabase = userDatabase;
+            this.userDatabase = userDatabase;
         }
         public UserLogic() { }
 
@@ -49,7 +50,7 @@ namespace CookNook.Model
         /// <param name="recipeLogic"></param>
         public UserLogic(IUserDatabase userDatabase, IRecipeLogic recipeLogic)
         {
-            this._userDatabase = userDatabase;
+            this.userDatabase = userDatabase;
             this.recipeLogic = recipeLogic;
         }
         public UserAuthenticationError AuthenticateUser(string username, string password)
@@ -119,6 +120,9 @@ namespace CookNook.Model
 
         public User GetUserByEmail(string email)
         {
+            // verify that the email matches the format of an email address
+
+
             return userDatabase.GetUserByEmail(email);
         }
 
@@ -130,6 +134,7 @@ namespace CookNook.Model
 
         public User GetUserByUsername(string username)
         {
+            
             return userDatabase.GetUserByUsername(username);
         }
 
