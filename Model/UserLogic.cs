@@ -52,6 +52,13 @@ namespace CookNook.Model
             this.userDatabase = userDatabase;
             this.recipeLogic = recipeLogic;
         }
+
+        /// <summary>
+        /// Logs the user in
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public UserAuthenticationError AuthenticateUser(string username, string password)
         {
            return userDatabase.AuthenticateUser(username, password);
