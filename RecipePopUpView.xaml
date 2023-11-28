@@ -74,6 +74,8 @@
 
                 <!-- Close Button -->
                 <Button Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="Center"/>
+                <Button Text="Full Recipe" Clicked="FullRecipeButtonClicked" HorizontalOptions="Center" Margin="10"/>
+
             </StackLayout>
         </ScrollView>
     </Frame>
