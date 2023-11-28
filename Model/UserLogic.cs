@@ -12,10 +12,8 @@ using BCrypt.Net;
 //namespace CookNook.Services
 namespace CookNook.Model
 {
-
     public class UserLogic
     {
-        Random random = new Random();
 
         // place for the injected datbase instance to load into
         private readonly IUserDatabase userDatabase;
@@ -88,14 +86,17 @@ namespace CookNook.Model
                 return UserAdditionError.InvalidPassword;
             }
             var hashPass = BCrypt.Net.BCrypt.HashPassword(password);
-            
-            // Note:  we want the database to come up with Id, since we're wasting computation if the 
-            // insert is going to fail
-            User newUser = new User((Int64)random.NextInt64(5000), username, email, hashPass);
+
+            // Note:  we want the database to come up with Id
+            User newUser = new User
+            {
+                Username = username,
+                Email = email,
+                Password = hashPass
+            };
+
             try
             {
-                // hash the password, salting happens too here behind the scenes
-
                 UserAdditionError result = userDatabase.InsertUser(newUser);
                 if (result != UserAdditionError.NoError) 
                 {
