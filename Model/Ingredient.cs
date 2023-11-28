@@ -155,5 +155,21 @@ namespace CookNook.Model
 			// IngredientManager.Parse(ingredient);
 			return null;
 		}
+
+		public override string ToString()
+		{
+			string buffer = "";
+
+			// if unitless, "{qty} {name}"; else "{qty} {unit} {name}"
+			if (unit == null)
+			{
+                buffer = $"{quantity} {name}";
+            }
+            else
+			{
+                buffer = $"{quantity} {unit} {name}";
+            }
+			return buffer;
+		}
 	}
 }
