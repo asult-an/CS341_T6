@@ -8,8 +8,9 @@ public partial class SignUpPage : ContentPage
 
 	private readonly IUserLogic userLogic;
 
-	public SignUpPage()
+	public SignUpPage(IUserLogic userLogic)
 	{
+		this.userLogic = userLogic;
 		InitializeComponent();
 	}
 
