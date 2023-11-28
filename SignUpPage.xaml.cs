@@ -1,11 +1,13 @@
 ﻿using CookNook.Model;
+using CookNook.Model.Interfaces;
 
 namespace CookNook;
 
 public partial class SignUpPage : ContentPage
 {
 
-	private UserLogic userLogic = new UserLogic();
+	private readonly IUserLogic userLogic;
+
 	public SignUpPage()
 	{
 		InitializeComponent();
@@ -13,7 +15,7 @@ public partial class SignUpPage : ContentPage
 
 	public async void SignUpClicked (object sender, EventArgs e)
 	{
-		UserAdditionError result = userLogic.RegisterNewUser(Username.Text, UserEmail.Text, Password.Text, ConfirmPassword.Text);
+		UserAdditionError result = userLogic.TryRegisterNewUser(Username.Text, UserEmail.Text, Password.Text, ConfirmPassword.Text);
 		if(result != UserAdditionError.NoError)
 		{
 			await DisplayAlert("Error", "Registration Error", "Okay");

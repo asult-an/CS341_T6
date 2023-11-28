@@ -10,15 +10,12 @@ using CookNook.Services;
 using CookNook.Model;
 
 
-namespace CookNook.Model
+namespace CookNook.Model.Services
 {
     public class UserDatabase : IUserDatabase
     {
 
         private string connString = DbConn.GetConnectionString();
-        static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
-        static string dbUsername = "adeel";
-        static int PORT_NUMBER = 26257;
         private Random random = new Random();
 
         private IRecipeLogic recipeDB;
