@@ -12,7 +12,7 @@ using BCrypt.Net;
 //namespace CookNook.Services
 namespace CookNook.Model
 {
-    public class UserLogic
+    public class UserLogic : IUserLogic
     {
 
         // place for the injected datbase instance to load into
@@ -78,7 +78,28 @@ namespace CookNook.Model
             //return userDatabase.AuthenticateUser(username, password);
         }
 
-        public UserAdditionError RegisterNewUser(string username, string email, string password, string confirmPassword)
+        public UserSelectionError FollowUser(long followerId, long followedId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public UserSelectionError UnfollowUser(long followerId, long followedId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Wrapper function that delegates input checks away from the database so 
+        /// that the two only talk to one another when the input is valid
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <param name="confirmPassword"></param>
+        /// <returns></returns>
+        public UserAdditionError TryRegisterNewUser(string username, string email, string password, string confirmPassword)
         {
             //TODO: add email confirmation
             if(!ValidateSignupInput(username, email, password, confirmPassword))
@@ -95,10 +116,31 @@ namespace CookNook.Model
                 Password = hashPass
             };
 
+            return RegisterNewUser(username, email, password);
+        }
+
+        /// <summary>
+        /// Registers a new user with the (already) valid input
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public UserAdditionError RegisterNewUser(string username, string email, string password)
+        {
+            // Note:  we want the database to come up with Id, since we're wasting computation if the 
+            // insert is going to fail
+            User newUser = new User
+            {
+                Username = username,
+                Email = email,
+                Password = hashPass
+            };
+
             try
             {
                 UserAdditionError result = userDatabase.InsertUser(newUser);
-                if (result != UserAdditionError.NoError) 
+                if (result != UserAdditionError.NoError)
                 {
                     return result;
                 }
@@ -110,6 +152,9 @@ namespace CookNook.Model
             }
             return UserAdditionError.NoError;
         }
+
+
+        //
         private bool ValidateSignupInput(string username, string email, string password, string confirmPassword)
         {
 
@@ -140,20 +185,37 @@ namespace CookNook.Model
 
         }
 
-        public List<User> GetUsersByID(List<Int64> userIDs)
+        public UserSelectionError UnfollowRecipe(long userId, long recipeId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public bool IsFollowingUser(long followerId, long followedId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public bool IsFollowingRecipe(long userId, long recipeId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public List<User> GetUsersById(List<long> userIDs)
         {
             return userDatabase.GetUsersById(userIDs);
         }
 
         public User GetUserByEmail(string email)
         {
-            // verify that the email matches the format of an email address
-
-
+            // TODO: verify that the email matches the format of an email address
+            
             return userDatabase.GetUserByEmail(email);
         }
 
-        public User GetUserById(Int64 id)
+        public User GetUserById(long id)
         {
 
             return userDatabase.GetUserById(id);

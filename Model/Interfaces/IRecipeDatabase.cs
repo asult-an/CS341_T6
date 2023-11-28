@@ -44,6 +44,8 @@ namespace CookNook.Model
         /// <returns></returns>
         public List<Recipe> GetRecipesByUserId(Int64 userID);
 
+        public List<Int64> GetAllRecipeIds();
+
         public ObservableCollection<Recipe> CookbookRecipes(long userID);
     }
 }

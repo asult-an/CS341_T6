@@ -464,7 +464,7 @@ namespace CookNook.Services
                     Debug.Write(recipeID);
                     while (reader.Read())
                     {
-                        var ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipeID).ToArray();
+                        //var ingredients = GetIngredientsByRecipe(recipeID).ToArray();
 
                         Recipe recipe = new Recipe
                         {
@@ -475,10 +475,20 @@ namespace CookNook.Services
                             Course = CourseType.Parse(reader.GetString(4)),
                             Rating = reader.GetInt32(5),
                             Servings = reader.GetInt32(6),
-                            // TODO switch to reader.GetBytes
-                            Image = Encoding.ASCII.GetBytes(reader.GetString(7)),
                             AuthorID = reader.GetInt64(8)
                         };
+
+                        if (!reader.IsDBNull(7))
+                        {
+                            long dataLength = reader.GetBytes(7, 0, null, 0, 0); // first need to get length of image
+                            byte[] imageData = new byte[dataLength];
+                            reader.GetBytes(7, 0, imageData, 0, (int)dataLength); //  then read the image data
+                            recipe.Image = imageData;
+                        }
+                        else
+                        {
+                            recipe.Image = null;
+                        }
 
                         outRecipes.Add(recipe);
                     }
@@ -645,10 +655,7 @@ namespace CookNook.Services
         }
 
         //This method gets the recipes for a user cookbook
-        // for now, it is just getting select few recipes
-        // and some of their fields, it is temporary because
-        // we should use the already made  public List<Recipe> GetRecipesByUserId(int userID) method
-
+        
         public ObservableCollection<Recipe> CookbookRecipes(long userID)
         {
             //Calls GetRecipeByID method to retreive recipes from the database
@@ -659,8 +666,6 @@ namespace CookNook.Services
                 recipes.Add(r);
             }
             return recipes;
-
-            // TODO: remove this or relocate it
             using (var conn = new NpgsqlConnection(connString))
             {
                 conn.Open();

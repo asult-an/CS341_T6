@@ -1,20 +1,35 @@
 ﻿using CookNook.Model;
+using CookNook.Services;
 using System.Diagnostics;
+using CookNook.Model.Interfaces;
 
 namespace CookNook;
 
 public partial class LoginPage : ContentPage
 {
-
-    private UserLogic userLogic = new UserLogic();
+	//private UserLogic userLogic = new UserLogic(new UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
+	private readonly IUserLogic userLogic;
     public LoginPage()
-	{
+	{ 
 		InitializeComponent();
 	}
 
 	public async void LoginClicked(object sender, EventArgs e)
 	{
-		UserAuthenticationError result = userLogic.AuthenticateUser(Username.Text, Password.Text);
+		UserAuthenticationError result;
+        
+		try
+		{
+            Debug.WriteLine(Username.Text, Password.Text);
+            result = userLogic.AuthenticateUser(Username.Text, Password.Text);
+
+        }
+        catch (Exception ex)
+		{
+			Debug.WriteLine(ex.Message);
+			result = UserAuthenticationError.InvalidUsername;
+		}
+        
         //TODO: Change invalid username/password alert to be identical.
         if (result == UserAuthenticationError.InvalidUsername)
 		{

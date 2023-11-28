@@ -1,6 +1,7 @@
 ﻿using CookNook.Model;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
+using CookNook.Model.Interfaces;
 
 namespace CookNook;
 
@@ -8,7 +9,6 @@ public partial class WelcomePage : ContentPage
 {
     //TEST DATABASE INSERTS
     
-
 	public WelcomePage()
 	{
 		InitializeComponent();
@@ -22,7 +22,12 @@ public partial class WelcomePage : ContentPage
 
     public async void SignUpClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new SignUpPage());
+        // since WelcomePage doesn't use UserLogic, but SignUpPage needs it...
+        IUserLogic userLogic;
+
+        // pull it from the Service
+        userLogic = MauiProgram.ServiceProvider.GetService<IUserLogic>();
+        await Navigation.PushAsync(new SignUpPage(userLogic));
     }
 
     public async void SkipClicked(object sender, EventArgs e)
@@ -36,8 +41,5 @@ public partial class WelcomePage : ContentPage
         {
             Debug.WriteLine(ex.ToString());
         }
-        
-
     }
-
 }

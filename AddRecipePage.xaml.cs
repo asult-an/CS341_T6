@@ -61,7 +61,7 @@ namespace CookNook
         public AddRecipePage()
         {
             InitializeComponent();
-            this.recipeLogic = new RecipeLogic(new RecipeDatabase());
+            this.recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
             this.ingredientLogic = new IngredientLogic(new IngredientDatabase());
             user = UserViewModel.Instance.AppUser;
         }

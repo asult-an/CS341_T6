@@ -146,7 +146,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
         // TODO: map ingredients and their quantities...?
         if (recipeLogic == null)
         {
-            recipeLogic = new RecipeLogic(new RecipeDatabase());
+            recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
         }
 
         // Add recipe to the database using RecipeLogic

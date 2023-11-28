@@ -1,57 +1,165 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:converter="clr-namespace:CookNook.Model"
              x:Class="CookNook.RecipeDetailedView"
-             Title="{Binding RecipeName}"
-             xmlns:model="clr-namespace:CookNook.Model"
+             Title="{Binding Name}"
              BackgroundColor="#202c39">
 
-    
+
 
     <ContentPage.ToolbarItems>
-        <!-- SHOULD THIS BE EDIT, NOT ADD?-->
-        <!--top-right corner button (plus button) -->
-        <ToolbarItem Order="Primary" IconImageSource="plus.png" />
+        <ToolbarItem Order="Primary" IconImageSource="editpen.svg" />
+        <ToolbarItem Order="Primary" IconImageSource="delete.svg" />
     </ContentPage.ToolbarItems>
 
-    <CollectionView Margin="10">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="model:Recipe">
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
-                    <Grid RowSpacing="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="200" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
 
-                        <!-- Recipe Name -->
-                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-                        <!-- Recipe Description -->
-                        <Label Text="{Binding Description}" Grid.Row="1"/>
+    <Frame VerticalOptions="Center" 
+       HorizontalOptions="FillAndExpand"
+       BackgroundColor="#202c39"
+           BorderColor="#202c39"
+       Padding="10">
 
-                        <!-- Recipe Image -->
-                        <Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}" Grid.Row="2"/>
+        <!-- Adjusted margins and padding -->
+        <ScrollView>
+            <!-- Adjusted padding -->
+            <StackLayout Padding="10" HorizontalOptions="Center" VerticalOptions="Center">
+                <!-- Recipe Tags -->
+                <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                    <StackLayout Padding="5, 0, 5, 0">
+                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                            <Label Text="Tags" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        </Frame>
+                    </StackLayout>
 
-                        <!-- Cook Time -->
-                        <Label Text="{Binding CookTime}" Grid.Row="3"/>
-                    </Grid>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                    <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never">
+
+                        <StackLayout Orientation="Horizontal">
+
+                            <StackLayout Padding="5, 0, 5, 0">
+                                <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                                    <Label Text="{Binding Tags[0]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                                </Frame>
+                            </StackLayout>
+
+                            <StackLayout Padding="5, 0, 5, 0">
+                                <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                                    <Label Text="{Binding Tags[1]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                                </Frame>
+                            </StackLayout>
+
+                            <StackLayout Padding="5, 0, 5, 0">
+                                <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                                    <Label Text="{Binding Tags[2]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                                </Frame>
+                            </StackLayout>
+
+                            <StackLayout Padding="5, 0, 5, 0">
+                                <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                                    <Label Text="{Binding Tags[3]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                                </Frame>
+                            </StackLayout>
+
+                        </StackLayout>
+
+                    </ScrollView>
+                </StackLayout>
+
+                <Label Text="{Binding Tags[0]}" HorizontalOptions="Center" VerticalOptions="Start" TextColor="#ffe6a7" FontSize="Large" FontAttributes="Bold"/>
+
+                <!-- Recipe Image -->
+                <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Aspect="AspectFill"/>
+                
+                <!--Grid for Author-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- Author Label -->
+                    <Label Text="Author" Grid.Column="0" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                    <!-- Author Value -->
+                    <Label Text="{Binding AuthorID}" TextColor="#ffe6a7" Grid.Column="1" HorizontalOptions="Center"/>
+                </Grid>
+
+                <!-- Grid for CookTime and Serving -->
+                <Grid Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Cook Time Label -->
+                    <Label Text="Cook Time" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                    <!-- Cook Time Value -->
+                    <Label Text="{Binding CookTime, StringFormat='{0} min'}" TextColor="#ffe6a7" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+
+                    <!-- Servings Label -->
+                    <Label Text="Servings" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                    <!-- Servings Value -->
+                    <Label Text="{Binding Servings}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                </Grid>
+
+                <!-- Grid for Rating and CourseType -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Rating Label -->
+                    <Label Text="Rating" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                    <!-- Rating Value -->
+                    <Label Text="{Binding Rating}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+
+                    <!-- Course Type Label -->
+                    <Label Text="Course Type" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                    <!-- Course Type Value -->
+                    <Label Text="{Binding Course.Name}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                </Grid>
+                <Label Margin="15" Text="{Binding Description}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+
+
+                <!--List of Ingredients (PLACEHOLDER) -->
+
+                <Label Margin="15" Text="PLACEHOLDER  INGREDIENTS LIST" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+
+                <Label Margin="15" Text="{Binding Ingredients[0]}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+
+                <Label Margin="15" Text="{Binding Ingredients[1]}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                <!--Grid for Followers-->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <!-- Followers Label -->
+                    <Label Text="Followers" Grid.Column="0" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                    <!-- Followers Value -->
+                    <Label Text="{Binding FollowerIds.Length}" TextColor="#ffe6a7" Grid.Column="1" HorizontalOptions="Center"/>
+                </Grid>
+                
+
+                <!-- Close Button -->
+                <Button Margin="20" Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="Center"/>
+
+            </StackLayout>
+        </ScrollView>
+    </Frame>
 </ContentPage>
-
-<!--ADD INGREDIENTS HERE-->
-
-<!-- Recipe Instructions -->
-
-<!--ADD FOLLOWER COUNT HERE-->
-<!--ADD TAGS HERE-->
-<!--ADD COURSE, SERVINGS, RATING, OTHER DETAILS HERE-->
-
-<!-- Recipe Description -->
-<!--ADD AUTHOR HERE-->
-<!-- Recipe Name and Image -->
+    
+    

@@ -8,17 +8,15 @@ using System.Threading.Tasks;
 using System.Diagnostics;
 using CookNook.Model.Interfaces;
 using CookNook.Services;
+using CookNook.Model;
 
 
-namespace CookNook.Model
+namespace CookNook.Model.Services
 {
     public class UserDatabase : IUserDatabase
     {
 
         private string connString = DbConn.GetConnectionString();
-        static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
-        static string dbUsername = "adeel";
-        static int PORT_NUMBER = 26257;
         private Random random = new Random();
 
         private IRecipeLogic recipeDB;
@@ -29,23 +27,6 @@ namespace CookNook.Model
         }
         public UserDatabase() { }
 
-
-        public static string GetConnectionString()
-        {
-            //initialize the string builder
-            var connStringBuilder = new NpgsqlConnectionStringBuilder();
-            //set the properties of the string builder
-            connStringBuilder.Host = "third-sphinx-13032.5xj.cockroachlabs.cloud";
-            connStringBuilder.Port = PORT_NUMBER;
-            connStringBuilder.SslMode = SslMode.VerifyFull;
-            connStringBuilder.Username = dbUsername;
-            connStringBuilder.Password = dbPassword;
-            connStringBuilder.Database = "defaultdb";
-            connStringBuilder.ApplicationName = "";
-            connStringBuilder.IncludeErrorDetail = true;
-            //return the completed string
-            return connStringBuilder.ConnectionString;
-        }
 
 
         public UserSelectionError UnfollowUser(Int64 userId, Int64 followedUserId)
@@ -269,6 +250,7 @@ namespace CookNook.Model
                 {
                     return UserAuthenticationError.InvalidPassword;
                 }
+                Debug.WriteLine("TEST");
 
             }
             catch (Exception ex)
