@@ -1,5 +1,6 @@
 ﻿using CookNook.Model;
 using CookNook.Model.Interfaces;
+using CookNook.Model.Services;
 using CookNook.Services;
 using Microsoft.Extensions.Logging;
 namespace CookNook;
@@ -40,6 +41,7 @@ public static class MauiProgram
 		builder.Services.AddScoped<IIngredientDatabase, IngredientDatabase>();
 		builder.Services.AddScoped<IIngredientLogic, IngredientLogic>();
 		builder.Services.AddScoped<IUserDatabase, UserDatabase>();
+		builder.Services.AddScoped<IUserLogic, UserLogic>();
 
 		//builder.Services.
 		// Hacky, but this gets it to compile for now.

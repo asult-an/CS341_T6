@@ -10,7 +10,7 @@ using CookNook.Services;
 using CookNook.Model;
 
 
-namespace CookNook.Model
+namespace CookNook.Model.Services
 {
     public class UserDatabase : IUserDatabase
     {
