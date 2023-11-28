@@ -23,7 +23,10 @@ public partial class SignUpPage : ContentPage
 		}
 		else
 		{
-            var nextPage = new LoginPage();
+			// fetch the service through DI
+			IUserLogic userLogic = MauiProgram.ServiceProvider.GetService<IUserLogic>();
+
+            var nextPage = new LoginPage(userLogic);
             await Navigation.PushAsync(nextPage);
         }
         //change to login page instead of pushing?

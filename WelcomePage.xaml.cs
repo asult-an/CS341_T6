@@ -17,7 +17,8 @@ public partial class WelcomePage : ContentPage
 
 	public async void LoginClicked(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new LoginPage());
+        IUserLogic userLogic = MauiProgram.ServiceProvider.GetService<IUserLogic>();
+        await Navigation.PushAsync(new LoginPage(userLogic));
     }
 
     public async void SignUpClicked(object sender, EventArgs e)

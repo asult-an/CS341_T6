@@ -9,8 +9,9 @@ public partial class LoginPage : ContentPage
 {
 	//private UserLogic userLogic = new UserLogic(new UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
 	private readonly IUserLogic userLogic;
-    public LoginPage()
+    public LoginPage(IUserLogic userLogic)
 	{ 
+		this.userLogic = userLogic;
 		InitializeComponent();
 	}
 
