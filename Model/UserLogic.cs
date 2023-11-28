@@ -6,6 +6,7 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CookNook.Model.Interfaces;
 
 //namespace CookNook.Services
 namespace CookNook.Model
@@ -141,7 +142,7 @@ namespace CookNook.Model
         public User GetUserByUsername(string username)
         {
             
-            //return userDatabase.GetUserByUsername(username);
+            return userDatabase.GetUserByUsername(username);
         }
 
         public UserAdditionError InsertUser(User inUser)
