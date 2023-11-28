@@ -60,7 +60,7 @@ namespace CookNook.Model
         public UserAdditionError RegisterNewUser(string username, string email, string password, string confirmPassword)
         {
             //TODO: add email confirmation
-            if(!validateSignupInput(username, email, password, confirmPassword))
+            if(!ValidateSignupInput(username, email, password, confirmPassword))
             {
                 return UserAdditionError.InvalidPassword;
             }
@@ -82,7 +82,7 @@ namespace CookNook.Model
             }
             return UserAdditionError.NoError;
         }
-        private bool validateSignupInput(string username, string email, string password, string confirmPassword)
+        private bool ValidateSignupInput(string username, string email, string password, string confirmPassword)
         {
 
             if(password != confirmPassword)

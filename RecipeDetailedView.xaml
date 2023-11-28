@@ -2,46 +2,82 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.RecipeDetailedView"
-             Title="{Binding RecipeName}"
+             Title="{Binding Name}"
              xmlns:model="clr-namespace:CookNook.Model"
-             BackgroundColor="#202c39">
+             xmlns:converter="clr-namespace:CookNook.Model"
+             xmlns:local="clr-namespace:CookNook"
+             BackgroundColor="#202c39"
+             x:Name="recipeDetailedView">
 
-    
+
 
     <ContentPage.ToolbarItems>
-        <!-- SHOULD THIS BE EDIT, NOT ADD?-->
-        <!--top-right corner button (plus button) -->
-        <ToolbarItem Order="Primary" IconImageSource="plus.png" />
+        <ToolbarItem Order="Primary" IconImageSource="editpen.svg" />
+        <ToolbarItem Order="Primary" IconImageSource="delete.svg" />
     </ContentPage.ToolbarItems>
 
-    <CollectionView Margin="10">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="model:Recipe">
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
-                    <Grid RowSpacing="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="200" />
-                            <RowDefinition Height="Auto" />
-                        </Grid.RowDefinitions>
 
-                        <!-- Recipe Name -->
-                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-                        <!-- Recipe Description -->
-                        <Label Text="{Binding Description}" Grid.Row="1"/>
+    <Frame VerticalOptions="Center" 
+           HorizontalOptions="FillAndExpand"
+           BackgroundColor="DimGray"
+           Margin="10" Padding="10">
+        <ScrollView>
+            <Grid RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
 
-                        <!-- Recipe Image -->
-                        <Image Source="{Binding Image, Converter={StaticResource ByteArrayToImageSourceConverter}}" Grid.Row="2"/>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                        <!-- Cook Time -->
-                        <Label Text="{Binding CookTime}" Grid.Row="3"/>
-                    </Grid>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+                <!-- Tags -->
+                <!-- Change to list all tags -->
+                <Label Grid.Row="0" Text="{Binding Tags[0], StringFormat='{0} TAGS PLACEHOLDER'}" TextColor="#ffe6a7"/>
+
+                <!-- Recipe Image -->
+                <Image Grid.Row="1" Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Aspect="AspectFill"/>
+
+                <!-- Rating -->
+                <Label Grid.Row="2" Text="{Binding Rating}" TextColor="#ffe6a7"/>
+
+                <!-- Author -->
+                <Label Grid.Row="3" Text="{Binding AuthorID}" TextColor="#ffe6a7"/>
+
+                <!-- Course -->
+                <Label Grid.Row="4" Text="{Binding Course.Name}" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+
+                <!-- Cook Time -->
+                <Label Grid.Row="5" Text="{Binding CookTime, StringFormat='{0} min'}" TextColor="#ffe6a7"/>
+
+                <!-- Servings -->
+                <Label Grid.Row="6" Text="{Binding Servings}" TextColor="#ffe6a7"/>
+
+                <!-- Number of Followers -->
+                <!-- CURRENTLY UNSET -->
+                <Label Grid.Row="7" Text="{Binding FollowerIds.length, StringFormat='{0} followers'}" TextColor="#ffe6a7"/>
+
+                <!-- Description -->
+                <Label Grid.Row="8" Text="{Binding Description}" TextColor="#ffe6a7"/>
+
+                <!-- Ingredients -->
+                <Label Grid.Row="9" Text="{Binding Ingredients[0]}" TextColor="#ffe6a7"/>
+
+            </Grid>
+        </ScrollView>
+    </Frame>
 </ContentPage>
 
 <!--ADD INGREDIENTS HERE-->
