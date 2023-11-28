@@ -102,5 +102,14 @@ namespace CookNook.Model
         /// <param name="inUser">User object to be deleted.</param>
         /// <returns>Any errors that occurred during the deletion operation.</returns>
         UserDeletionError DeleteUser(User inUser);
+
+
+        /// <summary>
+        /// Authenticates a user by their username and password
+        /// </summary>
+        /// <param name="username">The username being used to log in</param>
+        /// <param name="password">the password entered to check against the one used at registration</param>
+        /// <returns></returns>
+        public UserAuthenticationError AuthenticateUser(string username, string password);
     }
 }
