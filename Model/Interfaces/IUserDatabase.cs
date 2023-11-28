@@ -5,11 +5,19 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookNook.Model
+namespace CookNook.Model.Interfaces
 {
     public interface IUserDatabase
     {
-        /* ===================== [ GETTERS ] ====================== */ 
+        /// <summary>
+        /// Authenticates a user by their username and password
+        /// </summary>
+        /// <param name="username">The username being used to log in</param>
+        /// <param name="password">the password entered to check against the one used at registration</param>
+        /// <returns></returns>
+        public UserAuthenticationError AuthenticateUser(string username, string password);
+
+        /* ===================== [ GETTERS ] ====================== */
         /// <summary>
         /// allows grabbing a subset of users by their ids, useful in 
         /// follower resolving
@@ -31,6 +39,14 @@ namespace CookNook.Model
         /// <param name="id">The ID of the User, not their Username.</param>
         /// <returns>User object if found, null otherwise. .</returns>
         User GetUserById(Int64 id);
+
+        
+        /// <summary>
+        /// Retrieves a user by their username from the database
+        /// </summary>
+        /// <param name="username">username to search for</param>
+        /// <returns></returns>
+        User GetUserByUsername(string username);
 
         /// <summary>
         /// Query user_following_user table for all followed_user_ids where 
@@ -102,5 +118,7 @@ namespace CookNook.Model
         /// <param name="inUser">User object to be deleted.</param>
         /// <returns>Any errors that occurred during the deletion operation.</returns>
         UserDeletionError DeleteUser(User inUser);
+
+
     }
 }

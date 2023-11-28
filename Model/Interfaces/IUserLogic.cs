@@ -52,6 +52,5 @@ namespace CookNook.Model.Interfaces
 
         public UserSelectionError UnfollowRecipe(long userId, long recipeId);
 
-
     }
 }

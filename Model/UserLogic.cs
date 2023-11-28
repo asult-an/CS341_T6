@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CookNook.Model.Interfaces;
+using BCrypt.Net;
 
 //namespace CookNook.Services
 namespace CookNook.Model
@@ -54,14 +56,28 @@ namespace CookNook.Model
         }
 
         /// <summary>
-        /// Logs the user in
+        /// Logs the user in by applying salt to the password, then hashing the result
+        /// and checking if that's what matches the stored hash in the database
         /// </summary>
-        /// <param name="username"></param>
-        /// <param name="password"></param>
+        /// <param name="username">the username used to log in</param>
+        /// <param name="password">the plaintext attempt the user enters to login</param>
         /// <returns></returns>
         public UserAuthenticationError AuthenticateUser(string username, string password)
         {
-           return userDatabase.AuthenticateUser(username, password);
+            var user = userDatabase.GetUserByUsername(username);
+            
+            if (user == null)
+                return UserAuthenticationError.UserNotFound;
+
+            // hash the password being supplied now that we know the user exists
+            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
+
+            // compare our hash with the stored hash
+            if (!BCrypt.Net.BCrypt.Verify(hashedPassword, user.Password))
+                return UserAuthenticationError.InvalidPassword;
+
+            return userDatabase.AuthenticateUser(username, hashedPassword);
+            //return userDatabase.AuthenticateUser(username, password);
         }
 
         public UserAdditionError RegisterNewUser(string username, string email, string password, string confirmPassword)
@@ -71,11 +87,15 @@ namespace CookNook.Model
             {
                 return UserAdditionError.InvalidPassword;
             }
+            var hashPass = BCrypt.Net.BCrypt.HashPassword(password);
+            
             // Note:  we want the database to come up with Id, since we're wasting computation if the 
             // insert is going to fail
-            User newUser = new User((Int64)random.NextInt64(5000), username, email, password);
+            User newUser = new User((Int64)random.NextInt64(5000), username, email, hashPass);
             try
             {
+                // hash the password, salting happens too here behind the scenes
+
                 UserAdditionError result = userDatabase.InsertUser(newUser);
                 if (result != UserAdditionError.NoError) 
                 {
@@ -141,7 +161,7 @@ namespace CookNook.Model
         public User GetUserByUsername(string username)
         {
             
-            //return userDatabase.GetUserByUsername(username);
+            return userDatabase.GetUserByUsername(username);
         }
 
         public UserAdditionError InsertUser(User inUser)
