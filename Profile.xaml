@@ -2,7 +2,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.Profile"
-             Title="Profile">
+             Title="{Binding AppUser.Username}" >
 
     <ContentPage.ToolbarItems>
         <ToolbarItem x:Name="searchToolbarItem"
@@ -17,26 +17,59 @@
                 Order="Primary" 
                 Clicked="SettingsClicked"/>
     </ContentPage.ToolbarItems>
-    <VerticalStackLayout
-        Spacing="25"
+
+    <Grid
         Padding="30,0"
         VerticalOptions="Start"
         BackgroundColor="#202c39">
-        
+
 
         <ScrollView>
             <Grid
                 RowDefinitions="5*,*,*,*,*,*"
                 Padding="30,0">
-                <Button Grid.Row="0" Padding="30" ImageSource="profile.png" BackgroundColor="Transparent"></Button>
+
+                <Image Source="profile.png" Margin="0, 30, 0, 30"></Image>
 
                 <Label Grid.Row="1" Text="{Binding AppUser.Username}" HorizontalTextAlignment="Center" FontSize="Title" TextColor="#ffe6a7"></Label>
 
-                <Label Grid.Row="3" Text="Best Birria Tacos" TextColor="#ffe6a7"></Label>
-                <Image Grid.Row="4" Source="tacos.png"></Image>
+                <CollectionView x:Name="recipesCollectionView" Margin="10" Grid.Row="3">
+                    <CollectionView.ItemTemplate>
+                        <DataTemplate>
+                            <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
+                                <Grid RowSpacing="10">
+                                    <!-- Define Grid Rows -->
+                                    <Grid.RowDefinitions>
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="Auto" />
+                                        <RowDefinition Height="200" />
+                                        <RowDefinition Height="Auto" />
+                                    </Grid.RowDefinitions>
+
+                                    <!-- Recipe Name -->
+                                    <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+
+                                    <!-- Recipe Description -->
+                                    <Label Text="{Binding Description}" Grid.Row="1"/>
+
+                                    <!-- Recipe Image -->
+                                    <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+
+                                    <!-- Cook Time -->
+                                    <Label Text="{Binding CookTime}" Grid.Row="3"/>
+                                </Grid>
+                                <Frame.GestureRecognizers>
+                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                                </Frame.GestureRecognizers>
+                            </Frame>
+                        </DataTemplate>
+                    </CollectionView.ItemTemplate>
+                </CollectionView>
+
             </Grid>
         </ScrollView>
-    </VerticalStackLayout>
+
+    </Grid>
 
 
 </ContentPage>

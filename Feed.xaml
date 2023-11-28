@@ -3,6 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:converter="clr-namespace:CookNook.Model"
              x:Class="CookNook.Feed"
+             NavigationPage.HasBackButton="False"
              Title="Feed">
     <!--NavigationPage.HasBackButton="False"-->
 
