@@ -39,6 +39,9 @@
                         <!-- Cook Time -->
                         <Label Text="{Binding CookTime}" Grid.Row="3"/>
                     </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                    </Frame.GestureRecognizers>
                 </Frame>
             </DataTemplate>
         </CollectionView.ItemTemplate>

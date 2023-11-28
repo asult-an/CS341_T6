@@ -1,86 +1,83 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
-             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="CookNook.RecipePopUpView"
-                          BackgroundColor="Transparent"
-             Title="Home">
+       xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+       xmlns:converter="clr-namespace:CookNook.Model"
+       x:Class="CookNook.RecipePopUpView"
+       BackgroundColor="#00000000">
+    <!-- Transparent background to still see the previous screen -->
 
-    <!-- Xaml made by IS -->
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
+    <Frame VerticalOptions="Center" 
+           HorizontalOptions="FillAndExpand"
+           HeightRequest="800"
+           BackgroundColor="DimGray"
+           Margin="10" Padding="10">
+        
+        <!-- Adjusted margins and padding -->
+        <ScrollView>
+            <!-- Adjusted padding -->
+            <StackLayout Padding="10" HorizontalOptions="Center" VerticalOptions="Center">
+                <!-- Recipe Name -->
+                <Label Text="{Binding Name}" HorizontalOptions="Center" VerticalOptions="Start" FontSize="Large" FontAttributes="Bold"/>
 
-    <AbsoluteLayout>
-        <!-- Background content (like in MainPage) -->
-        <ScrollView AbsoluteLayout.LayoutFlags="All" AbsoluteLayout.LayoutBounds="0,0,1,1">
-            <StackLayout>
-                <Image Source="recipe1.jpg" Aspect="AspectFit" HeightRequest="200" HorizontalOptions="CenterAndExpand" />
+                <!-- Recipe Image -->
+                <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Aspect="AspectFill"/>
 
-                <!-- Border Frame (recipe details) -->
-                <Frame BorderColor="Black" CornerRadius="10" HasShadow="True" Margin="20">
-                    <StackLayout>
-                        <!-- Recipe Name -->
-                        <Label Text="Best Birria Tacos" FontSize="20" HorizontalOptions="CenterAndExpand" Margin="20" />
+                <!-- Grid for CookTime and Serving -->
+                <Grid Margin="0,10,0,10">
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
 
-                        <!-- Recipe Description -->
-                        <Label Text="These birria tacos are the best I have ever tasted. It is a recipe that I always enjoy making and eating. - Author, Date" FontSize="16" HorizontalOptions="CenterAndExpand" Margin="20" />
+                    <!-- Cook Time Label -->
+                    <Label Text="Cook Time" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
+                    <!-- Cook Time Value -->
+                    <Label Text="{Binding CookTime, StringFormat='{0} min'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
 
-                        <!-- Recipe Procedures (Scrollable) -->
-                        <ScrollView>
-                            <StackLayout>
-                                <Label Text="Step 1: Halve and chop onions and peppers. Dice tomatoes. Mince Garlic." Margin="20" />
-                                <Label Text="Step 2: Bring a pot of water to a boil and soak the peppers." Margin="20" />
-                                <Label Text="Step 3: In a large skillet, add the beef and half the onion. Heat for 10 minutes, stirring occasionally" Margin="20" />
-                                <Label Text="Step 4: More instructions will be added." Margin="20" />
-                                <Label Text="Step 5: Ingredients may be at the bottom of the recipe view or a separate button for ingredients to pop up" Margin="20" />
-                            </StackLayout>
-                        </ScrollView>
-                    </StackLayout>
-                </Frame>
+                    <!-- Servings Label -->
+                    <Label Text="Servings" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
+                    <!-- Servings Value -->
+                    <Label Text="{Binding Servings}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+                </Grid>
+
+                <!-- Grid for Rating and CourseType -->
+                <Grid>
+                    <Grid.ColumnDefinitions>
+                        <ColumnDefinition Width="*" />
+                        <ColumnDefinition Width="*" />
+                    </Grid.ColumnDefinitions>
+                    <Grid.RowDefinitions>
+                        <RowDefinition Height="Auto" />
+                        <RowDefinition Height="Auto" />
+                    </Grid.RowDefinitions>
+
+                    <!-- Rating Label -->
+                    <Label Text="Rating" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
+                    <!-- Rating Value -->
+                    <Label Text="{Binding Rating}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+
+                    <!-- Course Type Label -->
+                    <Label Text="Course Type" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
+                    <!-- Course Type Value -->
+                    <Label Text="{Binding Course.Name}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+                </Grid>
+
+                <!-- Close Button -->
+                <Button Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="Center"/>
             </StackLayout>
-
         </ScrollView>
-
-        <!-- Pop-up View  -->
-        <StackLayout BackgroundColor="White" Opacity="0.9" WidthRequest="400" HeightRequest="720" HorizontalOptions="Center" VerticalOptions="Center" IsVisible="True">
-
-            <!-- Recipe Image -->
-            <Image Source="recipe1.jpg" WidthRequest="100" HeightRequest="100" HorizontalOptions="Center" Margin="0,20,0,10" />
-
-            <!-- Recipe Name -->
-            <Label Text="Best Birria Tacos" FontSize="20" FontAttributes="Bold" HorizontalOptions="Center" Margin="0,0,0,10" />
-
-            <!-- Cook Time and Prep Time -->
-            <StackLayout Orientation="Horizontal" HorizontalOptions="Center">
-                <Label Text="Cook Time: " FontAttributes="Bold" Margin="0,0,5,0" />
-                <Label Text="30 minutes" Margin="0,0,20,0" />
-                <Label Text="Prep Time: " FontAttributes="Bold" Margin="0,0,5,0" />
-                <Label Text="15 minutes" />
-            </StackLayout>
-
-            <!-- Ingredients List -->
-            <Label Text="Ingredients:" FontAttributes="Bold" Margin="0,20,0,10" />
-            <ListView>
-                <ListView.ItemsSource>
-                    <x:Array Type="{x:Type x:String}">
-                        <x:String>1 lb beef chuck roast</x:String>
-                        <x:String>4 Roma Tomatoes</x:String>
-                        <x:String>6 chili peppers</x:String>
-                        <x:String>2 cloves garlic</x:String>
-                        <x:String>1 yellow onion</x:String>
-                        <x:String>12 corn tortillas</x:String>
-
-                    </x:Array>
-                </ListView.ItemsSource>
-            </ListView>
-
-            <!-- Button to view the detailed recipe -->
-            <Button Text="View Detailed Recipe" IsEnabled="False" HorizontalOptions="Center" Margin="0,20,0,0" />
-        </StackLayout>
-        <!-- Tabs at the Bottom -->
-        <StackLayout AbsoluteLayout.LayoutFlags="PositionProportional,WidthProportional" AbsoluteLayout.LayoutBounds="1,1,-1,-1" Orientation="Horizontal">
-            <Button Text="Home" BackgroundColor="DarkGray" HorizontalOptions="FillAndExpand" />
-            <Button Text="Add Recipes" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" />
-            <Button Text="Cookbook" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" />
-        </StackLayout>
-
-    </AbsoluteLayout>
+    </Frame>
 </ContentPage>
+
+
+
