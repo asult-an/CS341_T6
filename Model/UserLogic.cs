@@ -116,7 +116,7 @@ namespace CookNook.Model
                 Password = hashPass
             };
 
-            return RegisterNewUser(username, email, password);
+            return RegisterNewUser(username, email, hashPass);
         }
 
         /// <summary>
