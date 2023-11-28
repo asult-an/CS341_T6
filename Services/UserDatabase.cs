@@ -27,23 +27,6 @@ namespace CookNook.Model.Services
         public UserDatabase() { }
 
 
-        public static string GetConnectionString()
-        {
-            //initialize the string builder
-            var connStringBuilder = new NpgsqlConnectionStringBuilder();
-            //set the properties of the string builder
-            connStringBuilder.Host = "third-sphinx-13032.5xj.cockroachlabs.cloud";
-            connStringBuilder.Port = PORT_NUMBER;
-            connStringBuilder.SslMode = SslMode.VerifyFull;
-            connStringBuilder.Username = dbUsername;
-            connStringBuilder.Password = dbPassword;
-            connStringBuilder.Database = "defaultdb";
-            connStringBuilder.ApplicationName = "";
-            connStringBuilder.IncludeErrorDetail = true;
-            //return the completed string
-            return connStringBuilder.ConnectionString;
-        }
-
 
         public UserSelectionError UnfollowUser(Int64 userId, Int64 followedUserId)
         {

@@ -7,6 +7,8 @@ namespace CookNook;
 
 public static class MauiProgram
 {
+	public static IServiceProvider ServiceProvider { get; private set; }
+
 	public static MauiApp CreateMauiApp()
 	{
 		var builder = MauiApp.CreateBuilder();
@@ -22,8 +24,12 @@ public static class MauiProgram
 #if DEBUG
 		builder.Logging.AddDebug();
 #endif
+		// since App.Current.Services wasn't accessible, try using a ServiceProvider
+		var app = builder.Build();
+		ServiceProvider = app.Services;
 
-		return builder.Build();
+		// we'll still return the regular app, we just needed its services first
+		return app;
 	}
 
 	/// <summary>
@@ -43,10 +49,6 @@ public static class MauiProgram
 		builder.Services.AddScoped<IUserDatabase, UserDatabase>();
 		builder.Services.AddScoped<IUserLogic, UserLogic>();
 
-		//builder.Services.
-		// Hacky, but this gets it to compile for now.
-		// TODO: troubleshoot later, true DI needed
-		//builder.Services.AddSingleton<UserLogic>();
 		return builder;
 	}
 }
