@@ -10,20 +10,39 @@ using Npgsql;
 
 namespace CookNook.Model
 {
+    /// <summary>
+    /// This class enforces business logic upon the cookbook page database
+    /// Functions served should include preventing the user from adding the same
+    /// recipe to a page twice, or adding a recipe to a page that doesn't exist
+    /// </summary>
     internal class CookbookPageLogic : ICookbookPageLogic
     {
-        /** NOTE TO ALL DEVELOPERS:
-         * Take note here of what's known as the Composition pattern.
-         * Here, our concrete implementaion of ICookbookPageLogic is composed of two other objects
-         * since their responsibilities overlap with one another
-         */
+        
         private readonly ICookbookPageDatabase cookbookPageDatabase;
         private readonly IRecipeLogic recipeLogic;
+        private readonly IUserLogic userLogic;
+
+        /// <summary>
+        /// Relieves pressure on the database by caching the user's cookbook pages
+        /// </summary>
+        private readonly List<CookbookPageModel> myCookbookPages;
 
         public CookbookPageLogic(ICookbookPageDatabase cookbookPageDatabase, IRecipeLogic recipeLogic)
         {
             this.cookbookPageDatabase = cookbookPageDatabase;
             this.recipeLogic = recipeLogic;
+        }
+
+        /// <summary>
+        /// Checks if the user's Id is valid, then fetches all pages for that user 
+        /// and stores them in the myCookbookPages field
+        /// </summary>
+        /// <param name="userId">user_id of the page owner</param>
+        public void CacheUserCookbookPages(long userId)
+        {
+            // TODO: implement UserLogic.GetUserById
+
+            throw new NotImplementedException();
         }
 
         //public CookbookPageLogic(long userId) { }
