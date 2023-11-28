@@ -67,14 +67,11 @@ namespace CookNook.Model
             if (user == null)
                 return UserAuthenticationError.UserNotFound;
 
-            // hash the password being supplied now that we know the user exists
-            var hashedPassword = BCrypt.Net.BCrypt.HashPassword(password);
-
             // compare our hash with the stored hash
-            if (!BCrypt.Net.BCrypt.Verify(hashedPassword, user.Password))
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
                 return UserAuthenticationError.InvalidPassword;
 
-            return userDatabase.AuthenticateUser(username, hashedPassword);
+            return UserAuthenticationError.NoError;
             //return userDatabase.AuthenticateUser(username, password);
         }
 

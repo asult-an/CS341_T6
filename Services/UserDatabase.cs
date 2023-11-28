@@ -173,12 +173,11 @@ namespace CookNook.Model.Services
             {
                 Debug.WriteLine("GetByUsername Failed");
                 Debug.WriteLine(ex.Message);
+                return null;
             }
             conn.Close();
             cmd.Parameters.Clear();
             cmd.Dispose();
-
-
 
             return GetUserById(userID);
         }
@@ -235,9 +234,8 @@ namespace CookNook.Model.Services
             {
                 using var conn = new NpgsqlConnection(connString);
 
-
                 // since multiple tables 
-                //using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
+                // using var transaction = conn.BeginTransaction(); //CAUSING INSERTS TO FAIL
                 var cmd = new NpgsqlCommand("SELECT password FROM users WHERE username = @Username", conn);
 
                 cmd.Parameters.AddWithValue("Username", username);
@@ -263,7 +261,6 @@ namespace CookNook.Model.Services
         }
         public UserAdditionError InsertUser(User user)
         {
-
             try
             {
                 using var conn = new NpgsqlConnection(connString);
@@ -274,7 +271,6 @@ namespace CookNook.Model.Services
                 var cmd = new NpgsqlCommand("INSERT INTO users(user_id, username, email, password, profile_pic)" +
                                                            " VALUES(unique_rowid(), @Username, @UserEmail, @Password, @ProfilePic)", conn);
                 {
-
                     // Id is assigned by the database automatically thanks to the `UNIQUE` keyword
 
                     //cmd.Parameters.AddWithValue("ID", (int)random.NextInt64(5000));
