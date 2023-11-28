@@ -464,11 +464,7 @@ namespace CookNook.Services
                     Debug.Write(recipeID);
                     while (reader.Read())
                     {
-<<<<<<< HEAD:Model/RecipeDatabase.cs
-                       // var ingredients = GetIngredientsByRecipe(recipeID).ToArray();
-=======
-                        var ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipeID).ToArray();
->>>>>>> main:Services/RecipeDatabase.cs
+                        //var ingredients = GetIngredientsByRecipe(recipeID).ToArray();
 
                         Recipe recipe = new Recipe
                         {
@@ -670,10 +666,6 @@ namespace CookNook.Services
                 recipes.Add(r);
             }
             return recipes;
-<<<<<<< HEAD:Model/RecipeDatabase.cs
-=======
-
-            // TODO: remove this or relocate it
             using (var conn = new NpgsqlConnection(connString))
             {
                 conn.Open();
@@ -698,7 +690,6 @@ namespace CookNook.Services
                 }
             }
             return recipes;
->>>>>>> main:Services/RecipeDatabase.cs
         }
 
 
