@@ -5,7 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookNook.Model.Interfaces
+namespace CookNook.Model
 {
     public interface IUserDatabase
     {

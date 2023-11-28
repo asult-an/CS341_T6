@@ -7,6 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Diagnostics;
 using CookNook.Services;
+using CookNook.Model;
 
 
 namespace CookNook.Model
@@ -268,6 +269,7 @@ namespace CookNook.Model
                 {
                     return UserAuthenticationError.InvalidPassword;
                 }
+                Debug.WriteLine("TEST");
 
             }
             catch (Exception ex)

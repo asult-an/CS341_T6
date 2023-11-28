@@ -14,7 +14,7 @@ public partial class Cookbook : ContentPage
     public Cookbook()
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic(new RecipeDatabase());
+        recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
         user = UserViewModel.Instance.AppUser;
         BindingContext = this;
         LoadRecipes(user.Id);

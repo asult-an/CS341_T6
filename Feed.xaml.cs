@@ -11,14 +11,14 @@ public partial class Feed : ContentPage
     public Feed(User inUser)
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic(new RecipeDatabase());
+        recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
         user = inUser;
         loadRecipes();
     }
     public Feed()
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic(new RecipeDatabase());
+        recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
         user = UserViewModel.Instance.AppUser;
         loadRecipes();
     }
