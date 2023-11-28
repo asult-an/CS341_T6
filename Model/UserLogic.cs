@@ -134,7 +134,7 @@ namespace CookNook.Model
         public User GetUserByUsername(string username)
         {
             
-            //return userDatabase.GetUserByUsername(username);
+            return userDatabase.GetUserByUsername(username);
         }
 
         public UserAdditionError InsertUser(User inUser)
