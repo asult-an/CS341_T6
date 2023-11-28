@@ -102,11 +102,10 @@ namespace CookNook.Model
         /// <summary>
         /// Full constructor for a 'unitless' ingredient, exposing the ID
         /// </summary>
-        /// <param name="id"></param>
-        /// <param name="name"></param>
-        /// <param name="quantity"></param>
-        /// <param name="unit"></param>
-        public Ingredient(Int64 id, string name, string quantity)
+        /// <param name="id">ingredient Id</param>
+        /// <param name="name">name of ingredient</param>
+        /// <param name="quantity">quantity, defaults to null unless a recipe is involved</param>
+        public Ingredient(Int64 id, string name, string quantity = null)
         {
             this.ingredientId = id;
             this.Name = name;

@@ -2,55 +2,92 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.RecipeDetailedView"
-             Title="Recipe Details">
+             Title="{Binding Name}"
+             xmlns:model="clr-namespace:CookNook.Model"
+             xmlns:converter="clr-namespace:CookNook.Model"
+             xmlns:local="clr-namespace:CookNook"
+             BackgroundColor="#202c39"
+             x:Name="recipeDetailedView">
 
-    <!-- Xaml made by IS-->
+
 
     <ContentPage.ToolbarItems>
-        <!--top-right corner button (plus button) -->
-        <ToolbarItem Order="Primary" IconImageSource="plus.png" />
+        <ToolbarItem Order="Primary" IconImageSource="editpen.svg" />
+        <ToolbarItem Order="Primary" IconImageSource="delete.svg" />
     </ContentPage.ToolbarItems>
 
-    <Grid>
-        <Grid.RowDefinitions>
-            <RowDefinition Height="*" />
-            <RowDefinition Height="Auto" />
-        </Grid.RowDefinitions>
 
-        <!-- Content Area -->
-        <ScrollView Grid.Row="0">
-            <StackLayout>
-                <Image Source="recipe1.jpg" Aspect="AspectFit" HeightRequest="200" HorizontalOptions="CenterAndExpand" />
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+        </ResourceDictionary>
+    </ContentPage.Resources>
 
-                <!-- Border Frame -->
-                <Frame BorderColor="Black" CornerRadius="10" HasShadow="True" Margin="20">
-                    <StackLayout>
-                        <!-- Recipe Name -->
-                        <Label Text="Best Birria Tacos" FontSize="20" HorizontalOptions="CenterAndExpand" Margin="20" />
+    <Frame VerticalOptions="Center" 
+           HorizontalOptions="FillAndExpand"
+           BackgroundColor="DimGray"
+           Margin="10" Padding="10">
+        <ScrollView>
+            <Grid RowSpacing="10">
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
 
-                        <!-- Recipe Description -->
-                        <Label Text="These birria tacos are the best I have ever tasted. It is a recipe that I always enjoy making and eating. - Author, Date" FontSize="16" HorizontalOptions="CenterAndExpand" Margin="20" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                    <RowDefinition Height="Auto" />
+                </Grid.RowDefinitions>
 
-                        <!-- Recipe Procedures (Scrollable) -->
-                        <ScrollView>
-                            <StackLayout>
-                                <Label Text="Step 1: Halve and chop onions and peppers. Dice tomatoes. Mince Garlic." Margin="20" />
-                                <Label Text="Step 2: Bring a pot of water to a boil and soak the peppers." Margin="20" />
-                                <Label Text="Step 3: In a large skillet, add the beef and half the onion. Heat for 10 minutes, stirring occasionally" Margin="20" />
-                                <Label Text="Step 4: More instructions will be added." Margin="20" />
-                                <Label Text="Step 5: Ingredients may be at the bottom of the recipe view or a separate button for ingredients to pop up" Margin="20" />
-                            </StackLayout>
-                        </ScrollView>
-                    </StackLayout>
-                </Frame>
-            </StackLayout>
+                <!-- Tags -->
+                <!-- Change to list all tags -->
+                <Label Grid.Row="0" Text="{Binding Tags[0], StringFormat='{0} TAGS PLACEHOLDER'}" TextColor="#ffe6a7"/>
+
+                <!-- Recipe Image -->
+                <Image Grid.Row="1" Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Aspect="AspectFill"/>
+
+                <!-- Rating -->
+                <Label Grid.Row="2" Text="{Binding Rating}" TextColor="#ffe6a7"/>
+
+                <!-- Author -->
+                <Label Grid.Row="3" Text="{Binding AuthorID}" TextColor="#ffe6a7"/>
+
+                <!-- Course -->
+                <Label Grid.Row="4" Text="{Binding Course.Name}" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+
+                <!-- Cook Time -->
+                <Label Grid.Row="5" Text="{Binding CookTime, StringFormat='{0} min'}" TextColor="#ffe6a7"/>
+
+                <!-- Servings -->
+                <Label Grid.Row="6" Text="{Binding Servings}" TextColor="#ffe6a7"/>
+
+                <!-- Number of Followers -->
+                <!-- CURRENTLY UNSET -->
+                <Label Grid.Row="7" Text="{Binding FollowerIds.length, StringFormat='{0} followers'}" TextColor="#ffe6a7"/>
+
+                <!-- Description -->
+                <Label Grid.Row="8" Text="{Binding Description}" TextColor="#ffe6a7"/>
+
+                <!-- Ingredients -->
+                <Label Grid.Row="9" Text="{Binding Ingredients[0]}" TextColor="#ffe6a7"/>
+
+            </Grid>
         </ScrollView>
-
-        <!-- Tabs at the Bottom -->
-        <StackLayout Grid.Row="1" Orientation="Horizontal">
-            <Button Text="Home" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" />
-            <Button Text="Add recipe" BackgroundColor="DarkGray" HorizontalOptions="FillAndExpand" />
-            <Button Text="Cookbook" BackgroundColor="LightGray" HorizontalOptions="FillAndExpand" />
-        </StackLayout>
-    </Grid>
+    </Frame>
 </ContentPage>
+
+<!--ADD INGREDIENTS HERE-->
+
+<!-- Recipe Instructions -->
+
+<!--ADD FOLLOWER COUNT HERE-->
+<!--ADD TAGS HERE-->
+<!--ADD COURSE, SERVINGS, RATING, OTHER DETAILS HERE-->
+
+<!-- Recipe Description -->
+<!--ADD AUTHOR HERE-->
+<!-- Recipe Name and Image -->

@@ -1,5 +1,4 @@
-﻿using CookNook;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -18,16 +17,6 @@ namespace CookNook.Model
         public RecipeDeletionError DeleteRecipe(Int64 inID);
         public RecipeEditError EditRecipe(Recipe inRecipe);
 
-
-        public List<Ingredient> GetAllIngredients();
-
-        /// <summary>
-        /// Polls the recipe_ingredients relation for all rows with a given recipeID
-        /// </summary>
-        /// <param name="recipeID">Id to search for</param>
-        /// <returns></returns>
-        public List<Ingredient> GetIngredientsByRecipe(Int64 recipeID);
-
         public List<Int64> GetRecipeFollowerIds(Int64 recipeID);
 
 
@@ -45,8 +34,6 @@ namespace CookNook.Model
         // public List<Tag> GetTagsByUser(int userID);
 
         //public List<Ingredient> GetIngredientsByUser(int userID);
-
-        public Ingredient GetOrCreateIngredient(string ingredientName);
 
         public List<Recipe> SelectRecipeByCooktime(int cooktime);
 

@@ -1,5 +1,5 @@
 ﻿
-namespace CookNook.Model;
+namespace CookNook;
 
 public enum RecipeAdditionError
 {
@@ -78,5 +78,56 @@ public enum UserAuthenticationError
 {
     InvalidUsername,
     InvalidPassword,
+    NoError
+}
+
+public enum TagAdditionError
+{
+    TagAlreadyExists,
+    DBAdditionError,
+    NoError
+}
+
+public enum TagDeleteError
+{
+    TagNotFound,
+    DBDeletionError,
+    NoError
+}
+
+public enum TagUpdateError
+{
+    TagNotFound,
+    DBUpdateError,
+    NoError
+}
+
+public enum IngredientAdditionError
+{
+    IngredientAlreadyExists,
+    DBAdditionError,
+    BadParameters,
+    NoError
+}
+
+public enum IngredientDeleteError
+{
+    IngredientNotFound,
+    DBDeletionError,
+    NoError
+}
+
+public enum IngredientUpdateError
+{
+    IngredientNotFound,
+    DBUpdateError,
+    BadParameters,
+    NoError
+}
+
+public enum IngredientSelectionError
+{
+    IngredientNotFound,
+    BadParameters,
     NoError
 }

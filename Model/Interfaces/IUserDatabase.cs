@@ -1,16 +1,23 @@
-﻿using CookNook;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CookNook.Model
+namespace CookNook.Model.Interfaces
 {
     public interface IUserDatabase
     {
-        /* ===================== [ GETTERS ] ====================== */ 
+        /// <summary>
+        /// Authenticates a user by their username and password
+        /// </summary>
+        /// <param name="username">The username being used to log in</param>
+        /// <param name="password">the password entered to check against the one used at registration</param>
+        /// <returns></returns>
+        public UserAuthenticationError AuthenticateUser(string username, string password);
+
+        /* ===================== [ GETTERS ] ====================== */
         /// <summary>
         /// allows grabbing a subset of users by their ids, useful in 
         /// follower resolving
@@ -33,6 +40,14 @@ namespace CookNook.Model
         /// <returns>User object if found, null otherwise. .</returns>
         User GetUserById(Int64 id);
 
+        
+        /// <summary>
+        /// Retrieves a user by their username from the database
+        /// </summary>
+        /// <param name="username">username to search for</param>
+        /// <returns></returns>
+        User GetUserByUsername(string username);
+
         /// <summary>
         /// Query user_following_user table for all followed_user_ids where 
         /// follower_user_id matches the supplied userId.  Then, we call
@@ -50,7 +65,7 @@ namespace CookNook.Model
          */ 
         /// <summary>
         /// Queries the junction table from user-recipe to see if a certain
-        /// recipe is being followed by a particular user.
+        /// recipe is being followed Iby a particular user.
         /// </summary>
         /// <param name="userId">ID of the user to look for.</param>
         /// <param name="recipeId">ID of the recipe we're checking.</param>
@@ -103,5 +118,7 @@ namespace CookNook.Model
         /// <param name="inUser">User object to be deleted.</param>
         /// <returns>Any errors that occurred during the deletion operation.</returns>
         UserDeletionError DeleteUser(User inUser);
+
+
     }
 }

@@ -4,7 +4,7 @@
              x:Class="CookNook.AddRecipeIngredientsPage"
 
              Title="Add Recipe Ingredients">
-  <!--to fix
+    <!--to fix
     <StackLayout Margin="10">
         <CollectionView x:Name="IngredientsList">
             <CollectionView.ItemTemplate>
@@ -18,17 +18,12 @@
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-  
-        
-           
-   
-       
     </StackLayout>
    Title="Add Recipe"
    NavigationPage.HasBackButton="False">
 -->
-             
- 
+
+
 
     <Grid RowDefinitions="auto, *, auto, auto, *, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
 
@@ -37,7 +32,7 @@
         <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="#7D8895">
             <ScrollView>
                 <StackLayout Orientation="Vertical">
-
+                    <!--TODO: use something that requires a DataTemplate since we have a Model defined it can build off of -->
                     <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 0, 0, 5">
                         <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 1</Label>
                         <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
@@ -76,6 +71,7 @@
             <StackLayout Grid.Column="0">
 
                 <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>
+                <Button Grid.RowSpan="2" Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
 
             </StackLayout>
 
@@ -99,9 +95,9 @@
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>
-              
-            <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
-                  
+
+                <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
+
             </StackLayout>
 
 
@@ -109,24 +105,19 @@
 
         <Grid Grid.Row="3">
 
-            <StackLayout>
+            <!--<StackLayout>
 
                 <Editor Placeholder="Special Instructions" AutoSize="TextChanges" TextColor="#ffe6a7"></Editor>
 
 
-            </StackLayout>
+            </StackLayout>-->
 
         </Grid>
 
-        <Grid Grid.Row="4">
-
+        <!--<Grid Grid.Row="4"
             <StackLayout Grid.Column="0">
-
-                <Button Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
-
             </StackLayout>
-
-        </Grid>
+        </Grid>-->
 
         <Grid ColumnDefinitions="auto, *" Grid.Row="5">
 

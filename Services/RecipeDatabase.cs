@@ -1,18 +1,31 @@
-﻿
-using System;
-using Npgsql;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Numerics;
+﻿using System.Collections.ObjectModel;
 using System.Diagnostics;
+using System.Text;
+using CookNook.Model;
+using CookNook.Model.Interfaces;
+using Npgsql;
 
-namespace CookNook.Model
+namespace CookNook.Services
 {
     internal class RecipeDatabase : IRecipeDatabase
     {
+        private IIngredientDatabase ingredientDatabase;
+        // private IIngredientLogic ingredientLogic;
+
+        public RecipeDatabase()
+        {
+            this.ingredientDatabase = new IngredientDatabase();
+        }
+
+        /// <summary>
+        /// Constructor for dependency injection
+        /// </summary>
+        /// <param name="ingredientDatabase"></param>
+        public RecipeDatabase(IIngredientDatabase ingredientDatabase)
+        {
+            this.ingredientDatabase = ingredientDatabase;
+        }
+
         private List<Int64> authorListIDs = new List<Int64>();
         private List<Int64> cookbookIDs = new List<Int64>();
         
@@ -20,10 +33,10 @@ namespace CookNook.Model
         private List<Recipe> authorList;
         
         private List<Recipe> cookbook;
-        private string connString = GetConnectionString();
-        static string dbPassword = "0eQSU1bp88pfd5hxYpfShw";
-        static string dbUsername = "adeel";
-        static int PORT_NUMBER = 26257;
+        private string connString = DbConn.ConnectionString;
+        
+        // TODO: Users need a way to upde
+
         //create public property to access airport list
         public List<Recipe> AuthorList { get { return authorList; } set { authorList = value; } }
         public List<Recipe> Cookbook { get { return cookbook; } set { cookbook = value; } }
@@ -113,90 +126,6 @@ namespace CookNook.Model
             Debug.WriteLine("\n\n\n\n");
             return outRecipes;
         }
-
-
-
-
-        public List<Ingredient> GetAllIngredients()
-        {
-            List<Ingredient> ingredients = new List<Ingredient>();
-            using var conn = new NpgsqlConnection(connString);
-            conn.Open();
-
-            var cmd = new NpgsqlCommand(
-                //"SELECT public.tags.* FROM public.recipe_tags, public.tags WHERE tags.tag_id = recipe_tags.tag_id", conn);
-                @"SELECT recipe_ingredients.ingredient_id, recipe_ingredients.quantity,recipe_ingredients, ingredients.name
-                FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes", conn);
-
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Int64 ingredientId = reader.GetInt64(0);
-                string name = reader.GetString(1);
-                string qty = reader.GetString(2);
-                string unit = reader.GetString(3);
-                Ingredient ingredient;
-
-                // if the cell was NULL in the database:
-                if (string.IsNullOrEmpty(unit))
-                {
-                    // use the 'unitless ingredient' constructor
-                    ingredient = new Ingredient(ingredientId, name, qty);
-                }
-                else
-                {
-                    ingredient = new Ingredient(ingredientId, name, qty, unit);
-                }
-                ingredients.Add(ingredient);
-            }
-            reader.Close();
-            return ingredients;
-        }
-
-        /// <summary>
-        /// Retrieves the ingredients for a given recipe from the database
-        /// </summary>
-        /// <param name="recipeID">ID of the recipe to query</param>
-        /// <returns>a list of Ingredients found in the recipe</returns>
-        public List<Ingredient> GetIngredientsByRecipe(Int64 recipeID)
-        {
-            
-            List<Ingredient> ingredients = new List<Ingredient>();
-            using var conn = new NpgsqlConnection(connString);
-            conn.Open();
-
-            var cmd = new NpgsqlCommand(
-                @"SELECT recipe_ingredients.ingredient_id, recipe_ingredients.quantity,recipe_ingredients, ingredients.name
-                FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes
-                WHERE
-                    recipe_ingredients.ingredient_id = ingredients.ingredient_id
-                    AND recipe_ingredients.recipe_id = @Recipe_ID", conn);
-            cmd.Parameters.AddWithValue("Recipe_ID", recipeID);
-
-            using NpgsqlDataReader reader = cmd.ExecuteReader();
-            while (reader.Read())
-            {
-                Int64 ingredientId = reader.GetInt64(0);
-                string name = reader.GetString(1);
-                string qty = reader.GetString(2);
-                string unit = reader.GetString(3);
-                Ingredient ingredient;
-
-                // if the cell was NULL in the database:
-                if(string.IsNullOrEmpty(unit))
-                {
-                    // use the 'unitless ingredient' constructor
-                    ingredient = new Ingredient(ingredientId, name, qty);
-                } else
-                {
-                    ingredient = new Ingredient(ingredientId, name, qty, unit);
-                }
-                ingredients.Add(ingredient);
-            }
-            reader.Close();
-            return ingredients;
-        }
-
 
 
         /// <summary>
@@ -489,7 +418,7 @@ namespace CookNook.Model
                 recipe.Name = reader.GetString(1);
                 recipe.Description = reader.GetString(2);   
                 recipe.AuthorID = reader.GetInt64(3);
-                recipe.Ingredients = GetIngredientsByRecipe(recipe.ID).ToArray();
+                recipe.Ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipe.ID).ToArray();
 
                 //recipe.IngredientsQty = reader.GetString(5);
                 recipe.CookTime = reader.GetInt32(6);
@@ -511,7 +440,6 @@ namespace CookNook.Model
 
             return outRecipes;
         }
-        
 
 
         public List<Recipe> SelectRecipes(List<Int64> recipeList)
@@ -536,7 +464,11 @@ namespace CookNook.Model
                     Debug.Write(recipeID);
                     while (reader.Read())
                     {
+<<<<<<< HEAD:Model/RecipeDatabase.cs
                        // var ingredients = GetIngredientsByRecipe(recipeID).ToArray();
+=======
+                        var ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipeID).ToArray();
+>>>>>>> main:Services/RecipeDatabase.cs
 
                         Recipe recipe = new Recipe
                         {
@@ -575,7 +507,7 @@ namespace CookNook.Model
         /// Selects a recipe by its recipeId
         /// </summary>
         /// <param name="inID"></param>
-        /// <returns></returns>
+        /// <returns>The recipe if found, else null</returns>
         public Recipe SelectRecipe(Int64 inID)
         {
             Recipe recipe = new Recipe();
@@ -587,20 +519,21 @@ namespace CookNook.Model
                                 FROM recipes AS r
                                 JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
                                 WHERE rt.recipe_id = @RecipeId 
-                                    AND @RecipeId = ", conn)
-            {
-
-            };
+                                    AND @RecipeId = ", conn);
             cmd.Parameters.AddWithValue("RecipeId", inID);
             using var reader = cmd.ExecuteReader();
             reader.Read();
+
+            // check if nothing was found:
+            if (reader.HasRows == false)
+                return null;
 
             recipe.ID = reader.GetInt64(0);
             recipe.Name = reader.GetString(1);
             recipe.Description = reader.GetString(2);
 
             recipe.AuthorID = reader.GetInt32(3);
-            recipe.Ingredients = GetIngredientsByRecipe(inID).ToArray();
+            recipe.Ingredients = ingredientDatabase.GetIngredientsFromRecipe(inID).ToArray();
             recipe.CookTime = reader.GetInt32(6);
             recipe.Course = CourseType.Parse(reader.GetString(7));
 
@@ -667,45 +600,6 @@ namespace CookNook.Model
 
             return tags;
         }
-
-
-        /// <summary>
-        /// Queries the database for an ingredient by name, returning the existing entry if found.
-        /// If there was no match, then the ingredient will be created.
-        /// </summary>
-        /// <param name="ingredientName"></param>
-        /// <returns></returns>
-        public Ingredient GetOrCreateIngredient(string ingredientName)
-        {
-            Ingredient outIngredient;
-
-            // query the database to see if it exists
-            using var conn = new NpgsqlConnection(connString);
-            conn.Open();
-
-
-            // to handle existing ingredients, we can leverage RETURNING stmnt to return the existing
-            // ingredient_id, should a conflict occur
-            var cmd = new NpgsqlCommand(@"INSERT INTO ingredients (name) VALUES (@Name) ON CONFLICT (name) 
-                                        DO UPDATE SET name = @Name RETURNING name, ingredient_id", conn);
-
-            cmd.Parameters.AddWithValue("Name", ingredientName);
-            using var reader = cmd.ExecuteReader();
-            reader.Read();
-
-            // our results is simple, only having the id and name: 
-            outIngredient = new Ingredient(reader.GetString(0), reader.GetString(1));
-            /* 
-             * SELECT recipe_ingredients.ingredient_id, ingredients.name, recipe_ingredients.quantity, recipe_ingredients.unit 
-               FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes
-               WHERE 
-               recipe_ingredients.ingredient_id = ingredients.ingredient_id
-               AND recipe_ingredients.recipe_id = recipes.recipe_id
-             */
-            return outIngredient;
-
-        }
-
 
         public List<Recipe> SelectRecipeByCooktime(int cooktime)
         {
@@ -776,25 +670,37 @@ namespace CookNook.Model
                 recipes.Add(r);
             }
             return recipes;
+<<<<<<< HEAD:Model/RecipeDatabase.cs
+=======
+
+            // TODO: remove this or relocate it
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand("SELECT recipe_id, name, description, cook_time_mins, image FROM recipes WHERE author_id=@UserID", conn))
+                {
+                    using (var reader = cmd.ExecuteReader())
+                    {
+                        while (reader.Read())
+                        {
+                            var recipe = new Recipe
+                            {
+                                ID = reader.GetInt32(0),
+                                Name = reader.IsDBNull(1) ? null : reader.GetString(1),
+                                Description = reader.IsDBNull(2) ? null : reader.GetString(2),
+                                CookTime = reader.GetInt32(3),
+                                Image = reader.IsDBNull(4) ? null : Encoding.ASCII.GetBytes(reader.GetString(4))
+                            };
+
+                            recipes.Add(recipe);
+                        }
+                    }
+                }
+            }
+            return recipes;
+>>>>>>> main:Services/RecipeDatabase.cs
         }
 
 
-        public static String GetConnectionString()
-        {
-            // postgres://<username>:<password>@<host>:<port>/<database>?<parameters>
-            //initialize the string builder
-            var connStringBuilder = new NpgsqlConnectionStringBuilder();
-            //set the properties of the string builder
-            connStringBuilder.Host = "third-sphinx-13032.5xj.cockroachlabs.cloud";
-            connStringBuilder.Port = PORT_NUMBER;
-            connStringBuilder.SslMode = SslMode.VerifyFull;
-            connStringBuilder.Username = dbUsername;
-            connStringBuilder.Password = dbPassword;
-            connStringBuilder.Database = "defaultdb";
-            connStringBuilder.ApplicationName = "";
-            connStringBuilder.IncludeErrorDetail = true;
-            //return the completed string
-            return connStringBuilder.ConnectionString;
-        }
     }
 }

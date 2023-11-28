@@ -4,7 +4,8 @@
              x:Class="CookNook.Cookbook"
              Title="{Binding PageTitle}"
              NavigationPage.HasBackButton="False"
-             BackgroundColor="#202c39">
+             BackgroundColor="#202c39"
+             xmlns:model="clr-namespace:CookNook.Model">
 
     <ContentPage.Resources>
         <ResourceDictionary>
@@ -15,7 +16,7 @@
 
     <CollectionView x:Name="recipesCollectionView" Margin="10">
         <CollectionView.ItemTemplate>
-            <DataTemplate>
+            <DataTemplate x:DataType="model:Recipe">
                 <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
                     <Grid RowSpacing="10">
                         <Grid.RowDefinitions>
@@ -32,11 +33,15 @@
                         <Label Text="{Binding Description}" Grid.Row="1"/>
 
                         <!-- Recipe Image -->
+
                         <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
 
                         <!-- Cook Time -->
                         <Label Text="{Binding CookTime}" Grid.Row="3"/>
                     </Grid>
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                    </Frame.GestureRecognizers>
                 </Frame>
             </DataTemplate>
         </CollectionView.ItemTemplate>

@@ -1,5 +1,6 @@
 using CookNook.Model;
 using System.Diagnostics;
+using CookNook.Services;
 
 namespace CookNook;
 
