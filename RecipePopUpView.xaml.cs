@@ -23,7 +23,7 @@ public partial class RecipePopUpView : ContentPage
     }
     private async void FullRecipeButtonClicked(object sender, EventArgs e)
     {
-        await Navigation.PopModalAsync();
+        Navigation.PopModalAsync();
         await Navigation.PushModalAsync(new RecipeDetailedView(recipe, user));
     }
 }

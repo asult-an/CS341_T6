@@ -39,7 +39,7 @@ public partial class Cookbook : ContentPage
         {
             // Navigate to the RecipeDetailPage with the selected recipe
             var page = new RecipeDetailedView(recipe, user);
-            await Navigation.PushAsync(page);
+            await Navigation.PushModalAsync(page);
         }
     }
 

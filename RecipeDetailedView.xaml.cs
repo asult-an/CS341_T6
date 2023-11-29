@@ -1,23 +1,25 @@
 namespace CookNook;
 using CookNook.Model;
+using CookNook.Services;
 using System.ComponentModel;
 using System.Diagnostics;
 
 public partial class RecipeDetailedView : ContentPage
 {
 	private Recipe recipe;
-    private User user;
     private UserLogic userLogic;
 
     public RecipeDetailedView(Recipe inRecipe, User user)
 	{
 		InitializeComponent();
 		recipe = inRecipe;
-        this.user = user;
         BindingContext = recipe;
+        Debug.WriteLine(recipe.AuthorID);
+        userLogic = new UserLogic(new UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
+        User author = userLogic.GetUserById(recipe.AuthorID);
         
-        userLogic = new();
-        AuthorName.BindingContext = userLogic.GetUserById(recipe.AuthorID);
+        AuthorName.BindingContext = author;
+        
 
         //try
         //{
@@ -33,7 +35,7 @@ public partial class RecipeDetailedView : ContentPage
     }
     private async void CloseButtonClicked(object sender, EventArgs e)
     {
-        await Navigation.PopAsync();
+        await Navigation.PopModalAsync();
     }
 
 
