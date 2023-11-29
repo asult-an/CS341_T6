@@ -35,7 +35,7 @@ public partial class Profile : ContentPage
         if (sender is Frame frame && frame.BindingContext is Recipe recipe)
         {
             // Navigate to the RecipePopUpPage with the selected recipe
-            var popup = new RecipePopUpView(recipe);
+            var popup = new RecipePopUpView(recipe, user);
             await Navigation.PushModalAsync(popup);
         }
     }

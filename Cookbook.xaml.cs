@@ -38,7 +38,7 @@ public partial class Cookbook : ContentPage
         if (sender is Frame frame && frame.BindingContext is Recipe recipe)
         {
             // Navigate to the RecipeDetailPage with the selected recipe
-            var page = new RecipeDetailedView(recipe);
+            var page = new RecipeDetailedView(recipe, user);
             await Navigation.PushAsync(page);
         }
     }

@@ -7,10 +7,13 @@ namespace CookNook;
 public partial class RecipePopUpView : ContentPage
 {
     private Recipe recipe;
-    public RecipePopUpView(Recipe inRecipe)
+    private User user;
+
+    public RecipePopUpView(Recipe inRecipe, User user)
     {
         InitializeComponent();
         recipe = inRecipe;
+        this.user = user;
         BindingContext = recipe;
     }
 
@@ -21,6 +24,6 @@ public partial class RecipePopUpView : ContentPage
     private async void FullRecipeButtonClicked(object sender, EventArgs e)
     {
         await Navigation.PopModalAsync();
-        await Navigation.PushModalAsync(new RecipeDetailedView(recipe));
+        await Navigation.PushModalAsync(new RecipeDetailedView(recipe, user));
     }
 }

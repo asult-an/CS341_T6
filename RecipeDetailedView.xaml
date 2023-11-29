@@ -22,7 +22,7 @@
 
 
     <!--Full page view-->
-    <Grid Padding="10" RowDefinitions="auto, auto, *">
+    <Grid Padding="10" RowDefinitions="auto, auto, *, auto">
 
         <!--Food tags-->
         <Grid ColumnDefinitions="auto, 10, *" Grid.Row="0">
@@ -95,7 +95,7 @@
                         <Grid ColumnDefinitions="auto, *, auto">
 
                             <Label Text="{Binding Rating, StringFormat='Rating: {0}/5'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Text="Cheff" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label x:Name="AuthorName" Text="{Binding Username}" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
 
                         </Grid>
 
@@ -118,30 +118,35 @@
                         <!--Description of meal-->
                         <Grid>
 
-                            <Label Margin="15" Text="{Binding Description}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Text="{Binding Description}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7" Padding="0, 10, 0, 10"/>
 
                         </Grid>
 
                         <!--Ingredients-->
-                        <Grid>
+                        <StackLayout>
 
-                            <Label Margin="15" Text="PLACEHOLDER  INGREDIENTS LIST" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Text="Ingredients" FontSize="Large" TextColor="#ffe6a7"/>
 
-                            <Label Margin="15" Text="{Binding Ingredients[0]}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 15, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
 
-                            <Label Margin="15" Text="{Binding Ingredients[1]}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                        </StackLayout>
 
-                        </Grid>
-
-                        <!--Directions-->
+                        <!--Directions--><!--
                         <Grid>
 
                             <Label Margin="15" Text="PLACEHOLDER  DIRECTIONS LIST" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
 
-                        </Grid>
+                        </Grid>-->
 
                         <!--Close Button-->
-                        <Button Margin="20" Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="Center"/>
 
                     </StackLayout>
 
@@ -150,6 +155,12 @@
             </Frame>
 
         </Grid>
+
+        <StackLayout Grid.Row="3">
+
+            <Button Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="Center" WidthRequest="350" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+
+        </StackLayout>
 
     </Grid>
 
