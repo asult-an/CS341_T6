@@ -24,7 +24,7 @@ namespace CookNook.Model
         private string description;
 
         private Int64 authorId;
-        private Ingredient[] ingredients;
+        private ObservableCollection<Ingredient> ingredients;
 
         private int cookTime;
         private CourseType course;
@@ -59,7 +59,7 @@ namespace CookNook.Model
             string name,
             string description,
             int cookTime,
-            Ingredient[] ingredients,
+            ObservableCollection<Ingredient> ingredients,
             CourseType course,
             Int64 authorId,
             int rating = 3,
@@ -101,7 +101,7 @@ namespace CookNook.Model
             string name,
             string description,
             int cookTime,
-            Ingredient[] ingredients,
+            ObservableCollection<Ingredient> ingredients,
             CourseType course,
             Int64 authorId,
             int rating = 3,
@@ -136,7 +136,7 @@ namespace CookNook.Model
         }
 
         public Int64 AuthorID { get { return authorId; } set { authorId = value; } }
-        public Ingredient[] Ingredients { get { return ingredients; } set { ingredients = value; } }
+        public ObservableCollection<Ingredient> Ingredients { get { return ingredients; } set { ingredients = value; } }
         //public String IngredientsQty { get { return ingredientsQty; } set { ingredientsQty = value; } }
 
         public int CookTime { get { return cookTime; } set { cookTime = value; } }
