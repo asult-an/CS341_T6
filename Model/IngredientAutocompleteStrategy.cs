@@ -1,22 +1,21 @@
-﻿using System;
+﻿using CookNook.Model.Interfaces;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CookNook.Model.Interfaces;
 
 namespace CookNook.Model
 {
-    public class RecipeAutocompleteStrategy : IAutocompleteStrategy<Recipe>
+    public class IngredientAutocompleteStrategy : IAutocompleteStrategy<Ingredient>
     {
-        // remember, these are both *references* and not actually taking up more space in memory
-        private readonly IRecipeLogic recipeLogic;
-        private IEnumerable<Recipe> cachedRecipes;
+        private readonly IIngredientLogic ingredientLogic;
+        private IEnumerable<Ingredient> cachedIngredients;
 
-        public RecipeAutocompleteStrategy(IRecipeLogic recipeLogic, IEnumerable<Recipe> recipes)
+        public IngredientAutocompleteStrategy(IIngredientLogic ingredientLogic, IEnumerable<Ingredient> ingredients)
         {
-            this.recipeLogic = recipeLogic;
-            this.cachedRecipes = recipes;
+            this.ingredientLogic = ingredientLogic;
+            this.cachedIngredients = ingredients;
         }
 
         /// <summary>
@@ -45,8 +44,6 @@ namespace CookNook.Model
                     return await GetSuggestionsByString(input);
             }
         }
-
-
         /// <summary>
         /// When the input is small enough, we can just do a surface-level search: this function
         /// performs a minimally intensive search that's sufficient to return an ideal list
@@ -61,9 +58,9 @@ namespace CookNook.Model
 
             // TODO: evaluate efficiency
             // perform the search against the collection
-            return await Task.FromResult(cachedRecipes
-                                            .Where(r => r.Name.StartsWith(input))
-                                            .Select(recipe => recipe.Name));    
+            return await Task.FromResult(cachedIngredients
+                                              .Where(i => i.Name.StartsWith(input))
+                                              .Select(ingredient => ingredient.Name));
         }
 
         /// <summary>
@@ -74,7 +71,7 @@ namespace CookNook.Model
         private async Task<IEnumerable<string>> GetSuggestionsByModestString(string input)
         {
             var results = new List<string>();
-                
+
             // until we come up with a better algorithm, just call the standard search strategy
             return await GetSuggestionsByString(input);
         }
@@ -90,9 +87,9 @@ namespace CookNook.Model
             var results = new List<string>();
 
             // TODO: evaluate efficiency
-            return await Task.FromResult(cachedRecipes
-                .Where(r => r.Name.Contains(input))
-                .Select(recipe => recipe.Name));
+            return await Task.FromResult(cachedIngredients
+                .Where(i => i.Name.Contains(input))
+                .Select(ingredient => ingredient.Name));
         }
     }
 }
