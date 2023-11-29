@@ -56,6 +56,8 @@ namespace CookNook
             this.recipeLogic = recipeLogic;
             this.ingredientLogic = ingredientLogic;
             user = UserViewModel.Instance.AppUser;
+            var defaultImage = "defaultrecipe.jpg";
+            SelectedImage.Source = ImageSource.FromFile(defaultImage);
         }
 
         public AddRecipePage()
@@ -64,6 +66,8 @@ namespace CookNook
             this.recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
             this.ingredientLogic = new IngredientLogic(new IngredientDatabase());
             user = UserViewModel.Instance.AppUser;
+            var defaultImage = "defaultrecipe.jpg";
+            SelectedImage.Source = ImageSource.FromFile(defaultImage);
         }
 
 

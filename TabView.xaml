@@ -16,7 +16,7 @@
                 <local:Feed BindingContext="{x:Static local:Model.UserViewModel.Instance}"/>
             </x:Arguments>
             <NavigationPage.IconImageSource>
-                <FileImageSource File="plus.png" />
+                <FileImageSource File="feed.png" />
             </NavigationPage.IconImageSource>
         </NavigationPage>
 
@@ -34,7 +34,7 @@
                 <local:Cookbook />
             </x:Arguments>
             <NavigationPage.IconImageSource>
-                <FileImageSource File="plus.png" />
+                <FileImageSource File="cookbook.png" />
             </NavigationPage.IconImageSource>
         </NavigationPage>
     </TabbedPage.Children>
