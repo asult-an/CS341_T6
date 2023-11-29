@@ -22,7 +22,17 @@ namespace CookNook.Model.Interfaces
         /// <param name="password">the secret password the user is going to use to log in</param>
         /// <param name="email">email to check for upon registration</param>
         /// <returns></returns>
-        public UserAdditionError RegisterNewUser(string username, string password, string email);
+        UserAdditionError RegisterNewUser(string username, string password, string email);
+
+        /// <summary>
+        /// Wrapping method that should surround RegisterNewUser to check for errors
+        /// </summary>
+        /// <param name="username">username entered</param>
+        /// <param name="email">email entry input</param>
+        /// <param name="password">input from password entry</param>
+        /// <param name="confirmPassword">input entered into confirm password box</param>
+        /// <returns></returns>
+        UserAdditionError TryRegisterNewUser(string username, string email, string password, string confirmPassword);
 
         /// <summary>
         /// Updates a user's information in the database
@@ -36,6 +46,9 @@ namespace CookNook.Model.Interfaces
         public User GetUserByUsername(string username);
 
         public List<User> GetUsersById(List<long> userIds);
+
+        // Note: this will be moved to a FollowerService next sprint
+        // public GetFollowedUsers(long userId);
         
         // public UserEditError UpdateUserInfo(long id, string username, string password, string imgPath);
 
@@ -52,6 +65,8 @@ namespace CookNook.Model.Interfaces
 
         public UserSelectionError UnfollowRecipe(long userId, long recipeId);
 
+        public bool IsFollowingUser(long followerId, long followedId);
 
+        public bool IsFollowingRecipe(long userId, long recipeId);
     }
 }

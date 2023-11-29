@@ -1,15 +1,17 @@
 ﻿using CookNook.Model;
 using CookNook.Services;
 using System.Diagnostics;
+using CookNook.Model.Interfaces;
 
 namespace CookNook;
 
 public partial class LoginPage : ContentPage
 {
-
-    private UserLogic userLogic = new UserLogic(new UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
-    public LoginPage()
+	//private UserLogic userLogic = new UserLogic(new UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
+	private readonly IUserLogic userLogic;
+    public LoginPage(IUserLogic userLogic)
 	{ 
+		this.userLogic = userLogic;
 		InitializeComponent();
 	}
 
@@ -21,7 +23,6 @@ public partial class LoginPage : ContentPage
 		{
             Debug.WriteLine(Username.Text, Password.Text);
             result = userLogic.AuthenticateUser(Username.Text, Password.Text);
-
         }
         catch (Exception ex)
 		{
@@ -45,7 +46,7 @@ public partial class LoginPage : ContentPage
 			{
 
 				DisplayAlert("Error", "No user found", "Close");
-				Debug.WriteLine("DB Retreival Failed");
+				Debug.WriteLine("DB Retrieval Failed");
 			}
 			UserViewModel.Instance.AppUser = user;
 			
