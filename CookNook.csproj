@@ -75,6 +75,9 @@
 	  <Compile Update="Cookbook.xaml.cs">
 	    <DependentUpon>Cookbook.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="AutocompletePicker.xaml.cs">
+	    <DependentUpon>AutocompletePicker.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="SearchPage.xaml.cs">
 	    <DependentUpon>SearchPage.xaml</DependentUpon>
 	  </Compile>
@@ -97,6 +100,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Cookbook.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="AutocompletePicker.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SearchPage.xaml">

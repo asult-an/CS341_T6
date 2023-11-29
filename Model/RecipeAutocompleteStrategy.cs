@@ -25,7 +25,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="input">input string to query the recipes for</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetSuggestionsAsync(string input)
+        public async Task<IEnumerable<Recipe>> GetSuggestionsAsync(string input)
         {
             // store latest data without any database calls here
 
@@ -54,16 +54,16 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="input">search query</param>
         /// <returns>Task-wrapped IEnumerable of the suggestions</returns>
-        private async Task<IEnumerable<string>> GetSuggestionsByFirstThreeLetters(string input)
+        private async Task<IEnumerable<Recipe>> GetSuggestionsByFirstThreeLetters(string input)
         {
             // TODO: We'll probably want a Tuple of the <name, Id> for the DataTemplate to use
-            var result = new List<string>();
+            var result = new List<Recipe>();
 
             // TODO: evaluate efficiency
-            // perform the search against the collection
+            // perform the search against the collection and return it once complete
+
             return await Task.FromResult(cachedRecipes
-                                            .Where(r => r.Name.StartsWith(input))
-                                            .Select(recipe => recipe.Name));    
+                                            .Where(r => r.Name.StartsWith(input)).ToList<Recipe>());
         }
 
         /// <summary>
@@ -71,9 +71,9 @@ namespace CookNook.Model
         /// algorithm to return a more accurate list of expected recipes matching the input
         /// </summary>
         /// <returns>Task-wrapped IEnumerable of the suggestions</returns>
-        private async Task<IEnumerable<string>> GetSuggestionsByModestString(string input)
+        private async Task<IEnumerable<Recipe>> GetSuggestionsByModestString(string input)
         {
-            var results = new List<string>();
+            var results = new List<Recipe>();
                 
             // until we come up with a better algorithm, just call the standard search strategy
             return await GetSuggestionsByString(input);
@@ -85,14 +85,13 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private async Task<IEnumerable<string>> GetSuggestionsByString(string input)
+        private async Task<IEnumerable<Recipe>> GetSuggestionsByString(string input)
         {
-            var results = new List<string>();
+            var results = new List<Recipe>();
 
             // TODO: evaluate efficiency
             return await Task.FromResult(cachedRecipes
-                .Where(r => r.Name.Contains(input))
-                .Select(recipe => recipe.Name));
+                .Where(r => r.Name.Contains(input)).ToList<Recipe>());
         }
     }
 }

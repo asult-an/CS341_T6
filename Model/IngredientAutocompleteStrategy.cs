@@ -1,6 +1,7 @@
 ﻿using CookNook.Model.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -11,6 +12,14 @@ namespace CookNook.Model
     {
         private readonly IIngredientLogic ingredientLogic;
         private IEnumerable<Ingredient> cachedIngredients;
+        private ObservableCollection<Ingredient> suggestedIngredients;
+
+        public ObservableCollection<Ingredient> SuggestedIngredients
+        {
+            get { return suggestedIngredients; }
+            set { SuggestedIngredients = value; }
+        }
+
 
         public IngredientAutocompleteStrategy(IIngredientLogic ingredientLogic, IEnumerable<Ingredient> ingredients)
         {
@@ -24,7 +33,7 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="input">input string to query the recipes for</param>
         /// <returns></returns>
-        public async Task<IEnumerable<string>> GetSuggestionsAsync(string input)
+        public async Task<IEnumerable<Ingredient>> GetSuggestionsAsync(string input)
         {
             // store latest data without any database calls here
 
@@ -44,6 +53,8 @@ namespace CookNook.Model
                     return await GetSuggestionsByString(input);
             }
         }
+
+
         /// <summary>
         /// When the input is small enough, we can just do a surface-level search: this function
         /// performs a minimally intensive search that's sufficient to return an ideal list
@@ -51,16 +62,16 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="input">search query</param>
         /// <returns>Task-wrapped IEnumerable of the suggestions</returns>
-        private async Task<IEnumerable<string>> GetSuggestionsByFirstThreeLetters(string input)
+        private async Task<List<Ingredient>> GetSuggestionsByFirstThreeLetters(string input)
         {
             // TODO: We'll probably want a Tuple of the <name, Id> for the DataTemplate to use
-            var result = new List<string>();
+            var results = new List<Ingredient>();
 
             // TODO: evaluate efficiency
+            
             // perform the search against the collection
-            return await Task.FromResult(cachedIngredients
-                                              .Where(i => i.Name.StartsWith(input))
-                                              .Select(ingredient => ingredient.Name));
+            // return a task that's getting the resulting suggestions from the cachedIngredients
+            return await Task.FromResult(cachedIngredients.Where(i => i.Name.StartsWith(input)).ToList<Ingredient>());
         }
 
         /// <summary>
@@ -68,9 +79,9 @@ namespace CookNook.Model
         /// algorithm to return a more accurate list of expected recipes matching the input
         /// </summary>
         /// <returns>Task-wrapped IEnumerable of the suggestions</returns>
-        private async Task<IEnumerable<string>> GetSuggestionsByModestString(string input)
+        private async Task<IEnumerable<Ingredient>> GetSuggestionsByModestString(string input)
         {
-            var results = new List<string>();
+            var results = new List<Ingredient>();
 
             // until we come up with a better algorithm, just call the standard search strategy
             return await GetSuggestionsByString(input);
@@ -82,14 +93,13 @@ namespace CookNook.Model
         /// </summary>
         /// <param name="input"></param>
         /// <returns></returns>
-        private async Task<IEnumerable<string>> GetSuggestionsByString(string input)
+        private async Task<IEnumerable<Ingredient>> GetSuggestionsByString(string input)
         {
-            var results = new List<string>();
+            var results = new List<Ingredient>();
 
             // TODO: evaluate efficiency
             return await Task.FromResult(cachedIngredients
-                .Where(i => i.Name.Contains(input))
-                .Select(ingredient => ingredient.Name));
+                .Where(i => i.Name.Contains(input)).ToList<Ingredient>());
         }
     }
 }

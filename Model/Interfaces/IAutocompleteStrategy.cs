@@ -26,7 +26,10 @@ public interface IAutocompleteStrategy<T>
     /// Provides recipes based on the input string, using the most suitable algorithm based on the 
     /// context of the requested operation.
     /// </summary>
+    /// <remarks>
+    /// Requires that the type T has a name-like property to search against
+    /// </remarks>
     /// <param name="input">the string to search the collection with</param>
     /// <returns></returns>
-    Task<IEnumerable<string>> GetSuggestionsAsync(string input);
+    Task<IEnumerable<T>> GetSuggestionsAsync(string input);
 }
