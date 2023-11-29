@@ -155,5 +155,27 @@ namespace CookNook.Model
 			// IngredientManager.Parse(ingredient);
 			return null;
 		}
+
+		/// <summary>
+		/// Returns a string representation of the ingredient.
+		/// If there was no unit, then the format will be "{qty} {name}"
+		/// otherwise it will be "{qty} {unit} {name}"
+		/// </summary>
+		/// <returns>string</returns>
+		public override string ToString()
+		{
+			string buffer = "";
+
+			// if unitless, "{qty} {name}"; else "{qty} {unit} {name}"
+			if (unit == null)
+			{
+                buffer = $"{quantity} {name}";
+            }
+            else
+			{
+                buffer = $"{quantity} {unit} {name}";
+            }
+			return buffer;
+		}
 	}
 }

@@ -6,20 +6,20 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using CookNook.Model.Interfaces;
+using BCrypt.Net;
 
 //namespace CookNook.Services
 namespace CookNook.Model
 {
-
-    public class UserLogic
+    public class UserLogic : IUserLogic
     {
-        Random random = new Random();
 
         // place for the injected datbase instance to load into
-        private readonly IUserDatabase _userDatabase;
+        private readonly IUserDatabase userDatabase;
 
-        // TODO: check to see if we can justify keeping this, or if _userDatabase can be utilized
-        private UserDatabase userDatabase = new UserDatabase();
+        // TODO: check to see if we can justify keeping this, or if userDatabase can be utilized
+        //private UserDatabase userDatabase = new UserDatabase();
 
         // since users can interact with recipies, inject RecipeLogic
         // may not use it now, but by doing this we can send recipe data to users
@@ -38,7 +38,7 @@ namespace CookNook.Model
         [Obsolete]
         public UserLogic(IUserDatabase userDatabase)
         {
-            this._userDatabase = userDatabase;
+            this.userDatabase = userDatabase;
         }
         public UserLogic() { }
 
@@ -49,28 +49,95 @@ namespace CookNook.Model
         /// <param name="recipeLogic"></param>
         public UserLogic(IUserDatabase userDatabase, IRecipeLogic recipeLogic)
         {
-            this._userDatabase = userDatabase;
+            this.userDatabase = userDatabase;
             this.recipeLogic = recipeLogic;
         }
+
+        /// <summary>
+        /// Logs the user in by applying salt to the password, then hashing the result
+        /// and checking if that's what matches the stored hash in the database
+        /// </summary>
+        /// <param name="username">the username used to log in</param>
+        /// <param name="password">the plaintext attempt the user enters to login</param>
+        /// <returns></returns>
         public UserAuthenticationError AuthenticateUser(string username, string password)
         {
-           return userDatabase.AuthenticateUser(username, password);
+            var user = userDatabase.GetUserByUsername(username);
+            
+            if (user == null)
+                return UserAuthenticationError.UserNotFound;
+
+            // compare our hash with the stored hash
+            if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
+                return UserAuthenticationError.InvalidPassword;
+
+            return UserAuthenticationError.NoError;
+            //return userDatabase.AuthenticateUser(username, password);
         }
 
-        public UserAdditionError RegisterNewUser(string username, string email, string password, string confirmPassword)
+        public UserSelectionError FollowUser(long followerId, long followedId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public UserSelectionError UnfollowUser(long followerId, long followedId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Wrapper function that delegates input checks away from the database so 
+        /// that the two only talk to one another when the input is valid
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <param name="confirmPassword"></param>
+        /// <returns></returns>
+        public UserAdditionError TryRegisterNewUser(string username, string email, string password, string confirmPassword)
         {
             //TODO: add email confirmation
-            if(!validateSignupInput(username, email, password, confirmPassword))
+            if(!ValidateSignupInput(username, email, password, confirmPassword))
             {
                 return UserAdditionError.InvalidPassword;
             }
+            var hashPass = BCrypt.Net.BCrypt.HashPassword(password);
+
+            // Note:  we want the database to come up with Id
+            User newUser = new User
+            {
+                Username = username,
+                Email = email,
+                Password = hashPass
+            };
+
+            return RegisterNewUser(username, email, hashPass);
+        }
+
+        /// <summary>
+        /// Registers a new user with the (already) valid input
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="email"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
+        public UserAdditionError RegisterNewUser(string username, string email, string password)
+        {
             // Note:  we want the database to come up with Id, since we're wasting computation if the 
             // insert is going to fail
-            User newUser = new User((Int64)random.NextInt64(5000), username, email, password);
+            User newUser = new User
+            {
+                Username = username,
+                Email = email,
+                Password = password
+            };
+
             try
             {
                 UserAdditionError result = userDatabase.InsertUser(newUser);
-                if (result != UserAdditionError.NoError) 
+                if (result != UserAdditionError.NoError)
                 {
                     return result;
                 }
@@ -82,7 +149,10 @@ namespace CookNook.Model
             }
             return UserAdditionError.NoError;
         }
-        private bool validateSignupInput(string username, string email, string password, string confirmPassword)
+
+
+        //
+        private bool ValidateSignupInput(string username, string email, string password, string confirmPassword)
         {
 
             if(password != confirmPassword)
@@ -112,17 +182,37 @@ namespace CookNook.Model
 
         }
 
-        public List<User> GetUsersByID(List<Int64> userIDs)
+        public UserSelectionError UnfollowRecipe(long userId, long recipeId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public bool IsFollowingUser(long followerId, long followedId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public bool IsFollowingRecipe(long userId, long recipeId)
+        {
+            // TODO: IMPLEMENT THIS
+            throw new NotImplementedException();
+        }
+
+        public List<User> GetUsersById(List<long> userIDs)
         {
             return userDatabase.GetUsersById(userIDs);
         }
 
         public User GetUserByEmail(string email)
         {
+            // TODO: verify that the email matches the format of an email address
+            
             return userDatabase.GetUserByEmail(email);
         }
 
-        public User GetUserById(Int64 id)
+        public User GetUserById(long id)
         {
 
             return userDatabase.GetUserById(id);
@@ -130,6 +220,7 @@ namespace CookNook.Model
 
         public User GetUserByUsername(string username)
         {
+            
             return userDatabase.GetUserByUsername(username);
         }
 

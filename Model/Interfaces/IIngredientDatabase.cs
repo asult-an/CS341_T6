@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -43,7 +44,7 @@ namespace CookNook.Model.Interfaces
         /// </summary>
         /// <param name="recipeId">recipe id</param>
         /// <returns>List of Ingredient object if found, null otherwise</returns>
-        List<Ingredient> GetIngredientsFromRecipe(Int64 recipeId);
+        ObservableCollection<Ingredient> GetIngredientsFromRecipe(Int64 recipeId);
         
         
         /// <summary>

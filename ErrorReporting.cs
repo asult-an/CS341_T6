@@ -78,7 +78,8 @@ public enum UserAuthenticationError
 {
     InvalidUsername,
     InvalidPassword,
-    NoError
+    NoError,
+    UserNotFound
 }
 
 public enum TagAdditionError

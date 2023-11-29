@@ -30,20 +30,22 @@ namespace CookNook
         // TODO: PreviousPageData uses these three.  Are we grabbing these?
         public string RecipeName { get { return recipeName; } set { recipeName = value; } }
         public string RecipeCooktime { get { return recipeCooktime; } set { recipeCooktime = value; } }
-        
+
         /// <summary>
         /// The instructions for the recipe, bound to the Description inpue in the XAML
         /// </summary>
-        public string RecipeInstructions { 
-            get { return recipeInstructions; } 
-            set { 
+        public string RecipeInstructions
+        {
+            get { return recipeInstructions; }
+            set
+            {
                 // if not null, set the value
-                if(recipeInstructions != value)
+                if (recipeInstructions != value)
                 {
-                    recipeInstructions = value; 
+                    recipeInstructions = value;
                     OnPropertyChanged(nameof(RecipeInstructions));
                 }
-            } 
+            }
         }
 
 
@@ -59,7 +61,7 @@ namespace CookNook
         public AddRecipePage()
         {
             InitializeComponent();
-            this.recipeLogic = new RecipeLogic(new RecipeDatabase());
+            this.recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
             this.ingredientLogic = new IngredientLogic(new IngredientDatabase());
             user = UserViewModel.Instance.AppUser;
         }
@@ -96,7 +98,7 @@ namespace CookNook
                 Debug.Write("AddRecipePage: " + ex.Message);
                 DisplayAlert("Error", "Recipe Add Failed", "Okay");
             }
-            
+
         }
 
         private async void PickImageClicked(object sender, EventArgs e)

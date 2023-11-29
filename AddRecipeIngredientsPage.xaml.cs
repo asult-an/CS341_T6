@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.ComponentModel;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
@@ -11,21 +12,43 @@ using CookNook.Services;
 
 namespace CookNook;
 
-public partial class AddRecipeIngredientsPage : ContentPage
+public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChanged
 {
 
+    // public Recipe currentRecipe;
     private Recipe currentRecipe;
+
     private IRecipeLogic recipeLogic;
     private IIngredientLogic ingredientLogic;
+    private IEnumerable<Ingredient> ingredientList;
+    // clone currentRecipe's ingredients and wrap it in an ObservableCollection so the UI can subscribe to changes
+
 
     private User user;
     private Random random = new Random();
 
+
+    /// <summary>
+    /// public-facing accessor of the currentRecipe, so that the UI can bind to it
+    /// </summary>
+    public Recipe CurrentRecipe
+    {
+        get { return currentRecipe; }
+        set { currentRecipe = value; }
+    }
+
     /// <summary>
     /// The list of ingredients the user will chooser from, exposed as a property
     /// </summary>
-    public static IEnumerable<Ingredient> IngredientList { get; set; }  //  => IngredientList;
-
+    public IEnumerable<Ingredient> IngredientList
+    {
+        get => ingredientList;
+        set
+        {
+            ingredientList = value;
+            OnPropertyChanged(nameof(IngredientList));
+        }
+    }
 
     public string Ingredients { get; set; }
 
@@ -37,20 +60,22 @@ public partial class AddRecipeIngredientsPage : ContentPage
     public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic, Recipe recipe, User inUser)
     {
         InitializeComponent();
+
         if (recipe == null)
         {
             Debug.Write("AddRecipeIngredientsPage: recipe is null!");
-            currentRecipe = new Recipe();
+            CurrentRecipe = new Recipe();
         }
         else
         {
-            currentRecipe = recipe;
+            CurrentRecipe = recipe;
         }
-        currentRecipe.Ingredients = new List<Ingredient>().ToArray();
+        CurrentRecipe.Ingredients = new ObservableCollection<Ingredient>();
         user = inUser;
-        IngredientList = ingredientLogic.GetAllIngredients();
         this.ingredientLogic = ingredientLogic;
         this.recipeLogic = recipeLogic;
+
+        IngredientList = ingredientLogic.GetAllIngredients();
         this.BindingContext = this;
         //currentRecipe.IngredientsQty = new List<string>();
     }
@@ -68,30 +93,43 @@ public partial class AddRecipeIngredientsPage : ContentPage
         // use the recipeLogic scoped from Dependency Injection
         this.recipeLogic = recipeLogic;
         this.ingredientLogic = ingredientLogic;
+
         IngredientList = ingredientLogic.GetAllIngredients();
+        this.BindingContext = this;
     }
 
-    // W
+    
     private void AddIngredientClicked(object sender, EventArgs e)
     {
         try
         {
-            string ingredientName = IngredientEntry.Text;
-            int quantity = int.Parse(QuantityEntry.Text);
-            string unit = UnitPicker.SelectedItem.ToString();
-            string displayQuantity = $"{quantity} {unit}";
-            List<Ingredient> ingredients = new List<Ingredient>();
+            Ingredient selectedIngredient = IngredientPicker.SelectedItem as Ingredient;
+            
+            string ingredientName = selectedIngredient.Name;
+            long ingredientId = selectedIngredient.IngredientId;
 
+            int quantity = int.Parse(QuantityEntry.Text);
+
+            // if null, no unit, otherwise grab the selected unit
+            string unit = (UnitPicker.SelectedItem == null) ? "" : selectedIngredient.Unit;
+
+            // concatenation
+            string displayQuantity = $"{quantity} {unit}";
+            
             // if the data was able to be parse, structure into a new Ingredient obj according to which values are null
-            if(string.IsNullOrEmpty(ingredientName) || string.IsNullOrEmpty(unit))
+            if(string.IsNullOrEmpty(unit))
             {
-                ingredients = currentRecipe.Ingredients.Append(new Ingredient(ingredientName, QuantityEntry.Text)).ToList();
+                // grab the ingredients ALREADY on the currentRecipe, after invoking an Add on the latest ingredient
+                CurrentRecipe.Ingredients.Add(new Ingredient(ingredientId, ingredientName, quantity.ToString()));
+
+                //ingredients = currentRecipe.Ingredients.Append(new Ingredient(ingredientName, QuantityEntry.Text)).ToList();
             }
-            else
+            else // if we have a valid unit:
             {
-                ingredients = currentRecipe.Ingredients.Append(new Ingredient(ingredientName, QuantityEntry.Text, unit)).ToList();
+                // grab the ingredients ALREADY on the currentRecipe, after invoking an Add on the latest ingredient
+                CurrentRecipe.Ingredients.Add(new Ingredient(ingredientId, ingredientName, quantity.ToString(), unit));
+                //ingredients = currentRecipe.Ingredients.Append(new Ingredient(ingredientName, QuantityEntry.Text, unit)).ToList();
             }
-            currentRecipe.Ingredients = ingredients.ToArray();
 
         }
         catch (Exception ex)
@@ -102,7 +140,8 @@ public partial class AddRecipeIngredientsPage : ContentPage
         finally
         {
             //clear entries and picker
-            IngredientEntry.Text = string.Empty;
+            // IngredientEntry.Text = string.Empty;
+            IngredientPicker.SelectedIndex = -1;
             QuantityEntry.Text = string.Empty;
             UnitPicker.SelectedIndex = -1;
         }
@@ -114,40 +153,40 @@ public partial class AddRecipeIngredientsPage : ContentPage
         //Ingredients = (this.FindByName("Ingredients") as Entry).Text;
 
         //Ingredient testIngredients = new Ingredient("test", 1, "test");
-        Ingredient[] testIngredients = new Ingredient[]
-        {
-                // one 'unitless' ingredient
-                new Ingredient("Pie Crust", "1"),
-                //TODO new ingredients fail
-                // and a regular one
+        //Ingredient[] testIngredients = new Ingredient[]
+        //{
+        //        // one 'unitless' ingredient
+        //        new Ingredient("Pie Crust", "1"),
+        //        //TODO new ingredients fail
+        //        // and a regular one
 
-                //new Ingredient("Artichoke Hearts", "2", "oz")
-                new Ingredient("Apple (Red Delicious)", "2")
-        };
+        //        //new Ingredient("Artichoke Hearts", "2", "oz")
+        //        new Ingredient("Apple (Red Delicious)", "2")
+        //};
 
         Tag[] tags = { new Tag { DisplayName = "test" } };
 
         var newRecipe = new Recipe(
-            currentRecipe.Name,                   // name
-            currentRecipe.Description,            // description
-            currentRecipe.CookTime,               // cooktime 
-            testIngredients,                      //recipeLogic.GetIngredientsByRecipe(1),
+            CurrentRecipe.Name,                   // name
+            CurrentRecipe.Description,            // description
+            CurrentRecipe.CookTime,               // cooktime 
+            CurrentRecipe.Ingredients,                      //recipeLogic.GetIngredientsByRecipe(1),
             // CourseType.Parse("Dinner"),
             CourseType.Parse(CourseEntry.Text),
-            currentRecipe.AuthorID,
-            4,                             // rating
-            1,                            // servings
-            tags,                                 // recipeLogic.GetTagsForRecipe
+            CurrentRecipe.AuthorID,
+            4,                             // TODO: rating
+            1,                            // TODO: servings
+            tags,                                 // TODO: recipeLogic.GetTagsForRecipe
             new long[] { }             // followerIds
             //recipeLogic.GetFollowerIds()
 
         ); 
 
         // TODO: map ingredients and their quantities...?
-        if (recipeLogic == null)
-        {
-            recipeLogic = new RecipeLogic(new RecipeDatabase());
-        }
+
+        // "compound assignment" operator: only triggers if left side of operator is null, assigns right side's value
+        //recipeLogic ??= new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        recipeLogic ??= MauiProgram.ServiceProvider.GetService<RecipeLogic>();
 
         // Add recipe to the database using RecipeLogic
         /**
@@ -201,10 +240,10 @@ public partial class AddRecipeIngredientsPage : ContentPage
 
         var newRecipe = new Recipe(
             (int)random.NextInt64(5000),
-            currentRecipe.Name,
-            currentRecipe.Description,
-            currentRecipe.CookTime,
-            new Ingredient[] { },        //currentRecipe.Ingredients,
+            CurrentRecipe.Name,
+            CurrentRecipe.Description,
+            CurrentRecipe.CookTime,
+            new ObservableCollection<Ingredient> { },        //currentRecipe.Ingredients,
             CourseType.Parse(CourseEntry.Text),
             1,
             0,
@@ -233,6 +272,22 @@ public partial class AddRecipeIngredientsPage : ContentPage
            await DisplayAlert("Error", "Failed to add recipe", "OK");
        }
        */
+
+    }
+
+    /// <summary>
+    /// Broadcasts an event whenever the IngredientList property is changed
+    /// </summary>
+    public event PropertyChangedEventHandler PropertyChanged;
+
+    /// <summary>
+    /// Invokes the PropertyChanged event
+    /// </summary>
+    /// <param name="propertyName"></param>
+    protected override void OnPropertyChanged(string propertyName)
+    {
+        PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        // update the Ingredient box on the page
 
     }
 }

@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CookNook.Model;
 using CookNook.Model.Interfaces;
 using CookNook.Services;
+using System.Collections.ObjectModel;
 
 namespace CookNook.Services
 {
@@ -23,11 +24,11 @@ namespace CookNook.Services
             conn.Open();
 
             var cmd = new NpgsqlCommand("SELECT ingredient_id, name FROM ingredients;", conn);
-                
-                //"SELECT public.tags.* FROM public.recipe_tags, public.tags WHERE tags.tag_id = recipe_tags.tag_id", conn);
 
-                //@"SELECT recipe_ingredients.ingredient_id, ingredients.name, recipe_ingredients.quantity, recipe_ingredients
-                //FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes", conn);
+            //"SELECT public.tags.* FROM public.recipe_tags, public.tags WHERE tags.tag_id = recipe_tags.tag_id", conn);
+
+            //@"SELECT recipe_ingredients.ingredient_id, ingredients.name, recipe_ingredients.quantity, recipe_ingredients
+            //FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes", conn);
 
             using NpgsqlDataReader reader = cmd.ExecuteReader();
             while (reader.Read())
@@ -80,7 +81,7 @@ namespace CookNook.Services
             Int64 ingredientId = reader.GetInt64(0);
             string ingredientName = reader.GetString(1);
             queriedIngredient = new Ingredient(ingredientId, ingredientName, null);
-            
+
             reader.Close();
             return queriedIngredient;
         }
@@ -111,7 +112,7 @@ namespace CookNook.Services
                 string qty = reader.GetString(2);
                 //string unit = reader.GetString(3);
                 Ingredient ingredient;
-                
+
                 // if the cell was NULL in the database:
                 if (string.IsNullOrEmpty(qty))
                 {
@@ -146,9 +147,9 @@ namespace CookNook.Services
         /// </summary>
         /// <param name="recipeID">ID of the recipe to query</param>
         /// <returns>a list of Ingredients found in the recipe</returns>
-        public List<Ingredient> GetIngredientsFromRecipe(Int64 recipeId)
+        public ObservableCollection<Ingredient> GetIngredientsFromRecipe(Int64 recipeId)
         {
-            List<Ingredient> ingredients = new List<Ingredient>();
+            ObservableCollection<Ingredient> ingredients = new ObservableCollection<Ingredient>();
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
 
@@ -290,7 +291,7 @@ namespace CookNook.Services
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
             var cmd = new NpgsqlCommand(@"INSERT INTO ingredients (name) VALUES (@Name)", conn);
-            
+
             // attempt to insert into the database, throwing an error on failed insertions
             try
             {

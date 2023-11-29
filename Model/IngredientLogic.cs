@@ -189,7 +189,9 @@ public class IngredientLogic : IIngredientLogic
             Debug.Write($"Invalid recipe_id {recipeId} used on DELETE statement!");
             return null;
         }
-        return ingredientDatabase.GetIngredientsFromRecipe(recipeId);
+        // we don't need an observable collection if it's not being used on the UI
+        // TODO: ask if this is unecessary
+        return new List<Ingredient>(ingredientDatabase.GetIngredientsFromRecipe(recipeId));
     }
 
     /// <summary>
