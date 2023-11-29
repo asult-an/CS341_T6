@@ -30,4 +30,13 @@ public partial class Profile : ContentPage
     {
         await Navigation.PushAsync(new SearchPage());
     }
+    public async void OnItemTapped(object sender, EventArgs e)
+    {
+        if (sender is Frame frame && frame.BindingContext is Recipe recipe)
+        {
+            // Navigate to the RecipePopUpPage with the selected recipe
+            var popup = new RecipePopUpView(recipe, user);
+            await Navigation.PushModalAsync(popup);
+        }
+    }
 }

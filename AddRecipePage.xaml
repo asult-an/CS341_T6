@@ -10,7 +10,7 @@
 
         <!-- Image Frame -->
         <Frame HasShadow="True" BorderColor="Black" Padding="10, 50, 10, 50" BackgroundColor="#202c39">
-            <Image x:Name="SelectedImage" Aspect="AspectFit" HeightRequest="200" />
+            <Image x:Name="SelectedImage" Aspect="AspectFit" HeightRequest="100" />
         </Frame>
 
         <Button Text="Pick an Image" Clicked="PickImageClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7" Margin="10"/>
