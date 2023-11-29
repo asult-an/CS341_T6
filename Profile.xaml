@@ -33,7 +33,7 @@
 
                 <Label Grid.Row="1" Text="{Binding AppUser.Username}" HorizontalTextAlignment="Center" FontSize="Title" TextColor="#ffe6a7"></Label>
 
-                <CollectionView x:Name="recipesCollectionView" Margin="10" Grid.Row="3">
+                <CollectionView x:Name="userRecipesCollectionView" Margin="10" Grid.Row="3">
                     <CollectionView.ItemTemplate>
                         <DataTemplate>
                             <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
