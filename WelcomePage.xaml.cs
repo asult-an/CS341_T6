@@ -24,16 +24,12 @@ public partial class WelcomePage : ContentPage
     public async void SignUpClicked(object sender, EventArgs e)
     {
         // since WelcomePage doesn't use UserLogic, but SignUpPage needs it...
-        IUserLogic userLogic;
-
-        // pull it from the Service
-        userLogic = MauiProgram.ServiceProvider.GetService<IUserLogic>();
+        IUserLogic userLogic = MauiProgram.ServiceProvider.GetService<IUserLogic>();
         await Navigation.PushAsync(new SignUpPage(userLogic));
     }
 
     public async void SkipClicked(object sender, EventArgs e)
     {
-        
         try
         {
             await Navigation.PushAsync(new Feed());

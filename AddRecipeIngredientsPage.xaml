@@ -4,26 +4,6 @@
              x:Class="CookNook.AddRecipeIngredientsPage"
 
              Title="Add Recipe Ingredients">
-    <!--to fix
-    <StackLayout Margin="10">
-        <CollectionView x:Name="IngredientsList">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <StackLayout Orientation="Horizontal">
-                        <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
-                        <Label Text="{Binding Quantity}" HorizontalOptions="Center"/>
-                        <Label Text="{Binding Unit}" HorizontalOptions="Center"/>
-                        <Button Text="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding .}"/>
-                    </StackLayout>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
-    </StackLayout>
-   Title="Add Recipe"
-   NavigationPage.HasBackButton="False">
--->
-
-
 
     <Grid RowDefinitions="auto, *, auto, auto, *, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
 
@@ -33,35 +13,18 @@
             <ScrollView>
                 <StackLayout Orientation="Vertical">
                     <!--TODO: use something that requires a DataTemplate since we have a Model defined it can build off of -->
-                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 0, 0, 5">
-                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 1</Label>
-                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-                    </Grid>
-
-                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
-                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 2</Label>
-                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-                    </Grid>
-
-                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
-                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 3</Label>
-                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-                    </Grid>
-
-                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
-                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 4</Label>
-                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-                    </Grid>
-
-                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
-                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 5</Label>
-                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-                    </Grid>
-
-                    <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 5, 0, 5">
-                        <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Ingredient 6</Label>
-                        <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-                    </Grid>
+                    <CollectionView x:Name="IngredientsView" ItemsSource="{Binding CurrentRecipe.Ingredients}">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <StackLayout Orientation="Horizontal">
+                                    <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
+                                    <Label Text="{Binding Quantity}" HorizontalOptions="Center"/>
+                                    <Label Text="{Binding Unit}" HorizontalOptions="Center"/>
+                                    <Button Text="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding .}"/>
+                                </StackLayout>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </StackLayout>
             </ScrollView>
         </Frame>
@@ -70,7 +33,13 @@
 
             <StackLayout Grid.Column="0">
 
-                <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>
+                <!--<Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>-->
+                <!--Picker for the ingredients-->
+                <Picker x:Name="IngredientPicker" 
+                        Title="Add Ingredients..." 
+                        ItemsSource="{Binding IngredientList}"
+                        ItemDisplayBinding="{Binding Name}">
+                </Picker>
                 <Button Grid.RowSpan="2" Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
 
             </StackLayout>
@@ -97,21 +66,13 @@
                 </Picker>
 
                 <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
-
             </StackLayout>
-
-
         </Grid>
 
         <Grid Grid.Row="3">
-
             <!--<StackLayout>
-
                 <Editor Placeholder="Special Instructions" AutoSize="TextChanges" TextColor="#ffe6a7"></Editor>
-
-
             </StackLayout>-->
-
         </Grid>
 
         <!--<Grid Grid.Row="4"
@@ -122,22 +83,13 @@
         <Grid ColumnDefinitions="auto, *" Grid.Row="5">
 
             <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
-
                 <Button Text="Back" Clicked="BackClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-
             </StackLayout>
 
             <StackLayout Grid.Column="1" Padding="10, 0, 0, 0">
-
                 <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-
             </StackLayout>
-
         </Grid>
-
-
     </Grid>
-
-
 
 </ContentPage>
