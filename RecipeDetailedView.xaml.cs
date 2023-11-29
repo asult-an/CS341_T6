@@ -15,7 +15,7 @@ public partial class RecipeDetailedView : ContentPage
 		recipe = inRecipe;
         BindingContext = recipe;
         Debug.WriteLine(recipe.AuthorID);
-        userLogic = new UserLogic(new UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
+        userLogic = new UserLogic(new Model.Services.UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
         User author = userLogic.GetUserById(recipe.AuthorID);
         
         AuthorName.BindingContext = author;
