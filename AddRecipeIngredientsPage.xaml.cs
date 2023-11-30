@@ -27,6 +27,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     private readonly IUserLogic userLogic;
     private readonly IIngredientLogic ingredientLogic;
     private IEnumerable<Ingredient> ingredientList;
+    private Ingredient selectedIngredient;
     private User user;
 
     /// <summary>
@@ -153,6 +154,31 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         //}
         CommunityToolkit.Maui.Core.PopupExtensions.ClosePopup(popup);
     }
+
+
+    /// <summary>
+    /// Handles the IngredientSelectedEvent, by taking the incoming ingredient
+    /// and displaying it on the page as the selected ingredient
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnIngredientSelected(object sender, IngredientSelectedEventArgs e)
+    {
+        // store the chosen ingredient so it can be added after the user is happy with other fields
+        this.selectedIngredient = e.SelectedIngredient;
+
+        // set the currently displayed item of the recipe ingredients page
+        if (selectedIngredient != null)
+            btnIngredientPicker.Text = selectedIngredient.Name;
+        else 
+            btnIngredientPicker.Text = "Select Ingredient";
+
+        // send the popup back here to get closed and deconstructed 
+        if (sender is Popup popup)
+        {
+            ClosePickerPopup(popup);
+        }
+    }
      // ==============================  [ END POPUP FUNCTIONS ] ============================== */
 
 
@@ -163,7 +189,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             // check our SelectedIngredient property...
 
             // Ingredient selectedIngredient = IngredientPicker.SelectedItem as Ingredient;
-            Ingredient selectedIngredient = IngredientPicker.SelectedIngredient;
+            // Ingredient selectedIngredient = IngredientPicker.SelectedIngredient;
             
             string ingredientName = selectedIngredient.Name;
             long ingredientId = selectedIngredient.IngredientId;
@@ -200,7 +226,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         finally
         {
             //clear entries and picker
-            IngredientPicker.ClearSelectedIngredient();
+            // IngredientPicker.ClearSelectedIngredient();
             // IngredientEntry.Text = string.Empty;
 
             QuantityEntry.Text = string.Empty;
