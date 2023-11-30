@@ -28,8 +28,10 @@ public partial class IngredientPickerPopup : Popup
         InitializeComponent();
         // The AutocompletePicker could have its own XAML layout loaded here
         AutocompletePickerControl = this.FindByName<AutocompletePicker>("IngredientPicker");
-        AutocompletePickerControl.AutocompleteStrategy = new IngredientAutocompleteStrategy(choices);
 
+        // since ingredients come from the strategy, we initalize the strategy first
+        AutocompletePickerControl.AutocompleteStrategy = new IngredientAutocompleteStrategy(choices);
+        AutocompletePickerControl.ItemsSource = choices;
         // AutocompletePickerControl.ItemsSource = choices;
 
         // TODO: means of exiting: close button, gesture
