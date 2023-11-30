@@ -25,7 +25,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
 
     private User user;
-    private Random random = new Random();
+
 
 
     /// <summary>
@@ -239,11 +239,10 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         await Navigation.PopToRootAsync();
 
         var newRecipe = new Recipe(
-            (int)random.NextInt64(5000),
-            CurrentRecipe.Name,
-            CurrentRecipe.Description,
-            CurrentRecipe.CookTime,
-            new ObservableCollection<Ingredient> { },        //currentRecipe.Ingredients,
+            currentRecipe.Name,
+            currentRecipe.Description,
+            currentRecipe.CookTime,
+            new Ingredient[] { },        //currentRecipe.Ingredients,
             CourseType.Parse(CourseEntry.Text),
             1,
             0,

@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CookNook.AutocompletePicker">
+    <VerticalStackLayout>
+        <Entry>
+            
+        </Entry>
+
+        <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"
+               TextChanged="IngredientEntry_TextChanged"></Entry>
+        <!--Picker for the ingredients-->
+        <Picker x:Name="IngredientPicker" 
+                Title="Add Ingredients..." 
+                ItemsSource="{Binding IngredientList}"
+                ItemDisplayBinding="{Binding Name}">
+        </Picker>
+    </VerticalStackLayout>
+</ContentView>
