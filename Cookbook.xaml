@@ -23,7 +23,6 @@
                             <RowDefinition Height="Auto" /> 
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="200" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!-- Recipe Name -->
@@ -35,9 +34,6 @@
                         <!-- Recipe Image -->
 
                         <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
-
-                        <!-- Cook Time -->
-                        <Label Text="{Binding CookTime}" Grid.Row="3"/>
                     </Grid>
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />

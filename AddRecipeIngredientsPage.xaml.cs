@@ -216,7 +216,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         switch (result)
         {
             case RecipeAdditionError.NoError:
-                await Navigation.PushAsync(new Cookbook());
+                await Navigation.PushAsync(new AddRecipePage());
                 await DisplayAlert("Success", "Recipe added successfully!", "OK");
                 break;
             case RecipeAdditionError.DBAdditionError:

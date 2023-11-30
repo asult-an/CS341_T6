@@ -2,13 +2,17 @@ using CookNook.Model;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
 using CookNook.Services;
+using System.Collections.Specialized;
 
 namespace CookNook;
 
-public partial class Cookbook : ContentPage
+public partial class Cookbook : ContentPage, INotifyCollectionChanged
 {
     private User user;
     private IRecipeLogic recipeLogic;
+
+    public event NotifyCollectionChangedEventHandler CollectionChanged;
+
     public User AppUser { get { return user; } set { user = value; } }
     public string PageTitle { get { return user.Username + "'s Cookbook"; } }
     public Cookbook()
@@ -29,7 +33,7 @@ public partial class Cookbook : ContentPage
         LoadRecipes(user.Id);
     }
 
-    private void LoadRecipes(long userID)
+    public void LoadRecipes(long userID)
     {
         recipesCollectionView.ItemsSource = recipeLogic.CookBookRecipes(userID);
     }

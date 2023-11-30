@@ -127,15 +127,15 @@
 
                             <Label Text="Ingredients" FontSize="Large" TextColor="#ffe6a7"/>
 
-                            <Label Padding="15, 15, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Tyler" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 15, 0, 0" Text="•  Gound beef" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Spaghetti" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Onions" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Garlic" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Salt" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Pepper" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Paprika" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Cumin" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Chili Powder" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
 
                         </StackLayout>
 

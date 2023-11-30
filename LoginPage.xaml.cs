@@ -41,18 +41,24 @@ public partial class LoginPage : ContentPage
         }
 		else
 		{
-			User user = userLogic.GetUserByUsername(Username.Text);
-			if (user == null)
+			try
 			{
+                User user = userLogic.GetUserByUsername(Username.Text);
 
-				DisplayAlert("Error", "No user found", "Close");
-				Debug.WriteLine("DB Retrieval Failed");
+                UserViewModel.Instance.AppUser = user;
+
+                var nextPage = new TabView(user);
+
+                await Navigation.PushAsync(nextPage);
+            }
+			catch (Exception ex)
+			{
+                DisplayAlert("Error", "No user found", "Close");
+                Debug.WriteLine("DB Retrieval Failed");
+                Debug.WriteLine(ex.Message);
 			}
-			UserViewModel.Instance.AppUser = user;
 			
-            var nextPage = new TabView(user);
-
-            await Navigation.PushAsync(nextPage);
+			
         }
 	}
 
