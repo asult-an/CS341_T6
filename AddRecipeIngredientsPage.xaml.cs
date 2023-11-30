@@ -6,6 +6,9 @@ using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Input;
+using CommunityToolkit.Maui.Views;
+using Microsoft.Maui.Controls;
 using CookNook.Model;
 using CookNook.Model.Interfaces;
 using CookNook.Services;
@@ -14,18 +17,22 @@ namespace CookNook;
 
 public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChanged
 {
-
+    // popup needs a "home"
+    private Popup currentIngredientPickerPopup;
+    
     // public Recipe currentRecipe;
     private Recipe currentRecipe;
-
-    private IRecipeLogic recipeLogic;
-    private IIngredientLogic ingredientLogic;
+    private readonly IAutocompleteStrategy<Ingredient> ingredientStrategy;
+    private readonly IRecipeLogic recipeLogic;
+    private readonly IUserLogic userLogic;
+    private readonly IIngredientLogic ingredientLogic;
     private IEnumerable<Ingredient> ingredientList;
-    // clone currentRecipe's ingredients and wrap it in an ObservableCollection so the UI can subscribe to changes
-
-
     private User user;
 
+    /// <summary>
+    /// The command that the button binds to for opening the IngredientPicker popup
+    /// </summary>
+    public ICommand OpenPickerCommand { get; private set; }
 
 
     /// <summary>
@@ -57,13 +64,16 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
 
 
-    public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic, Recipe recipe, User inUser)
+    public AddRecipeIngredientsPage(IUserLogic userLogic, IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic, Recipe recipe, User inUser)
     {
         InitializeComponent();
+        
+        // define navigable route to the IngredientPicker popup
+        OpenPickerCommand = new Command(OpenPickerPopup);
 
         if (recipe == null)
         {
-            Debug.Write("AddRecipeIngredientsPage: recipe is null!");
+            Console.WriteLine("AddRecipeIngredientsPage: recipe is null!");
             CurrentRecipe = new Recipe();
         }
         else
@@ -74,11 +84,25 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         user = inUser;
         this.ingredientLogic = ingredientLogic;
         this.recipeLogic = recipeLogic;
+        this.userLogic = userLogic;
 
+        // set the IngredientPicker's bindables
+        
         IngredientList = ingredientLogic.GetAllIngredients();
+        // autocompletion - first we need to prime the strategy with a collection of Ingredients*
+        this.ingredientStrategy = new IngredientAutocompleteStrategy(IngredientList);
+        
+        // now we can hook it into the 
+        // IngredientPicker.AutocompleteStrategy = ingredientStrategy;
+
         this.BindingContext = this;
-        //currentRecipe.IngredientsQty = new List<string>();
     }
+
+    //protected override void OnAppearing()
+    //{
+    //    base.OnAppearing();
+    //    InitializeCommands();
+    //}
 
     /// <summary>
     /// Injects recipeLogic, then populates the list with ingredients to add to their recipe
@@ -98,12 +122,48 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         this.BindingContext = this;
     }
 
-    
+    // /** ==============================  [ START POPUP FUNCTIONS ] ============================== 
+
+    /// <summary>
+    /// Instantiates a new IngredientPickerPopup and sends the user unto its focus
+    /// </summary>
+    private async void OpenPickerPopup()
+    {
+        currentIngredientPickerPopup = new IngredientPickerPopup();
+        // var ingredientPickerPopup = new IngredientPickerPopup();
+
+        //await Application.Current.MainPage.Navigation.PushModalAsync(ingredientPickerPopup);
+
+        // show the popup
+        this.ShowPopup(currentIngredientPickerPopup);
+        // this.ShowPopup(ingredientPickerPopup);
+    }
+
+    /// <summary>
+    /// Wrapper method to close the popup when the user is done selecting an ingredient
+    /// </summary>
+    /// <param name="popup"></param>
+    private async void ClosePickerPopup(Popup popup)
+    {
+        //if (this.CurrentPopup is IngredientPickerPopup currentPopup)
+        //if (popup != null)
+        //{
+        //    // goodbye popup! (close the lil guy)
+        //    currentIngredientPickerPopup.Close();
+        //}
+        CommunityToolkit.Maui.Core.PopupExtensions.ClosePopup(popup);
+    }
+     // ==============================  [ END POPUP FUNCTIONS ] ============================== */
+
+
     private void AddIngredientClicked(object sender, EventArgs e)
     {
         try
         {
-            Ingredient selectedIngredient = IngredientPicker.SelectedItem as Ingredient;
+            // check our SelectedIngredient property...
+
+            // Ingredient selectedIngredient = IngredientPicker.SelectedItem as Ingredient;
+            Ingredient selectedIngredient = IngredientPicker.SelectedIngredient;
             
             string ingredientName = selectedIngredient.Name;
             long ingredientId = selectedIngredient.IngredientId;
@@ -140,8 +200,9 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         finally
         {
             //clear entries and picker
+            IngredientPicker.ClearSelectedIngredient();
             // IngredientEntry.Text = string.Empty;
-            IngredientPicker.SelectedIndex = -1;
+
             QuantityEntry.Text = string.Empty;
             UnitPicker.SelectedIndex = -1;
         }
@@ -185,8 +246,8 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         // TODO: map ingredients and their quantities...?
 
         // "compound assignment" operator: only triggers if left side of operator is null, assigns right side's value
-        //recipeLogic ??= new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
-        recipeLogic ??= MauiProgram.ServiceProvider.GetService<RecipeLogic>();
+        // recipeLogic ??= new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        // recipeLogic ??= MauiProgram.ServiceProvider.GetService<RecipeLogic>();
 
         // Add recipe to the database using RecipeLogic
         /**
@@ -239,12 +300,13 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         await Navigation.PopToRootAsync();
 
         var newRecipe = new Recipe(
+            0,
             currentRecipe.Name,
             currentRecipe.Description,
             currentRecipe.CookTime,
-            new Ingredient[] { },        //currentRecipe.Ingredients,
+            currentRecipe.Ingredients,
             CourseType.Parse(CourseEntry.Text),
-            1,
+            0,     //TODO: get the author-id from the user
             0,
             0,
             new Tag[] { },
@@ -288,6 +350,11 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         // update the Ingredient box on the page
 
+    }
+
+    private void btnIngredientPicker_Clicked(object sender, EventArgs e)
+    {
+        TODO_IMPLEMENT_ME();
     }
 }
 

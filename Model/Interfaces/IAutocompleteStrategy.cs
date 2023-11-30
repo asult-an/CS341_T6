@@ -6,7 +6,7 @@ namespace CookNook.Model.Interfaces;
 
 /// <summary>
 /// This is the IAutoCompleteStrategy interface.  
-/// It's an exercise in the Strategy Pattern, wherein we can define multiple algorithms to be used interchangeably.
+/// It's an exercise in the AutocompleteStrategy Pattern, wherein we can define multiple algorithms to be used interchangeably.
 /// 
 /// Since autocomplete will be handled slightly differently depending on the Collection, we'll use an interface
 /// to abstract away implementation details.  The biggest benefit of this is so that we can switch to the right 

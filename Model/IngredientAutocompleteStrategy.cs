@@ -10,7 +10,7 @@ namespace CookNook.Model
 {
     public class IngredientAutocompleteStrategy : IAutocompleteStrategy<Ingredient>
     {
-        private readonly IIngredientLogic ingredientLogic;
+        // private readonly IIngredientLogic ingredientLogic;
         private IEnumerable<Ingredient> cachedIngredients;
         private ObservableCollection<Ingredient> suggestedIngredients;
 
@@ -21,9 +21,9 @@ namespace CookNook.Model
         }
 
 
-        public IngredientAutocompleteStrategy(IIngredientLogic ingredientLogic, IEnumerable<Ingredient> ingredients)
+        public IngredientAutocompleteStrategy(IEnumerable<Ingredient> ingredients)
         {
-            this.ingredientLogic = ingredientLogic;
+            // this.ingredientLogic = ingredientLogic;
             this.cachedIngredients = ingredients;
         }
 
@@ -83,7 +83,7 @@ namespace CookNook.Model
         {
             var results = new List<Ingredient>();
 
-            // until we come up with a better algorithm, just call the standard search strategy
+            // until we come up with a better algorithm, just call the standard search autocompleteStrategy
             return await GetSuggestionsByString(input);
         }
 

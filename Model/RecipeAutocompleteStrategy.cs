@@ -75,7 +75,7 @@ namespace CookNook.Model
         {
             var results = new List<Recipe>();
                 
-            // until we come up with a better algorithm, just call the standard search strategy
+            // until we come up with a better algorithm, just call the standard search autocompleteStrategy
             return await GetSuggestionsByString(input);
         }
 
