@@ -290,6 +290,7 @@ namespace CookNook.Services
                 Debug.WriteLine("Null result: ", result);
                 return RecipeAdditionError.DBAdditionError; 
             }
+            // todo: FIX NAME BINDING
             else
             {
                 Debug.WriteLine("Result: ", result);
@@ -418,7 +419,7 @@ namespace CookNook.Services
                 recipe.Name = reader.GetString(1);
                 recipe.Description = reader.GetString(2);   
                 recipe.AuthorID = reader.GetInt64(3);
-                recipe.Ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipe.ID).ToArray();
+                recipe.Ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipe.ID);
 
                 //recipe.IngredientsQty = reader.GetString(5);
                 recipe.CookTime = reader.GetInt32(6);
@@ -529,7 +530,7 @@ namespace CookNook.Services
             recipe.Description = reader.GetString(2);
 
             recipe.AuthorID = reader.GetInt32(3);
-            recipe.Ingredients = ingredientDatabase.GetIngredientsFromRecipe(inID).ToArray();
+            recipe.Ingredients = ingredientDatabase.GetIngredientsFromRecipe(inID);
             recipe.CookTime = reader.GetInt32(6);
             recipe.Course = CourseType.Parse(reader.GetString(7));
 

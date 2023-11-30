@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using CookNook.Model;
 using CookNook.Model.Interfaces;
 using CookNook.Services;
+using System.Collections.ObjectModel;
 
 namespace CookNook.Services
 {
@@ -146,9 +147,9 @@ namespace CookNook.Services
         /// </summary>
         /// <param name="recipeID">ID of the recipe to query</param>
         /// <returns>a list of Ingredients found in the recipe</returns>
-        public List<Ingredient> GetIngredientsFromRecipe(Int64 recipeId)
+        public ObservableCollection<Ingredient> GetIngredientsFromRecipe(Int64 recipeId)
         {
-            List<Ingredient> ingredients = new List<Ingredient>();
+            ObservableCollection<Ingredient> ingredients = new ObservableCollection<Ingredient>();
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
 
