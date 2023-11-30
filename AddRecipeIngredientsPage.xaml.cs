@@ -26,7 +26,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     private readonly IRecipeLogic recipeLogic;
     private readonly IUserLogic userLogic;
     private readonly IIngredientLogic ingredientLogic;
-    private IEnumerable<Ingredient> ingredientList;
+    private IEnumerable<Ingredient> ingredientList; 
     private Ingredient selectedIngredient;
     private User user;
 
@@ -115,15 +115,20 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     // /** ==============================  [ START POPUP FUNCTIONS ] ============================== 
 
     /// <summary>
-    /// Instantiates a new IngredientPickerPopup and sends the user unto its focus
+    /// Activated by clicking on the button, the command calls this method 
+    /// to instantiate a new IngredientPickerPopup and sends the user unto its focus
     /// </summary>
     private async void OpenPickerPopup()
     {
-        currentIngredientPickerPopup = new IngredientPickerPopup();
-        // var ingredientPickerPopup = new IngredientPickerPopup();
+        // convert IngredientList into an IEnumerable
+        // var allIngredients = await ingredientLogic.GetAllIngredients();
+        var allIngredients = ingredientLogic.GetAllIngredients();
+
+        // pass the ingredients into the custom picker
+        currentIngredientPickerPopup = new IngredientPickerPopup(allIngredients);
 
         //await Application.Current.MainPage.Navigation.PushModalAsync(ingredientPickerPopup);
-        // currentIngredientPickerPopup.AutocompletePickerControl
+
         // show the popup
         await this.ShowPopupAsync(currentIngredientPickerPopup);
         // this.ShowPopup(ingredientPickerPopup);
@@ -135,31 +140,8 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     /// <param name="popup"></param>
     private async void ClosePickerPopup(Popup popup)
     {
-        //if (this.CurrentPopup is IngredientPickerPopup currentPopup)
-        //if (popup != null)
-        //{
-        //    // goodbye popup! (close the lil guy)
-        //    currentIngredientPickerPopup.Close();
-        //}
-
-        // hopefully this is enough to close it?
-
-        // await this.ClosePopupAsync(popup)
-        // popup.AutocompletePickerControl.IngredientSelected -= OnIngredientSelected;
-        //currentIngredientPickerPopup.Dis
         await popup.CloseAsync();
         popup = null;
-    }
-
-
-    private async void btnIngredientPicker_Clicked(object sender, EventArgs e)
-    {
-        currentIngredientPickerPopup = new IngredientPickerPopup();
-
-        //subscribe to the event we defined
-        currentIngredientPickerPopup.IngredientSelectedEvent += OnIngredientSelected;
-
-        await this.ShowPopupAsync(currentIngredientPickerPopup);
     }
 
     /// <summary>
@@ -320,25 +302,6 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             //Encoding.ASCII.GetBytes(PreviousPageData.ImagePath)
             Encoding.ASCII.GetBytes("NO_IMAGE")
         );
-        /**
-       // Add recipe to the database using RecipeLogic
-       var result = recipeLogic.AddRecipe(newRecipe);
-       //DisplayAlert("Debug", result.ToString(), "Okay");
-       // Check if the recipe was added successfully and navigate accordingly
-       if (result == RecipeAdditionError.NoError)
-       {
-           await Navigation.PushAsync(new DietaryRestrictionsPage());
-           await DisplayAlert("Success", "Recipe added successfully!", "OK");
-       }
-       else if (result == RecipeAdditionError.DBAdditionError)
-       {
-           await DisplayAlert("Error", "LogicError", "OK");
-       }
-       else
-       {
-           await DisplayAlert("Error", "Failed to add recipe", "OK");
-       }
-       */
 
     }
 
@@ -357,6 +320,4 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         // update the Ingredient box on the page
 
     }
-
 }
-

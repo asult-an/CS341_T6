@@ -4,8 +4,5 @@
                xmlns:controls="using:CookNook.Controls"
                xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
                x:Class="CookNook.IngredientPickerPopup">
-
-    <StackLayout>
-        <controls:AutocompletePicker x:Name="IngredientPicker"/>
-    </StackLayout>
+    <controls:AutocompletePicker x:Name="IngredientPicker"/>
 </toolkit:Popup>

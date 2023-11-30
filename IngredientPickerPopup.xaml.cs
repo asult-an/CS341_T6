@@ -21,15 +21,19 @@ public partial class IngredientPickerPopup : Popup
     /// </summary>
     public event EventHandler<IngredientSelectedEventArgs> IngredientSelectedEvent;
 
-    public IngredientPickerPopup()
+   
+    //public IngredientPickerPopup(List<Ingredient> choices)
+    public IngredientPickerPopup(IEnumerable<Ingredient> choices)
     {
         InitializeComponent();
         // The AutocompletePicker could have its own XAML layout loaded here
         AutocompletePickerControl = this.FindByName<AutocompletePicker>("IngredientPicker");
+        AutocompletePickerControl.AutocompleteStrategy = new IngredientAutocompleteStrategy(choices);
 
-        // TODO: means of exiting: close button, gesture,
-        // whatever works, just something hacky for now
+        // AutocompletePickerControl.ItemsSource = choices;
 
+        // TODO: means of exiting: close button, gesture
+        // user can tap outside modal to close, but selecting ingredient should close it
 
         // if we want to set the size...
         this.Size = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);

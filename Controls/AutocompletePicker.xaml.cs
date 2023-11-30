@@ -10,19 +10,36 @@ namespace CookNook.Controls;
 /// </summary>
 public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 {
-	//private IAutocompleteStrategy<Ingredient> autocompleteStrategy;
+    /// <summary>
+    /// We want 'ItemsSource' to appear on the XAML like it would a regular CollectionView
+    /// </summary>
+    public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(
+        propertyName: "ItemsSource",
+        returnType: typeof(IEnumerable<Ingredient>),
+        declaringType: typeof(AutocompletePicker),
+        defaultValue: default(IEnumerable<Ingredient>));
+		//defaultBindingMode: BindingMode.TwoWay,
+		//propertyChanged: OnItemsSourceChanged);
 
-	//public IAutocompleteStrategy<Ingredient> 
-		private IAutocompleteStrategy<Ingredient> autocompleteStrategy;
-	private Ingredient selectedIngredient;
+    public IEnumerable<Ingredient> ItemsSource
+    {
+        get { return (IEnumerable<Ingredient>)GetValue(ItemsSourceProperty); }
+        set { SetValue(ItemsSourceProperty, value); }
+    }
+
+    private IAutocompleteStrategy<Ingredient> autocompleteStrategy;
 	private readonly List<Ingredient> ingredients;
-
+    
+	/// <summary>
+	/// Placeholder for the chosen ingredient to be stored in before being sent out through events
+	/// </summary>
+	private Ingredient selectedIngredient;
+	
     /// <summary>
     /// Whenever the user selects an ingredient, we need to let other important classes know
 	/// So we define a handler to "broadcast" when that happens
     /// </summary>
     public event EventHandler<IngredientSelectedEventArgs> IngredientSelected;
-
 
     public IAutocompleteStrategy<Ingredient> AutocompleteStrategy
 	{
@@ -36,11 +53,15 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 		set { selectedIngredient = value; }
 	}
 
-	public AutocompletePicker(IAutocompleteStrategy<Ingredient> autocompleteStrategy, List<Ingredient> ingredientList)
+	// public AutocompletePicker(IAutocompleteStrategy<Ingredient> autocompleteStrategy, List<Ingredient> ingredientList)
+	public AutocompletePicker(IAutocompleteStrategy<Ingredient> autocompleteStrategy)
 	{
 		InitializeComponent();
 		this.autocompleteStrategy = autocompleteStrategy;
+		this.BindingContext = this;
 	}
+
+
 
 	public AutocompletePicker() { }
 
