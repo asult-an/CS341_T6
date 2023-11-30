@@ -60,7 +60,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic, Recipe recipe, User inUser)
     {
         InitializeComponent();
-
+        
         if (recipe == null)
         {
             Debug.Write("AddRecipeIngredientsPage: recipe is null!");
@@ -170,14 +170,16 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             CurrentRecipe.Name,                   // name
             CurrentRecipe.Description,            // description
             CurrentRecipe.CookTime,               // cooktime 
-            CurrentRecipe.Ingredients,                      //recipeLogic.GetIngredientsByRecipe(1),
+            CurrentRecipe.Ingredients, 
+            //recipeLogic.GetIngredientsByRecipe(1),
             // CourseType.Parse("Dinner"),
             CourseType.Parse(CourseEntry.Text),
             CurrentRecipe.AuthorID,
             4,                             // TODO: rating
             1,                            // TODO: servings
             tags,                                 // TODO: recipeLogic.GetTagsForRecipe
-            new long[] { }             // followerIds
+            new long[] { },             // followerIds
+            CurrentRecipe.Image
             //recipeLogic.GetFollowerIds()
 
         ); 
