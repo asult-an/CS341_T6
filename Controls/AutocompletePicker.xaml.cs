@@ -13,18 +13,22 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 	//private IAutocompleteStrategy<Ingredient> autocompleteStrategy;
 
 	//public IAutocompleteStrategy<Ingredient> 
+		private IAutocompleteStrategy<Ingredient> autocompleteStrategy;
+	private Ingredient selectedIngredient;
+	private readonly List<Ingredient> ingredients;
 
-	private IAutocompleteStrategy<Ingredient> autocompleteStrategy;
+    /// <summary>
+    /// Whenever the user selects an ingredient, we need to let other important classes know
+	/// So we define a handler to "broadcast" when that happens
+    /// </summary>
+    public event EventHandler<IngredientSelectedEventArgs> IngredientSelected;
 
-	public IAutocompleteStrategy<Ingredient> AutocompleteStrategy
+
+    public IAutocompleteStrategy<Ingredient> AutocompleteStrategy
 	{
 		get { return autocompleteStrategy; }
 		set { autocompleteStrategy = value; }
 	}
-
-
-	private Ingredient selectedIngredient;
-	private readonly List<Ingredient> ingredients;
 
 	public Ingredient SelectedIngredient
 	{
@@ -63,4 +67,16 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 	{
 		IngredientPicker.SelectedIndex = -1;
 	}
+
+    /// <summary>
+    /// Capture the selection the user makes, so we can send it as part of the event that 
+    /// AddRecipeIngredientsPage is listening to
+    /// </summary>
+    /// <param name="ingredient"></param>
+    public void OnIngredientSelected(Ingredient ingredient)
+    {
+        // fire the event handler, if it's not null, so that the subscribed page hears it
+        IngredientSelected?.Invoke(this,
+            new IngredientSelectedEventArgs(ingredient));
+    }
 }

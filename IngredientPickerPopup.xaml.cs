@@ -7,21 +7,25 @@ using CommunityToolkit.Maui.Views;
 using Microsoft.Maui.Controls;
 using CookNook.Controls;
 using CookNook.Model;
-
+using System.ComponentModel;
 namespace CookNook;
 
-public class IngredientPickerPopup : Popup
+public partial class IngredientPickerPopup : Popup
 {
     public AutocompletePicker AutocompletePickerControl { get; private set; }
     private const int DEFAULT_WIDTH = 300;
     private const int DEFAULT_HEIGHT = 400;
 
+    /// <summary>
+    /// Listens to the custom control's own event, and fires an event to tell the RecipeIngredientPage to close me
+    /// </summary>
     public event EventHandler<IngredientSelectedEventArgs> IngredientSelectedEvent;
 
     public IngredientPickerPopup()
     {
+        InitializeComponent();
         // The AutocompletePicker could have its own XAML layout loaded here
-        AutocompletePickerControl = new AutocompletePicker();
+        AutocompletePickerControl = this.FindByName<AutocompletePicker>("IngredientPicker");
 
         // TODO: means of exiting: close button, gesture,
         // whatever works, just something hacky for now
@@ -31,15 +35,21 @@ public class IngredientPickerPopup : Popup
         this.Size = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
         this.Content = AutocompletePickerControl;
-
-        //autocompletePicker.SelectedIngredient += new Action<object, object>((sender, selectedIngredient) =>
+        
+        
+        // Subscribe to the IngredientSelectedEvent, so we can inform the AddRecipeIngredientPage
+        AutocompletePickerControl.IngredientSelected += (sender, args) =>
+        {
+            // if the event wasn't null, we'll send it over to the page
+            IngredientSelectedEvent?.Invoke(this, args);
+        };
         //{
-        //    // Raise an event when an ingredient is selected
-        //    IngredientSelected?.Invoke(this, new IngredientSelectedEventArgs(selectedIngredient));
+        //    IngredientSelectedEvent?.Invoke(this, new IngredientSelectedEventArgs(selectedIngredient));
         //    // Optionally close the popup
-        //    this.Close();
+            
         //});
     }
+
 
 
     /// <summary>
@@ -49,7 +59,7 @@ public class IngredientPickerPopup : Popup
     /// <param name="ingredient"></param>
     public void OnIngredientSelected(Ingredient ingredient)
     {
-        // fire the event handler, if it's not null
+        // fire the event handler, if it's not null, so that the subscribed page hears it
         IngredientSelectedEvent?.Invoke(this,
                                         new IngredientSelectedEventArgs(ingredient));
     }
@@ -65,7 +75,7 @@ public class IngredientSelectedEventArgs : EventArgs
     /// <summary>
     /// The ingredient that was selected
     /// </summary>
-    public Ingredient SelectedIngredient { get; }
+    public Ingredient SelectedIngredient { get; private set;  }
     public IngredientSelectedEventArgs(Ingredient selectedIngredient)
     {
         SelectedIngredient = selectedIngredient;

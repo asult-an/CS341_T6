@@ -18,7 +18,7 @@ namespace CookNook;
 public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChanged
 {
     // popup needs a "home"
-    private Popup currentIngredientPickerPopup;
+    private IngredientPickerPopup currentIngredientPickerPopup;
     
     // public Recipe currentRecipe;
     private Recipe currentRecipe;
@@ -60,11 +60,6 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
     public string Ingredients { get; set; }
 
-    // TODO: consider using Ingredient model instead of String
-    //public string Ingredients => Ingredients;
-
-
-
     public AddRecipeIngredientsPage(IUserLogic userLogic, IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic, Recipe recipe, User inUser)
     {
         InitializeComponent();
@@ -99,12 +94,6 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         this.BindingContext = this;
     }
 
-    //protected override void OnAppearing()
-    //{
-    //    base.OnAppearing();
-    //    InitializeCommands();
-    //}
-
     /// <summary>
     /// Injects recipeLogic, then populates the list with ingredients to add to their recipe
     /// </summary>
@@ -134,9 +123,9 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         // var ingredientPickerPopup = new IngredientPickerPopup();
 
         //await Application.Current.MainPage.Navigation.PushModalAsync(ingredientPickerPopup);
-
+        // currentIngredientPickerPopup.AutocompletePickerControl
         // show the popup
-        this.ShowPopup(currentIngredientPickerPopup);
+        await this.ShowPopupAsync(currentIngredientPickerPopup);
         // this.ShowPopup(ingredientPickerPopup);
     }
 
@@ -152,9 +141,26 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         //    // goodbye popup! (close the lil guy)
         //    currentIngredientPickerPopup.Close();
         //}
-        CommunityToolkit.Maui.Core.PopupExtensions.ClosePopup(popup);
+
+        // hopefully this is enough to close it?
+
+        // await this.ClosePopupAsync(popup)
+        // popup.AutocompletePickerControl.IngredientSelected -= OnIngredientSelected;
+        //currentIngredientPickerPopup.Dis
+        await popup.CloseAsync();
+        popup = null;
     }
 
+
+    private async void btnIngredientPicker_Clicked(object sender, EventArgs e)
+    {
+        currentIngredientPickerPopup = new IngredientPickerPopup();
+
+        //subscribe to the event we defined
+        currentIngredientPickerPopup.IngredientSelectedEvent += OnIngredientSelected;
+
+        await this.ShowPopupAsync(currentIngredientPickerPopup);
+    }
 
     /// <summary>
     /// Handles the IngredientSelectedEvent, by taking the incoming ingredient
@@ -173,8 +179,13 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         else 
             btnIngredientPicker.Text = "Select Ingredient";
 
+        // Unsubscribe from the event before closing
+        currentIngredientPickerPopup.IngredientSelectedEvent -= OnIngredientSelected;
+
+
         // send the popup back here to get closed and deconstructed 
-        if (sender is Popup popup)
+        // if (sender is Popup popup)
+        if (sender is IngredientPickerPopup popup)
         {
             ClosePickerPopup(popup);
         }
@@ -238,21 +249,10 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     public async void NextClicked(object sender, EventArgs e)
     {
         //Ingredients = (this.FindByName("Ingredients") as Entry).Text;
-
-        //Ingredient testIngredients = new Ingredient("test", 1, "test");
-        //Ingredient[] testIngredients = new Ingredient[]
-        //{
-        //        // one 'unitless' ingredient
-        //        new Ingredient("Pie Crust", "1"),
-        //        //TODO new ingredients fail
-        //        // and a regular one
-
-        //        //new Ingredient("Artichoke Hearts", "2", "oz")
-        //        new Ingredient("Apple (Red Delicious)", "2")
-        //};
-
+        // TODO: finish TAGS
         Tag[] tags = { new Tag { DisplayName = "test" } };
-
+        
+        // assemble the recipe now that we have all the information we need to fully construct it
         var newRecipe = new Recipe(
             CurrentRecipe.Name,                   // name
             CurrentRecipe.Description,            // description
@@ -275,26 +275,6 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         // recipeLogic ??= new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
         // recipeLogic ??= MauiProgram.ServiceProvider.GetService<RecipeLogic>();
 
-        // Add recipe to the database using RecipeLogic
-        /**
-         * TEMPORARY
-         * 
-         * [0:] Error finding recipe: System.InvalidOperationException: No row is available
-            at Npgsql.NpgsqlDataReader.GetFieldValue[Int32](Int32 ordinal)
-            at Npgsql.NpgsqlDataReader.GetInt32(Int32 ordinal)
-            at CookNook.Model.RecipeDatabase.SelectRecipe(Int32 inID) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeDatabase.cs:line 502
-            at CookNook.Model.RecipeLogic.FindRecipe(Int32 id) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeLogic.cs:line 148
-            [0:] System.InvalidOperationException: Parameter 'Description' must have either its NpgsqlDbType or its DataTypeName or its Value set
-            at Npgsql.NpgsqlParameter.ResolveHandler(TypeMapper typeMapper)
-            at Npgsql.NpgsqlParameter.Bind(TypeMapper typeMapper)
-            at Npgsql.NpgsqlParameterCollection.ProcessParameters(TypeMapper typeMapper, Boolean validateValues, CommandType commandType)
-            at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
-            at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
-            at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
-            at Npgsql.NpgsqlCommand.ExecuteScalar()
-            at CookNook.Model.RecipeDatabase.InsertRecipe(Recipe inRecipe) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeDatabase.cs:line 350
-            at CookNook.Model.RecipeLogic.AddRecipe(Recipe recipe) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeLogic.cs:line 87
-         */
         var result = recipeLogic.AddRecipe(newRecipe);
 
         // Check if the recipe was added successfully and navigate accordingly
@@ -378,9 +358,5 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
     }
 
-    private void btnIngredientPicker_Clicked(object sender, EventArgs e)
-    {
-        TODO_IMPLEMENT_ME();
-    }
 }
 
