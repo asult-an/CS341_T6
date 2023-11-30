@@ -8,21 +8,21 @@
     <StackLayout Spacing="10" Padding="10" BackgroundColor="#202c39">
 
         <!-- Image Frame -->
-        <Frame HasShadow="True" BorderColor="Black" Padding="10" BackgroundColor="#202c39">
-            <Image x:Name="SelectedImage" Aspect="AspectFit" HeightRequest="250" />
+        <Frame HasShadow="True" BorderColor="Black" Padding="0" BackgroundColor="#202c39" CornerRadius="100">
+            <Image x:Name="SelectedImage" Aspect="AspectFit" MaximumHeightRequest="250"/>
         </Frame>
 
         <!-- Pick Image Button -->
         <Button Text="Pick an Image" Clicked="PickImageClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7" Margin="10"/>
 
         <!-- Name Entry -->
-        <Entry x:Name="Name" Placeholder="Enter recipe name..." TextColor="White" BackgroundColor="#30475E" Margin="0,10"/>
+        <Entry x:Name="Name" Placeholder="Enter recipe name..." TextColor="White" Margin="0,10"/>
 
         <!-- Description Editor -->
-        <Editor x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." TextColor="White" BackgroundColor="#30475E" AutoSize="TextChanges" HeightRequest="100" Margin="0,10"/>
+        <Editor x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." TextColor="White" AutoSize="TextChanges" HeightRequest="100" Margin="0,10"/>
 
         <!--  Time to Make Entry -->
-        <Entry x:Name="TimeToMake" Placeholder="Cook time" HorizontalOptions="Center" WidthRequest="75" TextColor="#ffe6a7" Keyboard="Numeric"/>
+        <Entry x:Name="TimeToMake" Placeholder="Cook time" HorizontalOptions="Center" HorizontalTextAlignment="Center" WidthRequest="75" TextColor="#ffe6a7" Keyboard="Numeric"/>
 
         <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
 

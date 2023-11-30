@@ -21,9 +21,9 @@ public partial class UserSettings : ContentPage
 		await Navigation.PushAsync(accountSettings);
 	}
 
-    public async void UserPreferencesClicked(object sender, EventArgs e)
+    public async void DietaryRestrictionsClicked(object sender, EventArgs e)
     {
-        //AccountSettings accountSettings = new AccountSettings();
-        //await Navigation.PushAsync(accountSettings);
+        DietaryRestrictionsPage dietaryRestrictionsPage = new DietaryRestrictionsPage(user);
+        await Navigation.PushAsync(dietaryRestrictionsPage);
     }
 }

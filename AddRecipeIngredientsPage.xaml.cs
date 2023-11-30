@@ -175,7 +175,7 @@ public partial class AddRecipeIngredientsPage : ContentPage
         switch (result)
         {
             case RecipeAdditionError.NoError:
-                await Navigation.PushAsync(new DietaryRestrictionsPage(user));
+                await Navigation.PushAsync(new Cookbook());
                 await DisplayAlert("Success", "Recipe added successfully!", "OK");
                 break;
             case RecipeAdditionError.DBAdditionError:

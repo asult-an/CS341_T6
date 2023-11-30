@@ -3,8 +3,7 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.DietaryRestrictionsPage"
-             Title="Add Recipe"
-             NavigationPage.HasBackButton="False">
+             Title="Dietary Restrictions">
 
 
 
@@ -72,7 +71,13 @@
 
         </Grid>
 
-        <Grid ColumnDefinitions="auto, *" Grid.Row="5">
+        <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
+
+            <Button Text="Back" Clicked="BackClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+
+        </StackLayout>
+
+        <!--<Grid ColumnDefinitions="auto, *" Grid.Row="5">
 
             <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
 
@@ -86,7 +91,7 @@
 
             </StackLayout>
 
-        </Grid>
+        </Grid>-->
 
 
     </Grid>
