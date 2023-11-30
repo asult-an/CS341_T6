@@ -173,13 +173,13 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             CurrentRecipe.Ingredients, 
             //recipeLogic.GetIngredientsByRecipe(1),
             // CourseType.Parse("Dinner"),
-            CourseType.Parse(CourseEntry.Text),
-            CurrentRecipe.AuthorID,
-            4,                             // TODO: rating
-            1,                            // TODO: servings
-            tags,                                 // TODO: recipeLogic.GetTagsForRecipe
-            new long[] { },             // followerIds
-            CurrentRecipe.Image
+            //CourseType.Parse(CourseEntry.Text),
+            CourseType.Parse(CoursePicker.SelectedItem as string),
+            currentRecipe.AuthorID,
+            4,                             // rating
+            1,                            // servings
+            tags,                                 // recipeLogic.GetTagsForRecipe
+            new long[] { }             // followerIds
             //recipeLogic.GetFollowerIds()
 
         ); 
