@@ -8,9 +8,11 @@ using Microsoft.Maui.Controls;
 using CookNook.Controls;
 using CookNook.Model;
 using System.ComponentModel;
+using System.Diagnostics;
+
 namespace CookNook;
 
-public partial class IngredientPickerPopup : Popup
+public sealed partial class IngredientPickerPopup : Popup
 {
     public AutocompletePicker AutocompletePickerControl { get; private set; }
     private const int DEFAULT_WIDTH = 300;
@@ -25,35 +27,54 @@ public partial class IngredientPickerPopup : Popup
     //public IngredientPickerPopup(List<Ingredient> choices)
     public IngredientPickerPopup(IEnumerable<Ingredient> choices)
     {
-        InitializeComponent();
-        // The AutocompletePicker could have its own XAML layout loaded here
-        AutocompletePickerControl = this.FindByName<AutocompletePicker>("IngredientPicker");
-
-        // since ingredients come from the strategy, we initalize the strategy first
-        AutocompletePickerControl.AutocompleteStrategy = new IngredientAutocompleteStrategy(choices);
-        AutocompletePickerControl.ItemsSource = choices;
-        // AutocompletePickerControl.ItemsSource = choices;
-
-        // TODO: means of exiting: close button, gesture
-        // user can tap outside modal to close, but selecting ingredient should close it
-
-        // if we want to set the size...
-        this.Size = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-        this.Content = AutocompletePickerControl;
-        
-        
-        // Subscribe to the IngredientSelectedEvent, so we can inform the AddRecipeIngredientPage
-        AutocompletePickerControl.IngredientSelected += (sender, args) =>
+        try
         {
-            // if the event wasn't null, we'll send it over to the page
-            IngredientSelectedEvent?.Invoke(this, args);
-        };
-        //{
-        //    IngredientSelectedEvent?.Invoke(this, new IngredientSelectedEventArgs(selectedIngredient));
-        //    // Optionally close the popup
+
+            InitializeComponent();
+            // The AutocompletePicker could have its own XAML layout loaded here
+            AutocompletePickerControl = this.FindByName<AutocompletePicker>("IngredientPicker");
+
+
+            AutocompletePickerControl.Loaded += (sender, args) =>
+            {
+                Debug.WriteLineIf((AutocompletePickerControl == null), "(ERROR) [IngredientPickerPopup] " +
+                    "Could not find the custom Picker control!");
+                // since ingredients come from the strategy, we initalize the strategy first
+                AutocompletePickerControl.AutocompleteStrategy = new IngredientAutocompleteStrategy(choices);
+                Debug.WriteLine($"[IngredientPickerPopup] Strategy set with data: {AutocompletePickerControl.AutocompleteStrategy}");
+                // wait for the control to load before setting any properties
+                AutocompletePickerControl.ItemsSource = choices;
+                Debug.WriteLine($"[IngredientPickerPopup] ItemsSource: {AutocompletePickerControl.ItemsSource}");
+
+            };
+
+            // user can tap outside modal to close, but selecting ingredient should close it
+
+            // if we want to set the size...
+            this.Size = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
+
+            Content = AutocompletePickerControl;
+        
+        
+            // Subscribe to the IngredientSelectedEvent, so we can inform the AddRecipeIngredientPage
+            AutocompletePickerControl.IngredientSelected += (sender, args) =>
+            {
+                // if the event wasn't null, we'll send it over to the page
+                IngredientSelectedEvent?.Invoke(this, args);
+            };
+            //{
+            //    IngredientSelectedEvent?.Invoke(this, new IngredientSelectedEventArgs(selctedIngredient));
+            //    // Optionally close the popup
             
-        //});
+            //});
+        }
+        catch (Exception ex)
+        {
+            // log to the console
+            Console.WriteLine(ex.Message);
+            Console.WriteLine(ex.InnerException.Message);
+            throw ex.InnerException;
+        }
     }
 
 

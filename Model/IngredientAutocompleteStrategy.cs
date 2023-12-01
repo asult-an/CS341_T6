@@ -20,7 +20,11 @@ namespace CookNook.Model
             set { SuggestedIngredients = value; }
         }
 
-
+        /// <summary>
+        /// Creates a new IngredientAutocompleteStrategy by supplying an iterable
+        /// collection of Ingredients to be shown to the user to have them pluck from
+        /// </summary>
+        /// <param name="ingredients">Enumerable collection of Ingredients</param>
         public IngredientAutocompleteStrategy(IEnumerable<Ingredient> ingredients)
         {
             // this.ingredientLogic = ingredientLogic;
@@ -36,6 +40,13 @@ namespace CookNook.Model
         public async Task<IEnumerable<Ingredient>> GetSuggestionsAsync(string input)
         {
             // store latest data without any database calls here
+
+            // if nothing is typed in...
+            if (string.IsNullOrEmpty(input))
+            {
+                // it's likely best to just display all ingredients
+                return this.cachedIngredients;
+            }
 
             // to make future revisions easier, just use a switch statement for algorithm selection
             switch (input.Length)

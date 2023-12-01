@@ -3,16 +3,26 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="using:CookNook.Controls"
              x:Class="CookNook.Controls.AutocompletePicker">
+    
     <VerticalStackLayout>
         <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"
                TextChanged="IngredientEntry_TextChanged"></Entry>
-        <!--Picker for the ingredients-->
+        <!--Picker for the ingredients (simple binding) -->
         <Picker x:Name="IngredientPicker" 
                 Title="Add Ingredients..." 
-                ItemsSource="{Binding ItemsSource,
-                              Source={RelativeSource AncestorType={x:Type controls:AutocompletePicker}}}"
+                ItemsSource="{Binding ItemsSource}"
                 ItemDisplayBinding="{Binding Name}">
         </Picker>
 
+        <!--<Picker x:Name="IngredientPicker" 
+                Title="Add Ingredients..." 
+                ItemsSource="{Binding ItemsSource,
+                      Source={RelativeSource AncestorType={x:Type controls:AutocompletePicker}}}"
+                ItemDisplayBinding="{Binding Name}"
+                IsVisible="True">
+            --><!-- TODO: might need to define a DataTemplate for the Picker to display the ingredients name's 
+            if the ItemDisplayBinding doesn't work --><!--
+            
+        </Picker>-->
     </VerticalStackLayout>
 </ContentView>

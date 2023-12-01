@@ -1,5 +1,7 @@
+using System.Collections;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using System.Diagnostics;
 using CookNook.Model;
 using CookNook.Model.Interfaces;
 
@@ -10,16 +12,16 @@ namespace CookNook.Controls;
 /// </summary>
 public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 {
-    /// <summary>
-    /// We want 'ItemsSource' to appear on the XAML like it would a regular CollectionView
-    /// </summary>
-    public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(
-        propertyName: "ItemsSource",
-        returnType: typeof(IEnumerable<Ingredient>),
-        declaringType: typeof(AutocompletePicker),
-        defaultValue: default(IEnumerable<Ingredient>));
-		//defaultBindingMode: BindingMode.TwoWay,
-		//propertyChanged: OnItemsSourceChanged);
+	/// <summary>
+	/// We want 'ItemsSource' to appear on the XAML like it would a regular CollectionView
+	/// </summary>
+	public static readonly BindableProperty ItemsSourceProperty = BindableProperty.Create(
+		propertyName: "ItemsSource",
+		returnType: typeof(IEnumerable<Ingredient>),
+		declaringType: typeof(AutocompletePicker),
+		defaultValue: default(IEnumerable<Ingredient>));
+		// defaultBindingMode: BindingMode.TwoWay,
+		// propertyChanged: OnItemsSourceChanged);
 
     public IEnumerable<Ingredient> ItemsSource
     {
@@ -56,29 +58,57 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 	// public AutocompletePicker(IAutocompleteStrategy<Ingredient> autocompleteStrategy, List<Ingredient> ingredientList)
 	public AutocompletePicker(IAutocompleteStrategy<Ingredient> autocompleteStrategy)
 	{
-		InitializeComponent();
-		this.autocompleteStrategy = autocompleteStrategy;
-		this.BindingContext = this;
+		MainThread.BeginInvokeOnMainThread(() =>
+		{
+			InitializeComponent();
+			this.autocompleteStrategy = autocompleteStrategy;
+			Debug.WriteLine($"[AutocompletePicker] Verifying Strategy... {this.autocompleteStrategy})");
+			Debug.WriteLineIf((this.autocompleteStrategy == null), "[AutocompletePicker] (ERROR): null strategy used!");
+
+			this.BindingContext = this;
+			Debug.WriteLine($"[AutocompletePicker] BindingContext updated: {this.BindingContext}");
+		});
+
+    }
+
+    public AutocompletePicker() {
+		MainThread.BeginInvokeOnMainThread(() =>
+		{
+			// didn't realize I needed this: ChatGPT pointed out the other wars the empty CTOR is used :O
+			Debug.WriteLine("WARNING: Empty constructor used for AutocompletePicker!");
+			this.BindingContext = this;
+			Debug.WriteLine($"[AutocompletePicker] BindingContext updated: {this.BindingContext}");
+		});
 	}
 
-
-
-	public AutocompletePicker() { }
-
 	/// <summary>
-	/// Fires when the user types text, provided the system isn't under too much load
+	/// When the user types in the Entry, the string is captured as a query and sent to 
+	/// AutocompleteStrategy's implementation to return a populated list of the results
 	/// </summary>
 	/// <param name="sender"></param>
 	/// <param name="e"></param>
     private async void IngredientEntry_TextChanged(object sender, TextChangedEventArgs e)
     {
+		
 		// TODO: To avoid overwhelming the system, we need some sort of cooldown or debouncing
+		// if time since last update exceeds some threshold...
 
-		// on text changed...
-		var newContents = await autocompleteStrategy.GetSuggestionsAsync(IngredientEntry.Text);
 
-		// TODO: this needs to be returning type Ingredient, not string
-		IngredientPicker.ItemsSource = new ObservableCollection<Ingredient>(newContents);
+		string queryString = IngredientEntry.Text;
+
+		if (autocompleteStrategy != null)
+		{
+			Debug.WriteLine($"[AutocompletePicker] Fetching results for {queryString}...");
+			// on text changed...
+			var newContents = await autocompleteStrategy.GetSuggestionsAsync(IngredientEntry.Text);
+			Debug.WriteLine(newContents);
+
+			Debug.WriteLine("[AutocompletePicker] Setting ItemsSource... ");
+			// TODO: this needs to be returning type Ingredient, not string
+			IngredientPicker.ItemsSource = new ObservableCollection<Ingredient>(newContents);
+		}
+		else
+			Debug.WriteLine("[AutocompletePicker] (ERROR) Stategy was null!");
     }
 
 	/// <summary>

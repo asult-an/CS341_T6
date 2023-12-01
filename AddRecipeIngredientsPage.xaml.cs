@@ -130,6 +130,10 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         //await Application.Current.MainPage.Navigation.PushModalAsync(ingredientPickerPopup);
 
         // show the popup
+        Debug.WriteLine($"[AddRecipeIngredientPage] Opening IngredientPickerPopup ({currentIngredientPickerPopup})");
+        Debug.WriteLine($"[AddRecipeIngredientPage] Verifying Strategy... {currentIngredientPickerPopup.AutocompletePickerControl.AutocompleteStrategy})");
+        Debug.WriteLine($"[AddRecipeIngredientPage] Verifying ItemsSource... {currentIngredientPickerPopup.AutocompletePickerControl.ItemsSource})");
+
         await this.ShowPopupAsync(currentIngredientPickerPopup);
         // this.ShowPopup(ingredientPickerPopup);
     }
@@ -308,7 +312,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     /// <summary>
     /// Broadcasts an event whenever the IngredientList property is changed
     /// </summary>
-    public event PropertyChangedEventHandler PropertyChanged;
+    public new event PropertyChangedEventHandler PropertyChanged;
 
     /// <summary>
     /// Invokes the PropertyChanged event
