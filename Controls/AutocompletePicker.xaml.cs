@@ -104,19 +104,21 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 			Debug.WriteLine(newContents);
 
 			Debug.WriteLine("[AutocompletePicker] Setting ItemsSource... ");
-			// TODO: this needs to be returning type Ingredient, not string
-			IngredientPicker.ItemsSource = new ObservableCollection<Ingredient>(newContents);
-		}
-		else
+            // TODO: this needs to be returning type Ingredient, not string
+            // IngredientPicker.ItemsSource = new ObservableCollection<Ingredient>(newContents);
+            IngredientsCollectionView.ItemsSource = new ObservableCollection<Ingredient>(newContents);
+
+        }
+        else
 			Debug.WriteLine("[AutocompletePicker] (ERROR) Stategy was null!");
     }
 
-	/// <summary>
-	/// sets the SelectedIndex of the IngredientPicker back to -1
-	/// </summary>
-	public void ClearSelectedIngredient()
+    /// <summary>
+    /// sets the SelectedIndex of the IngredientsCollectionView back to -1
+    /// </summary>
+    public void ClearSelectedIngredient()
 	{
-		IngredientPicker.SelectedIndex = -1;
+        IngredientsCollectionView.SelectedItems = null;
 	}
 
     /// <summary>
