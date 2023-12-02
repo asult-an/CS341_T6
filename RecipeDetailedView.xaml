@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
              x:Class="CookNook.RecipeDetailedView"
-             Title="{Binding Name}"
+             Title="{Binding Recipe.Name}"
              BackgroundColor="#202c39">
 
 
@@ -39,7 +39,7 @@
             <!--TODO: define template to highlight row if it clashes with user's diet prefs-->
             
             <!--We need a way to determine on-the-fly which template to use... we have just the thing!-->
-            <XmlHelpers:IngredientTemplateSelector x:Key="IngredientTemplateSelector" />
+            <!--<XmlHelpers:IngredientTemplateSelector x:Key="IngredientTemplateSelector" />-->
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -118,7 +118,7 @@
                         <Grid ColumnDefinitions="auto, *, auto">
 
                             <Label Text="{Binding Rating, StringFormat='Rating: {0}/5'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label x:Name="AuthorName" Text="{Binding Username}" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label x:Name="AuthorName" Text="{Binding User.Username}" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
 
                         </Grid>
 
@@ -134,7 +134,7 @@
                         <Grid ColumnDefinitions="auto, *, auto">
 
                             <Label Text="{Binding Servings, StringFormat='Serves {0}'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Text="{Binding FollowerIds.Length, StringFormat='{0} Followers'}" TextColor="#ffe6a7" Grid.Column="1" HorizontalOptions="Center"/>
+                            <!--<Label Text="{Binding FollowerIds.Length, StringFormat='{0} Followers'}" TextColor="#ffe6a7" Grid.Column="1" HorizontalOptions="Center"/>-->
 
                         </Grid>
 
@@ -150,20 +150,17 @@
 
                             <Label Text="Ingredients" FontSize="Large" TextColor="#ffe6a7"/>
                             <CollectionView ItemsSource="{Binding Ingredients}"
-                                            ItemTemplate="{StaticResource IngredientTemplateSelector}">
-                                
-                            </CollectionView>
-                            
-                            <!--<Label Padding="15, 15, 0, 0" Text="•  Gound beef" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Spaghetti" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Onions" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Garlic" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Salt" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Pepper" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Paprika" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Cumin" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Chili Powder" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>-->
+                                            ItemTemplate="{StaticResource IngredientTemplateSelector}"
+                                            Loaded="OnIngredientsLoaded">
 
+                            </CollectionView>
+                            <!--DIsplay only if no ingredients wer found, so the user understands the functionality is still working-->
+                            <Label x:Name="MissingIngredientsLabel"
+                                   Text="No ingredients were found on this recipe!"
+                                   TextColor="Red"
+                                   HorizontalOptions="CenterAndExpand"
+                                   FontSize="Medium"
+                                   IsVisible="False"></Label>
                         </StackLayout>
 
                         <!--Directions--><!--

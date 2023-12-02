@@ -467,6 +467,7 @@ namespace CookNook.Services
                     {
                         // ask the ingredientDatabase for this recipes ingredints
                         var ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipeID);
+
                         Recipe recipe = new Recipe
                         {
                             ID = reader.GetInt64(0),
@@ -476,7 +477,8 @@ namespace CookNook.Services
                             Course = CourseType.Parse(reader.GetString(4)),
                             Rating = reader.GetInt32(5),
                             Servings = reader.GetInt32(6),
-                            AuthorID = reader.GetInt64(8)
+                            AuthorID = reader.GetInt64(8),
+                            Ingredients = ingredients
                         };
 
                         if (!reader.IsDBNull(7))

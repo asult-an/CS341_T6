@@ -41,7 +41,7 @@ public partial class Feed : ContentPage
 
     private void PopulateFeedWithRecipes()
     {
-        var recipes = recipeLogic.FeedRecipes();
+        Recipes = recipeLogic.FeedRecipes();
         // making sure they have proper data
         RecipesCollectionView.ItemsSource = recipes;
     }
