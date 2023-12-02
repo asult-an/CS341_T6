@@ -19,7 +19,6 @@ namespace CookNook.Model
 
         public List<Int64> GetRecipeFollowerIds(Int64 recipeID);
 
-
         public List<Recipe> SelectAllRecipes();
         
         public List<Recipe> SelectRecipes(List<Int64> recipeList);

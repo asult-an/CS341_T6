@@ -54,7 +54,7 @@ namespace CookNook.Model.Interfaces
         /// <param name="recipeId">Recipe's Id</param>
         /// <param name="ingredientId">Ingredient's Id</param>
         /// <returns></returns>
-        // IngredientAdditionError AddIngredientToRecipe(Int64 recipeId, Int64 ingredientId);
+        IngredientAdditionError AddIngredientToRecipe(Int64 recipeId, Int64 ingredientId);
         
         /// <summary>
         /// Updates an ingredient by its id

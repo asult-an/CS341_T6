@@ -153,9 +153,10 @@ namespace CookNook.Services
             using var conn = new NpgsqlConnection(DbConn.ConnectionString);
             conn.Open();
 
+            // select the ingredient_id, quantity, unit, and name.
             var cmd = new NpgsqlCommand(
-                @"SELECT recipe_ingredients.ingredient_id, recipe_ingredients.quantity,recipe_ingredients, ingredients.name
-                FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients, public.recipes recipes
+                @"SELECT recipe_ingredients.ingredient_id, recipe_ingredients.quantity, recipe_ingredients.unit, ingredients.name
+                FROM public.recipe_ingredients recipe_ingredients, public.ingredients ingredients
                 WHERE
                     recipe_ingredients.ingredient_id = ingredients.ingredient_id
                     AND recipe_ingredients.recipe_id = @Recipe_ID", conn);
@@ -165,13 +166,25 @@ namespace CookNook.Services
             while (reader.Read())
             {
                 Int64 ingredientId = reader.GetInt64(0);
-                string name = reader.GetString(1);
-                string qty = reader.GetString(2);
-                string unit = reader.GetString(3);
+                
+                /* Debugger note:
+                 * NOthing stops an ingredient already on a recipe from being added a second time
+                 * ordering of the reader calls doesn't match the query above
+                 */
+
+                string qty = reader.GetString(1);
+
+                // unit will have to handled more carefully, since a NULL will throw ex
+                string unit = SafeGetString(reader, 2);
+                string name = reader.GetString(3);
+                
+                Debug.WriteLineIf(unit == null, $"[IngredientDB] (ERROR!) unit was not parsed safely!");
+                Debug.WriteLine($"[IngredientDB] Value of Unit: {unit}");
+                // NOTE: unit should only ever be one of the picker values, or NULL
                 Ingredient ingredient;
 
-                // if the cell was NULL in the database:
-                if (string.IsNullOrEmpty(unit))
+                // TODO: Unitless ingredients SHOULD have a NULL unit, but right now they just show the ingredient's name instead.
+                if (string.IsNullOrEmpty(unit) || unit.Equals(name))
                 {
                     // use the 'unitless ingredient' constructor
                     ingredient = new Ingredient(ingredientId, name, qty);
@@ -183,8 +196,13 @@ namespace CookNook.Services
                 ingredients.Add(ingredient);
             }
             reader.Close();
+            if(ingredients == null)
+            {
+                Debug.WriteLine($"[IngredientDB] (ERROR!) ingredients from recipe {recipeId}");
+            }
             return ingredients;
         }
+
 
         /// <summary>
         /// Adds an ingredient-recipe relation to the recipe_ingredients table
@@ -309,6 +327,20 @@ namespace CookNook.Services
         }
 
         /// <summary>
+        /// Helper wrapping method to safely handle null values in columns read 
+        /// by the NpgSQLDataReader
+        /// </summary>
+        /// <param name="reader">the reader being used  </param>
+        /// <param name="colIndex">the index of the column, relative to the resulting table</param>
+        /// <returns></returns>
+        public static string SafeGetString(NpgsqlDataReader reader, int colIndex)
+        {
+            if (!reader.IsDBNull(colIndex))
+                return reader.GetString(colIndex);
+            return string.Empty;
+        }
+
+        /// <summary>
         /// Queries the database for an ingredient by name, returning the existing entry if found.
         /// If there was no match, then the ingredient will be created.
         /// </summary>
@@ -367,5 +399,7 @@ namespace CookNook.Services
                 return IngredientDeleteError.NoError;
             }
         }
+
     }
+    
 }

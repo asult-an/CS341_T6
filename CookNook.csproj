@@ -79,6 +79,9 @@
 	  <Compile Update="Cookbook.xaml.cs">
 	    <DependentUpon>Cookbook.xaml</DependentUpon>
 	  </Compile>
+	  <Compile Update="IngredientSelectionPage.xaml.cs">
+	    <DependentUpon>IngredientSelectionPage.xaml</DependentUpon>
+	  </Compile>
 	  <Compile Update="SearchPage.xaml.cs">
 	    <DependentUpon>SearchPage.xaml</DependentUpon>
 	  </Compile>
@@ -101,6 +104,9 @@
 
 	<ItemGroup>
 	  <MauiXaml Update="Cookbook.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="IngredientSelectionPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SearchPage.xaml">

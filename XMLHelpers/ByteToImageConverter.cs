@@ -3,7 +3,7 @@ using System.Globalization;
 using System.IO;
 using Microsoft.Maui.Controls;
 
-namespace CookNook.Model;
+namespace CookNook.XMLHelpers;
 
 public class ByteToImageConverter : IValueConverter
 {

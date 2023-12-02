@@ -52,7 +52,7 @@ public class IngredientLogic : IIngredientLogic
         // empty name
         if (string.IsNullOrEmpty(name))
             return IngredientAdditionError.DBAdditionError;
-        
+
         // name too long
         if (name.Length > MAX_INGREDIENT_NAME_LENGTH)
         {
@@ -96,30 +96,30 @@ public class IngredientLogic : IIngredientLogic
     /// <param name="unit"></param>
     /// <param name="quantity"></param>
     /// <returns></returns>
-    //public IngredientAdditionError CreateIngredientForRecipe(Int64 recipeId, string name, string? unit, string quantity)
-    //{
-    //    // sanity checks
-    //    //var isSaneOperation = PerformSanityChecks(name);
-    //    // only the empty sanity check is needed here, so we'll hard-code it:
-    //    if (string.IsNullOrEmpty(name))
-    //    {
-    //        Debug.Write($"Invalid ingredient name {name} !");
-    //        return IngredientAdditionError.DBAdditionError;
-    //    }
+    public IngredientAdditionError CreateIngredientForRecipe(Int64 recipeId, string name, string? unit, string quantity)
+    {
+        // sanity checks
+        //var isSaneOperation = PerformSanityChecks(name);
+        // only the empty sanity check is needed here, so we'll hard-code it:
+        if (string.IsNullOrEmpty(name))
+        {
+            Debug.Write($"Invalid ingredient name {name} !");
+            return IngredientAdditionError.DBAdditionError;
+        }
 
-    //    if (string.isNullOrEmpty(quantity))
-    //    {
-    //        // if there was a problem, we'll return the error directly
-    //        Debug.Write($"Error creating ingredient { name } on recipe { recipeId }!");
-    //        return isSaneOperation;
-    //    }
+        if (string.IsNullOrEmpty(quantity))
+        {
+            // if there was a problem, we'll return the error directly
+            Debug.Write($"Error creating ingredient {name} on recipe {recipeId}!");
+            return IngredientAdditionError.BadParameters;
+        }
 
-    //    // first, we'll need to make sure the ingredient exists
-    //    var ingredient = ingredientDatabase.GetIngredientByName(name);
+        // first, we'll need to make sure the ingredient exists
+        var ingredient = ingredientDatabase.GetIngredientByName(name);
 
-    //    // if we get here, we know the ingredient doesn't exist, so we can create it
-    //    return ingredientDatabase.AddIngredientToRecipe(recipeId);
-    //}
+        // if we get here, we know the ingredient doesn't exist, so we can create it
+        return ingredientDatabase.AddIngredientToRecipe(recipeId, ingredient.IngredientId);
+    }
 
     /// <summary>
     /// Updates an ingredient's name
@@ -202,4 +202,15 @@ public class IngredientLogic : IIngredientLogic
     {
         return ingredientDatabase.GetAllIngredients();
     }
+
+    ///// <summary>
+    ///// Checks if an ingredient is present in a recipe
+    ///// </summary>
+    ///// <param name="ingredient"></param>
+    ///// <param name="recipeID"></param>
+    ///// <returns></returns>
+    //public bool IsIngredientInRecipe(Ingredient ingredient, long recipeID)
+    //{
+    //    //TODO: finish this
+    //}
 }
