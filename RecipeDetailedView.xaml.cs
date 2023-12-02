@@ -6,7 +6,15 @@ using System.Diagnostics;
 
 public partial class RecipeDetailedView : ContentPage
 {
-	private Recipe recipe;
+    private Recipe recipe;
+    
+    public Recipe Recipe
+    {
+        get { return recipe; }
+        set { recipe = value; }
+    }
+
+
     private UserLogic userLogic;
 
     public RecipeDetailedView(Recipe inRecipe, User user)
@@ -15,7 +23,8 @@ public partial class RecipeDetailedView : ContentPage
 		recipe = inRecipe;
         BindingContext = recipe;
         Debug.WriteLine(recipe.AuthorID);
-        userLogic = new UserLogic(new Model.Services.UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
+        //userLogic = new UserLogic(new Model.Services.UserDatabase(), new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase())));
+        userLogic = MauiProgram.ServiceProvider.GetService<UserLogic>();
         User author = userLogic.GetUserById(recipe.AuthorID);
         
         AuthorName.BindingContext = author;

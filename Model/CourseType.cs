@@ -25,6 +25,9 @@ namespace CookNook.Model
         public static readonly CourseType Breakfast = new CourseType("Breakfast");
         public static readonly CourseType Lunch = new CourseType("Lunch");
         public static readonly CourseType Dinner = new CourseType("Dinner");
+        public static readonly CourseType Brunch= new CourseType("Brunch");
+        public static readonly CourseType Other = new CourseType("Other");
+        //public static readonly CourseType = new CourseType("");
 
         /// <summary>
         /// Returns the name of a coursetype, e.g. "Lunch"
@@ -38,6 +41,12 @@ namespace CookNook.Model
             _CourseTypes.Add(this);
         }
 
+        /// <summary>
+        /// Tries to resolve a CourseType object from a string
+        /// </summary>
+        /// <param name="toParse"></param>
+        /// <returns></returns>
+        /// <exception cref="FormatException"></exception>
         public static CourseType Parse(string toParse)
         {
             foreach(CourseType courseType in _CourseTypes)
@@ -48,6 +57,11 @@ namespace CookNook.Model
             throw new FormatException("Invalid CourseType!");
         }
 
+        /// <summary>
+        /// Returns the name of the course type, since the user has no other properties they 
+        /// should need to see.
+        /// </summary>
+        /// <returns></returns>
         public override string ToString()
         {
             return this.Name;

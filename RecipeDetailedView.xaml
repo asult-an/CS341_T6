@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converter="clr-namespace:CookNook.Model"
+             xmlns:xml-Helpers="clr-namespace:CookNook.Model"
              x:Class="CookNook.RecipeDetailedView"
              Title="{Binding Name}"
              BackgroundColor="#202c39">
@@ -16,7 +16,29 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+            <xml-Helpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
+
+            <!--On the DETAILED page, we want ALL the information visible, not just the name-->
+            <DataTemplate x:Key="IngredientTemplate">
+                <!--Horizontal row, paritioned out based on the fields present-->
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                    <Label Text="{Binding Quantity}" />
+                    <Label Text="{Binding Unit}" />
+                </StackLayout>
+            </DataTemplate>
+
+            <!--We'll also need one for displaying unitless ingredients-->
+            <DataTemplate x:Key="UnitlessIngredientTemplate">
+                <!--Horizontal row, split only in two, but should look nice relative to other rows-->
+                <StackLayout Orientation="Horizontal">
+                    <Label Text="{Binding Name}" FontAttributes="Bold"/>
+                    <Label Text="{Binding Quantity}" />
+                </StackLayout>
+            </DataTemplate>
+            <!--TODO: define template to highlight row if it clashes with user's diet prefs-->
+            <!--We need a way to determine on-the-fly which template to use... we have just the thing!-->
+
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -126,8 +148,12 @@
                         <StackLayout>
 
                             <Label Text="Ingredients" FontSize="Large" TextColor="#ffe6a7"/>
-
-                            <Label Padding="15, 15, 0, 0" Text="•  Gound beef" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <CollectionView ItemsSource="{Binding Recipe.Ingredients}"
+                                            ItemTemplate="{StaticResource IngredientTemplateSelector}">
+                                
+                            </CollectionView>
+                            
+                            <!--<Label Padding="15, 15, 0, 0" Text="•  Gound beef" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
                             <Label Padding="15, 0, 0, 0" Text="•  Spaghetti" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
                             <Label Padding="15, 0, 0, 0" Text="•  Onions" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
                             <Label Padding="15, 0, 0, 0" Text="•  Garlic" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
@@ -135,7 +161,7 @@
                             <Label Padding="15, 0, 0, 0" Text="•  Pepper" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
                             <Label Padding="15, 0, 0, 0" Text="•  Paprika" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
                             <Label Padding="15, 0, 0, 0" Text="•  Cumin" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Padding="15, 0, 0, 0" Text="•  Chili Powder" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Padding="15, 0, 0, 0" Text="•  Chili Powder" Grid.Column="1" Grid.Row="1" HorizontalOptions="Start" FontSize="Medium" TextColor="#ffe6a7"/>-->
 
                         </StackLayout>
 
