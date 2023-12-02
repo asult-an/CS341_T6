@@ -64,8 +64,9 @@ namespace CookNook
         public AddRecipePage()
         {
             InitializeComponent();
-            this.recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
-            this.ingredientLogic = new IngredientLogic(new IngredientDatabase());
+            // since we don't have parameters to help us inject, we can use the user-defined ServiceProvider!
+            this.recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
+            this.ingredientLogic = MauiProgram.ServiceProvider.GetService<IIngredientLogic>();
             user = UserViewModel.Instance.AppUser;
             var defaultImage = "defaultrecipe.jpg";
             SelectedImage.Source = ImageSource.FromFile(defaultImage);

@@ -246,7 +246,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             CurrentRecipe.Description,
             CurrentRecipe.CookTime,
             new ObservableCollection<Ingredient> { },        //currentRecipe.Ingredients,
-            CourseType.Parse(CourseEntry.Text),
+            CourseType.Parse(CoursePicker.SelectedItem.ToString()),
             1,
             0,
             0,

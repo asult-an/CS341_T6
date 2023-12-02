@@ -47,5 +47,10 @@ namespace CookNook.Model
             }
             throw new FormatException("Invalid CourseType!");
         }
+
+        public override string ToString()
+        {
+            return this.Name;
+        }
     }
 }
