@@ -465,8 +465,8 @@ namespace CookNook.Services
                     Debug.Write(recipeID);
                     while (reader.Read())
                     {
-                        //var ingredients = GetIngredientsByRecipe(recipeID).ToArray();
-
+                        // ask the ingredientDatabase for this recipes ingredints
+                        var ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipeID);
                         Recipe recipe = new Recipe
                         {
                             ID = reader.GetInt64(0),
