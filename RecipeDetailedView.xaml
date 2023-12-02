@@ -149,7 +149,7 @@
                         <StackLayout>
 
                             <Label Text="Ingredients" FontSize="Large" TextColor="#ffe6a7"/>
-                            <CollectionView ItemsSource="{Binding Recipe.Ingredients}"
+                            <CollectionView ItemsSource="{Binding Ingredients}"
                                             ItemTemplate="{StaticResource IngredientTemplateSelector}">
                                 
                             </CollectionView>
