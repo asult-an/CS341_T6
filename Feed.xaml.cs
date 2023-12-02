@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CookNook.Model;
 using System.Diagnostics;
 using CookNook.Services;
@@ -6,6 +7,14 @@ namespace CookNook;
 
 public partial class Feed : ContentPage
 {
+    private ObservableCollection<Recipe> recipes;
+
+    public ObservableCollection<Recipe> Recipes
+    {
+        get { return recipes; }
+        set { recipes = value; }
+    }
+
     private IRecipeLogic recipeLogic;
     private User user;
     public Feed(User inUser)
@@ -14,14 +23,15 @@ public partial class Feed : ContentPage
         //recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
         recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = inUser;
-        loadRecipes();
+        PopulateFeedWithRecipes();
     }
+
     public Feed()
     {
         InitializeComponent();
         recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = UserViewModel.Instance.AppUser;
-        loadRecipes();
+        PopulateFeedWithRecipes();
     }
     
     public Feed(IRecipeLogic recipeLogic)
@@ -29,7 +39,7 @@ public partial class Feed : ContentPage
         this.recipeLogic = recipeLogic;
     }
 
-    private void loadRecipes()
+    private void PopulateFeedWithRecipes()
     {
         var recipes = recipeLogic.FeedRecipes();
         // making sure they have proper data
