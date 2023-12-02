@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-       xmlns:converter="clr-namespace:CookNook.Model"
+       xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
        x:Class="CookNook.RecipePopUpView"
        BackgroundColor="#00000000">
     <!-- Transparent background to still see the previous screen -->
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+            <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 

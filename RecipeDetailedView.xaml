@@ -1,7 +1,7 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:xml-Helpers="clr-namespace:CookNook.XMLHelpers"
+             xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
              x:Class="CookNook.RecipeDetailedView"
              Title="{Binding Name}"
              BackgroundColor="#202c39">
@@ -16,7 +16,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <xml-Helpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
+            <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
 
             <!--On the DETAILED page, we want ALL the information visible, not just the name-->
             <DataTemplate x:Key="IngredientTemplate">
@@ -37,8 +37,9 @@
                 </StackLayout>
             </DataTemplate>
             <!--TODO: define template to highlight row if it clashes with user's diet prefs-->
+            
             <!--We need a way to determine on-the-fly which template to use... we have just the thing!-->
-
+            <XmlHelpers:IngredientTemplateSelector x:Key="IngredientTemplateSelector" />
         </ResourceDictionary>
     </ContentPage.Resources>
 
