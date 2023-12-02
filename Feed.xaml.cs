@@ -11,14 +11,15 @@ public partial class Feed : ContentPage
     public Feed(User inUser)
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        //recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = inUser;
         loadRecipes();
     }
     public Feed()
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = UserViewModel.Instance.AppUser;
         loadRecipes();
     }
@@ -30,7 +31,9 @@ public partial class Feed : ContentPage
 
     private void loadRecipes()
     {
-        recipesCollectionView.ItemsSource = recipeLogic.FeedRecipes();
+        var recipes = recipeLogic.FeedRecipes();
+        // making sure they have proper data
+        RecipesCollectionView.ItemsSource = recipes;
     }
 
     public async void UserProfileClicked(object sender, EventArgs e)
