@@ -25,5 +25,7 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        <Button Text="Next" Clicked="Confirm_Clicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+
     </VerticalStackLayout>
 </ContentView>

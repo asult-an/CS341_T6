@@ -179,12 +179,12 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     }
 
     /// <summary>
-    /// Handles the IngredientSelectedEvent, by taking the incoming ingredient
+    /// Handles the SelectionConfirmedEvent, by taking the incoming ingredient
     /// and displaying it on the page as the selected ingredient
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OnIngredientSelected(object sender, IngredientSelectedEventArgs e)
+    private void OnIngredientSelected(object sender, SelectionConfirmedEventArgs e)
     {
         // store the chosen ingredient so it can be added after the user is happy with other fields
         this.selectedIngredient = e.SelectedIngredient;
@@ -196,8 +196,8 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             btnIngredientPicker.Text = "Select Ingredient";
 
         // Unsubscribe from the event before closing
-        // currentIngredientPickerPopup.IngredientSelectedEvent -= OnIngredientSelected;
-        ingredientPickerPage.IngredientSelectedEvent -= OnIngredientSelected;
+        // currentIngredientPickerPopup.SelectionConfirmedEvent -= OnIngredientSelected;
+        ingredientPickerPage.SelectionConfirmedEvent -= OnIngredientSelected;
 
         // send the popup back here to get closed and deconstructed 
         // if (sender is Popup popup)

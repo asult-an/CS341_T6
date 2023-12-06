@@ -21,7 +21,7 @@
 //    /// <summary>
 //    /// Listens to the custom control's own event, and fires an event to tell the RecipeIngredientPage to close me
 //    /// </summary>
-//    public event EventHandler<IngredientSelectedEventArgs> IngredientSelectedEvent;
+//    public event EventHandler<SelectionConfirmedEventArgs> SelectionConfirmedEvent;
 
    
 //    //public IngredientPickerPopup(List<Ingredient> choices)
@@ -56,14 +56,14 @@
 //            Content = AutocompletePickerControl;
         
         
-//            // Subscribe to the IngredientSelectedEvent, so we can inform the AddRecipeIngredientPage
-//            AutocompletePickerControl.IngredientSelected += (sender, args) =>
+//            // Subscribe to the SelectionConfirmedEvent, so we can inform the AddRecipeIngredientPage
+//            AutocompletePickerControl.SelectionConfirmedHandler += (sender, args) =>
 //            {
 //                // if the event wasn't null, we'll send it over to the page
-//                IngredientSelectedEvent?.Invoke(this, args);
+//                SelectionConfirmedEvent?.Invoke(this, args);
 //            };
 //            //{
-//            //    IngredientSelectedEvent?.Invoke(this, new IngredientSelectedEventArgs(selctedIngredient));
+//            //    SelectionConfirmedEvent?.Invoke(this, new SelectionConfirmedEventArgs(selctedIngredient));
 //            //    // Optionally close the popup
             
 //            //});
@@ -87,8 +87,8 @@
 //    public void OnIngredientSelected(Ingredient ingredient)
 //    {
 //        // fire the event handler, if it's not null, so that the subscribed page hears it
-//        IngredientSelectedEvent?.Invoke(this,
-//                                        new IngredientSelectedEventArgs(ingredient));
+//        SelectionConfirmedEvent?.Invoke(this,
+//                                        new SelectionConfirmedEventArgs(ingredient));
 //    }
 //}
 
@@ -97,13 +97,13 @@
 ///// the user selects an ingredient on the popup: since it has to be 
 ///// raised to send the information out as Event Arguments
 ///// </summary>
-//public class IngredientSelectedEventArgs : EventArgs
+//public class SelectionConfirmedEventArgs : EventArgs
 //{
 //    /// <summary>
 //    /// The ingredient that was selected
 //    /// </summary>
 //    public Ingredient SelectedIngredient { get; private set;  }
-//    public IngredientSelectedEventArgs(Ingredient selectedIngredient)
+//    public SelectionConfirmedEventArgs(Ingredient selectedIngredient)
 //    {
 //        SelectedIngredient = selectedIngredient;
 //    }

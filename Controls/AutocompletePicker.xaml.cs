@@ -45,7 +45,7 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
     /// Whenever the user selects an ingredient, we need to let other important classes know
 	/// So we define a handler to "broadcast" when that happens
     /// </summary>
-    public event EventHandler<IngredientSelectedEventArgs> IngredientSelected;
+    public event EventHandler<SelectionConfirmedEventArgs> SelectionConfirmedHandler;
 
     public IAutocompleteStrategy<Ingredient> AutocompleteStrategy
 	{
@@ -151,7 +151,17 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 		// TODO: this will be turned to a SAVE button or a checkmark in the top right corner, rather than on ingredient selected
 
         // fire the event handler, if it's not null, so that the subscribed page hears it
-        IngredientSelected?.Invoke(this,
-            new IngredientSelectedEventArgs(ingredient));
+        SelectionConfirmedHandler?.Invoke(this,
+            new SelectionConfirmedEventArgs(ingredient));
+    }
+
+	// close the page and send the ingredients back to IngredientPickerPage 
+    private void Confirm_Clicked(object sender, EventArgs e)
+    {
+        // add the selected ingredients to the event arg
+        var selectedItems = IngredientsCollectionView.SelectedItems.Cast<Ingredient>();
+
+		// now pass them into the event before we invoke it through the handler
+		SelectionConfirmedHandler?.Invoke(this, new SelectionConfirmedEventArgs(selectedItems));
     }
 }
