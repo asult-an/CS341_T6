@@ -20,7 +20,7 @@ public partial class IngredientPickerPage : ContentPage
     /// Listens to the custom control's own event, and fires an event on close that contains
     /// all selected ingredients in the EventArgs
     /// </summary>
-    public event EventHandler<SelectionConfirmedEventArgs> SelectionConfirmedEvent;
+    public event EventHandler<IngredientSelectionEventArgs> SelectionConfirmedEventHandler;
 
     public IngredientPickerPage(IEnumerable<Ingredient> choices)
     {
@@ -51,24 +51,9 @@ public partial class IngredientPickerPage : ContentPage
                 return; // Abort if control is null
             }
 
+            // Subscribe our event logic to the event handler, so we can inform the AddRecipeIngredientPage
+            AutocompletePickerControl.SelectionConfirmedHandler += AutocompletePickerControl_SelectionConfirmed;
 
-            // user can tap outside modal to close, but selecting ingredient should close it
-
-            // if we want to set the size...
-            // this.DesiredSize = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-
-            // Subscribe to the SelectionConfirmedEvent, so we can inform the AddRecipeIngredientPage
-            AutocompletePickerControl.SelectionConfirmedHandler += (sender, args) =>
-            {
-                // if the event wasn't null, we'll send it over to the page
-                SelectionConfirmedEvent?.Invoke(this, args);
-            };
-            //{
-            //    SelectionConfirmedEvent?.Invoke(this, new SelectionConfirmedEventArgs(selctedIngredient));
-            //    // Optionally close the popup
-
-            //});
         }
         catch (Exception ex)
         {
@@ -80,18 +65,34 @@ public partial class IngredientPickerPage : ContentPage
 
 
     /// <summary>
-    /// Capture the selection the user makes, so we can send it as part of the event that 
-    /// AddRecipeIngredientsPage is listening to
+    /// Function to initiate event logic during SelectionConfirmed events received from the 
+    /// AutocompletePickerControl, so that we can pass the ingredients back to the AddRecipeIngredientPage
     /// </summary>
-    /// <param name="ingredient"></param>
-    public void OnIngredientSelected(IEnumerable<Ingredient> ingredients)
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private async void AutocompletePickerControl_SelectionConfirmed(object sender, IngredientSelectionEventArgs e)
     {
-        // fire the event handler, if it's not null, so that the subscribed page hears it
-        SelectionConfirmedEvent?.Invoke(this,
-            new SelectionConfirmedEventArgs(ingredients));
-    }
+       
+        Debug.WriteLine($"[IngredientPickerPage] Event received with {e.SelectedIngredients.Count()} ingredients.");        
 
-    public delegate void SelectionConfirmedHandler(IEnumerable<Ingredient> selectedIngredients);
+        // fire event 
+        SelectionConfirmedEventHandler?.Invoke(this, e);
+        Debug.WriteLine($"[IngredientPickerPage] EventHandler invoked");
+
+        // close the page now that we've fired the event
+        await Navigation.PopModalAsync();
+       
+        //if (Navigation.ModalStack.Contains(this))
+        // check if this page is actually on the navigation modal stack
+        //{
+        //    Debug.WriteLine($"[IngredientPickerPage] Page is on the modal stack, attempting to close.");
+        //    await Navigation.PopModalAsync();
+        //}
+        //else
+        //{
+        //    Debug.WriteLine($"[IngredientPickerPage] Page is NOT on the modal stack, cannot close.");
+        //}
+    }
 
 }
 
@@ -102,13 +103,13 @@ public partial class IngredientPickerPage : ContentPage
 /// the user selects an ingredient on the popup: since it has to be 
 /// raised to send the information out as Event Arguments
 /// </summary>
-public class SelectionConfirmedEventArgs : EventArgs
+public class IngredientSelectionEventArgs : EventArgs
 {
     /// <summary>
     /// The ingredient(s) that was selected
     /// </summary>
     public IEnumerable<Ingredient> SelectedIngredients { get; private set; }
-    public SelectionConfirmedEventArgs(IEnumerable<Ingredient> selectedIngredients)
+    public IngredientSelectionEventArgs(IEnumerable<Ingredient> selectedIngredients)
     {
         SelectedIngredients = selectedIngredients;
     }
