@@ -24,8 +24,29 @@
                                     <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
                                     <Label Text="{Binding Quantity}" HorizontalOptions="Center"
                                            Margin="15, 0"/>
-                                    <Label Text="{Binding Unit}" HorizontalOptions="Center"/>
-                                    <!--<Button Text="X" Command="{Binding RemoveCommand}" CommandParameter="{Binding .}"/>-->
+                                    <Label Text="{Binding Unit}" HorizontalOptions="Center">
+                                        <!--Avoid need for value converter by using DataTriggers--> 
+                                        <Label.Triggers>
+                                        <!--If an ingredient has invalid fields, it shows as UNITLESS in red-->
+                                            <DataTrigger TargetType="Label" 
+                                                         Binding="{Binding Unit}" 
+                                                         Value="UNITLESS">
+                                                <Setter Property="TextColor" Value="Red"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Button Text="X"
+                                            Clicked="OnRemoveIngredient_Clicked"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent"
+                                            TextColor="Red"
+                                            Margin="0,0"
+                                            />
+                                    
+                                    <!--<Button Text="X"
+                                            Command="{Binding Source={x:Reference AddRecipeIngredientsPage}, Path=RemoveIngredientCommand}"                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent"
+                                            TextColor="Red"/>-->
                                 </StackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -52,7 +73,7 @@
 
             <StackLayout Grid.Column="2">
 
-                <Picker x:Name="UnitPicker" Title="Select a unit">
+                <Picker x:Name="UnitPicker" Title="Select a unit" TextColor="White">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>cups</x:String>
@@ -61,6 +82,7 @@
                             <x:String>tbsps</x:String>
                             <x:String>tsps</x:String>
                             <x:String>grams</x:String>
+                            <x:String>N/A</x:String>
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>

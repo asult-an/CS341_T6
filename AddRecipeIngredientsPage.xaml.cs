@@ -36,6 +36,10 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     /// </summary>
     public ICommand OpenPageCommand { get; private set; }
 
+    /// <summary>
+    ///  command to remove indiviudal ingredients from the IngredientsView
+    /// </summary>
+    public ICommand RemoveIngredientCommand { get; private set; } 
 
     /// <summary>
     /// public-facing accessor of the currentRecipe, so that the UI can bind to it
@@ -65,8 +69,11 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     {
         InitializeComponent();
         
-        // define navigable route to the IngredientPicker popup
+        // hook up any command logic 
         OpenPageCommand = new Command(OpenPickerPopup);
+
+        // RemoveIngredient accepts <T> of Ingredient
+        RemoveIngredientCommand = new Command<Ingredient>(RemoveIngredient);
 
         if (recipe == null)
         {
@@ -107,7 +114,6 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
             InitializeComponent();
          
-            //this.recipeLogic = recipeLogic
             // use the recipeLogic scoped from Dependency Injection
             this.recipeLogic = recipeLogic;
             this.ingredientLogic = ingredientLogic;
@@ -364,7 +370,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     }
 
     /// <summary>
-    /// Persists changs to the selected ingredient, if one was selected
+    /// Persists changes to the selected ingredient, if one was selected
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
@@ -387,10 +393,15 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         bool validQuantity = int.TryParse(QuantityEntry.Text, out _);
 
         // if null, no unit, otherwise grab the selected unit
-        string unit = (UnitPicker.SelectedItem == null) ? "" : UnitPicker.SelectedItem.ToString();
+        //string unit = (UnitPicker.SelectedItem == null) ? "" : UnitPicker.SelectedItem.ToString();
+        string selectedUnit = UnitPicker.SelectedItem as string;
 
-        // update the fields
-        selectedIngredient.Unit = unit;
+        // update the ingredient's fields
+        if (selectedUnit == "N/A")
+            selectedIngredient.Unit = null;
+            //selectedIngredient.Unit = "";
+        else
+            selectedIngredient.Unit = selectedUnit;
         // sanity check the quantity since it accepts strings: if we can't parse a number then error out
         
         if (validQuantity)
@@ -423,6 +434,8 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             // only push values if they're not blank
             if (!string.IsNullOrEmpty(selectedIngredient.Quantity))
                 QuantityEntry.Text = selectedIngredient.Quantity.ToString();
+            else
+                QuantityEntry.Text = "";
 
             if (!string.IsNullOrEmpty(selectedIngredient.Unit))
             {
@@ -431,6 +444,35 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
                 UnitPicker.SelectedItem = selectedIngredient.Unit;
             }
 
+        }
+    }
+
+    /// <summary>
+    /// command for the delete button next to ingredients to point to so they can be popped 
+    /// </summary>
+    /// <param name="ingredientId"></param>
+    private void RemoveIngredient(Ingredient ingredient)
+    {
+        Debug.WriteLine("[AddRecipeIngredientsPage] Command to remove received");
+        // make sure the ingredient is valid, and is contained in CurrentRecipe
+        if (CurrentRecipe.Ingredients.Contains(ingredient))
+        {
+            Debug.WriteLine("[AddRecipeIngredientsPage] Removing ingredient...");
+            CurrentRecipe.Ingredients.Remove(ingredient);
+        }
+    }
+
+    /// <summary>
+    /// Alternate invocation for the RemoveIngredient command, since setting it through Binding 
+    /// was failing.  Here, we exploit event handling to fire the command on the view for us
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void OnRemoveIngredient_Clicked(object sender, EventArgs e)
+    {
+        // authenticity check
+        if (sender is Button button && button.CommandParameter is Ingredient ingredient) {
+            RemoveIngredientCommand?.Execute(ingredient);
         }
     }
 }
