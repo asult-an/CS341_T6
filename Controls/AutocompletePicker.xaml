@@ -12,6 +12,8 @@
         <!--TODO: make a small row OR a vertical scroll box for to be displayed in underneath the -->
 
         <CollectionView x:Name="IngredientsCollectionView"
+                        HeightRequest="500"                        
+                        MaximumHeightRequest="675"
                         SelectionMode="Multiple"
                         ItemsSource="{Binding ItemsSource}">
             <CollectionView.ItemTemplate>
@@ -25,7 +27,15 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-        <Button Text="Next" Clicked="Confirm_Clicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+        <Button Text="Add Ingredients" Clicked="Confirm_Clicked"
+                BackgroundColor="#5D151B" 
+                TextColor="#ffe6a7"
+                WidthRequest="150"
+                MaximumWidthRequest="200"
+                HeightRequest="50"
+                CornerRadius="15"
+                Margin="5,15"
+                />
 
     </VerticalStackLayout>
 </ContentView>

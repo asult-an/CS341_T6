@@ -150,9 +150,11 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             Debug.WriteLine($"[AddRecipeIngredientPage] Verifying Strategy... {ingredientPickerPage.AutocompletePickerControl.AutocompleteStrategy})");
             Debug.WriteLine($"[AddRecipeIngredientPage] Verifying ItemsSource... {ingredientPickerPage.AutocompletePickerControl.ItemsSource})");
 
+            // subscribe to the event chain for ingredient selection, exposed by IngredientsPickerPage
+            ingredientPickerPage.SelectionConfirmedEventHandler += IngredientPickerPage_IngredientsConfirmed;
+
             // show the popup
             //await Application.Current.MainPage.Navigation.PushModalAsync(ingredientPickerPage);
-
             await Navigation.PushModalAsync(ingredientPickerPage);
 
             // await this.ShowPopupAsync(ingredientPickerPopup);
@@ -179,30 +181,39 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     }
 
     /// <summary>
-    /// Handles the SelectionConfirmedEvent, by taking the incoming ingredient
+    /// Handles the SelectionConfirmedEventHandler, by taking the incoming ingredient
     /// and displaying it on the page as the selected ingredient
     /// </summary>
     /// <param name="sender"></param>
     /// <param name="e"></param>
-    private void OnIngredientSelected(object sender, SelectionConfirmedEventArgs e)
+    private void IngredientPickerPage_IngredientsConfirmed(object sender, IngredientSelectionEventArgs e)
     {
-        // store the chosen ingredient so it can be added after the user is happy with other fields
-        this.selectedIngredient = e.SelectedIngredient;
+        // store the chosen ingredient so it can be added
+        Debug.WriteLine("[AddRecipeIngredientPage] Event received from IngredientPickerPage.");
+        
+        // might circumvent ObervableCollection functionality 
+        //CurrentRecipe.Ingredients.Concat(e.SelectedIngredients);
 
-        // set the currently displayed item of the recipe ingredients page
-        if (selectedIngredient != null)
-            btnIngredientPicker.Text = selectedIngredient.Name;
-        else 
-            btnIngredientPicker.Text = "Select Ingredient";
+
+        foreach (Ingredient i in e.SelectedIngredients)
+        {
+            CurrentRecipe.Ingredients.Add(i);
+        }
+        
+        // the quantity and unit fields for each new item should be null so
+        // the user is forced to assign values in a more natural flow
+        
 
         // Unsubscribe from the event before closing
-        // currentIngredientPickerPopup.SelectionConfirmedEvent -= OnIngredientSelected;
-        ingredientPickerPage.SelectionConfirmedEvent -= OnIngredientSelected;
+        // currentIngredientPickerPopup.SelectionConfirmedEventHandler -= IngredientPickerPage_IngredientsConfirmed;
+        ingredientPickerPage.SelectionConfirmedEventHandler -= IngredientPickerPage_IngredientsConfirmed;
+        Debug.WriteLine("[AddRecipeIngredientPage] Stopped listening to IngredientPickerPage's IngredientConfirmed event.");
 
         // send the popup back here to get closed and deconstructed 
         // if (sender is Popup popup)
         if (sender is IngredientPickerPopup popup)
         {
+            Debug.WriteLine("[AddRecipeIngredientPage] Event sender was of type Popup!"!);
             ClosePickerPopup(popup);
         }
     }
