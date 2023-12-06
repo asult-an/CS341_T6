@@ -17,10 +17,11 @@ namespace CookNook;
 
 public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChanged
 {
-    // popup needs a "home"
-    private IngredientPickerPopup currentIngredientPickerPopup;
-    
-    // public Recipe currentRecipe;
+    // page linked to the Ingredient Picker needs a "home"
+    // private IngredientPickerPopup currentIngredientPickerPopup;
+
+    private IngredientPickerPage ingredientPickerPage;
+
     private Recipe currentRecipe;
     private readonly IAutocompleteStrategy<Ingredient> ingredientStrategy;
     private readonly IRecipeLogic recipeLogic;
@@ -33,7 +34,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     /// <summary>
     /// The command that the button binds to for opening the IngredientPicker popup
     /// </summary>
-    public ICommand OpenPickerCommand { get; private set; }
+    public ICommand OpenPageCommand { get; private set; }
 
 
     /// <summary>
@@ -65,7 +66,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         InitializeComponent();
         
         // define navigable route to the IngredientPicker popup
-        OpenPickerCommand = new Command(OpenPickerPopup);
+        OpenPageCommand = new Command(OpenPickerPopup);
 
         if (recipe == null)
         {
@@ -101,15 +102,25 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     /// <param name="ingredientLogic"></param>
     public AddRecipeIngredientsPage(IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic)
     {
-        InitializeComponent();
-         
-        //this.recipeLogic = recipeLogic
-        // use the recipeLogic scoped from Dependency Injection
-        this.recipeLogic = recipeLogic;
-        this.ingredientLogic = ingredientLogic;
+        try
+        {
 
-        IngredientList = ingredientLogic.GetAllIngredients();
-        this.BindingContext = this;
+            InitializeComponent();
+         
+            //this.recipeLogic = recipeLogic
+            // use the recipeLogic scoped from Dependency Injection
+            this.recipeLogic = recipeLogic;
+            this.ingredientLogic = ingredientLogic;
+
+            IngredientList = ingredientLogic.GetAllIngredients();
+            this.BindingContext = this;
+        } 
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"[AddRecipeIngredientPage] (ERROR!) {ex}");
+            // Debug.WriteLine($"[AddRecipeIngredientPage] (ERROR!) {ex.InnerException.Message}");
+            throw ex.InnerException ?? ex;
+        }
     }
 
     // /** ==============================  [ START POPUP FUNCTIONS ] ============================== 
@@ -120,22 +131,41 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     /// </summary>
     private async void OpenPickerPopup()
     {
-        // convert IngredientList into an IEnumerable
-        // var allIngredients = await ingredientLogic.GetAllIngredients();
-        var allIngredients = ingredientLogic.GetAllIngredients();
+        try
+        {
 
-        // pass the ingredients into the custom picker
-        currentIngredientPickerPopup = new IngredientPickerPopup(allIngredients);
+            // convert IngredientList into an IEnumerable
+            // var allIngredients = await ingredientLogic.GetAllIngredients();
+            var allIngredients = ingredientLogic.GetAllIngredients();
 
-        //await Application.Current.MainPage.Navigation.PushModalAsync(ingredientPickerPopup);
+            // pass the ingredients into the custom picker
+            ingredientPickerPage = new IngredientPickerPage(allIngredients);
+            // currentIngredientPickerPopup = new IngredientPickerPopup(allIngredients);
 
-        // show the popup
-        Debug.WriteLine($"[AddRecipeIngredientPage] Opening IngredientPickerPopup ({currentIngredientPickerPopup})");
-        Debug.WriteLine($"[AddRecipeIngredientPage] Verifying Strategy... {currentIngredientPickerPopup.AutocompletePickerControl.AutocompleteStrategy})");
-        Debug.WriteLine($"[AddRecipeIngredientPage] Verifying ItemsSource... {currentIngredientPickerPopup.AutocompletePickerControl.ItemsSource})");
+            //Debug.WriteLine($"[AddRecipeIngredientPage] Opening IngredientPickerPopup ({currentIngredientPickerPopup})");
+            //Debug.WriteLine($"[AddRecipeIngredientPage] Verifying Strategy... {currentIngredientPickerPopup.AutocompletePickerControl.AutocompleteStrategy})");
+            //Debug.WriteLine($"[AddRecipeIngredientPage] Verifying ItemsSource... {currentIngredientPickerPopup.AutocompletePickerControl.ItemsSource})");
 
-        await this.ShowPopupAsync(currentIngredientPickerPopup);
-        // this.ShowPopup(ingredientPickerPopup);
+            Debug.WriteLine($"[AddRecipeIngredientPage] Opening IngredientPickerPopup ({ingredientPickerPage})");
+            Debug.WriteLine($"[AddRecipeIngredientPage] Verifying Strategy... {ingredientPickerPage.AutocompletePickerControl.AutocompleteStrategy})");
+            Debug.WriteLine($"[AddRecipeIngredientPage] Verifying ItemsSource... {ingredientPickerPage.AutocompletePickerControl.ItemsSource})");
+
+            // show the popup
+            //await Application.Current.MainPage.Navigation.PushModalAsync(ingredientPickerPage);
+
+            await Navigation.PushModalAsync(ingredientPickerPage);
+
+            // await this.ShowPopupAsync(ingredientPickerPopup);
+            // this.ShowPopup(ingredientPickerPopup);
+        } catch (Exception ex)
+        {
+            Debug.WriteLine($"[AddRecipeIngredientPage] Error opening picker page! {ex.InnerException ?? ex})");
+
+            // throw (ex.InnerException == null) ? ex : ex.InnerException;
+            // "null coalescing"
+            throw ex.InnerException ?? ex;
+
+        }
     }
 
     /// <summary>
@@ -166,8 +196,8 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             btnIngredientPicker.Text = "Select Ingredient";
 
         // Unsubscribe from the event before closing
-        currentIngredientPickerPopup.IngredientSelectedEvent -= OnIngredientSelected;
-
+        // currentIngredientPickerPopup.IngredientSelectedEvent -= OnIngredientSelected;
+        ingredientPickerPage.IngredientSelectedEvent -= OnIngredientSelected;
 
         // send the popup back here to get closed and deconstructed 
         // if (sender is Popup popup)
@@ -298,9 +328,9 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             currentRecipe.CookTime,
             currentRecipe.Ingredients,
             CourseType.Parse(CourseEntry.Text),
-            0,     //TODO: get the author-id from the user
+            CurrentRecipe.AuthorID,     //TODO: get the author-id from the user
             0,
-            0,
+            CurrentRecipe.Servings,
             new Tag[] { },
             new long[] { },
             //Encoding.ASCII.GetBytes(PreviousPageData.ImagePath)

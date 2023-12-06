@@ -6,45 +6,24 @@
     
     <VerticalStackLayout>
         <Label Text="Hello world!"></Label>
-        
-        <Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"
-               TextChanged="IngredientEntry_TextChanged"></Entry>
-        
+
+        <Entry x:Name="IngredientEntry" HeightRequest="50" Placeholder="Ingredient" TextColor="Black" TextChanged="IngredientEntry_TextChanged"></Entry>
+
         <!--TODO: make a small row OR a vertical scroll box for to be displayed in underneath the -->
 
         <CollectionView x:Name="IngredientsCollectionView"
                         SelectionMode="Multiple"
-                        ItemsSource="{Binding Ingredients}">
+                        ItemsSource="{Binding ItemsSource}">
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <StackLayout Orientation="Horizontal">
                         <Label Text="{Binding Name}" />
-                        <Label Text="{Binding Quantity}" />
-                        <Label Text="{Binding Unit}" />
+                        <!--<Label Text="{Binding Quantity}" />
+                        <Label Text="{Binding Unit}" />-->
                     </StackLayout>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
 
-
-        <!--Picker for the ingredients (simple binding)--> 
-        <!--<Picker x:Name="IngredientPicker" 
-                Title="Add Ingredients..." 
-                ItemsSource="{Binding ItemsSource}"
-                ItemDisplayBinding="{Binding Name}">
-        </Picker>-->
-        
-
-
-        <!--<Picker x:Name="IngredientPicker" 
-                Title="Add Ingredients..." 
-                ItemsSource="{Binding ItemsSource,
-                      Source={RelativeSource AncestorType={x:Type controls:AutocompletePicker}}}"
-                ItemDisplayBinding="{Binding Name}"
-                IsVisible="True">
-            --><!-- TODO: might need to define a DataTemplate for the Picker to display the ingredients name's 
-            if the ItemDisplayBinding doesn't work --><!--
-            
-        </Picker>-->
     </VerticalStackLayout>
 </ContentView>

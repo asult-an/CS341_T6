@@ -6,9 +6,10 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using CookNook.Model;
+using CookNook.Model.Interfaces;
 
 namespace CookNook;
-
+[XamlCompilation(XamlCompilationOptions.Compile)]
 public partial class IngredientPickerPage : ContentPage
 {
     public AutocompletePicker AutocompletePickerControl { get; private set; }
@@ -26,28 +27,39 @@ public partial class IngredientPickerPage : ContentPage
         {
             InitializeComponent();
             // The AutocompletePicker could have its own XAML layout loaded here
+            
             AutocompletePickerControl = this.FindByName<AutocompletePicker>("IngredientPicker");
 
-
-            AutocompletePickerControl.Loaded += (sender, args) =>
+            if (AutocompletePickerControl == null)
             {
-                Debug.WriteLineIf((AutocompletePickerControl == null), "(ERROR) [IngredientPickerPopup] " +
-                                                                       "Could not find the custom Picker control!");
-                // since ingredients come from the strategy, we initalize the strategy first
+                Debug.WriteLine("[IngredientPickerPage] AutocompletePickerControl not found.");
+            }
+            else
+            {
                 AutocompletePickerControl.AutocompleteStrategy = new IngredientAutocompleteStrategy(choices);
-                Debug.WriteLine($"[IngredientPickerPopup] Strategy set with data: {AutocompletePickerControl.AutocompleteStrategy}");
-                // wait for the control to load before setting any properties
-                AutocompletePickerControl.ItemsSource = choices;
-                Debug.WriteLine($"[IngredientPickerPopup] ItemsSource: {AutocompletePickerControl.ItemsSource}");
+                Debug.WriteLine("[IngredientPickerPage] AutocompleteStrategy set.");
 
-            };
+                foreach (var ingredient in testList)
+                {
+                    Debug.WriteLine($"Ingredient: {ingredient.Name}");
+                }
+
+                AutocompletePickerControl.ItemsSource = choices; // For debugging, set a static list
+                Debug.WriteLine("[IngredientPickerPage] ItemsSource set.");
+            }
+
+
+            if (AutocompletePickerControl == null)
+            {
+                Debug.WriteLine("[IngredientPickerPage] Error: AutocompletePickerControl is null.");
+                return; // Abort if control is null
+            }
+
 
             // user can tap outside modal to close, but selecting ingredient should close it
 
             // if we want to set the size...
-            this.DesiredSize = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
-
-            Content = AutocompletePickerControl;
+            // this.DesiredSize = new Size(DEFAULT_WIDTH, DEFAULT_HEIGHT);
 
 
             // Subscribe to the IngredientSelectedEvent, so we can inform the AddRecipeIngredientPage
@@ -65,9 +77,8 @@ public partial class IngredientPickerPage : ContentPage
         catch (Exception ex)
         {
             // log to the console
-            Console.WriteLine("Outer: " + ex.Message);
-            Console.WriteLine("Inner: " + ex.InnerException.Message);
-            throw ex.InnerException;
+            Debug.WriteLine($"[IngredientPickerPage] (ERROR!) Construction error: {ex.InnerException ?? ex}");
+            throw ex.InnerException ?? ex;
         }
     }
         /// <summary>

@@ -34,14 +34,17 @@
             <StackLayout Grid.Column="0">
                 <!--Picker for the ingredients-->
                 <!-- Mimic the appearance of a Picker -->
-                
-                <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPickerCommand}" 
+
+                <!--<Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPickerCommand}" 
                         Style="{StaticResource PickerButtonStyle}" 
-                        />
-                <!--<controls:AutocompletePicker x:Name="IngredientPicker" />-->
+                        />-->
+
+                <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPageCommand}">
+                </Button>
+                        <!--<controls:AutocompletePicker x:Name="IngredientPicker" />-->
                 
-                <!--<Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>-->
-                <!--<Picker x:Name="IngredientPicker" 
+                        <!--<Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>-->
+                        <!--<Picker x:Name="IngredientPicker" 
                         Title="Add Ingredients..." 
                         ItemsSource="{Binding IngredientList}"
                         ItemDisplayBinding="{Binding Name}">
