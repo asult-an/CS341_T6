@@ -191,10 +191,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         // store the chosen ingredient so it can be added
         Debug.WriteLine("[AddRecipeIngredientPage] Event received from IngredientPickerPage.");
         
-        // might circumvent ObervableCollection functionality 
-        //CurrentRecipe.Ingredients.Concat(e.SelectedIngredients);
-
-
+        // add each one to the current recipe iteratively 
         foreach (Ingredient i in e.SelectedIngredients)
         {
             CurrentRecipe.Ingredients.Add(i);
@@ -364,5 +361,76 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
         // update the Ingredient box on the page
 
+    }
+
+    /// <summary>
+    /// Persists changs to the selected ingredient, if one was selected
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void SaveIngredientEdits_Clicked(object sender, EventArgs e)
+    {
+        // don't do anything if no ingredient is currently selected.
+        if (selectedIngredient == null)
+        {
+            // check if an item is selected to rememdy it
+            if (IngredientsView.SelectedItem != null)
+                selectedIngredient = IngredientsView.SelectedItem as Ingredient;
+
+            Debug.WriteLine("No Ingredient was selected to modify");
+        }
+
+        // find the recipe in CurrentRecipe.Ingredients
+
+
+        // manually set the selected item to none, so we can refresh without hitting an unwanted listener 
+        bool validQuantity = int.TryParse(QuantityEntry.Text, out _);
+
+        // if null, no unit, otherwise grab the selected unit
+        string unit = (UnitPicker.SelectedItem == null) ? "" : UnitPicker.SelectedItem.ToString();
+
+        // update the fields
+        selectedIngredient.Unit = unit;
+        // sanity check the quantity since it accepts strings: if we can't parse a number then error out
+        
+        if (validQuantity)
+        {
+            selectedIngredient.Quantity = QuantityEntry.Text;
+        }
+
+        // todo: maybe just trim the string if unit is bad
+        // concatenation
+        // string displayQuantity = $"{quantity} {unit}";
+
+        // push the updated ingredient back into the collection
+    }
+
+    /// <summary>
+    /// In order for the user to proceed with adding their recipe, all ingredients must at LEAST have a 
+    /// quantity set.  The unit can be null in case of unitless ingredients
+    /// </summary>
+    /// <param name="sender"></param>
+    /// <param name="e"></param>
+    private void IngredientsView_SelectionChanged(object sender, SelectionChangedEventArgs e)
+    {
+        // read the values of the current ingreident and display them through UI elements
+
+        if (selectedIngredient != null)
+        {
+            long ingredientId = selectedIngredient.IngredientId;
+            selectedIngredient = e.CurrentSelection.FirstOrDefault() as Ingredient;
+
+            // only push values if they're not blank
+            if (!string.IsNullOrEmpty(selectedIngredient.Quantity))
+                QuantityEntry.Text = selectedIngredient.Quantity.ToString();
+
+            if (!string.IsNullOrEmpty(selectedIngredient.Unit))
+            {
+                // set the picker to the value matching the ingredient
+                Debug.WriteLine("setting unit picker's value...");
+                UnitPicker.SelectedItem = selectedIngredient.Unit;
+            }
+
+        }
     }
 }

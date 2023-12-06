@@ -13,14 +13,19 @@
             <ScrollView>
                 <StackLayout Orientation="Vertical">
                     <!--TODO: use something that requires a DataTemplate since we have a Model defined it can build off of -->
-                    <CollectionView x:Name="IngredientsView" ItemsSource="{Binding CurrentRecipe.Ingredients}">
+                    <CollectionView x:Name="IngredientsView" 
+                                    SelectionMode="Single"
+                                    SelectionChanged="IngredientsView_SelectionChanged"
+                                    ItemsSource="{Binding CurrentRecipe.Ingredients}"
+                                    >
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
-                                    <Label Text="{Binding Quantity}" HorizontalOptions="Center"/>
+                                    <Label Text="{Binding Quantity}" HorizontalOptions="Center"
+                                           Margin="15, 0"/>
                                     <Label Text="{Binding Unit}" HorizontalOptions="Center"/>
-                                    <Button Text="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding .}"/>
+                                    <!--<Button Text="X" Command="{Binding RemoveCommand}" CommandParameter="{Binding .}"/>-->
                                 </StackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -32,24 +37,10 @@
         <Grid ColumnDefinitions="*, 100, 100" Grid.Row="2" Padding="0, 20, 0, 0">
 
             <StackLayout Grid.Column="0">
-                <!--Picker for the ingredients-->
-                <!-- Mimic the appearance of a Picker -->
-
-                <!--<Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPickerCommand}" 
-                        Style="{StaticResource PickerButtonStyle}" 
-                        />-->
 
                 <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPageCommand}">
                 </Button>
-                        <!--<controls:AutocompletePicker x:Name="IngredientPicker" />-->
-                
-                        <!--<Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>-->
-                        <!--<Picker x:Name="IngredientPicker" 
-                        Title="Add Ingredients..." 
-                        ItemsSource="{Binding IngredientList}"
-                        ItemDisplayBinding="{Binding Name}">
-                </Picker>-->
-                <Button Grid.RowSpan="2" Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
+                <Button Grid.RowSpan="2" Text="Save" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="SaveIngredientEdits_Clicked"/>
 
             </StackLayout>
 
