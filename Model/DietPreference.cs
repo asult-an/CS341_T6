@@ -29,14 +29,14 @@ namespace CookNook.Model
             get { return affectedRecipes; }
             private set => AffectedRecipes = value;
         }
-        private List<Tuple<long, bool>> affectedIngredients;
+        private List<DietAffectedIngredient> affectedIngredients;
 
 
         /// <summary>
         /// Ingredients that are affected are stored in this list, and can be 
         /// retrieve
         /// </summary>
-        public List<Tuple<long, bool>> AffectedIngredients
+        public List<DietAffectedIngredient> AffectedIngredients
         {
             get { return affectedIngredients; }
             private set => AffectedIngredients = value;
@@ -62,11 +62,11 @@ namespace CookNook.Model
         public bool GetPreferenceOfIngredient(long ingredientId)
         {
             // check if the ingredient is listed in those affected   
-            if (AffectedIngredients.Any(i => i. == ingredientId))
+            if (AffectedIngredients.Any(i => i.IngredientId == ingredientId))
             {
-                var targetEntry = AffectedIngredients.FirstOrDefault(i => i.Item1 == ingredientId);
+                var targetEntry = AffectedIngredients.FirstOrDefault(i => i.IngredientId == ingredientId);
                 // the true/false is stored in the second tuple value
-                return targetEntry.Item2;
+                return targetEntry.IsPreferred;
             }
             // otherwise, the ingredient wasn't found
             Debug.WriteLine("[TBD] The selected ingredient could not be found!");
@@ -84,12 +84,12 @@ namespace CookNook.Model
         public bool GetPreferenceOfRecipe(long recipeId)
         {
             // check if the recipe is listed in those affected   
-            if (AffectedRecipes.Any(r => r.Item1 == recipeId))
+            if (AffectedRecipes.Any(r => r.RecipeId == recipeId))
             {
-                var targetEntry = AffectedRecipes.FirstOrDefault(r => r.Item1 == recipeId);
+                var targetEntry = AffectedRecipes.FirstOrDefault(r => r.RecipeId == recipeId);
                 
                 // the true/false is stored in the second tuple value
-                return targetEntry.Item2;
+                return targetEntry.IsPreferred;
             }
             // otherwise, the recipe wasn't found
             Debug.WriteLine("[TBD] The selected recipe could not be found!");
@@ -110,8 +110,8 @@ namespace CookNook.Model
         /// <param name="affectedRecipes"></param>
         /// <param name="affectedIngredients">collection of </param>        
         public DietPreference(
-            List<Tuple<long, bool>> affectedRecipes,
-            List<Tuple<long, bool>> affectedIngredients)
+            List<DietAffectedRecipe> affectedRecipes,
+            List<DietAffectedIngredient> affectedIngredients)
         {
             this.affectedRecipes = affectedRecipes;
             this.affectedIngredients = affectedIngredients;
@@ -123,8 +123,8 @@ namespace CookNook.Model
         /// </summary>
         public DietPreference() { 
             // initialize as empty lists, without data to reference
-            affectedIngredients = new List<Tuple<long, bool>>();
-            affectedRecipes = new List<Tuple<long, bool>>();
+            affectedRecipes = new List<DietAffectedRecipe>();
+            affectedIngredients = new List<DietAffectedIngredient>();
         }
 
 
@@ -158,12 +158,12 @@ namespace CookNook.Model
         /// <returns></returns>
         public bool RemoveAssociatedIngredient(long ingredientId, DietPreference preference)
         {
-            Tuple<long, bool> targetEntry = null;
+            DietAffectedIngredient targetEntry = null;
 
             // if the ingredient is present in AffectedRecipes...
-            if (preference.AffectedIngredients.Any(i => i.Item1 == ingredientId))
+            if (preference.AffectedIngredients.Any(i => i.IngredientId == ingredientId))
             {
-                targetEntry = preference.AffectedIngredients.FirstOrDefault(i => i.Item1 == ingredientId);
+                targetEntry = preference.AffectedIngredients.FirstOrDefault(i => i.IngredientId == ingredientId);
             }
 
             if (targetEntry == null)
@@ -186,10 +186,10 @@ namespace CookNook.Model
         /// <returns></returns>
         public bool RemoveAssociatedRecipe(long recipeId, DietPreference preference)
         {
-            Tuple<long, bool> targetEntry = null;
+            DietAffectedRecipe targetEntry = null;
 
-            if (preference.AffectedRecipes.Any(i => (i.Item1 == recipeId)))
-                targetEntry = preference.AffectedRecipes.FirstOrDefault(i => i.Item1 == recipeId);
+            if (preference.AffectedRecipes.Any(i => (i.RecipeId == recipeId)))
+                targetEntry = preference.AffectedRecipes.FirstOrDefault(i => i.RecipeId == recipeId);
 
             if (targetEntry == null)
             {
