@@ -18,13 +18,13 @@ namespace CookNook.Model
     /// Dietary Preferences will have a title that the user enters for easy identification.  This alond with 
     /// the affected ingredients and their types 
     /// </summary>
-    class DietPreference
+    public class DietPreference
     {
         // Question: we might be able to be using <T> since recipes AND ingredients can be affected...?
 
         // storing this much data might get ugly, so let's only store the affected entity's Id 
-        private List<Tuple<long, bool>> affectedRecipes;
-        public List<Tuple<long, bool>> AffectedRecipes
+        private List<DietAffectedRecipe> affectedRecipes;
+        public List<DietAffectedRecipe> AffectedRecipes
         {
             get { return affectedRecipes; }
             private set => AffectedRecipes = value;
@@ -62,7 +62,7 @@ namespace CookNook.Model
         public bool GetPreferenceOfIngredient(long ingredientId)
         {
             // check if the ingredient is listed in those affected   
-            if (AffectedIngredients.Any(i => i.Item1 == ingredientId))
+            if (AffectedIngredients.Any(i => i. == ingredientId))
             {
                 var targetEntry = AffectedIngredients.FirstOrDefault(i => i.Item1 == ingredientId);
                 // the true/false is stored in the second tuple value
