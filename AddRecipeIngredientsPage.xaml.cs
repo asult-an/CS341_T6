@@ -68,7 +68,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
     public AddRecipeIngredientsPage(IUserLogic userLogic, IRecipeLogic recipeLogic, IIngredientLogic ingredientLogic, Recipe recipe, User inUser)
     {
         InitializeComponent();
-        
+
         // hook up any command logic 
         OpenPageCommand = new Command(OpenPickerPopup);
 
@@ -287,13 +287,15 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             CurrentRecipe.Name,                   // name
             CurrentRecipe.Description,            // description
             CurrentRecipe.CookTime,               // cooktime 
-            CurrentRecipe.Ingredients,                      //recipeLogic.GetIngredientsByRecipe(1),
+            CurrentRecipe.Ingredients, 
+            //recipeLogic.GetIngredientsByRecipe(1),
             // CourseType.Parse("Dinner"),
-            CourseType.Parse(CourseEntry.Text),
-            CurrentRecipe.AuthorID,
-            4,                             // TODO: rating
-            1,                            // TODO: servings
-            tags,                                 // TODO: recipeLogic.GetTagsForRecipe
+            //CourseType.Parse(CourseEntry.Text),
+            CourseType.Parse(CoursePicker.SelectedItem as string),
+            currentRecipe.AuthorID,
+            4,                             // rating
+            1,                            // servings
+            tags,                                 // recipeLogic.GetTagsForRecipe
             new long[] { }             // followerIds
             //recipeLogic.GetFollowerIds()
 
@@ -311,7 +313,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         switch (result)
         {
             case RecipeAdditionError.NoError:
-                await Navigation.PushAsync(new DietaryRestrictionsPage(user));
+                await Navigation.PushAsync(new AddRecipePage());
                 await DisplayAlert("Success", "Recipe added successfully!", "OK");
                 break;
             case RecipeAdditionError.DBAdditionError:
@@ -337,10 +339,10 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
         var newRecipe = new Recipe(
             0,
-            currentRecipe.Name,
-            currentRecipe.Description,
-            currentRecipe.CookTime,
-            currentRecipe.Ingredients,
+            CurrentRecipe.Name,
+            CurrentRecipe.Description,
+            CurrentRecipe.CookTime,
+            CurrentRecipe.Ingredients,
             CourseType.Parse(CourseEntry.Text),
             CurrentRecipe.AuthorID,     //TODO: get the author-id from the user
             0,

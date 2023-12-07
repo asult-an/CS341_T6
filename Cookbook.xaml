@@ -1,6 +1,6 @@
 ﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             xmlns:converter="clr-namespace:CookNook.Model"
+             xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
              x:Class="CookNook.Cookbook"
              Title="{Binding PageTitle}"
              NavigationPage.HasBackButton="False"
@@ -9,7 +9,7 @@
 
     <ContentPage.Resources>
         <ResourceDictionary>
-            <converter:ByteToImageConverter x:Key="ByteToImageConverter"/>
+            <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
 
@@ -23,7 +23,6 @@
                             <RowDefinition Height="Auto" /> 
                             <RowDefinition Height="Auto" />
                             <RowDefinition Height="200" />
-                            <RowDefinition Height="Auto" />
                         </Grid.RowDefinitions>
 
                         <!-- Recipe Name -->
@@ -35,9 +34,6 @@
                         <!-- Recipe Image -->
 
                         <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
-
-                        <!-- Cook Time -->
-                        <Label Text="{Binding CookTime}" Grid.Row="3"/>
                     </Grid>
                     <Frame.GestureRecognizers>
                         <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />

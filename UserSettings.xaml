@@ -10,7 +10,7 @@
         Padding="30,0"
         VerticalOptions="Start">
         <Grid
-            RowDefinitions="5*,*,*"
+            RowDefinitions="5*,*,*, *"
             Padding="30,0">
             <Button Padding="90" ImageSource="profile.png" BackgroundColor="Transparent"></Button>
             <StackLayout Grid.Row="1" Padding="10">
@@ -18,8 +18,12 @@
             </StackLayout>
 
             <StackLayout Grid.Row="2" Padding="10">
-                <Button Clicked="UserPreferencesClicked" Text="Dietary Preferences" BackgroundColor="#5D151B"></Button>
+                <Button Clicked="DietaryRestrictionsClicked" Text="Dietary Preferences" BackgroundColor="#5D151B"></Button>
             </StackLayout>
+
+            <!--<StackLayout Grid.Row="3" Padding="10">
+                <Button Clicked="LogOutClicked" Text="Log out" BackgroundColor="#5D151B"></Button>
+            </StackLayout>-->
         </Grid>
         
     </VerticalStackLayout>

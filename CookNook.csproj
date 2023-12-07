@@ -53,8 +53,10 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Resources\Images\cookbook.png" />
 	  <None Remove="Resources\Images\delete.svg" />
 	  <None Remove="Resources\Images\editpen.svg" />
+	  <None Remove="Resources\Images\Feed.png" />
 	  <None Remove="Resources\Images\gearssolid.svg" />
 	  <None Remove="Resources\Images\icon.jpg" />
 	  <None Remove="Resources\Images\magnifyingglass.png" />

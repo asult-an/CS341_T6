@@ -1,3 +1,4 @@
+using System.Collections.ObjectModel;
 using CookNook.Model;
 using System.Diagnostics;
 using CookNook.Services;
@@ -6,21 +7,31 @@ namespace CookNook;
 
 public partial class Feed : ContentPage
 {
+    private ObservableCollection<Recipe> recipes;
+
+    public ObservableCollection<Recipe> Recipes
+    {
+        get { return recipes; }
+        set { recipes = value; }
+    }
+
     private IRecipeLogic recipeLogic;
     private User user;
     public Feed(User inUser)
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        //recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = inUser;
-        loadRecipes();
+        PopulateFeedWithRecipes();
     }
+
     public Feed()
     {
         InitializeComponent();
-        recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
+        recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = UserViewModel.Instance.AppUser;
-        loadRecipes();
+        PopulateFeedWithRecipes();
     }
     
     public Feed(IRecipeLogic recipeLogic)
@@ -28,9 +39,11 @@ public partial class Feed : ContentPage
         this.recipeLogic = recipeLogic;
     }
 
-    private void loadRecipes()
+    private void PopulateFeedWithRecipes()
     {
-        recipesCollectionView.ItemsSource = recipeLogic.FeedRecipes();
+        Recipes = recipeLogic.FeedRecipes();
+        // making sure they have proper data
+        RecipesCollectionView.ItemsSource = recipes;
     }
 
     public async void UserProfileClicked(object sender, EventArgs e)
@@ -48,7 +61,7 @@ public partial class Feed : ContentPage
         if (sender is Frame frame && frame.BindingContext is Recipe recipe)
         {
             // Navigate to the RecipePopUpPage with the selected recipe
-            var popup = new RecipePopUpView(recipe);
+            var popup = new RecipePopUpView(recipe, user);
             await Navigation.PushModalAsync(popup);
         }
     }

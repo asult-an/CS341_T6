@@ -87,7 +87,20 @@
                     </Picker.ItemsSource>
                 </Picker>
 
-                <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
+                <!--<Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>-->
+                <Picker x:Name="CoursePicker" Title="Select a Course">
+                    <Picker.ItemsSource>
+                        <!--CourseType is just a string, so we inline modify here-->                   
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Breakfast</x:String>
+                            <x:String>Brunch</x:String>
+                            <x:String>Lunch</x:String>
+                            <x:String>Dinner</x:String>
+                            <x:String>Snack</x:String>
+                            <x:String>Other</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
             </StackLayout>
         </Grid>
 
