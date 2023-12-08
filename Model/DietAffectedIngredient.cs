@@ -24,12 +24,11 @@ namespace CookNook.Model
         /// <summary>
         /// Constructs a new DietAffectedRecipe to represent a row from 'preferences_recipes'
         /// </summary>
-        /// <param name="recipeId"></param>
+        /// <param name="ingredientId"></param>
         /// <param name="isPreferred"></param>
         public DietAffectedIngredient(long ingredientId, bool isPreferred)
         {
             IngredientId = ingredientId;
-            IsPreferred = isPreferred;
         }
     }
 }

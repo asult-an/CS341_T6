@@ -154,35 +154,52 @@ namespace CookNook.Model
         }
 
 
-        /// <summary>
-        /// This constructor is more prepped for everywhere else in the app. 
-        /// Accepts collections of Recipe and Ingredient models, then reads 
-        /// all of the ids of the affected entities before storing them in 
-        /// the appropriate field
-        /// </summary>
-        /// <param name="title"></param>
-        /// <param name="recipes"></param>
-        /// <param name="ingredient"></param>
-        public DietPreference(string title, List<Recipe> recipes, List<Ingredient> ingredient)
-        {
-            // filter the recipeId off of recipes
+        ///// <summary>
+        ///// This constructor is more prepped for everywhere else in the app. 
+        ///// Accepts collections of Recipe and Ingredient models, then reads 
+        ///// all of the ids of the affected entities before storing them in 
+        ///// the appropriate field
+        ///// </summary>
+        ///// <param name="title"></param>
+        ///// <param name="recipes"></param>
+        ///// <param name="ingredient"></param>
+        //public DietPreference(string title, List<Recipe> recipes, List<Ingredient> ingredient)
+        //{
+        //    // filter the recipeId off of recipes
 
-            // filter the ingredientId off of ingredients
+        //    // filter the ingredientId off of ingredients
 
-            // by default, all of the preferences can be false, since
-            // this constructor is likely only used when creating a new preference
-            // that will immediately be modified by the user 
+        //    // by default, all of the preferences can be false, since
+        //    // this constructor is likely only used when creating a new preference
+        //    // that will immediately be modified by the user 
             
-        }
+        //}
 
         /// <summary>
-        /// Standard constructor for a DietPreference, accepting the AffectedFoo model 
+        /// Standard constructor for a DietPreference, accepting the AffectedFoo model.
+        /// Since retreival will require waiting on database ops, the collections are defaulted
+        /// to null so that they can be set with ease in the future
         /// </summary>
         /// <param name="title"></param>
         /// <param name="recipes"></param>
         /// <param name="ingredients"></param>
-        public DietPreference(string title, List<DietAffectedRecipe> recipes, List<DietAffectedIngredient> ingredients)
+        public DietPreference(string title, List<DietAffectedRecipe> recipes = null, List<DietAffectedIngredient> ingredients = null)
         {
+            this.title = title;
+            this.affectedRecipes = recipes;
+            this.affectedIngredients = ingredients;
+        }
+
+        /// <summary>
+        /// Fully-qualified constructor for the DietPreference class.  Allows the Id to be set directly.
+        /// </summary>
+        /// <param name="prefId"></param>
+        /// <param name="title"></param>
+        /// <param name="recipes"></param>
+        /// <param name="ingredients"></param>
+        public DietPreference(long prefId, string title, List<DietAffectedRecipe> recipes = null, List<DietAffectedIngredient> ingredients = null)
+        {
+            this.dietPrefId = prefId;
             this.title = title;
             this.affectedRecipes = recipes;
             this.affectedIngredients = ingredients;

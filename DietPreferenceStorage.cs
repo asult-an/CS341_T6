@@ -8,6 +8,10 @@ using CookNook.Model;
 
 namespace CookNook
 {
+
+    /// <summary>
+    /// This class manages the operations involved with storing the user's dietary preferences in JSON
+    /// </summary>
     public class DietPreferenceStorage
     {
         private readonly string filePath;
@@ -22,7 +26,7 @@ namespace CookNook
         /// <summary>
         /// Saves the dietary preferences to a local file.
         /// </summary>
-        /// <param name="preferences">The preferences to save.</param>
+        /// <param name="preferences">The preferences to save</param>
         public async Task SavePreferencesAsync(DietPreference preferences)
         {
             var json = JsonConvert.SerializeObject(preferences);
@@ -32,18 +36,18 @@ namespace CookNook
         /// <summary>
         /// Loads the dietary preferences from the local file.
         /// </summary>
-        /// <returns>The loaded preferences.</returns>
+        /// <returns>The loaded preferences</returns>
         public async Task<DietPreference> LoadPreferencesAsync()
         {
             if (!File.Exists(filePath))
             {
-                return new DietPreference(); // Return a new instance if the file doesn't exist.
+                // return a new instance if the file doesn't exist.
+                return new DietPreference(); 
             }
 
             var json = await File.ReadAllTextAsync(filePath);
             return JsonConvert.DeserializeObject<DietPreference>(json);
         }
 
-        // Additional methods for managing the local storage can be added as needed.
     }
 }
