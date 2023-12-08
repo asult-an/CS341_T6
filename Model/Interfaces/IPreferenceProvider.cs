@@ -44,7 +44,7 @@ namespace CookNook.Model.Interfaces
         /// </summary>
         /// <param name="recipe">the DietAffectedRecipe object</param>
         /// <returns>the resolved recipe</returns>
-        public Recipe ResolveRecipeFromPreference(DietAffectedRecipe recipe);
+        // public Recipe ResolveRecipeFromPreference(DietAffectedRecipe recipe);
 
     }
 }
