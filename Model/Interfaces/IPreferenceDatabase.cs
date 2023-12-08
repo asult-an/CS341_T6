@@ -52,16 +52,18 @@ namespace CookNook.Model.Interfaces
         /// Retrieves all ingredients that are affected by the user's preferences
         /// </summary>
         /// <param name="userId">id of which user's preferences we want</param>
+        /// <param name="prefId">(Optional) Specifies the preference's Id rather than all preferences</param>
         /// <returns></returns>
-        public List<DietAffectedIngredient> GetAffectedIngredients(long userId);
+        public List<DietAffectedIngredient> GetAffectedIngredients(long userId, long? prefId);
 
 
         /// <summary>
         /// Retrieves all recipes that are affected by the user's preferences
         /// </summary>
         /// <param name="userId">id of which user's preferences we want</param>
+        /// <param name="prefId">(Optional) Specifies the preference's Id rather than all preferences</param>
         /// <returns></returns>
-        public List<DietAffectedRecipe> GetAffectedRecipes(long userId, long prefId);
+        public List<DietAffectedRecipe> GetAffectedRecipes(long userId, long? prefId);
 
 
         /// <summary>
