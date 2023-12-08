@@ -19,7 +19,7 @@ namespace CookNook.Model.Interfaces
         /// </summary>
         /// <param name="userId"></param>
         /// <returns></returns>
-        public Task<List<DietPreference>> GetPreferencesAsync(long userId);
+        public Task<List<DietPreference>> GetPreferencesForUserAsync(long userId);
         
         /// <summary>
         /// Overwrites all preferences for a user in bulk: this way PreferenceProvider can 

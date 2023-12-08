@@ -29,6 +29,8 @@ namespace CookNook.Model
             get { return affectedRecipes; }
             private set => AffectedRecipes = value;
         }
+        
+        
         private List<DietAffectedIngredient> affectedIngredients;
 
 
@@ -52,6 +54,29 @@ namespace CookNook.Model
             get { return dietPrefId; }
             set { dietPrefId = value; }
         }
+
+        private string title;
+
+        /// <summary>
+        /// The identifying name of the title
+        /// </summary>
+        public string Title
+        {
+            get { return title; }
+            set { title = value; }
+        }
+
+        private long ownerId;
+
+        /// <summary>
+        /// The UserID belonging to the owner
+        /// </summary>
+        public long OwnerId
+        {
+            get { return ownerId; }
+            set { ownerId = value; }
+        }
+
 
         /// <summary>
         /// Checks against the stored ingredient Ids to see what kind of 
@@ -125,6 +150,7 @@ namespace CookNook.Model
             // initialize as empty lists, without data to reference
             affectedRecipes = new List<DietAffectedRecipe>();
             affectedIngredients = new List<DietAffectedIngredient>();
+            this.Title = "";
         }
 
 
@@ -134,9 +160,10 @@ namespace CookNook.Model
         /// all of the ids of the affected entities before storing them in 
         /// the appropriate field
         /// </summary>
+        /// <param name="title"></param>
         /// <param name="recipes"></param>
         /// <param name="ingredient"></param>
-        public DietPreference(List<Recipe> recipes, List<Ingredient> ingredient)
+        public DietPreference(string title, List<Recipe> recipes, List<Ingredient> ingredient)
         {
             // filter the recipeId off of recipes
 
@@ -149,8 +176,19 @@ namespace CookNook.Model
         }
 
         /// <summary>
-        /// ( SERVICE METHOD: If a service is best used for these changes rather than having its code be on every 
-        /// instance of a DietPreference, then this would belong in that service )
+        /// Standard constructor for a DietPreference, accepting the AffectedFoo model 
+        /// </summary>
+        /// <param name="title"></param>
+        /// <param name="recipes"></param>
+        /// <param name="ingredients"></param>
+        public DietPreference(string title, List<DietAffectedRecipe> recipes, List<DietAffectedIngredient> ingredients)
+        {
+            this.title = title;
+            this.affectedRecipes = recipes;
+            this.affectedIngredients = ingredients;
+        }
+
+        /// <summary>
         /// Attempts to remove the selected ingredient from a provided preference's AffectedIngredients
         /// </summary>
         /// <param name="ingredientId">Ingredient's ID</param>
@@ -168,7 +206,7 @@ namespace CookNook.Model
 
             if (targetEntry == null)
             {
-                Debug.WriteLine("[TBD] The selected ingredient could not be found!");
+                Debug.WriteLine("[DietPreference] The selected ingredient could not be found!");
                 return false;
             }
 
@@ -177,8 +215,6 @@ namespace CookNook.Model
         }
 
         /// <summary>
-        /// ( SERVICE METHOD: If a service is best used for these changes rather than having its code be on every 
-        /// instance of a DietPreference, then this would belong in that service )
         /// Attempts to remove a given recipe from a provided preference's AffectedRecipes
         /// </summary>
         /// <param name="recipeId">the id of the recipe to remove</param>
@@ -193,7 +229,7 @@ namespace CookNook.Model
 
             if (targetEntry == null)
             {
-                Debug.WriteLine("[TBD] The selected recipe could not be found on the preference!");
+                Debug.WriteLine("[DietPreference] The selected recipe could not be found on the preference!");
                 // we could additionally log the preference?
                 return false;
             }
