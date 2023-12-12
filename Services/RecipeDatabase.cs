@@ -1,4 +1,5 @@
 ﻿using System.Collections.ObjectModel;
+using System.Data;
 using System.Diagnostics;
 using System.Text;
 using CookNook.Model;
@@ -28,13 +29,13 @@ namespace CookNook.Services
 
         private List<Int64> authorListIDs = new List<Int64>();
         private List<Int64> cookbookIDs = new List<Int64>();
-        
+
         // is this supposed to store recipes created by followed users?
         private List<Recipe> authorList;
-        
+
         private List<Recipe> cookbook;
         private string connString = DbConn.ConnectionString;
-        
+
         // TODO: Users need a way to upde
 
         //create public property to access airport list
@@ -86,9 +87,9 @@ namespace CookNook.Services
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
 
-            // TODO: fully qualify the asterisk 
+
             var cmd = new NpgsqlCommand(
-                @"SELECT recipe_id, name, description, cook_time_mins, image FROM public.recipes 
+                @"SELECT recipe_id, name, description, cook_time_mins, image, course, servings, rating_sum, rating_count FROM public.recipes 
                             WHERE author_id = @User_ID;", conn);
 
             cmd.Parameters.AddWithValue("User_ID", userID);
@@ -96,6 +97,7 @@ namespace CookNook.Services
             using (var reader = cmd.ExecuteReader())
             {
                 Debug.Write($"UserID from GetRecepeByUserId: ${userID}");
+
                 while (reader.Read())
                 {
                     Recipe recipe = new Recipe
@@ -104,8 +106,15 @@ namespace CookNook.Services
                         Name = reader.GetString(1),
                         Description = reader.GetString(2),
                         CookTime = reader.GetInt32(3),
+                        Course = CourseType.Parse(reader.GetString(5)),
+                        Servings = reader.GetInt32(6),
+
                         AuthorID = userID,
                     };
+
+                    int sumOfRatings = reader.GetInt32(7);
+                    int countOfRatings = reader.GetInt32(8);
+                    recipe.Rating = countOfRatings > 0 ? (int)Math.Round((double)sumOfRatings / countOfRatings) : 0;
 
                     if (!reader.IsDBNull(4))
                     {
@@ -118,6 +127,8 @@ namespace CookNook.Services
                     {
                         recipe.Image = null;
                     }
+                    var recipeIngredients = ingredientDatabase.GetIngredientsFromRecipe(recipe.ID);
+                    recipe.Ingredients = recipeIngredients;
 
                     outRecipes.Add(recipe);
                 }
@@ -178,13 +189,13 @@ namespace CookNook.Services
                 using var conn = new NpgsqlConnection(connString);
                 conn.Open();
 
-                using var transaction = conn.BeginTransaction(); 
+                using var transaction = conn.BeginTransaction();
 
 
                 // first we need to handle the base recipe attributes
                 using var cmdBaseRecipeAttributes = new NpgsqlCommand(@"UPDATE public.recipes
                         SET name=@Name, description=@Description, cook_time_mins=@CookTimeMins, course=@Course, 
-                            rating=@Rating, servings=@Servings, image=@Image, author_id=@AuthorID
+                            rating_sum=@Rating, servings=@Servings, image=@Image, author_id=@AuthorID
                         WHERE recipe_id = @RecipeID", conn);
 
                 cmdBaseRecipeAttributes.Parameters.AddWithValue("RecipeID", inRecipe.ID);
@@ -200,8 +211,8 @@ namespace CookNook.Services
                 cmdBaseRecipeAttributes.Parameters.AddWithValue("Image", inRecipe.Image);
                 cmdBaseRecipeAttributes.Parameters.AddWithValue("Tags", inRecipe.TagsToString());
                 cmdBaseRecipeAttributes.Parameters.AddWithValue("Followers", inRecipe.FollowersToString());
-                
-               
+
+
                 //execute the command
                 var numAffected = cmdBaseRecipeAttributes.ExecuteNonQuery();
 
@@ -251,7 +262,7 @@ namespace CookNook.Services
             }
             return RecipeEditError.NoError;
         }
-        
+
 
         public RecipeAdditionError InsertRecipe(Recipe inRecipe)
         {
@@ -266,7 +277,7 @@ namespace CookNook.Services
 
             //write the SQL statement to insert the recipe into the database
             NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO recipes (name, description, cook_time_mins, " +
-                                "course, rating, servings, image, author_id) VALUES " +
+                                "course, rating_sum, servings, image, author_id) VALUES " +
                                 "(@Name, @Description, @CookTimeMins, @Course, @Rating, @Servings, " +
                                 "@Image, @AuthorID) RETURNING recipe_id", conn);
 
@@ -281,21 +292,22 @@ namespace CookNook.Services
             cmd.Parameters.AddWithValue("AuthorID", inRecipe.AuthorID);
 
 
+
             // first, we need the new ID of that recipe!
             var result = cmd.ExecuteScalar();
             Int64 recipeID = Int64.Parse(result.ToString());
 
-            if(result == null)
+            if (result == null)
             {
                 Debug.WriteLine("Null result: ", result);
-                return RecipeAdditionError.DBAdditionError; 
+                return RecipeAdditionError.DBAdditionError;
             }
             // todo: FIX NAME BINDING
             else
             {
                 Debug.WriteLine("Result: ", result);
             }
-            
+
 
             foreach (Ingredient ing in inRecipe.Ingredients)
             {
@@ -313,7 +325,7 @@ namespace CookNook.Services
                 {
                     // Method used to bypass autogenerated id during demo:
                     //cmd = new NpgsqlCommand("INSERT INTO ingredients (name) VALUES (@Name) RETURNING ingredient_id", conn);
-                    
+
                     cmd = new NpgsqlCommand("INSERT INTO ingredients (ingredient_id, name) VALUES (nextval('ingredients_id_seq'), @Name) RETURNING ingredient_id", conn);
 
                     cmd.Parameters.AddWithValue("Name", ing.Name);
@@ -331,7 +343,7 @@ namespace CookNook.Services
                 {
                     return RecipeAdditionError.DBAdditionError;
                 }
-                
+
                 ing.IngredientId = ingredientId;
                 // if (ingResult != null)
                 // TODO:
@@ -346,7 +358,7 @@ namespace CookNook.Services
                 // wipe `Unit` if necessary
                 if (ing.Unit == ing.Name)
                     ing.Unit = null;
-               
+
                 cmd.Parameters.AddWithValue("Unit", ing.Unit);
 
                 // not querying the database, just inserting to it, so we execute a NonQuery:
@@ -389,7 +401,7 @@ namespace CookNook.Services
             */
             // add the user's ID to the recipe
             //AddToAuthorList(inRecipe.ID);
-            
+
             transaction.Commit();
             return RecipeAdditionError.NoError;
         }
@@ -403,7 +415,7 @@ namespace CookNook.Services
             List<Recipe> outRecipes = new List<Recipe>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-            
+
             //initialize a new SQL command
             var cmd = new NpgsqlCommand();
             //connect the database to the command
@@ -412,12 +424,13 @@ namespace CookNook.Services
             Recipe recipe = new Recipe();
             cmd.CommandText = "SELECT * FROM recipes;";
             reader = cmd.ExecuteReader();
-            while (reader.Read()) {
+            while (reader.Read())
+            {
 
                 reader.Read();
                 recipe.ID = reader.GetInt64(0);
                 recipe.Name = reader.GetString(1);
-                recipe.Description = reader.GetString(2);   
+                recipe.Description = reader.GetString(2);
                 recipe.AuthorID = reader.GetInt64(3);
                 recipe.Ingredients = ingredientDatabase.GetIngredientsFromRecipe(recipe.ID);
 
@@ -430,9 +443,9 @@ namespace CookNook.Services
                 //TDOD: updade image reader to GetBytes(10) rather than GetString(10)
                 recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 recipe.Tags = GetTagsForRecipe(recipe.ID).ToArray();
-               
+
                 // TODO: this probably isn't parsing properly
-            //    recipe.Followers = reader.GetString(12);
+                //    recipe.Followers = reader.GetString(12);
                 recipe.FollowerIds = GetRecipeFollowerIds(recipe.ID).ToArray();
                 reader.Close();
 
@@ -454,12 +467,12 @@ namespace CookNook.Services
                 // TODO: fully qualify the asterisk 
                 var cmd = new NpgsqlCommand(
                     @"SELECT recipe_id, name, description, cook_time_mins, course, 
-                            rating, servings, image, author_id FROM public.recipes 
+                            rating_sum, servings, image, author_id, rating_count FROM public.recipes 
                             WHERE 
                                 recipe_id = @Recipe_ID;", conn);
 
                 cmd.Parameters.AddWithValue("Recipe_ID", recipeID);
-                
+
                 using (var reader = cmd.ExecuteReader())
                 {
                     Debug.Write(recipeID);
@@ -475,11 +488,14 @@ namespace CookNook.Services
                             Description = reader.GetString(2),
                             CookTime = reader.GetInt32(3),
                             Course = CourseType.Parse(reader.GetString(4)),
-                            Rating = reader.GetInt32(5),
                             Servings = reader.GetInt32(6),
                             AuthorID = reader.GetInt64(8),
                             Ingredients = ingredients
                         };
+
+                        int sumOfRatings = reader.GetInt32(5);
+                        int countOfRatings = reader.GetInt32(9);
+                        recipe.Rating = countOfRatings > 0 ? (int)Math.Round((double)sumOfRatings / countOfRatings) : 0;
 
                         if (!reader.IsDBNull(7))
                         {
@@ -514,7 +530,7 @@ namespace CookNook.Services
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
-            var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating, image servings, author_id
+            var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating_sum, image servings, author_id
                                 FROM recipes AS r
                                 JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
                                 WHERE rt.recipe_id = @RecipeId 
@@ -541,7 +557,7 @@ namespace CookNook.Services
             recipe.Servings = reader.GetInt32(9);
             //TODO switch to reader.GetBytes
             recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
-                
+
             // get associative data
             recipe.Tags = GetTagsForRecipe(inID).ToArray();
             recipe.FollowerIds = GetRecipeFollowerIds(inID).ToArray();
@@ -606,7 +622,7 @@ namespace CookNook.Services
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
             //initialize a new SQL command
-            var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating, image, servings, author_id
+            var cmd = new NpgsqlCommand(@"SELECT r.recipe_id, name, description, cook_time_mins, course, rating_sum, image, servings, author_id
                                 FROM recipes AS r
                                 JOIN recipe_tags rt ON r.recipe_id = rt.recipe_id
                                 WHERE r.cook_time_mins = @Cooktime;", conn);
@@ -658,7 +674,7 @@ namespace CookNook.Services
         }
 
         //This method gets the recipes for a user cookbook
-        
+
         public ObservableCollection<Recipe> CookbookRecipes(long userID)
         {
             //Calls GetRecipeByID method to retreive recipes from the database
@@ -667,30 +683,6 @@ namespace CookNook.Services
             foreach (Recipe r in recipesList)
             {
                 recipes.Add(r);
-            }
-            return recipes;
-            using (var conn = new NpgsqlConnection(connString))
-            {
-                conn.Open();
-                using (var cmd = new NpgsqlCommand("SELECT recipe_id, name, description, cook_time_mins, image FROM recipes WHERE author_id=@UserID", conn))
-                {
-                    using (var reader = cmd.ExecuteReader())
-                    {
-                        while (reader.Read())
-                        {
-                            var recipe = new Recipe
-                            {
-                                ID = reader.GetInt32(0),
-                                Name = reader.IsDBNull(1) ? null : reader.GetString(1),
-                                Description = reader.IsDBNull(2) ? null : reader.GetString(2),
-                                CookTime = reader.GetInt32(3),
-                                Image = reader.IsDBNull(4) ? null : Encoding.ASCII.GetBytes(reader.GetString(4))
-                            };
-
-                            recipes.Add(recipe);
-                        }
-                    }
-                }
             }
             return recipes;
         }
