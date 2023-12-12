@@ -39,12 +39,10 @@ namespace CookNook.Model.Interfaces
         public Task<List<DietPreference>> UpdateLocalSettingsAsync();
 
         /// <summary>
-        /// Makes a call to `recipeLogic` to resolve the recipe from its id.
-        /// TODO: This doesn't need to happen in PreferenceProvider, since it can probably be called in RecipeLogic
+        /// Reads the contents of the locally stored settings and builds them back into 
+        /// a DietPreference collection, then returns that collection.
         /// </summary>
-        /// <param name="recipe">the DietAffectedRecipe object</param>
-        /// <returns>the resolved recipe</returns>
-        // public Recipe ResolveRecipeFromPreference(DietAffectedRecipe recipe);
-
+        /// <returns></returns>
+        public Task<List<DietPreference>> GetLocalPreferencesAsync();
     }
 }

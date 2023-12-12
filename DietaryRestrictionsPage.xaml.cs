@@ -12,6 +12,7 @@ public partial class DietaryRestrictionsPage : ContentPage
 {
     private readonly IPreferenceProvider preferenceProvider;
 
+    // reference to the current user
     private User user;
 
 
@@ -34,8 +35,9 @@ public partial class DietaryRestrictionsPage : ContentPage
         user = inUser;
 
         preferenceProvider = MauiProgram.ServiceProvider.GetService<IPreferenceProvider>();
-        // get the user's preferences
-        preferenceProvider.
+        
+        // get (and set) the user's preferences
+        user.DietaryPreferences = preferenceProvider.GetLocalPreferencesAsync().Result;
     }
 
     public async void BackClicked(object sender, EventArgs e)
