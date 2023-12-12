@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -34,20 +35,18 @@ namespace CookNook
                 // if they are, retreive their preferences from Db
 
                 // if not, then default to a new DietPreference Object
-                DietPreference myPreference = new DietPreference();
+                List<DietPreference> myPreferences = new List<DietPreference>();
 
-                SavePreferencesAsync(myPreference).Wait();
+                SavePreferencesAsync(myPreferences).Wait();
             }
             // create the file if it doens't exist
         }
-
-        // TODO: method for resolving multiple preferences, similar to above but accepting a List of prefernces
 
         /// <summary>
         /// Saves the dietary preferences to a local file.
         /// </summary>
         /// <param name="preferences">The preferences to save</param>
-        public async Task SavePreferencesAsync(DietPreference preferences)
+        public async Task SavePreferencesAsync(List<DietPreference> preferences)
         {
             var json = JsonConvert.SerializeObject(preferences);
             await File.WriteAllTextAsync(filePath, json);
@@ -57,16 +56,17 @@ namespace CookNook
         /// Loads the dietary preferences from the local file.
         /// </summary>
         /// <returns>The loaded preferences</returns>
-        public async Task<DietPreference> LoadPreferencesAsync()
+        public async Task<List<DietPreference>> LoadPreferencesAsync()
         {
             if (!File.Exists(filePath))
             {
                 // return a new instance if the file doesn't exist.
-                return new DietPreference(); 
+                Debug.WriteLine("[DietPreferenceStorage] Could not find the file!");
+                return new List<DietPreference>(); 
             }
 
             var json = await File.ReadAllTextAsync(filePath);
-            return JsonConvert.DeserializeObject<DietPreference>(json);
+            return JsonConvert.DeserializeObject<List<DietPreference>>(json);
         }
 
     }

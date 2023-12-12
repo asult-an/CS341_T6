@@ -101,8 +101,8 @@ namespace CookNook.Model
 
         
         /// <summary>
-        /// Checks against the stored ingredient Ids to see what kind of 
-        /// preference exists (if any) on a given ingredient
+        /// Checks against the stored Recipe Ids to see what kind of 
+        /// preference exists (if any) on a given recipe
         /// </summary>
         /// <param name="recipeId">the id of the recipe to check</param>
         /// <returns></returns>
@@ -121,10 +121,6 @@ namespace CookNook.Model
             return false;
         }
 
-        /**
-         * To keep track of whether or not an affected Ingredient or Recipe is *positively* or *negatively*
-         * associated... we could either use a Tuple, or just make it a property... hm....
-         */
         /// <summary>
         /// Creates a new DietPreference object, from two Collections of Tuples 
         /// detailing the affected entities.
@@ -150,7 +146,7 @@ namespace CookNook.Model
             // initialize as empty lists, without data to reference
             affectedRecipes = new List<DietAffectedRecipe>();
             affectedIngredients = new List<DietAffectedIngredient>();
-            this.Title = "";
+            this.Title = "New Preference";
         }
 
 
