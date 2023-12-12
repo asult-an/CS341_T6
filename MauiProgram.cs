@@ -41,7 +41,9 @@ public static class MauiProgram
 	/// <param name="builder">the instance of the builder hosting the App</param>
 	/// <returns>the builder, once it's had the services added</returns>
 	public static MauiAppBuilder RegisterServices(this MauiAppBuilder builder)
-	{ 
+	{
+		builder.Services.AddScoped<IPreferenceDatabase, PreferenceDatabase>();
+        builder.Services.AddScoped<IPreferenceProvider, PreferenceProvider>();
 		builder.Services.AddScoped<IRecipeDatabase, RecipeDatabase>();
 		builder.Services.AddScoped<IRecipeLogic, RecipeLogic>();
 		builder.Services.AddScoped<IIngredientDatabase, IngredientDatabase>();
