@@ -445,6 +445,7 @@ namespace CookNook.Model.Services
             List<Int64> followerIds = new List<Int64>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
+
             throw new NotImplementedException();
 
         }
@@ -474,16 +475,14 @@ namespace CookNook.Model.Services
                 // append the ranges from junction tables by using ARRAY_AGG as we do down here
                 cmd.CommandText = @"SELECT
                                     u.username, u.email, u.password, u.profile_pic,
-                                    user_settings.settings, dp.preferences AS dietary_preferences,
+                                    user_settings.settings,
                                     ARRAY_AGG(DISTINCT uf.followed_user_id) AS followers,
-                                    ARRAY_AGG(DISTINCT r.recipe_id) AS authored_recipes,
-                                    ARRAY_AGG(DISTINCT dp.user_id) AS preferences
+                                    ARRAY_AGG(DISTINCT r.recipe_id) AS authored_recipes
                                 FROM users AS u
                                 LEFT JOIN user_following_user AS uf ON u.id = uf.follower_user_id
                                 LEFT JOIN public.recipes AS r ON u.id = r.author_id
                                 LEFT JOIN public.user_settings AS user_settings ON u.id = user_settings.user_id
-                                LEFT JOIN public.dietary_preferences AS dp ON u.id = dp.user_id
-                                GROUP BY u.id, u.username, u.email, u.password, u.profile_pic, user_settings.settings, dp.preferences;";
+                                GROUP BY u.id, u.username, u.email, u.password, u.profile_pic, user_settings.settings;";
 
                 cmd.Parameters.AddWithValue("Recipe_ID", userId);
                 reader = cmd.ExecuteReader();
@@ -497,7 +496,8 @@ namespace CookNook.Model.Services
                     user.ProfilePicture = reader.GetString(3);
 
                     user.AppPreferences = new List<string>(reader.GetString(4).Split(','));
-                    user.DietaryPreferences = new List<string>(reader.GetString(5).Split(','));
+                    // user.DietaryPreferences = new List<string>(reader.GetString(5).Split(','));
+                    user.DietaryPreferences = new List<DietPreference>();
 
                     // the integer columns get handled differently since they get parsed
                     user.AuthorList = new List<Int64>(Array.ConvertAll(reader.GetString(6).Split(','), Int64.Parse));

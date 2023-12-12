@@ -14,7 +14,7 @@ namespace CookNook.Model
         private string email;
         private string password;
         private List<string> appPreferences;
-        private List<string> dietaryPreferences;
+        private List<DietPreference> dietaryPreferences;
         private string profilePicture;
         private List<Int64> authorList;
         private List<Int64> followers;
@@ -35,7 +35,7 @@ namespace CookNook.Model
         public string Email { get { return email; } set { email = value; } }
         public string Password { get { return password; } set { password = value; } }
         public List<string> AppPreferences { get {  return appPreferences; } set {  appPreferences = value; } }
-        public List<string> DietaryPreferences { get { return dietaryPreferences; } set {  dietaryPreferences = value; } }
+        public List<DietPreference> DietaryPreferences { get { return dietaryPreferences; } set {  dietaryPreferences = value; } }
         public string ProfilePicture { get {  return profilePicture; } set {  profilePicture = value; } }
         public List<Int64> AuthorList { get { return authorList; } set { authorList = value; } }
         public List<Int64> Followers { get { return followers; } set {  followers = value; } }
