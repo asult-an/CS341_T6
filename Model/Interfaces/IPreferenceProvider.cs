@@ -36,7 +36,7 @@ namespace CookNook.Model.Interfaces
         /// json with a call to WritePreferences
         /// </summary>
         /// <returns></returns>
-        public List<DietPreference> UpdateLocalSettings();
+        public Task<List<DietPreference>> UpdateLocalSettingsAsync();
 
         /// <summary>
         /// Makes a call to `recipeLogic` to resolve the recipe from its id.

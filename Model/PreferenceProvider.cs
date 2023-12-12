@@ -27,6 +27,11 @@ namespace CookNook.Model
         }
 
 
+        /// <summary>
+        /// Appends a singular new preference to the json file
+        /// </summary>
+        /// <param name="preference"></param>
+        /// <returns></returns>
         public bool WritePreferenceJSON(DietPreference preference)
         {
             try
@@ -34,9 +39,8 @@ namespace CookNook.Model
                 var preferences = Task.Run(async () => await localStorage.LoadPreferencesAsync()).Result;
 
                 // append new data
-                preferences.AffectedRecipes.AddRange(preference.AffectedRecipes);
-                preferences.AffectedIngredients.AddRange(preference.AffectedIngredients);
-                
+                preferences.Append(preference); 
+
                 // save the updated collection
                 Task.Run(async () => await localStorage.SavePreferencesAsync(preferences)).Wait();
                 return true;
@@ -79,12 +83,25 @@ namespace CookNook.Model
             }
         }
 
-        public List<DietPreference> UpdateLocalSettings()
+        public async Task<List<DietPreference>> UpdateLocalSettingsAsync()
         {
-            // ask adeel how to resolve the user id from local session
-            //var latest = MauiProgram.ServiceProvider.GetService<IPreferenceDatabase>()
-            //                        .GetPreferencesForUserAsync(userId);
-            throw new NotImplementedException();
+            var userId = UserViewModel.Instance.AppUser.Id;
+            // fetch the latest settings through the database service
+            var latest = MauiProgram.ServiceProvider.GetService<IPreferenceDatabase>()
+                                    .GetPreferencesForUserAsync(userId);
+            
+            OverwritePreferencesJSON(latest.Result);
+            return await localStorage.LoadPreferencesAsync();
+        }
+
+        /// <summary>
+        /// Translates the contents of user_preferences.json into a List of DietPreference objects
+        /// and returns that list.
+        /// </summary>
+        /// <returns></returns>
+        public async Task<List<DietPreference>> GetLocalPreferencesAsync()
+        {
+            return await localStorage.LoadPreferencesAsync();
         }
 
         //public Recipe ResolveRecipeFromPreference(DietAffectedRecipe recipe)
