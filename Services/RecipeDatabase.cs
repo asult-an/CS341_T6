@@ -242,6 +242,7 @@ namespace CookNook.Services
                 //update the observable collection
                 authorList = SelectRecipes(authorListIDs);
                 cookbook = SelectRecipes(cookbookIDs);
+                // transaction.Commit();
             }
             catch (Npgsql.PostgresException pe)//catch any exceptions thrown by the database access statements
             {
@@ -429,7 +430,7 @@ namespace CookNook.Services
                 recipe.Servings = reader.GetInt32(9);
                 //TDOD: updade image reader to GetBytes(10) rather than GetString(10)
                 recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
-                recipe.Tags = GetTagsForRecipe(recipe.ID).ToArray();
+                recipe.Tags = GetTagsForRecipe(recipe.ID);
                
                 // TODO: this probably isn't parsing properly
             //    recipe.Followers = reader.GetString(12);
@@ -451,7 +452,6 @@ namespace CookNook.Services
 
             foreach (Int64 recipeID in recipeList)
             {
-                // TODO: fully qualify the asterisk 
                 var cmd = new NpgsqlCommand(
                     @"SELECT recipe_id, name, description, cook_time_mins, course, 
                             rating, servings, image, author_id FROM public.recipes 
@@ -543,7 +543,7 @@ namespace CookNook.Services
             recipe.Image = Encoding.ASCII.GetBytes(reader.GetString(10));
                 
             // get associative data
-            recipe.Tags = GetTagsForRecipe(inID).ToArray();
+            recipe.Tags = GetTagsForRecipe(inID);
             recipe.FollowerIds = GetRecipeFollowerIds(inID).ToArray();
 
 

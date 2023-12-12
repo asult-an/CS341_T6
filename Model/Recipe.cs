@@ -32,7 +32,7 @@ namespace CookNook.Model
         private int servings;
         private byte[] image;
 
-        private Tag[] tags;// todo
+        private List<Tag> tags;// todo
         private Int64[] followerIds;//todo
 
         /// <summary>
@@ -64,7 +64,7 @@ namespace CookNook.Model
             Int64 authorId,
             int rating = 3,
             int servings = 1,
-            Tag[] tags = null,
+            List<Tag> tags = null,
             Int64[] followerIds = null,
             byte[] imageArr = null
         )
@@ -106,7 +106,7 @@ namespace CookNook.Model
             Int64 authorId,
             int rating = 3,
             int servings = 1,
-            Tag[] tags = null,
+            List<Tag> tags = null,
             Int64[] followerIds = null,
             byte[] imageArr = null
         )
@@ -144,7 +144,7 @@ namespace CookNook.Model
         public int Rating { get { return rating; } set { rating = value; } }
         public int Servings { get { return servings; } set { servings = value; } }
         public byte[] Image { get { return image; } set { image = value; } }
-        public Tag[] Tags { get { return tags; } set { tags = value; } }
+        public List<Tag> Tags { get { return tags; } set { tags = value; } }
         
         public Int64[] FollowerIds { get { return followerIds; } set { followerIds = value; } }
 
