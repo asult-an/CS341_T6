@@ -37,7 +37,7 @@
                 </StackLayout>
             </DataTemplate>
             <!--TODO: define template to highlight row if it clashes with user's diet prefs-->
-            
+
             <!--We need a way to determine on-the-fly which template to use... we have just the thing!-->
             <!--<XmlHelpers:IngredientTemplateSelector x:Key="IngredientTemplateSelector" />-->
         </ResourceDictionary>
@@ -85,12 +85,12 @@
                     </StackLayout>
 
                     <StackLayout Padding="5, 0, 5, 0">
-                            <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                                <Label Text="{Binding Tags[4]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                            </Frame>
-                        </StackLayout>
-
+                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
+                            <Label Text="{Binding Tags[4]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        </Frame>
                     </StackLayout>
+
+                </StackLayout>
 
             </ScrollView>
 
@@ -115,10 +115,34 @@
                     <StackLayout>
 
                         <!--Rating, Author-->
-                        <Grid ColumnDefinitions="auto, *, auto">
+                        <Grid ColumnDefinitions="auto, *, auto" RowDefinitions="auto, auto">
 
-                            <Label Text="{Binding Rating, StringFormat='Rating: {0}/5'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label x:Name="AuthorName" Text="{Binding User.Username}" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <!-- Current Rating Display -->
+                            <Label Text="{Binding Rating, StringFormat='Rating: {0}/5'}" 
+                            Grid.Column="0" 
+                            Grid.Row="0" 
+                            HorizontalOptions="Start" 
+                            FontSize="Medium" 
+                            TextColor="#ffe6a7"/>
+
+                            <!-- Add Rating Button -->
+                            <Button Text="Rate" 
+                            Grid.Column="1" 
+                            Grid.Row="0"
+                            HorizontalOptions="Start"
+                            Margin="20,0,0,0"
+                            Clicked="RateButton_Clicked"
+                            BackgroundColor="#4CAF50" 
+                            TextColor="White" />
+
+                            <!-- Author Name Display -->
+                            <Label x:Name="AuthorName" 
+                            Text="{Binding User.Username}" 
+                            Grid.Column="2" 
+                            Grid.Row="0"
+                            HorizontalOptions="End" 
+                            FontSize="Medium" 
+                            TextColor="#ffe6a7"/>
 
                         </Grid>
 
@@ -163,7 +187,8 @@
                                    IsVisible="False"></Label>
                         </StackLayout>
 
-                        <!--Directions--><!--
+                        <!--Directions-->
+                        <!--
                         <Grid>
 
                             <Label Margin="15" Text="PLACEHOLDER  DIRECTIONS LIST" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
@@ -186,9 +211,31 @@
 
         </StackLayout>
 
+
+        <Grid x:Name="RatingOverlay" IsVisible="False" BackgroundColor="#00000099"
+              HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
+            <Grid VerticalOptions="Center" HorizontalOptions="Center"
+      WidthRequest="300" HeightRequest="225" 
+      Padding="20" BackgroundColor="White">
+
+
+                <StackLayout Spacing="10">
+                    <Label Text="Rate the Recipe" HorizontalOptions="Center" />
+                    <Label x:Name="SliderValueLabel" Text="{Binding Source={x:Reference RatingSlider}, Path=Value, StringFormat='Rating: {0:F0}'}" HorizontalOptions="Center" />
+                    <Slider x:Name="RatingSlider" Minimum="1" Maximum="5" 
+                            Value="3" IsEnabled="True" IsVisible="True" BackgroundColor="White" MaximumTrackColor="#5D151B" MinimumTrackColor="#5D151B"
+                            ThumbColor="#5D151B" ValueChanged="RatingSlider_ValueChanged"
+                            HorizontalOptions="FillAndExpand"/>
+                    <Button Text="Submit" Clicked="SubmitRating" BackgroundColor="#5D151B"/>
+                    <Button Text="Cancel" Clicked="CancelRating" BackgroundColor="#5D151B"/>
+                </StackLayout>
+            </Grid>
+        </Grid>
+
     </Grid>
 
 
+    
 
 
 

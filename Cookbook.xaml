@@ -12,6 +12,8 @@
             <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+    
+    <!-- TODO: make a button for entering a rating. -->
 
 
     <CollectionView x:Name="recipesCollectionView" Margin="10">
@@ -30,6 +32,8 @@
 
                         <!-- Recipe Description -->
                         <Label Text="{Binding Description}" Grid.Row="1"/>
+                        
+                           
 
                         <!-- Recipe Image -->
 

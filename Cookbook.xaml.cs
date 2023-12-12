@@ -33,6 +33,7 @@ public partial class Cookbook : ContentPage, INotifyCollectionChanged
         LoadRecipes(user.Id);
     }
 
+    //TODO: modify load recipes to get servings, rating, and ingredients. 
     public void LoadRecipes(long userID)
     {
         recipesCollectionView.ItemsSource = recipeLogic.CookBookRecipes(userID);
