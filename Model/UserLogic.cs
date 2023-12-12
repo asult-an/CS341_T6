@@ -71,6 +71,15 @@ namespace CookNook.Model
             if (!BCrypt.Net.BCrypt.Verify(password, user.Password))
                 return UserAuthenticationError.InvalidPassword;
 
+            // if we get to this point, the user has successfully logged in: lets load their preferences
+            var newPrefs = MauiProgram.ServiceProvider.GetService<IPreferenceProvider>()
+                                                                  .UpdateLocalSettingsAsync();
+            // load the new settings for the user 
+            user.DietaryPreferences = newPrefs.Result;
+
+            // set this user as the one currently browsing
+            UserViewModel.Instance.AppUser = user;
+
             return UserAuthenticationError.NoError;
             //return userDatabase.AuthenticateUser(username, password);
         }
