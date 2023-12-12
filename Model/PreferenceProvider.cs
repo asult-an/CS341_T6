@@ -9,8 +9,16 @@ using Newtonsoft.Json;
 
 namespace CookNook.Model
 {
+    
+    /// <summary>
+    /// PreferenceProvider is a service that interacts with DietPreferenceStorage to yield tuples 
+    /// of user and preference ids (Since 'user_preference' has cols ['user_id','pref_id'])
+    /// </summary>
     class PreferenceProvider : IPreferenceProvider
     {
+        /// <summary>
+        /// the class directly responsible for the JSON storage
+        /// </summary>
         private readonly DietPreferenceStorage localStorage;
 
         public PreferenceProvider()
