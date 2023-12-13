@@ -270,6 +270,15 @@ namespace CookNook.Model
             }
         }
 
+        public void AddRating(int rating, long recipeId)
+        {
+            recipeDatabase.AddRating(rating, recipeId);
+        }
+
+        public int GetRating(long recipeId)
+        {
+            return recipeDatabase.GetRating(recipeId);
+        }
     }
 }
 

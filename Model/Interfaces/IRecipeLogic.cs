@@ -56,7 +56,8 @@ namespace CookNook.Model
         public ObservableCollection<Recipe> FeedRecipes();
 
         public ObservableCollection<Recipe> CookBookRecipes(long userID);
-
+        void AddRating(int rating, long recipeId);
+        int GetRating(long recipeId);
     }
 }
 
