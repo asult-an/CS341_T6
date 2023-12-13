@@ -4,122 +4,25 @@
              x:Class="CookNook.SearchPage"
              BackgroundColor="#202c39"
              >
-    <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Search"/>
-        <ToolbarItem x:Name="searchToolbarItem"
-                IconImageSource="magnifyingglass.png"
-                Priority="0"
-                Order="Primary" 
-                 Clicked="SearchClicked"/>
+    
 
-        <ToolbarItem x:Name="profileToolbarItem"
-                IconImageSource="profile.png"
-                Priority="1"
-                Order="Primary"
-                Clicked="UserProfileClicked"/>
-    </ContentPage.ToolbarItems>
+    <Grid>
 
-    <Grid
-    RowDefinitions="*,*,*"
-    Padding="30,0">
-        <Frame Grid.Row="0" HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
+        <StackLayout Padding="10, 0, 10, 0">
+            <Entry Placeholder="Profile Search" x:Name="OldPassword" TextColor="#ffe6a7" PlaceholderColor="#ffe6a7"/>
+        </StackLayout>
 
-                <StackLayout Grid.Row="0" Orientation="Horizontal">
-                    <Label Text="Username"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="StartAndExpand"
-                FontSize="20" />
-                    <Image Source="profile.png"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="Center"
-                HeightRequest="40" />
-                </StackLayout>
+        <ScrollView>
 
-                <Label Grid.Row="1"
-            Text="Food Name"
-            FontSize="20"
-            VerticalOptions="Center"
-            HorizontalOptions="StartAndExpand" />
+            <!--This is where the usernames are going to be-->
+            <!--The names will be clickable-->
+            <!--Use the filter thing that vince created-->
+            <CollectionView>
 
-                <Image Grid.Row="2"
-            Source="tacos.png"
-            VerticalOptions="Fill"
-            HorizontalOptions="Fill"
-            Aspect="AspectFill"
-            HeightRequest="150" />
-            </Grid>
-        </Frame>
-        <Frame Grid.Row="1" HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
 
-                <StackLayout Grid.Row="0" Orientation="Horizontal">
-                    <Label Text="Username"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="StartAndExpand"
-                FontSize="20" />
-                    <Image Source="profile.png"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="Center"
-                HeightRequest="40" />
-                </StackLayout>
+            </CollectionView>
 
-                <Label Grid.Row="1"
-            Text="Food Name"
-            FontSize="20"
-            VerticalOptions="Center"
-            HorizontalOptions="StartAndExpand" />
+        </ScrollView>
 
-                <Image Grid.Row="2"
-            Source="tacos.png"
-            VerticalOptions="Fill"
-            HorizontalOptions="Fill"
-            Aspect="AspectFill"
-            HeightRequest="150" />
-            </Grid>
-        </Frame>
-        <Frame Grid.Row="2" HasShadow="True" BorderColor="Black" Padding="10" Margin="0, 0, 0, 10" BackgroundColor="#7D8895">
-            <Grid>
-                <Grid.RowDefinitions>
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="40" />
-                    <RowDefinition Height="*" />
-                </Grid.RowDefinitions>
-
-                <StackLayout Grid.Row="0" Orientation="Horizontal">
-                    <Label Text="Username"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="StartAndExpand"
-                FontSize="20" />
-                    <Image Source="profile.png"
-                VerticalOptions="CenterAndExpand"
-                HorizontalOptions="Center"
-                HeightRequest="40" />
-                </StackLayout>
-
-                <Label Grid.Row="1"
-            Text="Food Name"
-            FontSize="20"
-            VerticalOptions="Center"
-            HorizontalOptions="StartAndExpand" />
-
-                <Image Grid.Row="2"
-            Source="tacos.png"
-            VerticalOptions="Fill"
-            HorizontalOptions="Fill"
-            Aspect="AspectFill"
-            HeightRequest="150" />
-            </Grid>
-        </Frame>
     </Grid>
 </ContentPage>

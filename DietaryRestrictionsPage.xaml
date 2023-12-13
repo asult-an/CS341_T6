@@ -11,8 +11,6 @@
 
     <Grid RowDefinitions="auto, *, auto, auto, *, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
 
-        <Label Text="Dietary Restrictions" Margin="0, 0, 0, 20" FontSize="Large" TextColor="#ffe6a7"/>
-
         <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="#7D8895">
             <ScrollView>
                 <StackLayout Orientation="Vertical">
@@ -70,29 +68,6 @@
             </StackLayout>
 
         </Grid>
-
-        <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
-
-            <Button Text="Back" Clicked="BackClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-
-        </StackLayout>
-
-        <!--<Grid ColumnDefinitions="auto, *" Grid.Row="5">
-
-            <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
-
-                <Button Text="Back" Clicked="BackClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-
-            </StackLayout>
-
-            <StackLayout Grid.Column="1" Padding="10, 0, 0, 0">
-
-                <Button Text="Add Recipe" Clicked="FinishedAddClick" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
-
-            </StackLayout>
-
-        </Grid>-->
-
 
     </Grid>
 

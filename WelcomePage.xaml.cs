@@ -32,6 +32,11 @@ public partial class WelcomePage : ContentPage
     {
         try
         {
+            //TODO: Clear or reset user-related information
+            //we need to create this function to erase every user logic if there was one already
+            //ClearUserInformation();
+
+            // Navigate to the Feed page
             await Navigation.PushAsync(new Feed());
         }
         catch (Exception ex)
