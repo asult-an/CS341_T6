@@ -13,35 +13,57 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <Grid RowDefinitions="auto, *">
 
-    <CollectionView x:Name="recipesCollectionView" Margin="10">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="model:Recipe">
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
-                    <Grid RowSpacing="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" /> 
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="200" />
-                        </Grid.RowDefinitions>
+        <StackLayout Grid.Row="0">
 
-                        <!-- Recipe Name -->
-                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+            <Picker x:Name="UnitPicker" Title="Unit" TextColor="#ffe6a7">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>My Cookbook</x:String>
+                        <x:String>Favorites</x:String>
+                        <x:String>Meat</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
 
-                        <!-- Recipe Description -->
-                        <Label Text="{Binding Description}" Grid.Row="1"/>
+        </StackLayout>
 
-                        <!-- Recipe Image -->
+        <StackLayout Grid.Row="1">
 
-                        <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
-                    </Grid>
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
-                    </Frame.GestureRecognizers>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
+            <CollectionView x:Name="recipesCollectionView" Margin="10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Recipe">
+                        <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
+                            <Grid RowSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" /> 
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="200" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Recipe Name -->
+                                <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+
+                                <!-- Recipe Description -->
+                                <Label Text="{Binding Description}" Grid.Row="1"/>
+
+                                <!-- Recipe Image -->
+
+                                <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </StackLayout>
+
+    </Grid>
+    
 </ContentPage>
 
 
