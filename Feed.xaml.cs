@@ -2,13 +2,15 @@ using System.Collections.ObjectModel;
 using CookNook.Model;
 using System.Diagnostics;
 using CookNook.Services;
+using System.Collections.Specialized;
 
 namespace CookNook;
 
-public partial class Feed : ContentPage
+public partial class Feed : ContentPage, INotifyCollectionChanged
 {
     private ObservableCollection<Recipe> recipes;
 
+    public event NotifyCollectionChangedEventHandler CollectionChanged;
     public ObservableCollection<Recipe> Recipes
     {
         get { return recipes; }
@@ -65,12 +67,14 @@ public partial class Feed : ContentPage
             await Navigation.PushModalAsync(popup);
         }
     }
-    public async void RandomRecipesClicked()
+    public async void RandomRecipesClicked(object sender, EventArgs e)
     {
-        Recipes = recipeLogic.GetRandomFeedRecipes();
+        recipes = recipeLogic.GetRandomFeedRecipes();
+        RecipesCollectionView.ItemsSource = recipes;
     }
-    public async void BestRecipesClicked()
+    public async void BestRecipesClicked(object sender, EventArgs e)
     {
-        Recipes = recipeLogic.GetBestFeedRecipes();
+        recipes = recipeLogic.GetBestFeedRecipes();
+        RecipesCollectionView.ItemsSource = recipes;
     }
 }

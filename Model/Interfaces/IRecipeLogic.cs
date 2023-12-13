@@ -53,11 +53,16 @@ namespace CookNook.Model
 
         List<Tag> GetTagsForRecipe(Int64 recipeID);
 
+        public ObservableCollection<Recipe> GetBestFeedRecipes();
+
         public ObservableCollection<Recipe> GetRandomFeedRecipes();
 
         public ObservableCollection<Recipe> CookBookRecipes(long userID);
-        void AddRating(int rating, long recipeId);
-        int GetRating(long recipeId);
+
+        public void AddRating(int rating, long recipeId);
+
+        public int GetRating(long recipeId);
+
     }
 }
 

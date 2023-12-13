@@ -178,8 +178,8 @@ namespace CookNook.Services
                 string unit = SafeGetString(reader, 2);
                 string name = reader.GetString(3);
                 
-                Debug.WriteLineIf(unit == null, $"[IngredientDB] (ERROR!) unit was not parsed safely!");
-                Debug.WriteLine($"[IngredientDB] Value of Unit: {unit}");
+                //Debug.WriteLineIf(unit == null, $"[IngredientDB] (ERROR!) unit was not parsed safely!");
+                //Debug.WriteLine($"[IngredientDB] Value of Unit: {unit}");
                 // NOTE: unit should only ever be one of the picker values, or NULL
                 Ingredient ingredient;
 
