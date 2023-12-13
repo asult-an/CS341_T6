@@ -1,4 +1,4 @@
-<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+﻿<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
              x:Class="CookNook.Cookbook"
@@ -13,6 +13,19 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="searchToolbarItem"
+                    IconImageSource="magnifyingglass.png"
+                    Priority="0"
+                    Order="Primary" 
+                     Clicked="SearchClicked"/>
+
+        <ToolbarItem x:Name="profileToolbarItem"
+                    IconImageSource="profile.png"
+                    Priority="1"
+                    Order="Primary"
+                    Clicked="UserProfileClicked"/>
+    </ContentPage.ToolbarItems>
 
     <Grid RowDefinitions="auto, *">
 
@@ -30,7 +43,7 @@
 
         </StackLayout>
 
-        <StackLayout Grid.Row="1">
+        <ScrollView Grid.Row="1">
 
             <CollectionView x:Name="recipesCollectionView" Margin="10">
                 <CollectionView.ItemTemplate>
@@ -61,7 +74,7 @@
                 </CollectionView.ItemTemplate>
             </CollectionView>
 
-        </StackLayout>
+        </ScrollView>
 
     </Grid>
     
