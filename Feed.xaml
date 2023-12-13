@@ -27,20 +27,20 @@
             <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
 
     <Grid RowDefinitions="0, 80, 10, *" BackgroundColor="#202c39">
 
+        
 
-
-        <Grid Grid.Row="1" Padding="20" ColumnDefinitions="80, 15,  *">
-
-            <Button Text="Filter" Grid.Column="0" HeightRequest="40" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
-
+        <Grid Grid.Row="1" Padding="20" ColumnDefinitions="80, 15, *">
+            <Frame CornerRadius="10" Margin="0" Padding="0">
+                <Label Text="Filter" HorizontalTextAlignment="Center" VerticalTextAlignment="Center"  Grid.Column="0" HeightRequest="40" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Label>
+            </Frame>
             <StackLayout Padding="10, 0, 10, 0" Orientation="Horizontal" Grid.Column="1">
                 <BoxView BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="Center" />
             </StackLayout>
-
+ 
 
             <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Grid.Column="2">
 
@@ -58,10 +58,23 @@
                         </Frame>
                     </StackLayout>
 
+                    <!--Loading indicator-->
+                    <!--TODO: Move to correct location-->
+                    <ActivityIndicator x:Name="activityIndicator"
+                        Color="#ffe6a7"
+                        IsRunning="False"
+                        Margin="40, 0, 0, 0"
+                        WidthRequest="30"
+                        IsVisible="False"
+                        VerticalOptions="CenterAndExpand"
+                        HorizontalOptions="End"/>
                 </StackLayout>
+
+                
 
             </ScrollView>
 
+            
 
         </Grid>
 
@@ -92,13 +105,12 @@
                             <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
                             <!--</Frame>-->
                         </Grid>
-                        
+
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>
         </CollectionView>
-
+        
     </Grid>
-
 </ContentPage>
 

@@ -3,6 +3,7 @@ using CookNook.Services;
 using System.Diagnostics;
 using CookNook.Model.Interfaces;
 
+
 namespace CookNook;
 
 public partial class LoginPage : ContentPage
@@ -17,7 +18,10 @@ public partial class LoginPage : ContentPage
 
 	public async void LoginClicked(object sender, EventArgs e)
 	{
-		UserAuthenticationError result;
+        activityIndicator.IsVisible = true;
+        activityIndicator.IsRunning = true;
+        await Task.Delay(1);
+        UserAuthenticationError result;
         
 		try
 		{
@@ -43,11 +47,17 @@ public partial class LoginPage : ContentPage
 		{
 			try
 			{
+				
                 User user = userLogic.GetUserByUsername(Username.Text);
 
                 UserViewModel.Instance.AppUser = user;
 
                 var nextPage = new TabView(user);
+				MainThread.BeginInvokeOnMainThread(() =>
+				{
+					activityIndicator.IsVisible = false;
+					activityIndicator.IsRunning = false;
+				});
 
                 await Navigation.PushAsync(nextPage);
             }
@@ -60,7 +70,12 @@ public partial class LoginPage : ContentPage
 			
 			
         }
-	}
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+        });
+    }
 
 	public async void BackClicked(object sender, EventArgs e)
 	{

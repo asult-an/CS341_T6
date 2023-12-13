@@ -64,7 +64,7 @@
                     <!-- Rating Label -->
                     <Label Text="Rating" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
                     <!-- Rating Value -->
-                    <Label Text="{Binding Rating}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+                    <Label Text="{Binding Rating, StringFormat='{0:F1}'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
 
                     <!-- Course Type Label -->
                     <Label Text="Course Type" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>

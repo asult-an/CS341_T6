@@ -118,7 +118,7 @@
                         <Grid ColumnDefinitions="auto, *, auto" RowDefinitions="auto, auto">
 
                             <!-- Current Rating Display -->
-                            <Label Text="{Binding Rating, StringFormat='Rating: {0}/5'}" 
+                            <Label Text="{Binding Rating, StringFormat='Rating: {0:F1}'}" 
                             Grid.Column="0" 
                             Grid.Row="0" 
                             HorizontalOptions="Start" 

@@ -28,6 +28,14 @@
                 <Entry Text="SYSTEM" Placeholder="Password" x:Name="Password" IsPassword="True" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
             </StackLayout>
 
+            <!--Loading indicator-->
+            <ActivityIndicator x:Name="activityIndicator"
+               Color="#ffe6a7"
+               IsRunning="True"
+               IsVisible="False"
+               VerticalOptions="CenterAndExpand"
+               HorizontalOptions="CenterAndExpand" />
+
             <StackLayout Grid.Row="8" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
 
                 <StackLayout Padding="10" VerticalOptions="Center">
