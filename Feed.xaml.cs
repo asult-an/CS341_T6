@@ -23,7 +23,7 @@ public partial class Feed : ContentPage
         //recipeLogic = new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
         recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = inUser;
-        PopulateFeedWithRecipes();
+        PopulateRandomRecipes();
     }
 
     public Feed()
@@ -31,7 +31,7 @@ public partial class Feed : ContentPage
         InitializeComponent();
         recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
         user = UserViewModel.Instance.AppUser;
-        PopulateFeedWithRecipes();
+        PopulateRandomRecipes();
     }
     
     public Feed(IRecipeLogic recipeLogic)
@@ -39,9 +39,9 @@ public partial class Feed : ContentPage
         this.recipeLogic = recipeLogic;
     }
 
-    private void PopulateFeedWithRecipes()
+    private void PopulateRandomRecipes()
     {
-        Recipes = recipeLogic.FeedRecipes();
+        Recipes = recipeLogic.GetRandomFeedRecipes();
         // making sure they have proper data
         RecipesCollectionView.ItemsSource = recipes;
     }
@@ -64,5 +64,13 @@ public partial class Feed : ContentPage
             var popup = new RecipePopUpView(recipe, user);
             await Navigation.PushModalAsync(popup);
         }
+    }
+    public async void RandomRecipesClicked()
+    {
+        Recipes = recipeLogic.GetRandomFeedRecipes();
+    }
+    public async void BestRecipesClicked()
+    {
+        Recipes = recipeLogic.GetBestFeedRecipes();
     }
 }

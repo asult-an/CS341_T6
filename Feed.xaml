@@ -47,26 +47,14 @@
                 <StackLayout Orientation="Horizontal">
 
                     <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Dinner" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        <Frame WidthRequest="80" HeightRequest="40" Padding="0">
+                            <Button Text="Random" FontSize="Caption"  BackgroundColor="#7D8895" TextColor="#ffe6a7" Clicked="RandomRecipesClicked"></Button>
                         </Frame>
                     </StackLayout>
 
                     <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Beef" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Mexican" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="Grill" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
+                        <Frame WidthRequest="80" HeightRequest="40" Padding="0">
+                            <Button Text="Best" FontSize="Caption" TextColor="#ffe6a7" BackgroundColor="#7D8895" Clicked="BestRecipesClicked"></Button>
                         </Frame>
                     </StackLayout>
 

@@ -18,6 +18,7 @@ namespace CookNook.Model
         const int MAX_RECIPE_DESCRIPTION_LENGTH = 150;
         private IIngredientLogic ingredientLogic;
         private IRecipeDatabase recipeDatabase;
+        private const int FEED_LENGTH = 10;
         public List<Recipe> Recipes
         {
             get { return recipes; }
@@ -230,15 +231,38 @@ namespace CookNook.Model
             }
         }
 
+        public ObservableCollection<Recipe> GetBestFeedRecipes()
+        {
+            //select all recipes
+            //sort by highest rating
+            //return top 10 in observable collection
+            try
+            {
+                List<Recipe> allRecipes = recipeDatabase.SelectRecipes(recipeDatabase.GetAllRecipeIds());
+                Random rand = new Random();
+                List<Recipe> bestRecipes = allRecipes.OrderByDescending(recipe => recipe.Rating).Take(FEED_LENGTH).ToList();
 
-        public ObservableCollection<Recipe> FeedRecipes()
+                ObservableCollection<Recipe> feedRecipes = new ObservableCollection<Recipe>();
+                foreach (Recipe r in bestRecipes)
+                {
+                    feedRecipes.Add(r);
+                }
+                return feedRecipes;
+            }
+            catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return null;
+            }
+        }
+        public ObservableCollection<Recipe> GetRandomFeedRecipes()
         {
             try
             {
                 List<Int64> ids = recipeDatabase.GetAllRecipeIds();
                 Random rand = new Random();
 
-                List<Int64> randomNumbers = ids.OrderBy(x => rand.Next()).Take(10).ToList();
+                List<Int64> randomNumbers = ids.OrderBy(x => rand.Next()).Take(FEED_LENGTH).ToList();
                 List <Recipe> randomRecipes = recipeDatabase.SelectRecipes(randomNumbers);
                 ObservableCollection<Recipe> feedRecipes = new ObservableCollection<Recipe>();
                 foreach(Recipe r in  randomRecipes)
