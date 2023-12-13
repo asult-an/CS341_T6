@@ -343,7 +343,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             CurrentRecipe.Description,
             CurrentRecipe.CookTime,
             CurrentRecipe.Ingredients,
-            CourseType.Parse(CourseEntry.Text),
+            CourseType.Parse(CoursePicker.SelectedItem as string),
             CurrentRecipe.AuthorID,     //TODO: get the author-id from the user
             0,
             CurrentRecipe.Servings,
