@@ -86,8 +86,6 @@ namespace CookNook.Services
             List<Recipe> outRecipes = new List<Recipe>();
             using var conn = new NpgsqlConnection(connString);
             conn.Open();
-
-
             var cmd = new NpgsqlCommand(
                 @"SELECT recipe_id, name, description, cook_time_mins, image, course, servings, rating_sum, rating_count FROM public.recipes 
                             WHERE author_id = @User_ID;", conn);
@@ -290,6 +288,7 @@ namespace CookNook.Services
             cmd.Parameters.AddWithValue("Servings", inRecipe.Servings);
             cmd.Parameters.AddWithValue("Image", inRecipe.Image);
             cmd.Parameters.AddWithValue("AuthorID", inRecipe.AuthorID);
+            
 
 
 
@@ -687,6 +686,46 @@ namespace CookNook.Services
             return recipes;
         }
 
+        public void AddRating(int newRating, long recipeId)
+        {
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand())
+                {
+                    cmd.Connection = conn;
+                    cmd.CommandText = "UPDATE recipes SET rating_sum = rating_sum + @NewRating, rating_count = rating_count + 1 WHERE recipe_id = @RecipeID";
+                    cmd.Parameters.AddWithValue("@NewRating", newRating);
+                    cmd.Parameters.AddWithValue("@RecipeID", recipeId);
+
+                    cmd.ExecuteNonQuery(); // Executes the SQL command
+                }
+            }
+        }
+
+        public int GetRating(long recipeId)
+        {
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                using (var cmd = new NpgsqlCommand("SELECT (rating_sum / rating_count) FROM recipes WHERE recipe_id = @RecipeID", conn))
+                {
+                    cmd.Parameters.AddWithValue("@RecipeID", recipeId);
+
+                    var result = cmd.ExecuteScalar();
+                    if (result != DBNull.Value)
+                    {
+                        return Convert.ToInt32(result);
+                    }
+                    else
+                    {
+                        
+                        return 0;
+                    }
+                }
+            }
+
+        }
 
     }
 }

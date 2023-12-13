@@ -11,7 +11,7 @@ public partial class RecipeDetailedView : ContentPage
 {
     private Recipe recipe;
     private User user;
-
+    private IRecipeLogic recipeLogic;
     public User User
     {
         get { return user; }
@@ -88,4 +88,41 @@ public partial class RecipeDetailedView : ContentPage
             MissingIngredientsLabel.IsVisible = false;
 
     }
+
+    private void ShowRatingOverlay()
+    {
+        RatingOverlay.IsVisible = true;
+    }
+
+    private void HideRatingOverlay()
+    {
+        RatingOverlay.IsVisible = false;
+    }
+
+    private void RateButton_Clicked(object sender, EventArgs e)
+    {
+        ShowRatingOverlay();
+    }
+
+    private void SubmitRating(object sender, EventArgs e)
+    {
+        var selectedRating = (int)Math.Round(RatingSlider.Value);
+        recipeLogic = MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
+        recipeLogic.AddRating(selectedRating,recipe.ID);
+        int rating = recipeLogic.GetRating(recipe.ID);
+        recipe.Rating = rating;
+        HideRatingOverlay();
+    }
+
+    private void CancelRating(object sender, EventArgs e)
+    {
+        HideRatingOverlay();
+    }
+
+    private void RatingSlider_ValueChanged(object sender, ValueChangedEventArgs e)
+    {
+        
+        SliderValueLabel.Text = $"Rating: {Math.Round(e.NewValue)}";
+    }
+
 }
