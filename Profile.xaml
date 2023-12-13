@@ -12,65 +12,71 @@
     </ContentPage.Resources>
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem x:Name="searchToolbarItem"
-                IconImageSource="magnifyingglass.png"
-                Priority="0"
-                Order="Primary" 
-                Clicked="SearchClicked"/>
 
         <ToolbarItem x:Name="profileToolbarItem"
                 IconImageSource="gearssolid.svg"
                 Priority="1"
                 Order="Primary" 
                 Clicked="SettingsClicked"/>
+
     </ContentPage.ToolbarItems>
 
-    <Grid
-        Padding="30,0"
-        VerticalOptions="Start"
-        BackgroundColor="#202c39">
-
+    <Grid BackgroundColor="#202c39">
 
         <ScrollView>
-            <Grid
-                RowDefinitions="5*,*,*,*,*,*"
-                Padding="30,0">
 
-                <Image Source="profile.png" Margin="0, 30, 0, 30"></Image>
+            <Grid RowDefinitions="*,*,*">
+
+                <Image Source="profile.png" Grid.Row="0" Margin="0,30,0,10" WidthRequest="200">
+                    <Image.Clip>
+                        <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
+                    </Image.Clip>
+                </Image>
 
                 <Label Grid.Row="1" Text="{Binding AppUser.Username}" HorizontalTextAlignment="Center" FontSize="Title" TextColor="#ffe6a7"></Label>
 
-                <CollectionView x:Name="userRecipesCollectionView" Margin="10" Grid.Row="3">
-                    <CollectionView.ItemTemplate>
-                        <DataTemplate>
-                            <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
-                                <Grid RowSpacing="10">
-                                    <!-- Define Grid Rows -->
-                                    <Grid.RowDefinitions>
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="Auto" />
-                                        <RowDefinition Height="200" />
-                                    </Grid.RowDefinitions>
+                <StackLayout Grid.Row="2" Padding="20, 20, 20 ,0">
 
-                                    <!-- Recipe Name -->
-                                    <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+                    <CollectionView x:Name="userRecipesCollectionView">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
 
-                                    <!-- Recipe Description -->
-                                    <Label Text="{Binding Description}" Grid.Row="1"/>
+                                <StackLayout Padding="0, 0, 0, 20">
 
-                                    <!-- Recipe Image -->
-                                    <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+                                    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
+                                    <Grid RowSpacing="10">
+                                        <Grid.RowDefinitions>
+                                            <RowDefinition Height="Auto" /> 
+                                            <RowDefinition Height="Auto" />
+                                            <RowDefinition Height="200" />
+                                        </Grid.RowDefinitions>
 
-                                </Grid>
-                                <Frame.GestureRecognizers>
-                                    <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
-                                </Frame.GestureRecognizers>
-                            </Frame>
-                        </DataTemplate>
-                    </CollectionView.ItemTemplate>
-                </CollectionView>
+                                        <!-- Recipe Name -->
+                                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+
+                                        <!-- Recipe Description -->
+                                        <Label Text="{Binding Description}" Grid.Row="1"/>
+
+                                        <!-- Recipe Image -->
+                                        <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+                                    </Grid>
+
+                                    <Frame.GestureRecognizers>
+                                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                                    </Frame.GestureRecognizers>
+
+                                </Frame>
+
+                                </StackLayout>
+
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
+
+                </StackLayout>
 
             </Grid>
+
         </ScrollView>
 
     </Grid>
