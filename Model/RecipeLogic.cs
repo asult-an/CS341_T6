@@ -254,7 +254,6 @@ namespace CookNook.Model
             }
         }
 
-
         public List<Recipe>? SelectAllRecipes() 
         {
             try

@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="CookNook.AddRecipeIngredientsPage"
-
              Title="Add Recipe Ingredients">
 
     <Grid RowDefinitions="auto, *, auto, auto, *, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
@@ -13,14 +13,40 @@
             <ScrollView>
                 <StackLayout Orientation="Vertical">
                     <!--TODO: use something that requires a DataTemplate since we have a Model defined it can build off of -->
-                    <CollectionView x:Name="IngredientsView" ItemsSource="{Binding CurrentRecipe.Ingredients}">
+                    <CollectionView x:Name="IngredientsView" 
+                                    SelectionMode="Single"
+                                    SelectionChanged="IngredientsView_SelectionChanged"
+                                    ItemsSource="{Binding CurrentRecipe.Ingredients}"
+                                    >
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
                                 <StackLayout Orientation="Horizontal">
                                     <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
-                                    <Label Text="{Binding Quantity}" HorizontalOptions="Center"/>
-                                    <Label Text="{Binding Unit}" HorizontalOptions="Center"/>
-                                    <Button Text="Remove" Command="{Binding RemoveCommand}" CommandParameter="{Binding .}"/>
+                                    <Label Text="{Binding Quantity}" HorizontalOptions="Center"
+                                           Margin="15, 0"/>
+                                    <Label Text="{Binding Unit}" HorizontalOptions="Center">
+                                        <!--Avoid need for value converter by using DataTriggers--> 
+                                        <Label.Triggers>
+                                        <!--If an ingredient has invalid fields, it shows as UNITLESS in red-->
+                                            <DataTrigger TargetType="Label" 
+                                                         Binding="{Binding Unit}" 
+                                                         Value="UNITLESS">
+                                                <Setter Property="TextColor" Value="Red"/>
+                                            </DataTrigger>
+                                        </Label.Triggers>
+                                    </Label>
+                                    <Button Text="X"
+                                            Clicked="OnRemoveIngredient_Clicked"
+                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent"
+                                            TextColor="Red"
+                                            Margin="0,0"
+                                            />
+                                    
+                                    <!--<Button Text="X"
+                                            Command="{Binding Source={x:Reference AddRecipeIngredientsPage}, Path=RemoveIngredientCommand}"                                            CommandParameter="{Binding .}"
+                                            BackgroundColor="Transparent"
+                                            TextColor="Red"/>-->
                                 </StackLayout>
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
@@ -33,14 +59,9 @@
 
             <StackLayout Grid.Column="0">
 
-                <!--<Entry x:Name="IngredientEntry" Placeholder="Ingredient" TextColor="#ffe6a7"></Entry>-->
-                <!--Picker for the ingredients-->
-                <Picker x:Name="IngredientPicker" 
-                        Title="Add Ingredients..." 
-                        ItemsSource="{Binding IngredientList}"
-                        ItemDisplayBinding="{Binding Name}">
-                </Picker>
-                <Button Grid.RowSpan="2" Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
+                <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPageCommand}">
+                </Button>
+                <Button Grid.RowSpan="2" Text="Save" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="SaveIngredientEdits_Clicked"/>
 
             </StackLayout>
 
@@ -52,7 +73,7 @@
 
             <StackLayout Grid.Column="2">
 
-                <Picker x:Name="UnitPicker" Title="Select a unit">
+                <Picker x:Name="UnitPicker" Title="Select a unit" TextColor="White">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>cups</x:String>
@@ -61,6 +82,7 @@
                             <x:String>tbsps</x:String>
                             <x:String>tsps</x:String>
                             <x:String>grams</x:String>
+                            <x:String>N/A</x:String>
                         </x:Array>
                     </Picker.ItemsSource>
                 </Picker>
