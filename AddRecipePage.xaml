@@ -22,7 +22,7 @@
         <Editor x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." TextColor="White" AutoSize="TextChanges" HeightRequest="100" Margin="0,10"/>
 
         <!--  Time to Make Entry -->
-        <Entry x:Name="TimeToMake" Placeholder="Cook time" HorizontalOptions="Center" HorizontalTextAlignment="Center" WidthRequest="75" TextColor="#ffe6a7" Keyboard="Numeric"/>
+        <Entry x:Name="TimeToMake" Placeholder="Cook time (min)" HorizontalOptions="Center" HorizontalTextAlignment="Center" WidthRequest="110" TextColor="#ffe6a7" Keyboard="Numeric"/>
 
         <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
 

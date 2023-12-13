@@ -87,7 +87,7 @@
                     </Picker.ItemsSource>
                 </Picker>
 
-                <!--<Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>-->
+                <Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>
                 <Picker x:Name="CoursePicker" Title="Select a Course">
                     <Picker.ItemsSource>
                         <!--CourseType is just a string, so we inline modify here-->                   

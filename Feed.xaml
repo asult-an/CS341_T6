@@ -69,6 +69,9 @@
             <CollectionView.ItemTemplate>
                 <DataTemplate>
                     <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
+                        <Frame.GestureRecognizers>
+                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                        </Frame.GestureRecognizers>
                         <Grid RowSpacing="10">
                             <!-- Define Grid Rows -->
                             <Grid.RowDefinitions>
@@ -84,11 +87,12 @@
                             <Label Text="{Binding Description}" Grid.Row="1"/>
 
                             <!-- Recipe Image -->
+
+                            <!--<Frame CornerRadius="10"  Grid.Row="2" Margin="0" Padding="0">-->
                             <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+                            <!--</Frame>-->
                         </Grid>
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
-                        </Frame.GestureRecognizers>
+                        
                     </Frame>
                 </DataTemplate>
             </CollectionView.ItemTemplate>

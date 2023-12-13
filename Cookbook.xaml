@@ -12,7 +12,21 @@
             <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="searchToolbarItem"
+                IconImageSource="magnifyingglass.png"
+                Priority="0"
+                Order="Primary" 
+                 Clicked="SearchClicked"/>
+
+        <ToolbarItem x:Name="profileToolbarItem"
+                IconImageSource="profile.png"
+                Priority="1"
+                Order="Primary"
+                Clicked="UserProfileClicked"/>
+    </ContentPage.ToolbarItems>
+
     <!-- TODO: make a button for entering a rating. -->
 
 
@@ -20,6 +34,9 @@
         <CollectionView.ItemTemplate>
             <DataTemplate x:DataType="model:Recipe">
                 <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
+                    <Frame.GestureRecognizers>
+                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped"/>
+                    </Frame.GestureRecognizers>
                     <Grid RowSpacing="10">
                         <Grid.RowDefinitions>
                             <RowDefinition Height="Auto" /> 
@@ -32,16 +49,13 @@
 
                         <!-- Recipe Description -->
                         <Label Text="{Binding Description}" Grid.Row="1"/>
-                        
-                           
 
                         <!-- Recipe Image -->
-
+                        <!--<Frame CornerRadius="10"  Grid.Row="2" Margin="0" Padding="0" InputTransparent="True">-->
                         <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+                        <!--</Frame>-->
                     </Grid>
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
-                    </Frame.GestureRecognizers>
+                    
                 </Frame>
             </DataTemplate>
         </CollectionView.ItemTemplate>
