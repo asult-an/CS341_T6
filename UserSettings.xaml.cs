@@ -27,10 +27,9 @@ public partial class UserSettings : ContentPage
         await Navigation.PushAsync(dietaryRestrictionsPage);
     }
 
-    public async void LogOutClicked(object sender, EventArgs e)
+    public void LogOutClicked(object sender, EventArgs e)
     {
-        //TODO: Debug this
-        Navigation.PopToRootAsync();
-        await Navigation.PopAsync();
+        Navigation.PushAsync(new WelcomePage());
     }
+
 }
