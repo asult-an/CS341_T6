@@ -71,6 +71,8 @@
 
 	<ItemGroup>
 		<PackageReference Include="BCrypt.Net-Next" Version="4.0.3" />
+		<PackageReference Include="CommunityToolkit.Maui" Version="6.1.0" />
+		<PackageReference Include="CommunityToolkit.Maui.Core" Version="6.1.0" />
 		<PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="7.0.0" />
 		<PackageReference Include="Npgsql" Version="7.0.6" />
 	</ItemGroup>
@@ -79,8 +81,14 @@
 	  <Compile Update="Cookbook.xaml.cs">
 	    <DependentUpon>Cookbook.xaml</DependentUpon>
 	  </Compile>
-	  <Compile Update="IngredientSelectionPage.xaml.cs">
-	    <DependentUpon>IngredientSelectionPage.xaml</DependentUpon>
+	  <Compile Update="Controls\AutocompletePicker.xaml.cs">
+	    <DependentUpon>AutocompletePicker.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="IngredientPickerPage.xaml.cs">
+	    <DependentUpon>IngredientPickerPage.xaml</DependentUpon>
+	  </Compile>
+	  <Compile Update="IngredientPickerPopup.xaml.cs">
+	    <DependentUpon>IngredientPickerPopup.xaml</DependentUpon>
 	  </Compile>
 	  <Compile Update="SearchPage.xaml.cs">
 	    <DependentUpon>SearchPage.xaml</DependentUpon>
@@ -106,7 +114,10 @@
 	  <MauiXaml Update="Cookbook.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
-	  <MauiXaml Update="IngredientSelectionPage.xaml">
+	  <MauiXaml Update="Controls\AutocompletePicker.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
+	  <MauiXaml Update="IngredientPickerPage.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
 	  <MauiXaml Update="SearchPage.xaml">

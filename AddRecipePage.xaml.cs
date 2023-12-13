@@ -97,7 +97,13 @@ namespace CookNook
                 };
 
                 // Navigate to the Addingredients page and pass the newRecipe object
-                await Navigation.PushAsync(new AddRecipeIngredientsPage(this.recipeLogic, this.ingredientLogic, newRecipe, user));
+                await Navigation.PushAsync(new AddRecipeIngredientsPage(
+                    MauiProgram.ServiceProvider.GetService<UserLogic>(),
+                    recipeLogic,
+                    ingredientLogic, 
+                    newRecipe, 
+                    user
+                    ));
             }
             catch (Exception ex)
             {
