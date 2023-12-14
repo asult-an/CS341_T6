@@ -47,9 +47,9 @@
     <Color x:Key="ButtonBackgroundDark">#5D151B</Color>
     <Color x:Key="ButtonTextLight">#ffe6a7</Color>
     <Color x:Key="ButtonTextDark">#ffe6a7</Color>
-    <Color x:Key="BackgroundColorLight">#ffe6a7</Color>
+    <Color x:Key="BackgroundColorLight">LightGray</Color>
     <Color x:Key="BackgroundColorDark">#202c39</Color>
-    <Color x:Key="TextColorLight">#ffe6a7</Color>
+    <Color x:Key="TextColorLight">Black</Color>
     <Color x:Key="TextColorDark">#ffe6a7</Color>
 
     <Color x:Key="FilterButtonBackgroundColorLight">#7D8895</Color>
@@ -57,9 +57,11 @@
     <Color x:Key="FilterButtonTextColorLight">#ffe6a7</Color>
     <Color x:Key="FilterButtonTextColorDark">#ffe6a7</Color>
 
-    <Color x:Key="PostBackgroundColorLight">LightGray</Color>
+    <Color x:Key="PostBackgroundColorLight">#7D8895</Color>
     <Color x:Key="PostBackgroundColorDark">LightGray</Color>
     <Color x:Key="PostTextColorLight">white</Color>
     <Color x:Key="PostTextColorDark">Black</Color>
+
+    
 
 </ResourceDictionary>

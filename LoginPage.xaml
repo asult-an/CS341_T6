@@ -13,19 +13,19 @@
         <Grid RowDefinitions="*, *, *, auto, auto, auto, *, *">
 
             <StackLayout Grid.Row="3">
-                <Label Text="Username:" Margin="10,10,10,0"/>
+                <Label Text="Username:" Margin="10,10,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Text="SYSTEM" Placeholder="Username" x:Name="Username" Margin="10,0,10,10"/>
+                <Entry Text="SYSTEM" Placeholder="Username" x:Name="Username" Margin="10,0,10,10" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
-                <Label Text="Password:" Margin="10,20,10,0"/>
+                <Label Text="Password:" Margin="10,20,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="6">
-                <Entry Text="SYSTEM" Placeholder="Password" x:Name="Password" IsPassword="True" Margin="10,0,10,10"></Entry>
+                <Entry Text="SYSTEM" Placeholder="Password" x:Name="Password" IsPassword="True" Margin="10,0,10,10" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorLight}}"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="8" Orientation="Horizontal" HorizontalOptions="FillAndExpand">

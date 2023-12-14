@@ -13,34 +13,34 @@
         <Grid RowDefinitions="*, *, *, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *">
 
             <StackLayout Grid.Row="3">
-                <Label Text="Username:" Margin="10,90,10,0"/>
+                <Label Text="Username:" Margin="10,90,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Text="SYSTEM" x:Name="Username" Margin="10,0,10,10"/>
+                <Entry Text="SYSTEM" x:Name="Username" Margin="10,0,10,10" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
-                <Label Text="Email:" Margin="10,20,10,0"/>
+                <Label Text="Email:" Margin="10,20,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
                 <Entry Text="SYSTEM@Cooknook.com" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10"/>
             </StackLayout>
           
           <!-- fix this-->
 
             <StackLayout Grid.Row="6">
-                <Label Text="Password:" Margin="10,10,10,0"/>
+                <Label Text="Password:" Margin="10,10,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
             </StackLayout>
             
             <StackLayout Grid.Row="7">
-                <Entry Text="SYSTEM" IsPassword="True" x:Name="Password" Margin="10,0,10,10"></Entry>
+                <Entry Text="SYSTEM" IsPassword="True" x:Name="Password" Margin="10,0,10,10" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorLight}}"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="8">
-                <Label Text="Re-Enter Password:" Margin="10,20,10,0"/>
+                <Label Text="Re-Enter Password:" Margin="10,20,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="9">
-                <Entry Text="SYSTEM" IsPassword="True" x:Name="ConfirmPassword" Margin="10,0,10,10"></Entry>
+                <Entry Text="SYSTEM" IsPassword="True" x:Name="ConfirmPassword" Margin="10,0,10,10" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorLight}}"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
