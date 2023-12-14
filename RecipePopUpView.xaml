@@ -1,9 +1,8 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
        xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
        xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
-       x:Class="CookNook.RecipePopUpView"
-       BackgroundColor="#00000000">
+       x:Class="CookNook.RecipePopUpView">
     <!-- Transparent background to still see the previous screen -->
 
     <ContentPage.Resources>
@@ -12,74 +11,142 @@
         </ResourceDictionary>
     </ContentPage.Resources>
 
-    <Frame VerticalOptions="Center" 
-           HorizontalOptions="FillAndExpand"
-           HeightRequest="800"
-           BackgroundColor="DimGray"
-           Margin="10" Padding="10">
-        
-        <!-- Adjusted margins and padding -->
-        <ScrollView>
-            <!-- Adjusted padding -->
-            <StackLayout Padding="10" HorizontalOptions="Center" VerticalOptions="Center">
-                <!-- Recipe Name -->
-                <Label Text="{Binding Name}" HorizontalOptions="Center" VerticalOptions="Start" FontSize="Large" FontAttributes="Bold"/>
 
-                <!-- Recipe Image -->
-                <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Aspect="AspectFill"/>
+    <StackLayout Padding="10">
 
-                <!-- Grid for CookTime and Serving -->
+        <Frame VerticalOptions="FillAndExpand" BackgroundColor="{AppThemeBinding Light={StaticResource FilterButtonBackgroundColorLight}, Dark={StaticResource FilterButtonBackgroundColorDark}}">
+
+            <StackLayout>
+
+                <Label Text="{Binding Name}" HorizontalOptions="Center" VerticalOptions="Start" FontSize="Large" FontAttributes="Bold" Padding="0, 20, 0 , 20"/>
+
+                <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Aspect="AspectFill" HeightRequest="200"/>
+
                 <Grid Margin="0,10,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
 
-                    <!-- Cook Time Label -->
-                    <Label Text="Cook Time" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
-                    <!-- Cook Time Value -->
-                    <Label Text="{Binding CookTime, StringFormat='{0} min'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+                    <Grid Grid.Column="0" Padding="5">
 
-                    <!-- Servings Label -->
-                    <Label Text="Servings" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
-                    <!-- Servings Value -->
-                    <Label Text="{Binding Servings}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+                        <Frame BackgroundColor="Transparent">
+
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Text="Cook Time" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                <Label Text="{Binding CookTime, StringFormat='{0} min'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                            </Grid>
+
+                        </Frame>
+
+                    </Grid>
+
+                    <Grid Grid.Column="1" Padding="5">
+
+                        <Frame BackgroundColor="Transparent">
+
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Text="Serving Size" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                <Label Text="{Binding Servings}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                            </Grid>
+
+                        </Frame>
+
+                    </Grid>
+
                 </Grid>
 
-                <!-- Grid for Rating and CourseType -->
-                <Grid>
+                <Grid Margin="0,10,0,10">
                     <Grid.ColumnDefinitions>
                         <ColumnDefinition Width="*" />
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
-                    <Grid.RowDefinitions>
-                        <RowDefinition Height="Auto" />
-                        <RowDefinition Height="Auto" />
-                    </Grid.RowDefinitions>
 
+<<<<<<< HEAD
                     <!-- Rating Label -->
                     <Label Text="Rating" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
                     <!-- Rating Value -->
                     <Label Text="{Binding Rating, StringFormat='{0:F1}'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+=======
+                    <Grid Grid.Column="0" Padding="5">
 
-                    <!-- Course Type Label -->
-                    <Label Text="Course Type" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
-                    <!-- Course Type Value -->
-                    <Label Text="{Binding Course.Name}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
+                        <Frame BackgroundColor="Transparent">
+
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Text="Rating" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                <Label Text="{Binding Rating}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                            </Grid>
+
+                        </Frame>
+
+                    </Grid>
+
+                    <Grid Grid.Column="1" Padding="5">
+
+                        <Frame BackgroundColor="Transparent">
+
+                            <Grid>
+
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                </Grid.RowDefinitions>
+
+                                <Label Text="Course Type" Grid.Column="1" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                <Label Text="{Binding Course.Name}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" FontAttributes="Bold" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                            </Grid>
+
+                        </Frame>
+
+                    </Grid>
+>>>>>>> 5ec99f5e0edad17d6fa22cbe43284c293be748c7
+
                 </Grid>
 
-                <!-- Close Button -->
-                <Button Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="Center"/>
-                <Button Text="Full Recipe" Clicked="FullRecipeButtonClicked" HorizontalOptions="Center" Margin="10"/>
+
+                <StackLayout Padding="0, 5, 0, 5">
+
+                    <Button Text="Full Recipe" Clicked="FullRecipeButtonClicked" HorizontalOptions="FillAndExpand"/>
+
+                </StackLayout>
+
+                <StackLayout Padding="0, 5, 0, 5">
+
+                    <Button Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="FillAndExpand"/>
+
+                </StackLayout>
+                
 
             </StackLayout>
-        </ScrollView>
-    </Frame>
+
+        </Frame>
+
+    </StackLayout>
+
 </ContentPage>
-
-
-

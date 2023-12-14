@@ -21,7 +21,7 @@
 
     </ContentPage.ToolbarItems>
 
-    <Grid BackgroundColor="#202c39">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
         <ScrollView>
 
@@ -33,7 +33,7 @@
                     </Image.Clip>
                 </Image>
 
-                <Label Grid.Row="1" Text="{Binding AppUser.Username}" HorizontalTextAlignment="Center" FontSize="Title" TextColor="#ffe6a7"></Label>
+                <Label Grid.Row="1" Text="{Binding AppUser.Username}" HorizontalTextAlignment="Center" FontSize="Title" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"></Label>
 
                 <StackLayout Grid.Row="2" Padding="20, 20, 20 ,0">
 
@@ -43,7 +43,7 @@
 
                                 <StackLayout Padding="0, 0, 0, 20">
 
-                                    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10">
+                                    <Frame BackgroundColor="{AppThemeBinding Light={StaticResource PostBackgroundColorLight}, Dark={StaticResource PostBackgroundColorDark}}" Padding="10" CornerRadius="10">
                                     <Grid RowSpacing="10">
                                         <Grid.RowDefinitions>
                                             <RowDefinition Height="Auto" /> 
@@ -52,10 +52,12 @@
                                         </Grid.RowDefinitions>
 
                                         <!-- Recipe Name -->
-                                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
                                         <!-- Recipe Description -->
-                                        <Label Text="{Binding Description}" Grid.Row="1"/>
+                                        <Label Text="{Binding Description}" Grid.Row="1"
+                                               TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
                                         <!-- Recipe Image -->
                                         <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>

@@ -1,13 +1,14 @@
-<?xml version="1.0" encoding="utf-8" ?>
+﻿<?xml version="1.0" encoding="utf-8" ?>
 <ContentView xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:controls="using:CookNook.Controls"
              x:Class="CookNook.Controls.AutocompletePicker">
     
-    <VerticalStackLayout>
-        <Label Text="Hello world!"></Label>
+    <StackLayout BackgroundColor="{AppThemeBinding Light={StaticResource FilterButtonBackgroundColorLight}, Dark={StaticResource FilterButtonBackgroundColorDark}}">
 
-        <Entry x:Name="IngredientEntry" HeightRequest="50" Placeholder="Ingredient" TextColor="Black" TextChanged="IngredientEntry_TextChanged"></Entry>
+        <StackLayout Padding="10">
+
+            <Entry x:Name="IngredientEntry" HeightRequest="50" Placeholder="Ingredient" TextColor="Black" TextChanged="IngredientEntry_TextChanged"></Entry>
 
         <!--TODO: make a small row OR a vertical scroll box for to be displayed in underneath the -->
 
@@ -27,15 +28,18 @@
             </CollectionView.ItemTemplate>
         </CollectionView>
 
+        </StackLayout>
+
         <Button Text="Add Ingredients" Clicked="Confirm_Clicked"
-                BackgroundColor="#5D151B" 
-                TextColor="#ffe6a7"
-                WidthRequest="150"
-                MaximumWidthRequest="200"
                 HeightRequest="50"
-                CornerRadius="15"
-                Margin="5,15"
+                Margin="10,15"
                 />
 
-    </VerticalStackLayout>
+        <Button Text="Close" Clicked="Close_Clicked"
+                HeightRequest="50"
+                Margin="10,15"
+                />
+
+    </StackLayout>
+
 </ContentView>

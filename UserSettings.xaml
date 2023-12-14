@@ -2,15 +2,15 @@
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CookNook.UserSettings"
-             Title="UserSettings"
-             BackgroundColor="#202c39">
+             Title="Settings"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
+
     <VerticalStackLayout
-        BackgroundColor="#202c39"
+        BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}"
         Spacing="25"
-        Padding="30,0"
-        VerticalOptions="Start">
+        Padding="30,0">
         <Grid
-            RowDefinitions="5*,*,*, *"
+            RowDefinitions="5*,*,*,*,*,*"
             Padding="30,0">
 
             <Image Source="profile.png" Grid.Row="0" Margin="0,30,0,10" WidthRequest="200">
@@ -20,16 +20,25 @@
             </Image>
 
             <StackLayout Grid.Row="1" Padding="10">
-                <Button Clicked="UserAccountSettingsClicked" Text="Account Settings" BackgroundColor="#5D151B"></Button>
+                <Button Clicked="UserAccountSettingsClicked" Text="Account Settings"></Button>
             </StackLayout>
 
             <StackLayout Grid.Row="2" Padding="10">
-                <Button Clicked="DietaryRestrictionsClicked" Text="Dietary Preferences" BackgroundColor="#5D151B"></Button>
+                <Button Clicked="DietaryRestrictionsClicked" Text="Dietary Preferences"></Button>
             </StackLayout>
 
             <StackLayout Grid.Row="3" Padding="10">
-                <Button Clicked="LogOutClicked" Text="Log out" BackgroundColor="#5D151B"></Button>
+                <Button Clicked="LogOutClicked" Text="Log out"></Button>
             </StackLayout>
+
+            <StackLayout Grid.Row="4" Padding="10">
+                <Button Clicked="ApplyLightTheme" Text="Light Mode"/>
+            </StackLayout>
+
+            <StackLayout Grid.Row="5" Padding="10">
+                <Button Clicked="ApplyDarkTheme" Text="Dark Mode"/>
+            </StackLayout>
+
         </Grid>
         
     </VerticalStackLayout>

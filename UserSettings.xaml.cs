@@ -29,7 +29,18 @@ public partial class UserSettings : ContentPage
 
     public void LogOutClicked(object sender, EventArgs e)
     {
+        UserViewModel.Instance.AppUser = null;
         Navigation.PushAsync(new WelcomePage());
+    }
+
+    public void ApplyDarkTheme(object sender, EventArgs e)
+    {
+        App.Current.UserAppTheme = AppTheme.Dark;
+    }
+
+    public void ApplyLightTheme(object sender, EventArgs e)
+    {
+        App.Current.UserAppTheme = AppTheme.Light;
     }
 
 }

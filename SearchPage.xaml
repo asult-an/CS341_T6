@@ -12,7 +12,7 @@
                 Clicked="UserProfileClicked"/>
     </ContentPage.ToolbarItems>
     
-    <Grid BackgroundColor="#202c39">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
         <Grid.RowDefinitions>
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />

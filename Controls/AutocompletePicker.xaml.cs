@@ -150,4 +150,13 @@ public partial class AutocompletePicker : ContentView, INotifyPropertyChanged
 		// now pass them into the event before we invoke it through the handler
 		SelectionConfirmedHandler?.Invoke(this, new IngredientSelectionEventArgs(selectedItems));
     }
+
+	private void Close_Clicked(Object sender, EventArgs e)
+	{
+        // add the selected ingredients to the event arg
+        var selectedItems = IngredientsCollectionView.SelectedItems.Cast<Ingredient>();
+
+        // now pass them into the event before we invoke it through the handler
+        SelectionConfirmedHandler?.Invoke(this, new IngredientSelectionEventArgs(selectedItems));
+    }
 }
