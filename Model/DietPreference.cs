@@ -29,7 +29,12 @@ namespace CookNook.Model
             get { return affectedRecipes; }
             private set => AffectedRecipes = value;
         }
-        
+
+
+        /// <summary>
+        /// Whether or not this DietPreference is being applied to the user's search results
+        /// </summary>
+        public bool IsActive { get; set; }
         
         private List<DietAffectedIngredient> affectedIngredients;
 
