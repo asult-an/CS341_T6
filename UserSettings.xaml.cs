@@ -2,6 +2,8 @@ using CookNook.Model;
 using CookNook.Model.Interfaces;
 using CookNook.XMLHelpers;
 using System.ComponentModel;
+using System.Diagnostics;
+using Microsoft.Maui.Storage;
 
 namespace CookNook;
 
@@ -11,6 +13,7 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
     private User user;
     public event PropertyChangedEventHandler PropertyChanged;
     private ImageSource userImage;
+    private byte[] imageBytes;
     public ImageSource UserImage
     {
         get => userImage;
@@ -92,20 +95,53 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
         }
         catch (FeatureNotSupportedException fnsEx)
         {
-            // Feature not supported on device
+            Debug.WriteLine("Feature Not supported");
         }
         catch (PermissionException pEx)
         {
-            // Permissions not granted
+            Debug.WriteLine("Permission not granted");
         }
         catch (Exception ex)
         {
-            // Other error has occurred.
+            Debug.WriteLine("Error Occurred");
         }
     }
 
-    private void OnSelectFromStorageClicked(object sender, EventArgs e)
+    private async void OnSelectFromStorageClicked(object sender, EventArgs e)
     {
-        
+        var pickOptions = new PickOptions
+        {
+            PickerTitle = "Please select an image",
+            // Use predefined file types
+            FileTypes = FilePickerFileType.Images
+        };
+
+        var result = await FilePicker.PickAsync(pickOptions);
+
+        try
+        {
+            if (result != null)
+            {
+                using (var stream = await result.OpenReadAsync())
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        imageBytes = memoryStream.ToArray(); // Store the image data as a byte array
+                    }
+                }
+
+                ImageSource imageSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                UserImage = imageSource;
+                userLogic.SetProfilePic(user, imageBytes);
+            }
+            else
+                Debug.WriteLine("No file picked");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
+
     }
 }

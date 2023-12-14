@@ -70,5 +70,7 @@ namespace CookNook.Model.Interfaces
         public bool IsFollowingRecipe(long userId, long recipeId);
 
         public byte[] GetProfilePic(User user);
+
+        public void SetProfilePic(User user, byte[] pic);
     }
 }

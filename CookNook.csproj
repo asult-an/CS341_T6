@@ -68,6 +68,7 @@
 	  <None Remove="Resources\Images\recipe4.jpg" />
 	  <None Remove="Resources\Images\recipe5.jpg" />
 	  <None Remove="Resources\Images\tacos.png" />
+	  <None Remove="Resources\Images\user_profile.jpg" />
 	</ItemGroup>
 
 	<ItemGroup>

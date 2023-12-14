@@ -126,6 +126,8 @@ namespace CookNook.Model
         /// <returns> The picture </returns>
         public byte[] GetProfilePicture(Int64 userID);
 
+        public bool SetProfilePicture(Int64 userID, byte[] imageBytes);
+
 
     }
 }

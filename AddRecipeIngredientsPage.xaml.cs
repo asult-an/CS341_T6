@@ -296,7 +296,8 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             4,                             // rating
             1,                            // servings
             tags,                                 // recipeLogic.GetTagsForRecipe
-            new long[] { }             // followerIds
+            new long[] { },
+            CurrentRecipe.Image // followerIds
             //recipeLogic.GetFollowerIds()
 
         ); 

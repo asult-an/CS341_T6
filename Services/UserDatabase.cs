@@ -628,5 +628,30 @@ namespace CookNook.Model.Services
 
             return profilePictureData;
         }
+
+        public bool SetProfilePicture(Int64 userID, byte[] imageBytes)
+        {
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand("UPDATE users SET profile_picture = @ProfilePicture WHERE user_id = @UserID", conn);
+            cmd.Parameters.AddWithValue("UserID", userID);
+            cmd.Parameters.AddWithValue("ProfilePicture", imageBytes);
+
+            try
+            {
+                int affectedRows = cmd.ExecuteNonQuery();
+                return affectedRows > 0; 
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+                return false; 
+            }
+            finally
+            {
+                conn.Close();
+            }
+        }
+
     }
 }

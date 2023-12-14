@@ -16,7 +16,7 @@
                      Clicked="SearchClicked"/>
 
         <ToolbarItem x:Name="profileToolbarItem"
-                    IconImageSource="profile.png"
+                    IconImageSource="user_profile.jpg"
                     Priority="1"
                     Order="Primary"
                     Clicked="UserProfileClicked"/>
