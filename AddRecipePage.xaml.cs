@@ -93,7 +93,8 @@ namespace CookNook
                     CookTime = int.Parse(TimeToMake.Text),
                     Description = recipeInstructions,
                     Image = imageBytes,                 // Use the byte array of the selected image
-                    AuthorID = user.Id
+                    AuthorID = user.Id,
+                    Course = CourseType.Parse(CoursePicker.SelectedItem as string)
                 };
 
                 // Navigate to the Addingredients page and pass the newRecipe object

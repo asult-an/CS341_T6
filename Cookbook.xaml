@@ -4,7 +4,7 @@
              x:Class="CookNook.Cookbook"
              Title="{Binding PageTitle}"
              NavigationPage.HasBackButton="False"
-             BackgroundColor="#202c39"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}"
              xmlns:model="clr-namespace:CookNook.Model">
 
     <ContentPage.Resources>
@@ -29,9 +29,9 @@
 
     <Grid RowDefinitions="auto, *">
 
-        <StackLayout Grid.Row="0">
+        <StackLayout Grid.Row="0" Padding="20, 0, 20, 0">
 
-            <Picker x:Name="UnitPicker" Title="Unit" TextColor="#ffe6a7">
+            <Picker x:Name="CookbookPicker" Title="Cookbook">
                 <Picker.ItemsSource>
                     <x:Array Type="{x:Type x:String}">
                         <x:String>My Cookbook</x:String>
@@ -48,7 +48,7 @@
             <CollectionView x:Name="recipesCollectionView" Margin="10">
                 <CollectionView.ItemTemplate>
                     <DataTemplate x:DataType="model:Recipe">
-                        <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
+                        <Frame BackgroundColor="{AppThemeBinding Light={StaticResource PostBackgroundColorLight}, Dark={StaticResource PostBackgroundColorDark}}" Padding="10" CornerRadius="10" Margin="5">
                             <Grid RowSpacing="10">
                                 <Grid.RowDefinitions>
                                     <RowDefinition Height="Auto" /> 
@@ -57,10 +57,12 @@
                                 </Grid.RowDefinitions>
 
                                 <!-- Recipe Name -->
-                                <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+                                <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
                                 <!-- Recipe Description -->
-                                <Label Text="{Binding Description}" Grid.Row="1"/>
+                                <Label Text="{Binding Description}" Grid.Row="1"
+                                       TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
                                 <!-- Recipe Image -->
 

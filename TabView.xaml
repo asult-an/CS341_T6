@@ -6,8 +6,8 @@
             x:Class="CookNook.TabView"
             xmlns:local="clr-namespace:CookNook"
             NavigationPage.HasBackButton="False"
-            BarBackgroundColor="#202c39"
-            BarTextColor="#ffe6a7"
+            BarBackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}"
+            BarTextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"
             >
 
     <TabbedPage.Children>

@@ -13,28 +13,28 @@
         <Grid RowDefinitions="*, *, *, auto, auto, auto, *, *">
 
             <StackLayout Grid.Row="3">
-                <Label Text="Username:" Margin="10,10,10,0" TextColor="#ffe6a7"/>
+                <Label Text="Username:" Margin="10,10,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Text="SYSTEM" Placeholder="Username" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Entry Text="SYSTEM" Placeholder="Username" x:Name="Username" Margin="10,0,10,10" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
-                <Label Text="Password:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
+                <Label Text="Password:" Margin="10,20,10,0" TextColor="{AppThemeBinding Light={StaticResource ButtonTextLight}, Dark={StaticResource ButtonTextLight}}"/>
             </StackLayout>
 
             <StackLayout Grid.Row="6">
-                <Entry Text="SYSTEM" Placeholder="Password" x:Name="Password" IsPassword="True" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Text="SYSTEM" Placeholder="Password" x:Name="Password" IsPassword="True" Margin="10,0,10,10" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorLight}}"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="8" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
 
                 <StackLayout Padding="10" VerticalOptions="Center">
-                    <Button Text="Back" Clicked="BackClicked" VerticalOptions="Center" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    <Button Text="Back" Clicked="BackClicked" VerticalOptions="Center"/>
                 </StackLayout>
 
-                <Button Text="Login" Clicked="LoginClicked" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Login" Clicked="LoginClicked" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10"/>
 
             </StackLayout>
 

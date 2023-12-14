@@ -29,13 +29,13 @@
     </ContentPage.Resources>
     
 
-    <Grid RowDefinitions="0, 80, 10, *" BackgroundColor="#202c39">
+    <Grid RowDefinitions="0, 80, 0, *" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
 
 
-        <Grid Grid.Row="1" Padding="20" ColumnDefinitions="80, 15,  *">
+        <Grid Grid.Row="1" Padding="20" ColumnDefinitions="80, 20,  *">
 
-            <Button Text="Filter" Grid.Column="0" HeightRequest="40" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
+            <Button Text="Filter" Grid.Column="0" HeightRequest="40"></Button>
 
             <StackLayout Padding="10, 0, 10, 0" Orientation="Horizontal" Grid.Column="1">
                 <BoxView BackgroundColor="Black" WidthRequest="1" VerticalOptions="FillAndExpand" HorizontalOptions="Center" />
@@ -48,13 +48,19 @@
 
                     <StackLayout Padding="5, 0, 5, 0">
                         <Frame WidthRequest="80" HeightRequest="40" Padding="0">
-                            <Button Text="Random" FontSize="Caption"  BackgroundColor="#7D8895" TextColor="#ffe6a7" Clicked="RandomRecipesClicked"></Button>
+                            <Button Text="Random" FontSize="Caption"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource FilterButtonBackgroundColorLight}, Dark={StaticResource FilterButtonBackgroundColorDark}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource FilterButtonTextColorLight}, Dark={StaticResource FilterButtonTextColorDark}}"
+                                    Clicked="RandomRecipesClicked"></Button>
                         </Frame>
                     </StackLayout>
 
                     <StackLayout Padding="5, 0, 5, 0">
                         <Frame WidthRequest="80" HeightRequest="40" Padding="0">
-                            <Button Text="Best" FontSize="Caption" TextColor="#ffe6a7" BackgroundColor="#7D8895" Clicked="BestRecipesClicked"></Button>
+                            <Button Text="Best" FontSize="Caption"
+                                    BackgroundColor="{AppThemeBinding Light={StaticResource FilterButtonBackgroundColorLight}, Dark={StaticResource FilterButtonBackgroundColorDark}}"
+                                    TextColor="{AppThemeBinding Light={StaticResource FilterButtonTextColorLight}, Dark={StaticResource FilterButtonTextColorDark}}"
+                                    Clicked="BestRecipesClicked"></Button>
                         </Frame>
                     </StackLayout>
 
@@ -65,38 +71,44 @@
 
         </Grid>
 
-        <CollectionView x:Name="RecipesCollectionView" Margin="10" Grid.Row="3">
-            <CollectionView.ItemTemplate>
-                <DataTemplate>
-                    <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
-                        <Frame.GestureRecognizers>
-                            <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
-                        </Frame.GestureRecognizers>
-                        <Grid RowSpacing="10">
-                            <!-- Define Grid Rows -->
-                            <Grid.RowDefinitions>
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="Auto" />
-                                <RowDefinition Height="200" />
-                            </Grid.RowDefinitions>
+        <ScrollView Padding="10, 0, 10, 0" Grid.Row="3">
 
-                            <!-- Recipe Name -->
-                            <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+            <CollectionView x:Name="RecipesCollectionView">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate>
+                        <Frame BackgroundColor="{AppThemeBinding Light={StaticResource PostBackgroundColorLight}, Dark={StaticResource PostBackgroundColorDark}}" Padding="10" CornerRadius="10" Margin="5">
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                            </Frame.GestureRecognizers>
+                            <Grid RowSpacing="10">
+                                <!-- Define Grid Rows -->
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="200" />
+                                </Grid.RowDefinitions>
 
-                            <!-- Recipe Description -->
-                            <Label Text="{Binding Description}" Grid.Row="1"/>
+                                <!-- Recipe Name -->
+                                <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
-                            <!-- Recipe Image -->
+                                <!-- Recipe Description -->
+                                <Label Text="{Binding Description}" Grid.Row="1"
+                                       TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
-                            <!--<Frame CornerRadius="10"  Grid.Row="2" Margin="0" Padding="0">-->
-                            <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
-                            <!--</Frame>-->
-                        </Grid>
+                                <!-- Recipe Image -->
+
+                                <!--<Frame CornerRadius="10"  Grid.Row="2" Margin="0" Padding="0">-->
+                                <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+                                <!--</Frame>-->
+                            </Grid>
                         
-                    </Frame>
-                </DataTemplate>
-            </CollectionView.ItemTemplate>
-        </CollectionView>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </ScrollView>
 
     </Grid>
 
