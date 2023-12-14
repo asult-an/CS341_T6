@@ -28,7 +28,7 @@ public partial class WelcomePage : ContentPage
         await Navigation.PushAsync(new SignUpPage(userLogic));
     }
 
-    public async void SkipClicked(object sender, EventArgs e)
+    public void SkipClicked(object sender, EventArgs e)
     {
         try
         {
@@ -37,7 +37,7 @@ public partial class WelcomePage : ContentPage
             //ClearUserInformation();
 
             // Navigate to the Feed page
-            await Navigation.PushAsync(new Feed());
+            Navigation.PushModalAsync(new Feed());
         }
         catch (Exception ex)
         {
