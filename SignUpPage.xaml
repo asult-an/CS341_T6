@@ -13,43 +13,43 @@
         <Grid RowDefinitions="*, *, *, Auto, Auto, Auto, Auto, Auto, Auto, Auto, *">
 
             <StackLayout Grid.Row="3">
-                <Label Text="Username:" Margin="10,10,10,0" TextColor="#ffe6a7"/>
+                <Label Text="Username:" Margin="10,90,10,0"/>
             </StackLayout>
 
             <StackLayout Grid.Row="4">
-                <Entry Text="SYSTEM" x:Name="Username" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Entry Text="SYSTEM" x:Name="Username" Margin="10,0,10,10"/>
             </StackLayout>
 
             <StackLayout Grid.Row="5">
-                <Label Text="Email:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
-                <Entry Text="SYSTEM@Cooknook.com" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10" TextColor="#ffe6a7"/>
+                <Label Text="Email:" Margin="10,20,10,0"/>
+                <Entry Text="SYSTEM@Cooknook.com" x:Name="UserEmail" Placeholder="Email" Margin="10,0,10,10"/>
             </StackLayout>
           
           <!-- fix this-->
 
             <StackLayout Grid.Row="6">
-                <Label Text="Password:" Margin="10,10,10,0" TextColor="#ffe6a7"/>
+                <Label Text="Password:" Margin="10,10,10,0"/>
             </StackLayout>
             
             <StackLayout Grid.Row="7">
-                <Entry Text="SYSTEM" IsPassword="True" x:Name="Password" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Text="SYSTEM" IsPassword="True" x:Name="Password" Margin="10,0,10,10"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="8">
-                <Label Text="Re-Enter Password:" Margin="10,20,10,0" TextColor="#ffe6a7"/>
+                <Label Text="Re-Enter Password:" Margin="10,20,10,0"/>
             </StackLayout>
 
             <StackLayout Grid.Row="9">
-                <Entry Text="SYSTEM" IsPassword="True" x:Name="ConfirmPassword" Margin="10,0,10,10" TextColor="#ffe6a7"></Entry>
+                <Entry Text="SYSTEM" IsPassword="True" x:Name="ConfirmPassword" Margin="10,0,10,10"></Entry>
             </StackLayout>
 
             <StackLayout Grid.Row="10" Orientation="Horizontal" HorizontalOptions="FillAndExpand">
 
                 <StackLayout Padding="10" VerticalOptions="Center">
-                    <Button Text="Back" Clicked="BackClicked" VerticalOptions="Center" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                    <Button Text="Back" Clicked="BackClicked" VerticalOptions="Center"/>
                 </StackLayout>
 
-                <Button Text="Sign Up" Clicked="SignUpClicked" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Sign Up" Clicked="SignUpClicked" HorizontalOptions="FillAndExpand" VerticalOptions="Center" Margin="0,10,10,10"/>
 
             </StackLayout>
 

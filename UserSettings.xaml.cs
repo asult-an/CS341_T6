@@ -29,6 +29,7 @@ public partial class UserSettings : ContentPage
 
     public void LogOutClicked(object sender, EventArgs e)
     {
+        UserViewModel.Instance.AppUser = null;
         Navigation.PushAsync(new WelcomePage());
     }
 

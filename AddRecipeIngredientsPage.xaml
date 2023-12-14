@@ -7,9 +7,9 @@
 
              Title="Add Recipe Ingredients">
 
-    <Grid RowDefinitions="auto, *, auto, auto, *, auto, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
+    <Grid RowDefinitions="auto, *, *, auto, auto, auto" Padding="20, 20, 20, 20" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
-        <Label Text="Ingredients" Margin="0, 0, 0, 20" FontSize="Large" TextColor="#ffe6a7"/>
+        <Label Text="Ingredients" Margin="0, 0, 0, 20" FontSize="Large" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
 
         <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="#7D8895">
             <ScrollView>
@@ -46,7 +46,8 @@
                                             />
                                     
                                     <!--<Button Text="X"
-                                            Command="{Binding Source={x:Reference AddRecipeIngredientsPage}, Path=RemoveIngredientCommand}"                                            CommandParameter="{Binding .}"
+                                            Command="{Binding Source={x:Reference AddRecipeIngredientsPage}, Path=RemoveIngredientCommand}"
+                                            CommandParameter="{Binding .}"
                                             BackgroundColor="Transparent"
                                             TextColor="Red"/>-->
                                 </StackLayout>
@@ -57,28 +58,21 @@
             </ScrollView>
         </Frame>
 
-        <Grid ColumnDefinitions="*, 100, 100" Grid.Row="2" Padding="0, 20, 0, 0">
+        <Grid RowDefinitions="*, auto, auto, *" Grid.Row="2" Padding="0, 20, 0, 0">
 
-            <StackLayout Grid.Column="0">
+            <StackLayout Grid.Row="0">
 
 
-                <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPageCommand}">
-                </Button>
-                <Button Grid.RowSpan="2" Text="Save" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="SaveIngredientEdits_Clicked"/>
+                <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPageCommand}"/>
 
 
             </StackLayout>
 
-            <StackLayout Grid.Column="1">
+            <Grid ColumnDefinitions="auto, *, auto" Grid.Row="1">
 
-                <Entry x:Name="QuantityEntry" Keyboard="Numeric" Placeholder="Qty" TextColor="#ffe6a7"></Entry>
+                <Entry x:Name="QuantityEntry" Keyboard="Numeric" Placeholder="Qty" WidthRequest="100" Grid.Column="0"/>
 
-            </StackLayout>
-
-            <StackLayout Grid.Column="2">
-
-
-                <Picker x:Name="UnitPicker" Title="Unit" TextColor="#ffe6a7">
+                <Picker x:Name="UnitPicker" Title="Unit" TextColor="#ffe6a7" Grid.Column="2" WidthRequest="75">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>cups</x:String>
@@ -92,45 +86,23 @@
                     </Picker.ItemsSource>
                 </Picker>
 
+            </Grid>
 
-                <!--<Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>-->
+            <StackLayout Grid.Row="2">
+
+                <Button Grid.RowSpan="2" Text="Update Quantity" Clicked="SaveIngredientEdits_Clicked"/>
               
             </StackLayout>
         </Grid>
 
-        <Grid Grid.Row="3">
-
-            <Button Grid.RowSpan="2" Text="Add" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="AddIngredientClicked"/>
-
-        </Grid>
-
-        <Grid Grid.Row="5">
-
-            <Picker x:Name="CoursePicker" Title="Course">
-                    <Picker.ItemsSource>
-                        <!--CourseType is just a string, so we inline modify here-->                   
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Breakfast</x:String>
-                            <x:String>Brunch</x:String>
-                            <x:String>Lunch</x:String>
-                            <x:String>Dinner</x:String>
-                            <x:String>Snack</x:String>
-                            <x:String>Other</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
-
-        </Grid>
-
-
         <Grid ColumnDefinitions="auto, *" Grid.Row="6">
 
             <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
-                <Button Text="Back" Clicked="BackClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Back" Clicked="BackClicked"/>
             </StackLayout>
 
             <StackLayout Grid.Column="1" Padding="10, 0, 0, 0">
-                <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Next" Clicked="NextClicked"/>
             </StackLayout>
         </Grid>
     </Grid>
