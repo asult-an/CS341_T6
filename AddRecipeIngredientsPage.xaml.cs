@@ -164,7 +164,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         //        new Ingredient("Apple (Red Delicious)", "2")
         //};
 
-        Tag[] tags = { new Tag { DisplayName = "test" } };
+        List<Tag> tags = new List<Tag>{ new Tag { DisplayName = "test" } };
 
         var newRecipe = new Recipe(
             CurrentRecipe.Name,                   // name
@@ -188,28 +188,10 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
         // "compound assignment" operator: only triggers if left side of operator is null, assigns right side's value
         //recipeLogic ??= new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
-        recipeLogic ??= MauiProgram.ServiceProvider.GetService<RecipeLogic>();
+        recipeLogic ??= MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
 
         // Add recipe to the database using RecipeLogic
-        /**
-         * TEMPORARY
-         * 
-         * [0:] Error finding recipe: System.InvalidOperationException: No row is available
-            at Npgsql.NpgsqlDataReader.GetFieldValue[Int32](Int32 ordinal)
-            at Npgsql.NpgsqlDataReader.GetInt32(Int32 ordinal)
-            at CookNook.Model.RecipeDatabase.SelectRecipe(Int32 inID) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeDatabase.cs:line 502
-            at CookNook.Model.RecipeLogic.FindRecipe(Int32 id) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeLogic.cs:line 148
-            [0:] System.InvalidOperationException: Parameter 'Description' must have either its NpgsqlDbType or its DataTypeName or its Value set
-            at Npgsql.NpgsqlParameter.ResolveHandler(TypeMapper typeMapper)
-            at Npgsql.NpgsqlParameter.Bind(TypeMapper typeMapper)
-            at Npgsql.NpgsqlParameterCollection.ProcessParameters(TypeMapper typeMapper, Boolean validateValues, CommandType commandType)
-            at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
-            at Npgsql.NpgsqlCommand.ExecuteReader(CommandBehavior behavior, Boolean async, CancellationToken cancellationToken)
-            at Npgsql.NpgsqlCommand.ExecuteScalar(Boolean async, CancellationToken cancellationToken)
-            at Npgsql.NpgsqlCommand.ExecuteScalar()
-            at CookNook.Model.RecipeDatabase.InsertRecipe(Recipe inRecipe) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeDatabase.cs:line 350
-            at CookNook.Model.RecipeLogic.AddRecipe(Recipe recipe) in C:\Users\staff.morriv92\source\repos\CS341\flavorflave\FlavorFlaveProto\ProtoFiles\Model\RecipeLogic.cs:line 87
-         */
+
         var result = recipeLogic.AddRecipe(newRecipe);
 
         // Check if the recipe was added successfully and navigate accordingly
@@ -250,31 +232,11 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             1,
             0,
             0,
-            new Tag[] { },
+            new List<Tag> { },
             new long[] { },
             //Encoding.ASCII.GetBytes(PreviousPageData.ImagePath)
             Encoding.ASCII.GetBytes("NO_IMAGE")
         );
-        /**
-       // Add recipe to the database using RecipeLogic
-       var result = recipeLogic.AddRecipe(newRecipe);
-       //DisplayAlert("Debug", result.ToString(), "Okay");
-       // Check if the recipe was added successfully and navigate accordingly
-       if (result == RecipeAdditionError.NoError)
-       {
-           await Navigation.PushAsync(new DietaryRestrictionsPage());
-           await DisplayAlert("Success", "Recipe added successfully!", "OK");
-       }
-       else if (result == RecipeAdditionError.DBAdditionError)
-       {
-           await DisplayAlert("Error", "LogicError", "OK");
-       }
-       else
-       {
-           await DisplayAlert("Error", "Failed to add recipe", "OK");
-       }
-       */
-
     }
 
     /// <summary>

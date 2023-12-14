@@ -16,7 +16,7 @@
         <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="#7D8895">
             <ScrollView>
                 <StackLayout Orientation="Vertical">
-
+                    <!--These are where the DietPreferences wouldappaear--> 
                     <Grid ColumnDefinitions="Auto, *, Auto" Padding="0, 0, 0, 5">
                         <Label TextColor="#ffe6a7" FontSize="Medium" VerticalTextAlignment="Center" Grid.Column="0">Dietary Restriction 1</Label>
                         <Button Text="X" WidthRequest="40" HeightRequest="40" CornerRadius="20" Grid.Column="2" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
