@@ -147,6 +147,10 @@ namespace CookNook.Model
         public List<Tag> Tags { get { return tags; } set { tags = value; } }
         
         public Int64[] FollowerIds { get { return followerIds; } set { followerIds = value; } }
+        /// <summary>
+        /// Place for the color of the background to be set depending on user's preferences
+        /// </summary>
+        public string PreferenceColor { get; set; }
 
 
         public string IngredientsToString()

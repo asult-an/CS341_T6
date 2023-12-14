@@ -695,6 +695,46 @@ namespace CookNook.Services
             return recipes;
         }
 
+        public List<Recipe> GetRecipesWithPreference(List<long> prefIds)
+        {
+            var recipes = new List<Recipe>();
+            using (var conn = new NpgsqlConnection(connString))
+            {
+                conn.Open();
+                var cmd = new NpgsqlCommand(
+                    @"  SELECT 
+                            r.recipe_id, 
+                            pr.pref_id,
+                            MAX(CASE WHEN up.is_preferred THEN 'Green' ELSE 'Red' END) as PrefColor
+                        FROM 
+                            recipes r
+                        LEFT JOIN 
+                            preference_recipes pr ON r.recipe_id = pr.recipe_id
+                        LEFT JOIN 
+                            user_settings up ON pr.pref_id = up.pref_id 
+                        WHERE 
+                            pr.pref_id = ANY(@PreferenceIds)
+                        GROUP BY
+                            r.recipe_id, r.name, pr.pref_id");
 
+                // add the ids in
+                cmd.Parameters.AddWithValue("PreferenceIds", prefIds);
+                
+                // send the command
+                using (var reader = cmd.ExecuteReader())
+                {
+                    // iterate over the recipe Ids and select each of them
+                    while (reader.Read())
+                    {
+                        long recipeId = reader.GetInt32(0);
+                        var recipe = SelectRecipe(recipeId);
+                        
+                        recipe.PreferenceColor = reader.GetString(2);
+                        recipes.Add(recipe);
+                    }
+                    return recipes;
+                }
+            }
+        }
     }
 }

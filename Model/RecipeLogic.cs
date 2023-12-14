@@ -254,6 +254,16 @@ namespace CookNook.Model
             }
         }
 
+        public List<Recipe> GetRecipesWithPreference(List<DietPreference> preferences)
+        {
+            // get all active preference id's so we can make a query using them
+            var pref_ids = preferences.Where(p => p.IsActive)
+                .Select(p => p.DietPrefId).ToList();
+            
+            // send the list to the database class to deal with
+            return recipeDatabase.GetRecipesWithPreference(pref_ids);
+        }
+
 
         public List<Recipe>? SelectAllRecipes() 
         {

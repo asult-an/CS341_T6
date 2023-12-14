@@ -46,5 +46,12 @@ namespace CookNook.Model
         public List<Int64> GetAllRecipeIds();
 
         public ObservableCollection<Recipe> CookbookRecipes(long userID);
+
+        /// <summary>
+        /// Used to perform a search with a preference applied to the recipes
+        /// </summary>
+        /// <param name="preferences"></param>
+        /// <returns></returns>
+        List<Recipe> GetRecipesWithPreference(List<long> preferenceIds);
     }
 }
