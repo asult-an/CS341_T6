@@ -35,7 +35,6 @@ namespace CookNook.Model
             this.ingredientLogic = ingredientLogic;
         }
 
-     
 
        // this method may be redundant
        public RecipeAdditionError CreateRecipe(string inName, string inDescription, Int64 inAuthorId,

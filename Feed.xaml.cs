@@ -93,13 +93,33 @@ public partial class Feed : ContentPage, INotifyCollectionChanged, INotifyProper
     }
     public async void RandomRecipesClicked(object sender, EventArgs e)
     {
+        activityIndicator.IsVisible = true;
+        activityIndicator.IsRunning = true;
+        await Task.Delay(1);
+
         recipes = recipeLogic.GetRandomFeedRecipes();
         RecipesCollectionView.ItemsSource = recipes;
+
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+        });
     }
     public async void BestRecipesClicked(object sender, EventArgs e)
     {
+        activityIndicator.IsVisible = true;
+        activityIndicator.IsRunning = true;
+        await Task.Delay(1);
+
         recipes = recipeLogic.GetBestFeedRecipes();
         RecipesCollectionView.ItemsSource = recipes;
+
+        MainThread.BeginInvokeOnMainThread(() =>
+        {
+            activityIndicator.IsVisible = false;
+            activityIndicator.IsRunning = false;
+        });
     }
 
     

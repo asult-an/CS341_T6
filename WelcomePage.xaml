@@ -13,15 +13,15 @@
         <Grid RowDefinitions="*, *, *, Auto, Auto, *, Auto">
 
         <StackLayout Grid.Row="3" Padding="10">
-            <Button Text="Login" Clicked="LoginClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
+            <Button Text="Login" Clicked="LoginClicked"></Button>
         </StackLayout>
         
         <StackLayout Grid.Row="4" Padding="10">
-            <Button Text="Sign Up" Clicked="SignUpClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
+            <Button Text="Sign Up" Clicked="SignUpClicked"></Button>
         </StackLayout>
 
         <StackLayout Grid.Row="6" Padding="10">
-            <Button Text="Skip" Clicked="SkipClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"></Button>
+            <Button Text="Skip" Clicked="SkipClicked"></Button>
         </StackLayout>
 
     </Grid>

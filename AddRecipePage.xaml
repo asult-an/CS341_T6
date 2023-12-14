@@ -5,26 +5,44 @@
              Title="Add Recipe"
              NavigationPage.HasBackButton="False">
 
-    <StackLayout Spacing="10" Padding="10" BackgroundColor="#202c39">
+    <StackLayout Spacing="10" Padding="10" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
         <!-- Image Frame -->
-        <Frame HasShadow="True" BorderColor="Black" Padding="0" BackgroundColor="#202c39" CornerRadius="100">
+        <Frame HasShadow="True" BorderColor="Black" Padding="0" CornerRadius="100">
             <Image x:Name="SelectedImage" Aspect="AspectFit" MaximumHeightRequest="250"/>
         </Frame>
 
         <!-- Pick Image Button -->
-        <Button Text="Pick an Image" Clicked="PickImageClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7" Margin="10"/>
+        <Button Text="Pick an Image" Clicked="PickImageClicked" Margin="10"/>
 
         <!-- Name Entry -->
-        <Entry x:Name="Name" Placeholder="Enter recipe name..." TextColor="White" Margin="0,10"/>
+        <Entry x:Name="Name" Placeholder="Enter recipe name..." Margin="0,10"/>
 
         <!-- Description Editor -->
-        <Editor x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." TextColor="White" AutoSize="TextChanges" HeightRequest="100" Margin="0,10"/>
+        <Editor x:Name="Description" BindingContext="{Binding RecipeInstructions, Mode=TwoWay}" Placeholder="Enter description here..." AutoSize="TextChanges" HeightRequest="100" Margin="0,10"/>
 
-        <!--  Time to Make Entry -->
-        <Entry x:Name="TimeToMake" Placeholder="Cook time" HorizontalOptions="Center" HorizontalTextAlignment="Center" WidthRequest="75" TextColor="#ffe6a7" Keyboard="Numeric"/>
+        <Grid ColumnDefinitions="Auto, *, 150">
 
-        <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+            <!--  Time to Make Entry -->
+            <Entry x:Name="TimeToMake" Placeholder="Cook time (min)" HorizontalOptions="Center" HorizontalTextAlignment="Start" WidthRequest="150" Keyboard="Numeric" Grid.Column="0"/>
+
+            <Picker x:Name="CoursePicker" Title="Course" Grid.Column="2">
+                    <Picker.ItemsSource>
+                        <!--CourseType is just a string, so we inline modify here-->                   
+                        <x:Array Type="{x:Type x:String}">
+                            <x:String>Breakfast</x:String>
+                            <x:String>Brunch</x:String>
+                            <x:String>Lunch</x:String>
+                            <x:String>Dinner</x:String>
+                            <x:String>Snack</x:String>
+                            <x:String>Other</x:String>
+                        </x:Array>
+                    </Picker.ItemsSource>
+                </Picker>
+
+        </Grid>
+
+        <Button Text="Next" Clicked="NextClicked"/>
 
     </StackLayout>
 </ContentPage>

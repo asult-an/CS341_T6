@@ -28,7 +28,7 @@ namespace CookNook.Model
 
         private int cookTime;
         private CourseType course;
-        private int rating;
+        private double rating;
         private int servings;
         private byte[] image;
 
@@ -141,7 +141,7 @@ namespace CookNook.Model
 
         public int CookTime { get { return cookTime; } set { cookTime = value; } }
         public CourseType Course { get { return course; } set { course = value; } }
-        public int Rating { get { return rating; } set { rating = value; } }
+        public double Rating { get { return rating; } set { rating = value; } }
         public int Servings { get { return servings; } set { servings = value; } }
         public byte[] Image { get { return image; } set { image = value; } }
         public Tag[] Tags { get { return tags; } set { tags = value; } }

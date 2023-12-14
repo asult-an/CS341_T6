@@ -56,12 +56,12 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
         await Navigation.PushAsync(dietaryRestrictionsPage);
     }
 
-    public async void LogOutClicked(object sender, EventArgs e)
+    public void LogOutClicked(object sender, EventArgs e)
     {
-        //TODO: Debug this
-        Navigation.PopToRootAsync();
-        await Navigation.PopAsync();
+        UserViewModel.Instance.AppUser = null;
+        Navigation.PushModalAsync(new WelcomePage());
     }
+
 
     private void LoadProfilePic(User user)
     {
@@ -176,4 +176,16 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
         }
 
     }
+
+    public void ApplyDarkTheme(object sender, EventArgs e)
+    {
+        App.Current.UserAppTheme = AppTheme.Dark;
+    }
+
+    public void ApplyLightTheme(object sender, EventArgs e)
+    {
+        App.Current.UserAppTheme = AppTheme.Light;
+    }
+
+
 }

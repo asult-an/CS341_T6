@@ -291,7 +291,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             //recipeLogic.GetIngredientsByRecipe(1),
             // CourseType.Parse("Dinner"),
             //CourseType.Parse(CourseEntry.Text),
-            CourseType.Parse(CoursePicker.SelectedItem as string),
+            currentRecipe.Course,
             currentRecipe.AuthorID,
             4,                             // rating
             1,                            // servings
@@ -344,7 +344,7 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             CurrentRecipe.Description,
             CurrentRecipe.CookTime,
             CurrentRecipe.Ingredients,
-            CourseType.Parse(CoursePicker.SelectedItem as string),
+            CurrentRecipe.Course,
             CurrentRecipe.AuthorID,     //TODO: get the author-id from the user
             0,
             CurrentRecipe.Servings,

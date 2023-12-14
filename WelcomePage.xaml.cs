@@ -28,11 +28,16 @@ public partial class WelcomePage : ContentPage
         await Navigation.PushAsync(new SignUpPage(userLogic));
     }
 
-    public async void SkipClicked(object sender, EventArgs e)
+    public void SkipClicked(object sender, EventArgs e)
     {
         try
         {
-            await Navigation.PushAsync(new Feed());
+            //TODO: Clear or reset user-related information
+            //we need to create this function to erase every user logic if there was one already
+            //ClearUserInformation();
+
+            // Navigate to the Feed page
+            Navigation.PushModalAsync(new Feed());
         }
         catch (Exception ex)
         {

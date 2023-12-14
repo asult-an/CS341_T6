@@ -48,6 +48,16 @@ public partial class Cookbook : ContentPage, INotifyCollectionChanged
         }
     }
 
+    public async void UserProfileClicked(object sender, EventArgs e)
+    {
+        Debug.WriteLine(user.Username);
+        await Navigation.PushAsync(new Profile(user));
+    }
+    public async void SearchClicked(object sender, EventArgs e)
+    {
+        await Navigation.PushAsync(new SearchPage());
+    }
+
     // Other methods
 }
 

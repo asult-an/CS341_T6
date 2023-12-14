@@ -3,13 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:toolkit="http://schemas.microsoft.com/dotnet/2022/maui/toolkit"
              x:Class="CookNook.AddRecipeIngredientsPage"
+             NavigationPage.HasBackButton="False"
+
              Title="Add Recipe Ingredients">
 
-    <Grid RowDefinitions="auto, *, auto, auto, *, auto" Padding="20, 20, 20, 20" BackgroundColor="#202c39">
+    <Grid RowDefinitions="auto, *, *, auto, auto, auto" Padding="20, 20, 20, 20" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
-        <Label Text="Ingredients" Margin="0, 0, 0, 20" FontSize="Large" TextColor="#ffe6a7"/>
+        <Label Text="Ingredients" Margin="0, 0, 0, 20" FontSize="Large"/>
 
-        <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="#7D8895">
+        <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="{AppThemeBinding Light={StaticResource PostBackgroundColorLight}, Dark={StaticResource PostBackgroundColorDark}}">
             <ScrollView>
                 <StackLayout Orientation="Vertical">
                     <!--TODO: use something that requires a DataTemplate since we have a Model defined it can build off of -->
@@ -20,11 +22,17 @@
                                     >
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
-                                    <Label Text="{Binding Quantity}" HorizontalOptions="Center"
-                                           Margin="15, 0"/>
-                                    <Label Text="{Binding Unit}" HorizontalOptions="Center">
+
+                                <Grid ColumnDefinitions="*, auto, auto" Padding="0, 5, 0, 5">
+
+                                    <Label Text="{Binding Name}" Grid.Column="0" VerticalTextAlignment="Center" FontSize="Body" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                    <HorizontalStackLayout Grid.Column="1" Padding="0, 0, 20, 0">
+
+                                        <Label Text="{Binding Quantity}" VerticalTextAlignment="Center" FontSize="Body" Padding="10, 0, 10, 0"/>
+
+                                        <Label Text="{Binding Unit}" VerticalTextAlignment="Center" FontSize="Body">
+
                                         <!--Avoid need for value converter by using DataTriggers--> 
                                         <Label.Triggers>
                                         <!--If an ingredient has invalid fields, it shows as UNITLESS in red-->
@@ -34,20 +42,26 @@
                                                 <Setter Property="TextColor" Value="Red"/>
                                             </DataTrigger>
                                         </Label.Triggers>
+
                                     </Label>
+
+                                    </HorizontalStackLayout>
+
                                     <Button Text="X"
+                                            FontSize="Medium"
+                                            FontAttributes="Bold"
                                             Clicked="OnRemoveIngredient_Clicked"
                                             CommandParameter="{Binding .}"
                                             BackgroundColor="Transparent"
-                                            TextColor="Red"
-                                            Margin="0,0"
+                                            Padding="0"
+                                            BorderWidth="3"
+                                            BorderColor="{AppThemeBinding Light={StaticResource ButtonBackgroundDark}, Dark={StaticResource ButtonBackgroundDark}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource ButtonBackgroundDark}, Dark={StaticResource ButtonBackgroundDark}}"
+                                            Grid.Column="2"
                                             />
-                                    
-                                    <!--<Button Text="X"
-                                            Command="{Binding Source={x:Reference AddRecipeIngredientsPage}, Path=RemoveIngredientCommand}"                                            CommandParameter="{Binding .}"
-                                            BackgroundColor="Transparent"
-                                            TextColor="Red"/>-->
-                                </StackLayout>
+
+                                </Grid>
+
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>
@@ -55,25 +69,21 @@
             </ScrollView>
         </Frame>
 
-        <Grid ColumnDefinitions="*, 100, 100" Grid.Row="2" Padding="0, 20, 0, 0">
+        <Grid RowDefinitions="*, auto, auto, *" Grid.Row="2" Padding="0, 20, 0, 0">
 
-            <StackLayout Grid.Column="0">
+            <StackLayout Grid.Row="0">
 
-                <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPageCommand}">
-                </Button>
-                <Button Grid.RowSpan="2" Text="Save" BackgroundColor="#5D151B" TextColor="#ffe6a7" Clicked="SaveIngredientEdits_Clicked"/>
 
-            </StackLayout>
+                <Button x:Name="btnIngredientPicker" Text="Select Ingredient" Command="{Binding OpenPageCommand}"/>
 
-            <StackLayout Grid.Column="1">
-
-                <Entry x:Name="QuantityEntry" Keyboard="Numeric" Placeholder="Qty" TextColor="#ffe6a7"></Entry>
 
             </StackLayout>
 
-            <StackLayout Grid.Column="2">
+            <Grid ColumnDefinitions="auto, *, auto" Grid.Row="1">
 
-                <Picker x:Name="UnitPicker" Title="Select a unit" TextColor="White">
+                <Entry x:Name="QuantityEntry" Keyboard="Numeric" Placeholder="Qty" WidthRequest="100" Grid.Column="0"/>
+
+                <Picker x:Name="UnitPicker" Title="Unit" TextColor="#ffe6a7" Grid.Column="2" WidthRequest="75">
                     <Picker.ItemsSource>
                         <x:Array Type="{x:Type x:String}">
                             <x:String>cups</x:String>
@@ -87,42 +97,23 @@
                     </Picker.ItemsSource>
                 </Picker>
 
-                <!--<Entry x:Name="CourseEntry" Placeholder="Enter course (e.g., Appetizer, Main Course)"/>-->
-                <Picker x:Name="CoursePicker" Title="Select a Course">
-                    <Picker.ItemsSource>
-                        <!--CourseType is just a string, so we inline modify here-->                   
-                        <x:Array Type="{x:Type x:String}">
-                            <x:String>Breakfast</x:String>
-                            <x:String>Brunch</x:String>
-                            <x:String>Lunch</x:String>
-                            <x:String>Dinner</x:String>
-                            <x:String>Snack</x:String>
-                            <x:String>Other</x:String>
-                        </x:Array>
-                    </Picker.ItemsSource>
-                </Picker>
+            </Grid>
+
+            <StackLayout Grid.Row="2">
+
+                <Button Grid.RowSpan="2" Text="Update Quantity" Clicked="SaveIngredientEdits_Clicked"/>
+              
             </StackLayout>
         </Grid>
 
-        <Grid Grid.Row="3">
-            <!--<StackLayout>
-                <Editor Placeholder="Special Instructions" AutoSize="TextChanges" TextColor="#ffe6a7"></Editor>
-            </StackLayout>-->
-        </Grid>
-
-        <!--<Grid Grid.Row="4"
-            <StackLayout Grid.Column="0">
-            </StackLayout>
-        </Grid>-->
-
-        <Grid ColumnDefinitions="auto, *" Grid.Row="5">
+        <Grid ColumnDefinitions="auto, *" Grid.Row="6">
 
             <StackLayout Grid.Column="0" Padding="0, 0, 10, 0">
-                <Button Text="Back" Clicked="BackClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Back" Clicked="BackClicked"/>
             </StackLayout>
 
             <StackLayout Grid.Column="1" Padding="10, 0, 0, 0">
-                <Button Text="Next" Clicked="NextClicked" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+                <Button Text="Next" Clicked="NextClicked"/>
             </StackLayout>
         </Grid>
     </Grid>

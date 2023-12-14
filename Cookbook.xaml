@@ -4,7 +4,7 @@
              x:Class="CookNook.Cookbook"
              Title="{Binding PageTitle}"
              NavigationPage.HasBackButton="False"
-             BackgroundColor="#202c39"
+             BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}"
              xmlns:model="clr-namespace:CookNook.Model">
 
     <ContentPage.Resources>
@@ -12,40 +12,74 @@
             <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
+
+    <ContentPage.ToolbarItems>
+        <ToolbarItem x:Name="searchToolbarItem"
+                    IconImageSource="magnifyingglass.png"
+                    Priority="0"
+                    Order="Primary" 
+                     Clicked="SearchClicked"/>
+
+        <ToolbarItem x:Name="profileToolbarItem"
+                    IconImageSource="profile.png"
+                    Priority="1"
+                    Order="Primary"
+                    Clicked="UserProfileClicked"/>
+    </ContentPage.ToolbarItems>
+
+    <Grid RowDefinitions="auto, *">
+
+        <StackLayout Grid.Row="0" Padding="20, 0, 20, 0">
+
+            <Picker x:Name="CookbookPicker" Title="Cookbook">
+                <Picker.ItemsSource>
+                    <x:Array Type="{x:Type x:String}">
+                        <x:String>My Cookbook</x:String>
+                        <x:String>Favorites</x:String>
+                        <x:String>Meat</x:String>
+                    </x:Array>
+                </Picker.ItemsSource>
+            </Picker>
+
+        </StackLayout>
+
+        <ScrollView Grid.Row="1">
+
+            <CollectionView x:Name="recipesCollectionView" Margin="10">
+                <CollectionView.ItemTemplate>
+                    <DataTemplate x:DataType="model:Recipe">
+                        <Frame BackgroundColor="{AppThemeBinding Light={StaticResource PostBackgroundColorLight}, Dark={StaticResource PostBackgroundColorDark}}" Padding="10" CornerRadius="10" Margin="5">
+                            <Grid RowSpacing="10">
+                                <Grid.RowDefinitions>
+                                    <RowDefinition Height="Auto" /> 
+                                    <RowDefinition Height="Auto" />
+                                    <RowDefinition Height="200" />
+                                </Grid.RowDefinitions>
+
+                                <!-- Recipe Name -->
+                                <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"
+                                       TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                <!-- Recipe Description -->
+                                <Label Text="{Binding Description}" Grid.Row="1"
+                                       TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                <!-- Recipe Image -->
+
+                                <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
+                            </Grid>
+                            <Frame.GestureRecognizers>
+                                <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
+                            </Frame.GestureRecognizers>
+                        </Frame>
+                    </DataTemplate>
+                </CollectionView.ItemTemplate>
+            </CollectionView>
+
+        </ScrollView>
+
+    </Grid>
     
-    <!-- TODO: make a button for entering a rating. -->
-
-
-    <CollectionView x:Name="recipesCollectionView" Margin="10">
-        <CollectionView.ItemTemplate>
-            <DataTemplate x:DataType="model:Recipe">
-                <Frame BackgroundColor="LightGray" Padding="10" CornerRadius="10" Margin="5">
-                    <Grid RowSpacing="10">
-                        <Grid.RowDefinitions>
-                            <RowDefinition Height="Auto" /> 
-                            <RowDefinition Height="Auto" />
-                            <RowDefinition Height="200" />
-                        </Grid.RowDefinitions>
-
-                        <!-- Recipe Name -->
-                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
-
-                        <!-- Recipe Description -->
-                        <Label Text="{Binding Description}" Grid.Row="1"/>
-                        
-                           
-
-                        <!-- Recipe Image -->
-
-                        <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
-                    </Grid>
-                    <Frame.GestureRecognizers>
-                        <TapGestureRecognizer NumberOfTapsRequired="1" Tapped="OnItemTapped" />
-                    </Frame.GestureRecognizers>
-                </Frame>
-            </DataTemplate>
-        </CollectionView.ItemTemplate>
-    </CollectionView>
 </ContentPage>
 
 
