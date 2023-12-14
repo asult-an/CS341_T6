@@ -78,12 +78,6 @@
                         <ColumnDefinition Width="*" />
                     </Grid.ColumnDefinitions>
 
-<<<<<<< HEAD
-                    <!-- Rating Label -->
-                    <Label Text="Rating" Grid.Column="0" Grid.Row="0" HorizontalOptions="Center" FontSize="Medium"/>
-                    <!-- Rating Value -->
-                    <Label Text="{Binding Rating, StringFormat='{0:F1}'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium"/>
-=======
                     <Grid Grid.Column="0" Padding="5">
 
                         <Frame BackgroundColor="Transparent">
@@ -125,7 +119,6 @@
                         </Frame>
 
                     </Grid>
->>>>>>> 5ec99f5e0edad17d6fa22cbe43284c293be748c7
 
                 </Grid>
 
