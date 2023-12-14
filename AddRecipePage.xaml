@@ -5,7 +5,7 @@
              Title="Add Recipe"
              NavigationPage.HasBackButton="False">
 
-    <StackLayout Spacing="10" Padding="10" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorLight}}">
+    <StackLayout Spacing="10" Padding="10" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
         <!-- Image Frame -->
         <Frame HasShadow="True" BorderColor="Black" Padding="0" CornerRadius="100">
