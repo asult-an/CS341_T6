@@ -94,7 +94,7 @@ namespace CookNook.Services
 
             using (var reader = cmd.ExecuteReader())
             {
-                Debug.Write($"UserID from GetRecepeByUserId: ${userID}");
+                Debug.Write($"UserID from GetRecipeByUserId: ${userID}");
 
                 while (reader.Read())
                 {
@@ -113,6 +113,7 @@ namespace CookNook.Services
                     int sumOfRatings = reader.GetInt32(7);
                     int countOfRatings = reader.GetInt32(8);
                     recipe.Rating = countOfRatings > 0 ? (int)Math.Round((double)sumOfRatings / countOfRatings) : 0;
+                    // recipe.Rating = 3;
 
                     if (!reader.IsDBNull(4))
                     {
@@ -275,9 +276,9 @@ namespace CookNook.Services
 
             //write the SQL statement to insert the recipe into the database
             NpgsqlCommand cmd = new NpgsqlCommand("INSERT INTO recipes (name, description, cook_time_mins, " +
-                                "course, rating_sum, servings, image, author_id) VALUES " +
+                                "course, rating_sum, servings, image, author_id, rating_count) VALUES " +
                                 "(@Name, @Description, @CookTimeMins, @Course, @Rating, @Servings, " +
-                                "@Image, @AuthorID) RETURNING recipe_id", conn);
+                                "@Image, @AuthorID, @RatingCount) RETURNING recipe_id", conn);
 
             //extract the relevant data from the recipe specified by the user
             cmd.Parameters.AddWithValue("Name", inRecipe.Name);
@@ -289,8 +290,8 @@ namespace CookNook.Services
             cmd.Parameters.AddWithValue("Image", inRecipe.Image);
             cmd.Parameters.AddWithValue("AuthorID", inRecipe.AuthorID);
             
-
-
+            // new recipes have 0 reviews
+            cmd.Parameters.AddWithValue("RatingCount", 0);
 
             // first, we need the new ID of that recipe!
             var result = cmd.ExecuteScalar();
@@ -301,7 +302,6 @@ namespace CookNook.Services
                 Debug.WriteLine("Null result: ", result);
                 return RecipeAdditionError.DBAdditionError;
             }
-            // todo: FIX NAME BINDING
             else
             {
                 Debug.WriteLine("Result: ", result);

@@ -55,6 +55,7 @@ namespace CookNook.Model
             if (inDescription.Split(' ').Length > MAX_RECIPE_DESCRIPTION_LENGTH)
                 return RecipeAdditionError.InvalidDescription;
 
+
             // Q: how do we resolve Id back from the Database (since it's returning a RecipeError) if it's automatically generated
             // A: The returned object from the query may have something to answer this, otherwise we could do a SELECT FROM RECIPES WHERE...
             
@@ -67,9 +68,11 @@ namespace CookNook.Model
                 Description = inDescription,
                 // new recipe will have no followers
                 //FollowerIds = recipeDatabase.GetIngredientsByRecipe(),
-                
+   
                 Image = Encoding.ASCII.GetBytes(inImage),
-            }; 
+            };
+            // make sure the Rating won't cause problmes
+            newRecipe.Rating = 3;
 
             return AddRecipe(newRecipe);
         }
@@ -98,6 +101,7 @@ namespace CookNook.Model
 
             if (recipe.Image == null)
                 recipe.Image = Encoding.ASCII.GetBytes("NO_IMAGE");
+           
 
             try
             {
