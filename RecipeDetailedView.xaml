@@ -47,59 +47,10 @@
     <!--Full page view-->
     <Grid Padding="10" RowDefinitions="auto, auto, *, auto">
 
-        <!--Food tags-->
-        <Grid ColumnDefinitions="auto, 10, *" Grid.Row="0">
-
-            <!--Tag label-->
-            <Frame WidthRequest="70" HeightRequest="40" Padding="0" Grid.Column="0">
-                <Label Text="Tags" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-            </Frame>
-
-            <!--All the tags of the meal-->
-            <ScrollView Orientation="Horizontal" HorizontalScrollBarVisibility="Never" Grid.Column="2">
-
-                <StackLayout Orientation="Horizontal">
-
-                    <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="{Binding Tags[0]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="{Binding Tags[1]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="{Binding Tags[2]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="{Binding Tags[3]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                        </Frame>
-                    </StackLayout>
-
-                    <StackLayout Padding="5, 0, 5, 0">
-                        <Frame WidthRequest="70" HeightRequest="40" Padding="0">
-                            <Label Text="{Binding Tags[4]}" FontSize="Body" VerticalTextAlignment="Center" HorizontalTextAlignment="Center" BackgroundColor="#7D8895"></Label>
-                        </Frame>
-                    </StackLayout>
-
-                </StackLayout>
-
-            </ScrollView>
-
-        </Grid>
-
         <!--Image of food-->
         <StackLayout Padding="0, 10, 0, 0" Grid.Row="1">
 
-            <Frame BackgroundColor="Transparent" HeightRequest="200" Padding="0" BorderColor="Black">
+            <Frame BackgroundColor="Transparent" HeightRequest="250" Padding="0" BorderColor="Black">
                 <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Aspect="AspectFill"/>
             </Frame>
 
@@ -110,72 +61,102 @@
 
             <Frame BackgroundColor="#7D8895" BorderColor="Black">
 
-                <ScrollView>
+                <ScrollView VerticalScrollBarVisibility="Never">
 
                     <StackLayout>
 
                         <!--Rating, Author-->
                         <Grid ColumnDefinitions="auto, *, auto" RowDefinitions="auto, auto">
 
+                            <!-- Author Name Display -->
+                            <!--{Binding User.Username}-->
+                            <Label x:Name="AuthorName" 
+                            Text="Tyler"  
+                            Grid.Row="0"
+                            HorizontalOptions="Start"
+                            VerticalOptions="Center"
+                            FontSize="Medium" 
+                            TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+
                             <!-- Current Rating Display -->
                             <Label Text="{Binding Rating, StringFormat='Rating: {0}/5'}" 
-                            Grid.Column="0" 
+                            Grid.Column="1" 
                             Grid.Row="0" 
-                            HorizontalOptions="Start" 
+                            HorizontalOptions="End"
+                            VerticalOptions="Center"
                             FontSize="Medium" 
-                            TextColor="#ffe6a7"/>
+                            TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
 
                             <!-- Add Rating Button -->
                             <Button Text="Rate" 
-                            Grid.Column="1" 
+                            Grid.Column="2" 
                             Grid.Row="0"
-                            HorizontalOptions="Start"
                             Margin="20,0,0,0"
                             Clicked="RateButton_Clicked"
                             BackgroundColor="#4CAF50" 
-                            TextColor="White" />
-
-                            <!-- Author Name Display -->
-                            <Label x:Name="AuthorName" 
-                            Text="{Binding User.Username}" 
-                            Grid.Column="2" 
-                            Grid.Row="0"
-                            HorizontalOptions="End" 
-                            FontSize="Medium" 
-                            TextColor="#ffe6a7"/>
+                            TextColor="White"
+                            />
 
                         </Grid>
+
+                        <StackLayout Padding="0, 0, 0, 10">
+                        <Grid x:Name="RatingOverlay" IsVisible="False">
+
+                            <Grid VerticalOptions="Center" HorizontalOptions="FillAndExpand" >
+
+                                <StackLayout Spacing="10">
+                                    
+                                    <Label x:Name="SliderValueLabel" Text="{Binding Source={x:Reference RatingSlider}, Path=Value, StringFormat='Rating: {0:F0}'}" HorizontalOptions="Center" />
+                                    <Slider x:Name="RatingSlider" Minimum="1" Maximum="5" 
+                                            Value="3" IsEnabled="True" IsVisible="True" MaximumTrackColor="{AppThemeBinding Light={StaticResource ButtonBackgroundLight}, Dark={StaticResource ButtonBackgroundDark}}" MinimumTrackColor="{AppThemeBinding Light={StaticResource ButtonBackgroundLight}, Dark={StaticResource ButtonBackgroundDark}}"
+                                            ThumbColor="{AppThemeBinding Light={StaticResource ButtonBackgroundLight}, Dark={StaticResource ButtonBackgroundDark}}" ValueChanged="RatingSlider_ValueChanged"
+                                            HorizontalOptions="FillAndExpand"/>
+                                    <Button Text="Submit" Clicked="SubmitRating"/>
+                                    <Button Text="Cancel" Clicked="CancelRating"/>
+                                </StackLayout>
+                            </Grid>
+                        </Grid>
+                        </StackLayout>
 
                         <!--Meal Type, Time it takes-->
                         <Grid ColumnDefinitions="auto, *, auto">
 
-                            <Label Text="{Binding Course.Name}" Grid.Column="0" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
-                            <Label Text="{Binding CookTime, StringFormat='{0} min'}" TextColor="#ffe6a7" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium"/>
+                            <Label Text="{Binding Course.Name}" Grid.Column="0" HorizontalOptions="Center" FontSize="Medium" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+                            <Label Text="{Binding CookTime, StringFormat='{0} min'}" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}" Grid.Column="2" HorizontalOptions="Center" FontSize="Medium"/>
 
                         </Grid>
 
                         <!--Servings, Followers (dummby data for followers)-->
                         <Grid ColumnDefinitions="auto, *, auto">
 
-                            <Label Text="{Binding Servings, StringFormat='Serves {0}'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
+                            <Label Text="{Binding Servings, StringFormat='Serves {0}'}" Grid.Column="0" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                             <!--<Label Text="{Binding FollowerIds.Length, StringFormat='{0} Followers'}" TextColor="#ffe6a7" Grid.Column="1" HorizontalOptions="Center"/>-->
 
                         </Grid>
 
+                        <StackLayout Padding="0, 10, 0, 0">
+
+                            <BoxView Color="Black" HeightRequest="1" HorizontalOptions="FillAndExpand"/>
+
+                        </StackLayout>
+
+
                         <!--Description of meal-->
                         <Grid>
 
-                            <Label Text="{Binding Description}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7" Padding="0, 10, 0, 10"/>
+                            <Label Text="{Binding Description}" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Small" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}" Padding="0, 10, 0, 10"/>
 
                         </Grid>
 
                         <!--Ingredients-->
                         <StackLayout>
 
-                            <Label Text="Ingredients" FontSize="Large" TextColor="#ffe6a7"/>
+                            <Label Text="Ingredients" FontSize="Large" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
                             <CollectionView ItemsSource="{Binding Ingredients}"
                                             ItemTemplate="{StaticResource IngredientTemplateSelector}"
-                                            Loaded="OnIngredientsLoaded">
+                                            Loaded="OnIngredientsLoaded"
+                                            VerticalScrollBarVisibility="Never"
+                                            >
 
                             </CollectionView>
                             <!--DIsplay only if no ingredients wer found, so the user understands the functionality is still working-->
@@ -187,16 +168,6 @@
                                    IsVisible="False"></Label>
                         </StackLayout>
 
-                        <!--Directions-->
-                        <!--
-                        <Grid>
-
-                            <Label Margin="15" Text="PLACEHOLDER  DIRECTIONS LIST" Grid.Column="1" Grid.Row="1" HorizontalOptions="Center" FontSize="Medium" TextColor="#ffe6a7"/>
-
-                        </Grid>-->
-
-                        <!--Close Button-->
-
                     </StackLayout>
 
                 </ScrollView>
@@ -207,37 +178,11 @@
 
         <StackLayout Grid.Row="3">
 
-            <Button Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="Center" WidthRequest="350" BackgroundColor="#5D151B" TextColor="#ffe6a7"/>
+            <Button Text="Close" Clicked="CloseButtonClicked" HorizontalOptions="FillAndExpand"/>
 
         </StackLayout>
 
-
-        <Grid x:Name="RatingOverlay" IsVisible="False" BackgroundColor="#00000099"
-              HorizontalOptions="CenterAndExpand" VerticalOptions="Center">
-            <Grid VerticalOptions="Center" HorizontalOptions="Center"
-      WidthRequest="300" HeightRequest="225" 
-      Padding="20" BackgroundColor="White">
-
-
-                <StackLayout Spacing="10">
-                    <Label Text="Rate the Recipe" HorizontalOptions="Center" />
-                    <Label x:Name="SliderValueLabel" Text="{Binding Source={x:Reference RatingSlider}, Path=Value, StringFormat='Rating: {0:F0}'}" HorizontalOptions="Center" />
-                    <Slider x:Name="RatingSlider" Minimum="1" Maximum="5" 
-                            Value="3" IsEnabled="True" IsVisible="True" BackgroundColor="White" MaximumTrackColor="#5D151B" MinimumTrackColor="#5D151B"
-                            ThumbColor="#5D151B" ValueChanged="RatingSlider_ValueChanged"
-                            HorizontalOptions="FillAndExpand"/>
-                    <Button Text="Submit" Clicked="SubmitRating" BackgroundColor="#5D151B"/>
-                    <Button Text="Cancel" Clicked="CancelRating" BackgroundColor="#5D151B"/>
-                </StackLayout>
-            </Grid>
-        </Grid>
-
     </Grid>
-
-
-    
-
-
 
 </ContentPage>
     

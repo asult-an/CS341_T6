@@ -33,4 +33,14 @@ public partial class UserSettings : ContentPage
         Navigation.PushAsync(new WelcomePage());
     }
 
+    public void ApplyDarkTheme(object sender, EventArgs e)
+    {
+        App.Current.UserAppTheme = AppTheme.Dark;
+    }
+
+    public void ApplyLightTheme(object sender, EventArgs e)
+    {
+        App.Current.UserAppTheme = AppTheme.Light;
+    }
+
 }

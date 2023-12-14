@@ -41,11 +41,13 @@
     <Color x:Key="Blue200Accent">#72ACF1</Color>
     <Color x:Key="Blue300Accent">#A7CBF6</Color>
 
+
+    <!--These are the main colors of the app-->
     <Color x:Key="ButtonBackgroundLight">#5D151B</Color>
     <Color x:Key="ButtonBackgroundDark">#5D151B</Color>
     <Color x:Key="ButtonTextLight">#ffe6a7</Color>
     <Color x:Key="ButtonTextDark">#ffe6a7</Color>
-    <Color x:Key="BackgroundColorLight">#202c39</Color>
+    <Color x:Key="BackgroundColorLight">#ffe6a7</Color>
     <Color x:Key="BackgroundColorDark">#202c39</Color>
     <Color x:Key="TextColorLight">#ffe6a7</Color>
     <Color x:Key="TextColorDark">#ffe6a7</Color>

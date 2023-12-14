@@ -9,9 +9,9 @@
 
     <Grid RowDefinitions="auto, *, *, auto, auto, auto" Padding="20, 20, 20, 20" BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
-        <Label Text="Ingredients" Margin="0, 0, 0, 20" FontSize="Large" TextColor="{AppThemeBinding Light={StaticResource TextColorLight}, Dark={StaticResource TextColorDark}}"/>
+        <Label Text="Ingredients" Margin="0, 0, 0, 20" FontSize="Large"/>
 
-        <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="#7D8895">
+        <Frame Grid.Row="1" BorderColor="Black" HasShadow="True" Padding="10" BackgroundColor="{AppThemeBinding Light={StaticResource PostBackgroundColorLight}, Dark={StaticResource PostBackgroundColorDark}}">
             <ScrollView>
                 <StackLayout Orientation="Vertical">
                     <!--TODO: use something that requires a DataTemplate since we have a Model defined it can build off of -->
@@ -22,11 +22,17 @@
                                     >
                         <CollectionView.ItemTemplate>
                             <DataTemplate>
-                                <StackLayout Orientation="Horizontal">
-                                    <Label Text="{Binding Name}" HorizontalOptions="StartAndExpand"/>
-                                    <Label Text="{Binding Quantity}" HorizontalOptions="Center"
-                                           Margin="15, 0"/>
-                                    <Label Text="{Binding Unit}" HorizontalOptions="Center">
+
+                                <Grid ColumnDefinitions="*, auto, auto" Padding="0, 5, 0, 5">
+
+                                    <Label Text="{Binding Name}" Grid.Column="0" VerticalTextAlignment="Center" FontSize="Body" TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
+
+                                    <HorizontalStackLayout Grid.Column="1" Padding="0, 0, 20, 0">
+
+                                        <Label Text="{Binding Quantity}" VerticalTextAlignment="Center" FontSize="Body" Padding="10, 0, 10, 0"/>
+
+                                        <Label Text="{Binding Unit}" VerticalTextAlignment="Center" FontSize="Body">
+
                                         <!--Avoid need for value converter by using DataTriggers--> 
                                         <Label.Triggers>
                                         <!--If an ingredient has invalid fields, it shows as UNITLESS in red-->
@@ -36,21 +42,26 @@
                                                 <Setter Property="TextColor" Value="Red"/>
                                             </DataTrigger>
                                         </Label.Triggers>
+
                                     </Label>
+
+                                    </HorizontalStackLayout>
+
                                     <Button Text="X"
+                                            FontSize="Medium"
+                                            FontAttributes="Bold"
                                             Clicked="OnRemoveIngredient_Clicked"
                                             CommandParameter="{Binding .}"
                                             BackgroundColor="Transparent"
-                                            TextColor="Red"
-                                            Margin="0,0"
+                                            Padding="0"
+                                            BorderWidth="3"
+                                            BorderColor="{AppThemeBinding Light={StaticResource ButtonBackgroundDark}, Dark={StaticResource ButtonBackgroundDark}}"
+                                            TextColor="{AppThemeBinding Light={StaticResource ButtonBackgroundDark}, Dark={StaticResource ButtonBackgroundDark}}"
+                                            Grid.Column="2"
                                             />
-                                    
-                                    <!--<Button Text="X"
-                                            Command="{Binding Source={x:Reference AddRecipeIngredientsPage}, Path=RemoveIngredientCommand}"
-                                            CommandParameter="{Binding .}"
-                                            BackgroundColor="Transparent"
-                                            TextColor="Red"/>-->
-                                </StackLayout>
+
+                                </Grid>
+
                             </DataTemplate>
                         </CollectionView.ItemTemplate>
                     </CollectionView>

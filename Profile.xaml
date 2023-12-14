@@ -21,7 +21,7 @@
 
     </ContentPage.ToolbarItems>
 
-    <Grid BackgroundColor="#202c39">
+    <Grid BackgroundColor="{AppThemeBinding Light={StaticResource BackgroundColorLight}, Dark={StaticResource BackgroundColorDark}}">
 
         <ScrollView>
 
@@ -52,10 +52,12 @@
                                         </Grid.RowDefinitions>
 
                                         <!-- Recipe Name -->
-                                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"/>
+                                        <Label Text="{Binding Name}" Grid.Row="0" FontSize="Medium" FontAttributes="Bold"
+                                               TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
                                         <!-- Recipe Description -->
-                                        <Label Text="{Binding Description}" Grid.Row="1"/>
+                                        <Label Text="{Binding Description}" Grid.Row="1"
+                                               TextColor="{AppThemeBinding Light={StaticResource PostTextColorLight}, Dark={StaticResource PostTextColorDark}}"/>
 
                                         <!-- Recipe Image -->
                                         <Image Source="{Binding Image, Converter={StaticResource ByteToImageConverter}}" Grid.Row="2" Aspect="AspectFill"/>
