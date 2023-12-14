@@ -1,4 +1,6 @@
-﻿using CookNook.Model;
+﻿using CommunityToolkit.Maui;
+using CommunityToolkit.Maui.Core;
+using CookNook.Model;
 using CookNook.Model.Interfaces;
 using CookNook.Model.Services;
 using CookNook.Services;
@@ -14,6 +16,8 @@ public static class MauiProgram
 		var builder = MauiApp.CreateBuilder();
 		builder
 			.UseMauiApp<App>()
+			.UseMauiCommunityToolkit()
+			.UseMauiCommunityToolkitCore()
 			.ConfigureFonts(fonts =>
 			{
 				fonts.AddFont("OpenSans-Regular.ttf", "OpenSansRegular");

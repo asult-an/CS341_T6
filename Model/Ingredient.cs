@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -10,7 +12,7 @@ namespace CookNook.Model
 	/// Represents an ingredient.  
 	/// Note that it allows null quantity and unit , as some ingredients may not have a quantity or unit.
 	/// </summary>
-    public class Ingredient
+    public class Ingredient : INotifyPropertyChanged
     {
 		private Int64 ingredientId;
 		private string name;
@@ -20,6 +22,9 @@ namespace CookNook.Model
 		/// <summary>
 		/// The unit of the ingredient, such as "cup" or "teaspoon"
 		/// May be null when name of ingredient is used as unit (e.g: "eggs")
+		/// <remarks>
+		/// Returns "UNITLESS" if the ingredient is unitless 
+		/// </remarks>
 		/// </summary>
 		public string Unit
 		{
@@ -27,26 +32,24 @@ namespace CookNook.Model
 				// if there's no unit, either return name of ingredient or N/A
 				if (unit == null)
 				{
-                    if (name == null)
-					{
-                        return "N/A";
-                    }
-                    return name;
+					return "UNITLESS";
                 }
 				return unit; 
 			}
-			set { unit = value; }
-		}
+			// set { unit = value; }
+			set { SetField(ref unit, value); } 
+        }
 
 
-		/// <summary>
-		/// The quantity of the ingredient, such as 2 or 1/2.
-		/// Stored as a string in case the user enters a fraction
-		/// </summary>
-		public string Quantity
+        /// <summary>
+        /// The quantity of the ingredient, such as 2 or 1/2.
+        /// Stored as a string in case the user enters a fraction
+        /// </summary>
+        public string Quantity
 		{
 			get { return quantity; }
-			set { quantity = value; }
+			//set { quantity = value; }
+			set { SetField(ref quantity, value); }
 		}
 
 
@@ -56,27 +59,30 @@ namespace CookNook.Model
 		public string Name
 		{
 			get { return name; }
-			set { name = value; }
-		}
+			//set { name = value; }
+            set { SetField(ref name, value); }
+
+        }
 
 
-		public Int64 IngredientId
+        public Int64 IngredientId
 		{
 			get { return ingredientId; }
-			set { ingredientId = value; }
-		}
+			// set { ingredientId = value; }
+            set { SetField(ref ingredientId, value); }
+        }
 
 
-		/// <summary>
-		/// Constructs a new 'Unitless ingredient' which will have a `unit` 
-		/// of NULL. Useful for ingredients that feature unique naming conventions, such 
-		/// as 'eggs', 'cans', 'apple(s)', etc.
-		/// 
-		/// IngredientId Defaults to an ID of -1, so be sure to modify before inserting
-		/// </summary>
-		/// <param name="name"></param>
-		/// <param name="quantity"></param>
-		public Ingredient(string name, string quantity)
+        /// <summary>
+        /// Constructs a new 'Unitless ingredient' which will have a `unit` 
+        /// of NULL. Useful for ingredients that feature unique naming conventions, such 
+        /// as 'eggs', 'cans', 'apple(s)', etc.
+        /// 
+        /// IngredientId Defaults to an ID of -1, so be sure to modify before inserting
+        /// </summary>
+        /// <param name="name"></param>
+        /// <param name="quantity"></param>
+        public Ingredient(string name, string quantity)
 		{
 			// keeps Id at -1 so we can tell if it hasn't been fetched from the database after being added 
 			this.ingredientId = -1;
@@ -167,7 +173,7 @@ namespace CookNook.Model
 			string buffer = "";
 
 			// if unitless, "{qty} {name}"; else "{qty} {unit} {name}"
-			if (unit == null)
+			if (string.IsNullOrEmpty(unit))
 			{
                 buffer = $"{quantity} {name}";
             }
@@ -177,5 +183,20 @@ namespace CookNook.Model
             }
 			return buffer;
 		}
-	}
+
+        public event PropertyChangedEventHandler PropertyChanged;
+
+        protected virtual void OnPropertyChanged(string propertyName)
+        {
+            PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
+        }
+
+        protected bool SetField<T>(ref T field, T value, [CallerMemberName] string propertyName = null)
+        {
+            if (EqualityComparer<T>.Default.Equals(field, value)) return false;
+            field = value;
+            OnPropertyChanged(propertyName);
+            return true;
+        }
+    }
 }
