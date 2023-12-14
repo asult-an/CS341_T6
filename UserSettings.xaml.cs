@@ -76,10 +76,42 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-
-    private void OnChangePictureClicked(object sender, EventArgs e)
+       
+    private async void OnChangePictureClicked(object sender, EventArgs e)
     {
-        pictureOptions.IsVisible = !pictureOptions.IsVisible;
+        var pickOptions = new PickOptions
+        {
+            PickerTitle = "Please select an image",
+            // Use predefined file types
+            FileTypes = FilePickerFileType.Images
+        };
+
+        var result = await FilePicker.PickAsync(pickOptions);
+
+        try
+        {
+            if (result != null)
+            {
+                using (var stream = await result.OpenReadAsync())
+                {
+                    using (var memoryStream = new MemoryStream())
+                    {
+                        stream.CopyTo(memoryStream);
+                        imageBytes = memoryStream.ToArray(); // Store the image data as a byte array
+                    }
+                }
+
+                ImageSource imageSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
+                UserImage = imageSource;
+                userLogic.SetProfilePic(user, imageBytes);
+            }
+            else
+                Debug.WriteLine("No file picked");
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine(ex);
+        }
     }
 
     private async void OnTakePictureClicked(object sender, EventArgs e)

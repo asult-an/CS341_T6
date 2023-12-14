@@ -17,10 +17,7 @@
             <!-- Button to Change Picture -->
                 <Button Text="Change Picture" Clicked="OnChangePictureClicked" BackgroundColor="#5D151B"/>
 
-                <HorizontalStackLayout x:Name="pictureOptions" IsVisible="False" Spacing="10">
-                    <Button Text="New" Clicked="OnTakePictureClicked" WidthRequest="135" TextColor="Black" BackgroundColor="#bdc3c7"/>
-                    <Button Text="Load" Clicked="OnSelectFromStorageClicked" WidthRequest="130" TextColor="Black" BackgroundColor="#bdc3c7"/>
-                </HorizontalStackLayout>
+                
             </StackLayout>
 
             <StackLayout Grid.Row="1" Padding="10">
