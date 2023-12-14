@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CookNook.DietPreferenceDetailedPage"
+             Title="DietPreferenceDetailedPage">
+    <StackLayout Padding="20">
+        <Entry Text="{Binding Title}" Placeholder="Preference Title" />
+        <Switch IsToggled="{Binding IsActive}" />
+        <Label Text="Affected Recipes" />
+        <CollectionView 
+            x:Name="AffectedRecipesView"
+            ItemsSource="{Binding AffectedRecipes}">
+            <!-- Define ItemTemplate for recipes -->
+        </CollectionView>
+
+        <Label Text="Affected Ingredients" />
+        <CollectionView 
+            x:Name="AffectedIngredientsView"
+            ItemsSource="{Binding AffectedIngredients}">
+            <!-- Define ItemTemplate for ingredients -->
+        </CollectionView>
+        <Button Text="Save Changes"
+                Clicked="OnSaveClicked"/>
+        <Button Text="Cancel"
+                Clicked="OnCancelClicked"/>
+    </StackLayout>
+
+</ContentPage>

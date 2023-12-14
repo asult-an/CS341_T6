@@ -293,7 +293,6 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
         //};
 
         List<Tag> tags = new List<Tag>{ new Tag { DisplayName = "test" } };
-
         var newRecipe = new Recipe(
             CurrentRecipe.Name,                   // name
             CurrentRecipe.Description,            // description
@@ -316,10 +315,8 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
 
         // "compound assignment" operator: only triggers if left side of operator is null, assigns right side's value
         //recipeLogic ??= new RecipeLogic(new RecipeDatabase(), new IngredientLogic(new IngredientDatabase()));
-        recipeLogic ??= MauiProgram.ServiceProvider.GetService<IRecipeLogic>();
 
         // Add recipe to the database using RecipeLogic
-
         var result = recipeLogic.AddRecipe(newRecipe);
 
         // Check if the recipe was added successfully and navigate accordingly
@@ -356,18 +353,17 @@ public partial class AddRecipeIngredientsPage : ContentPage, INotifyPropertyChan
             currentRecipe.Description,
             currentRecipe.CookTime,
             currentRecipe.Ingredients,
-            CourseType.Parse(CourseEntry.Text),
+            //CourseType.Parse(CourseEntry.Text),
+            CurrentRecipe.Course,
             CurrentRecipe.AuthorID,     //TODO: get the author-id from the user
             0,
-            new List<Tag> { },
             CurrentRecipe.Servings,
+            new List<Tag>() { },
             new long[] { },
             //Encoding.ASCII.GetBytes(PreviousPageData.ImagePath)
             Encoding.ASCII.GetBytes("NO_IMAGE")
         );
-
     }
-
     /// <summary>
     /// Broadcasts an event whenever the IngredientList property is changed
     /// </summary>
