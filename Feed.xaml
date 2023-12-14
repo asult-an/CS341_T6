@@ -4,6 +4,7 @@
              xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
              x:Class="CookNook.Feed"
              NavigationPage.HasBackButton="False"
+             x:Name="FeedPage"
              Title="Feed">
     <!--NavigationPage.HasBackButton="False"-->
 
@@ -27,7 +28,7 @@
             <XmlHelpers:ByteToImageConverter x:Key="ByteToImageConverter"/>
         </ResourceDictionary>
     </ContentPage.Resources>
-    
+
 
     <Grid RowDefinitions="0, 80, 10, *" BackgroundColor="#202c39">
 
@@ -97,4 +98,3 @@
     </Grid>
 
 </ContentPage>
-

@@ -594,5 +594,39 @@ namespace CookNook.Model.Services
         {
             throw new NotImplementedException();
         }
+
+        public byte[] GetProfilePicture(Int64 userID)
+        {
+            byte[] profilePictureData = null;
+            using var conn = new NpgsqlConnection(connString);
+            conn.Open();
+            var cmd = new NpgsqlCommand("SELECT profile_picture FROM users WHERE user_id = @UserID", conn);
+            cmd.Parameters.AddWithValue("UserID", userID);
+
+            try
+            {
+                using var reader = cmd.ExecuteReader();
+
+                if (reader.Read())
+                {
+                    if (!reader.IsDBNull(0)) // Check if the profile picture column is not null
+                    {
+                        long dataLength = reader.GetBytes(0, 0, null, 0, 0); // Get the length of the image data
+                        profilePictureData = new byte[dataLength];
+                        reader.GetBytes(0, 0, profilePictureData, 0, (int)dataLength); // Read the image data into the array
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Debug.WriteLine(ex.Message);
+            }
+            finally
+            {
+                conn.Close();
+            }
+
+            return profilePictureData;
+        }
     }
 }

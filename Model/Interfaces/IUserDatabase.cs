@@ -119,6 +119,13 @@ namespace CookNook.Model
         /// <returns>Any errors that occurred during the deletion operation.</returns>
         UserDeletionError DeleteUser(User inUser);
 
+        /// <summary>
+        /// Gets the profile picture for a user, doesnt return anything else
+        /// </summary>
+        /// <param name="userID"> ID for pic </param>
+        /// <returns> The picture </returns>
+        public byte[] GetProfilePicture(Int64 userID);
+
 
     }
 }

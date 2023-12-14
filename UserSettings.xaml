@@ -12,7 +12,17 @@
         <Grid
             RowDefinitions="5*,*,*, *"
             Padding="30,0">
-            <Button Padding="90" ImageSource="profile.png" BackgroundColor="Transparent"></Button>
+          <StackLayout Spacing="10">
+            <Image Source="{Binding UserImage}" Aspect="AspectFill" Margin="0,40,0,20" />
+            <!-- Button to Change Picture -->
+                <Button Text="Change Picture" Clicked="OnChangePictureClicked" BackgroundColor="#5D151B"/>
+
+                <HorizontalStackLayout x:Name="pictureOptions" IsVisible="False" Spacing="10">
+                    <Button Text="New" Clicked="OnTakePictureClicked" WidthRequest="135" TextColor="Black" BackgroundColor="#bdc3c7"/>
+                    <Button Text="Load" Clicked="OnSelectFromStorageClicked" WidthRequest="130" TextColor="Black" BackgroundColor="#bdc3c7"/>
+                </HorizontalStackLayout>
+            </StackLayout>
+
             <StackLayout Grid.Row="1" Padding="10">
                 <Button Clicked="UserAccountSettingsClicked" Text="Account Settings" BackgroundColor="#5D151B"></Button>
             </StackLayout>

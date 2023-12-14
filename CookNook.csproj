@@ -53,6 +53,7 @@
 		<MauiAsset Include="Resources\Raw\**" LogicalName="%(RecursiveDir)%(Filename)%(Extension)" />
 	</ItemGroup>
 	<ItemGroup>
+	  <None Remove="Platforms\Android\Resources\values\Strings.xml" />
 	  <None Remove="Resources\Images\cookbook.png" />
 	  <None Remove="Resources\Images\delete.svg" />
 	  <None Remove="Resources\Images\editpen.svg" />
