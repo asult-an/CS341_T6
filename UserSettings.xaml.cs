@@ -76,17 +76,17 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
     {
         PropertyChanged?.Invoke(this, new PropertyChangedEventArgs(propertyName));
     }
-       
+
     private async void OnChangePictureClicked(object sender, EventArgs e)
     {
         var pickOptions = new PickOptions
         {
             PickerTitle = "Please select an image",
-            // Use predefined file types
-            FileTypes = FilePickerFileType.Images
+            FileTypes = FilePickerFileType.Images // Use predefined file types
         };
 
         var result = await FilePicker.PickAsync(pickOptions);
+        MemoryStream memoryStream = null; // Declare MemoryStream outside the try block
 
         try
         {
@@ -94,11 +94,9 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
             {
                 using (var stream = await result.OpenReadAsync())
                 {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        stream.CopyTo(memoryStream);
-                        imageBytes = memoryStream.ToArray(); // Store the image data as a byte array
-                    }
+                    memoryStream = new MemoryStream();
+                    stream.CopyTo(memoryStream);
+                    imageBytes = memoryStream.ToArray(); // Store the image data as a byte array
                 }
 
                 ImageSource imageSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
@@ -106,76 +104,30 @@ public partial class UserSettings : ContentPage, INotifyPropertyChanged
                 userLogic.SetProfilePic(user, imageBytes);
             }
             else
-                Debug.WriteLine("No file picked");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
-    }
-
-    private async void OnTakePictureClicked(object sender, EventArgs e)
-    {
-        try
-        {
-            var photo = await MediaPicker.CapturePhotoAsync();
-            if (photo != null)
             {
-                using var stream = await photo.OpenReadAsync();
-                UserImage = ImageSource.FromStream(() => stream);
+                Debug.WriteLine("No file picked");
             }
         }
-        catch (FeatureNotSupportedException fnsEx)
-        {
-            Debug.WriteLine("Feature Not supported");
-        }
-        catch (PermissionException pEx)
-        {
-            Debug.WriteLine("Permission not granted");
-        }
         catch (Exception ex)
         {
-            Debug.WriteLine("Error Occurred");
+            Debug.WriteLine($"Error occurred: {ex}");
+            memoryStream?.Dispose(); // Dispose of MemoryStream in case of an exception
+            throw; // Re-throw the exception if you want to maintain the original exception handling behavior
+        }
+        finally
+        {
+            memoryStream?.Dispose(); // Ensure the MemoryStream is also disposed in the normal flow
         }
     }
 
-    private async void OnSelectFromStorageClicked(object sender, EventArgs e)
+    protected override void OnDisappearing()
     {
-        var pickOptions = new PickOptions
-        {
-            PickerTitle = "Please select an image",
-            // Use predefined file types
-            FileTypes = FilePickerFileType.Images
-        };
-
-        var result = await FilePicker.PickAsync(pickOptions);
-
-        try
-        {
-            if (result != null)
-            {
-                using (var stream = await result.OpenReadAsync())
-                {
-                    using (var memoryStream = new MemoryStream())
-                    {
-                        stream.CopyTo(memoryStream);
-                        imageBytes = memoryStream.ToArray(); // Store the image data as a byte array
-                    }
-                }
-
-                ImageSource imageSource = ImageSource.FromStream(() => new MemoryStream(imageBytes));
-                UserImage = imageSource;
-                userLogic.SetProfilePic(user, imageBytes);
-            }
-            else
-                Debug.WriteLine("No file picked");
-        }
-        catch (Exception ex)
-        {
-            Debug.WriteLine(ex);
-        }
+        base.OnDisappearing();
 
     }
+
+
+
 
     public void ApplyDarkTheme(object sender, EventArgs e)
     {
