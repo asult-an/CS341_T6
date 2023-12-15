@@ -249,5 +249,32 @@ namespace CookNook.Model
         {
             return userDatabase.DeleteUser(inUser);
         }
+
+        public byte[] GetProfilePic(User user)
+        {
+            try
+            {
+                return userDatabase.GetProfilePicture(user.Id);
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e);
+                return null;
+            }
+        }
+
+        public void SetProfilePic(User user, byte[] pic)
+        {
+            try
+            {
+                bool updated = userDatabase.SetProfilePicture(user.Id, pic);
+                if (!updated)
+                {
+                    Debug.WriteLine("Failed to update Profile Pic");
+                }
+            } catch (Exception e)
+            {
+                Debug.WriteLine(e);
+            }
+        }
     }
 }

@@ -1,9 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              xmlns:XmlHelpers="clr-namespace:CookNook.XMLHelpers"
              x:Class="CookNook.Feed"
              NavigationPage.HasBackButton="False"
+             x:Name="FeedPage"
              Title="Feed">
     <!--NavigationPage.HasBackButton="False"-->
 
@@ -15,7 +16,7 @@
                      Clicked="SearchClicked"/>
 
         <ToolbarItem x:Name="profileToolbarItem"
-                    IconImageSource="profile.png"
+                    IconImageSource="user_profile.jpg"
                     Priority="1"
                     Order="Primary"
                     Clicked="UserProfileClicked"/>
@@ -124,6 +125,7 @@
             </CollectionView>
 
         </ScrollView>
+
 
     </Grid>
 </ContentPage>

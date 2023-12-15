@@ -13,11 +13,21 @@
             RowDefinitions="5*,*,*,*,*,*"
             Padding="30,0">
 
-            <Image Source="profile.png" Grid.Row="0" Margin="0,30,0,10" WidthRequest="200">
+
+            <Image Source="{Binding UserImage}" Grid.Row="0" Margin="0,30,0,10" WidthRequest="200">
                 <Image.Clip>
                     <EllipseGeometry Center="100,100" RadiusX="100" RadiusY="100" />
                 </Image.Clip>
             </Image>
+
+      
+            <StackLayout Spacing="10">
+            
+            <!-- Button to Change Picture -->
+                <Button Text="Change Picture" Clicked="OnChangePictureClicked" BackgroundColor="#5D151B"/>
+
+                
+            </StackLayout>
 
             <StackLayout Grid.Row="1" Padding="10">
                 <Button Clicked="UserAccountSettingsClicked" Text="Account Settings"></Button>
